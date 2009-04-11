@@ -1,0 +1,45 @@
+on $*:TEXT:/^[!@]max/Si:#: { 
+  if (# == #iDM) || (# == #iDM.Staff) && ($me != iDM) { halt }
+  if (!$2) { $iif($left($1,1) == !,notice $nick,msg #) Please specify the weapon to look up. Syntax: !max whip } 
+  if ($2 == whip) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }  
+  if ($2 == dds) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-20) ~ With bgloves: $s2(0-23) ~ With firecape: $s2(0-25) ~ With both: $s2(0-28) }
+  if ($2 == ags) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-55) ~  ~ With bgloves: $s2(0-58) ~ With firecape: $s2(0-60) ~ With both: $s2(0-63) }
+  if ($2 == cbow) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With void-range: $s2(0-40) 3% chance of hitting $s2(60-69) }
+  if ($2 == dbow) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(8-35) ~ With void-range: $s2(8-40) }
+  if ($2 == dh) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : Under 10HP: $s2(0-75) ~ With Bgloves: $s2(0-78) ~ With Firecape: $s2(0-80) ~ With both: $s2(0-83) Above 10HP: $s2(0-40) ~ With bgloves: $s2(0-43) ~ With Firecape: $s2(0-45) ~ With both: $s2(0-48) }
+  if ($2 == bgs) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-75) ~ With bgloves: $s2(0-78) ~ With firecape: $s2(0-80) ~ With both: $s2(0-83) } 
+  if ($2 == sgs) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-50) ~ With bgloves: $s2(0-53) ~ With firecape: $s2(0-55) ~ With both: $s2(0-58) }
+  if ($2 == gmaul) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-30) ~ With firecape: $s2(0-33) ~ With both: $s2(0-34) }
+  if ($2 == guth) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }
+  if ($2 == ice) || ($2 == barrage) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-30) ~ With void-mage: $s2(0-35) }
+  if ($2 == blood) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-30) ~ With void-mage: $s2(0-35) }
+  if ($2 == zgs) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-50) ~ With bgloves: $s2(0-53) ~ With firecape: $s2(0-55) ~ With both: $s2(0-58) }
+  if ($2 == mudkip) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-22) }
+  if ($2 == dclaws) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(24-12-6-3) ~ With bgloves: $s2(33-16-8-4) ~ With firecape: $s2(35-18-9-5) ~ With both: $s2(38-19-10-5) }
+  if ($2 == dmace) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-45) ~ With bgloves: $s2(0-48) ~ With firecape: $s2(0-50) ~ With both: $s2(0-53) }
+  if ($2 == dhally) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }
+  if ($2 == dspear) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-20) ~ With bgloves: $s2(0-23) ~ With firecape: $s2(0-25) ~ With both: $s2(0-28) }
+  if ($2 == dscim) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-30) ~ With bgloves: $s2(0-33) ~ With firecape: $s2(0-35) ~ With both: $s2(0-38) }
+  if ($2 == dlong) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }
+  if ($2 == d2h) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }
+  if ($2 == ssword) || ($2 == ss) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-35) ~ With bgloves: $s2(0-38) ~ With firecape: $s2(0-40) ~ With both: $s2(0-43) }
+  if ($2 == anchor) { $iif($left($1,1) == !,notice $nick,msg #) $logo(Max) $upper($left($2,1)) $+ $right($2-,-1) $+ : $s2(0-55) ~ With bgloves: $s2(0-58) ~ With firecape: $s2(0-60) ~ With both: $s2(0-63) }
+} 
+on $*:TEXT:/^[@!.`](top|highscores)/Si:#: {
+  var %display = $iif(@* iswm $1,msg #,notice $nick)
+  if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
+  if (!$2) { goto hiscores | halt }
+  if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }
+  goto hiscores
+  :hiscores
+  $(,$+($chr(102),$chr(105),$chr(108),$chr(116),$chr(101),$chr(114))) -fkg money.ini hiscores /(.+?)=(\d{11,})/ | hiscores return $calc($iif($2,$2,5) + 1) %display
+}
+alias hiscores {
+  if ($1 == return) {
+    var %x = $sorttok($regsubex(%tophi,/(.+?)=(\d+)(?:\s|$)/g,$+(\2,=,\1,$chr(32))),32,nr)
+    $3- $logo(TOP) Total DM's: $bytes($readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) $regsubex($gettok($regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32))),$+(1-,$2),124),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
+    unset %tophi
+    halt
+  }
+  set %tophi %tophi $1-
+}

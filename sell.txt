@@ -1,0 +1,78 @@
+on *:TEXT:!sell*:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($readini(lent.ini,borrowing,$nick)) { notice $nick You cannot sell this item as you are borrowing it. | halt }
+  if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($regex($2-,/^void(\s|-)?range$/Si)) {
+    if (!$readini(Equipment.ini,Void,$nick)) { notice $nick You don't have void range. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 250000000)
+    remini -n Equipment.ini Void $nick     
+    notice $nick You have sold $s1(Full Void Knight Ranged) for $s2(250M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($regex($2-,/^void(\s|-)?mage$/Si)) {
+    if (!$readini(Equipment.ini,void-mage,$nick)) { notice $nick You don't have void mage. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 400000000)
+    remini -n Equipment.ini void-mage $nick     
+    notice $nick You have sold $s1(Full Void Knight Mage) for $s2(400M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($regex($2,/^ely?s+ian/Si)) {
+    if (!$readini(Equipment.ini,elshield,$nick)) { notice $nick You don't have a Elysian spirit shield. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 5000000000)
+    remini -n Equipment.ini elshield $nick     
+    notice $nick You have sold $s1(Elysian spirit shield) for $s2(5B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($regex($2-,/^b(ar+ows?)?(\s|-)?glo?ves?/Si)) {
+    if (!$readini(Equipment.ini,bgloves,$nick)) { notice $nick You don't have barrow gloves. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 1500000000)
+    remini -n Equipment.ini bgloves $nick     
+    notice $nick You have sold $s1(Barrow Gloves) for $s2(1.5B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == dclaws) || ($2- == Dragon Claws) {
+    if (!$readini(Equipment.ini,dclaws,$nick)) { notice $nick You don't have any Dragon Claws. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 1250000000)
+    remini -n Equipment.ini dclaws $nick     
+    notice $nick You have sold $s1(Dragon Claws) for $s2(1.25B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == mudkip) {
+    if (!$readini(Equipment.ini,mudkip,$nick)) { notice $nick You don't have any Mudkip. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 100000000)
+    remini -n Equipment.ini mudkip $nick     
+    notice $nick You have sold a $s1(Mudkip Pouch) for $s2(100M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == ring) || ($2 == wealth) {
+    if (!$readini(Equipment.ini,Wealth,$nick)) { notice $nick You don't have a ring of wealth. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 1500000000)
+    remini -n Equipment.ini Wealth $nick  
+    notice $nick You have sold $s1(Ring of Wealth) for $s2(1.5B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == fire) || ($2 == cape) {
+    if (!$readini(Equipment.ini,Firecape,$nick)) { notice $nick You don't have a fire cape. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 2000000000)
+    remini -n Equipment.ini Firecape $nick     
+    notice $nick You have sold $s1(Fire Cape) for $s2(2B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == ags) || ($2 == armadyl) || ($2 == arma) || ($2 == arm) {
+    if (!$readini(Equipment.ini,ags,$nick)) { notice $nick You don't have an Armadyl godsword.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 200000000)
+    remini -n Equipment.ini ags $nick    
+    notice $nick You have sold $s1(Armadyl godsword) for $s2(200M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == bgs) || ($2 == bandos) || ($2 == bando) {
+    if (!$readini(Equipment.ini,bgs,$nick)) { notice $nick You don't have a Bandos godsword.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 250000000)
+    remini -n Equipment.ini bgs $nick     
+    notice $nick You have sold $s1(Bandos godsword) for $s2(250M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == sgs) || ($2 == Sara) || ($2 == saradomin) {
+    if (!$readini(Equipment.ini,sgs,$nick)) { notice $nick You don't have a Saradomin godsword.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 300000000)
+    remini -n Equipment.ini sgs $nick    
+    notice $nick You have sold $s1(Saradomin godsword) for $s2(300M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == zgs) || ($2 == Zammy) || ($2 == zamorak) {
+    if (!$readini(Equipment.ini,zgs,$nick)) { notice $nick You don't have a Zamorak godsword.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 200000000)
+    remini -n Equipment.ini zgs $nick     
+    notice $nick You have sold $s1(Zamorak godsword) for $s2(200M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  else notice $nick You don't have any items bought from the store. For information about items that can be bought at the store, type: !store
+}

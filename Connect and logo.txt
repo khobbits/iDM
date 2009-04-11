@@ -1,0 +1,23 @@
+alias logo { return $+(07[,03,$$1-,07],) }
+alias s1 { return $+($chr(3),03,$1-,) }
+alias s2 { return $+($chr(3),07,$1-,) }
+
+on *:CONNECT: {  
+  ns id alemakqnozz493mk 
+  mode $me +pB 
+  unsetall 
+  remini status.ini currentdm 
+  remini login.ini login
+}
+alias nsid {
+  return sl39xkzmall1
+}
+alias password {
+  return sl39xkzmall1
+}
+
+on *:text:You were*connected*:?: {
+  if ($nick == -sbnc) {
+    ns id shocking879
+  }
+}

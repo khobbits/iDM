@@ -1,0 +1,24 @@
+Dragon Claws:25000000
+Red Partyhat:107000000
+Blue Partyhat:330400000
+Yellow Partyhat:142100000
+Purple Partyhat:70960000
+Green Partyhat:92910000
+White Partyhat:169200000
+3rd Age Mage top:27000000
+3rd Age Mage bottom:16200000
+3rd Age Mage hat:11900000
+3rd Age Mage ammy:16800000
+3rd Age Platebody:46700000
+3rd Age Platelegs:29600000
+3rd Age Full Helm: 20940000
+3rd Age Range Top:26600000
+3rd Age Range Coif:8800000
+3rd Age Range Bottom:15500000
+Christmas Cracker:688800000
+Armadyl hilt:64935000
+Saradomin godsword:46300000
+Saradomin hilt:45900000
+Bandos godsword:18500000
+Armadyl godsword:55005000
+Zamorak godsword:26200000

@@ -1,0 +1,22 @@
+on *:NICK: {
+  var %a = $comchan($me,0)
+  while (%a) { 
+    if (%stake [ $+ [ $comchan($me,%a) ] ]) { 
+      msg $chan $logo(STAKE) The stake has been canceled because a player changed their nick. | cancel $chan | .timer $+ $chan off | halt 
+      dec %a
+    }
+  }
+  unset %dming [ $+ [ $nick ] ]
+  unset %login. [ $+ [ $nick ] ]
+  var %a 1
+  while (%a <= $chan(0)) {
+    if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
+      set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
+    }
+    if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
+      set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
+
+    }
+    inc %a
+  }
+}

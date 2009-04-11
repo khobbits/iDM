@@ -1,0 +1,117 @@
+Dragon Platebody:8900000
+Specpot:1000
+Guthan's Helm:933700
+Guthan's Chainskirt:166100
+Guthan's Platebody:266600
+Guthan's Spear:3700000
+Torag's Helm:335000
+Torag's Platelegs:154300
+Torag's Platebody:250000
+Torag's Hammers:93000
+Ahrim's Hood:96100
+Ahrim's Staff:45000
+Ahrim's Skirt:419000
+Ahrim's Robetop:238900
+Verac's Helm:1500000
+Verac's Plateskirt:190300
+Verac's Brassard:263000
+Verac's Flail:145000
+Dharok's Helm:3100000
+Dharok's Platebody:233400
+Dharok's Platelegs:292000
+Dharok's Axe:238000
+Dragon Axe:3500000
+Dragon Longsword:78000
+Dragon ChainBody:5100000
+Dragon Dagger++:34000
+Dragon Mace:45000
+Dragon Medium Helm:56000 
+Dragon Platelegs:560000
+Dragon Plateskirt:98000
+Dragon Boots:234000
+Abyssal Whip:1100000
+Obby Shield:340998
+Obby Cape:234000
+Giant Nib:1337
+Blood Runes:560 
+Master Wand:785000
+Mage's Book:4500000
+Dark Bow:1400000
+Ranger Boots:5415000
+Black D'hide Body:23892
+Archer Ring:672400
+Berserker Ring:1800000
+Warrior Ring:141100
+Seers Ring:120000
+Bones:75
+Lobster:245
+Shark:902
+Monkfish:340
+Vesta's Chainbody:1600000
+Robin Hood Hat:1900000
+Vesta's Spear:2400000
+Vesta's Longsword:5800000
+Statius's Full Helm:480000
+Statius's Platebody:1400000
+Statius's Platelegs:1200000
+Statius's Warhammer:4100000
+Ancient staff:64030
+Anti-dragon shield:298
+Anti-poison supermix:836
+Antipoison++:3136
+Apprentice wand:135280
+Arcane sigil:63500000
+Arcane Spirit Shield:70300000
+Archer helm:71915
+Armadyl chestplate:7980000
+Armadyl helmet:3990000
+Armadyl plateskirt:8170000
+Bandos boots:868965
+Bandos chestplate:10735000
+Bandos tassets:8265000
+Berserker helm:73530
+Berserker necklace:616740
+Big bones:346
+Black salamander:151
+Blessed spirit shield:6800000
+Crystal shield:714685
+Disk of returning:4750000
+Draconic visage:17005000
+Dragon 2h sword:1425000
+Dragon arrows:6002
+Dragon battleaxe:118750
+Dragon bones:1855
+Dragon full helm:15405000
+Dragon halberd:191900
+Dragon scimitar:94525
+Dragon spear:36100
+Dragon spear (p++):39425
+Dragonfire shield:16900000
+Gilded full helm:382185
+Gilded kiteshield:506825
+Gilded platebody:1520000
+Gilded platelegs:1520000
+Gilded plateskirt:388930
+Godsword shard 1:180500
+Godsword shard 2:168150
+Godsword shard 3:172710
+Mystic gloves:48830
+Mystic hat:8622
+Mystic robe bottom:45885
+Mystic robe top:69635
+Magic longbow:1330
+Magic shortbow:799
+Rock-shell boots:281
+Rock-shell gloves:2341
+Rock-shell helm:21470
+Rock-shell legs:38190
+Rock-shell plate:39710
+Rune full helm:20045
+Rune full helm (g):480605
+Rune full helm (t):382660
+Rune halberd:73910
+Rune platebody:44745
+Saradomin full helm:856995
+Saradomin sword:6745000
+Bandos hilt:18500000
+Zamorak hilt:26000000
