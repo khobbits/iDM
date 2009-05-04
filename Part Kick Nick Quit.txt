@@ -1,13 +1,13 @@
 on *:PART:#: {
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) {
     writeini -n money.ini money %p1 [ $+ [ $chan  ] ] $calc($readini(money.ini,money,%p1 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
-    msg # $logo(DM) The stake has been canceled, because one of the players parted.
+    msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($ceil($calc($+(%,stake,#) / 2) )) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) {
     writeini -n money.ini money %p2 [ $+ [ $chan  ] ] $calc($readini(money.ini,money,%p2 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
-    msg # $logo(DM) The stake has been canceled, because one of the players parted.
+    msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($ceil($calc($+(%,stake,#) / 2) )) $+ .
     cancel #
     .timer $+ # off
   }

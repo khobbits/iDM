@@ -4,11 +4,11 @@ on *:INVITE:#: {
   if (%loottimer) { msg $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
   if ($readini(Blacklist.ini,Chans,#)) && (!%inv.spam [ $+ [ $nick ] ]) {
-    notice $nick Channel has been blacklisted. ( $+ $readini(Blacklist.ini,Chans,#) $+ $iif($readini(blacklist.ini,Who,#),$v1) $+ )
+    notice $nick Channel has been blacklisted. (Reason: $readini(Blacklist.ini,Chans,#) $iif($readini(blacklist.ini,Who,#),By: $v1) $+ )
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
-  notice $nick $logo(BOT) Searching for an open bot...(If a bot doesn't join in the next minute, join #iDM.)
+  notice $nick $logo(BOT) Searching for an open bot...(If a bot doesn't join in the next minute, join #iDM.Support)
 
   if ($port == 12000) {
     var %a 0
@@ -116,10 +116,10 @@ alias idmstaff {
   if ($1 == invite) { msg #iDM.Staff $logo(INVITE) $s1($3) invited me into $s2($2) }
 }
 alias entrymsg {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) If you don't want me, have an op type !part $me $+ . Forums: http://forum.idm-bot.com/ Rules: http://r.idm-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: Special admin items (No real use as of yet).
+  return News: PvP weapons are out! Mage's book and Accumulator added as bonus gear. !on and !off commands added.
 }
 alias bottag {
   if (!$1) {

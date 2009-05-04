@@ -1,7 +1,9 @@
 on *:TEXT:!stake*:#: {
+  if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) Staking is currently disabled, as we're performing an update. | halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You must be logged in to use the stake command. | halt }
   if ($chr(46) isin $2) { notice $nick The characters 7. are not allowed in staking money, please state whole figures! | halt }
   if (%p1 [ $+ [ $chan ] ] == $null) && ($2 == $null) { notice $nick Please enter an amount between 1 and 100000000 (100m). Eg: !stake 10000 | halt }

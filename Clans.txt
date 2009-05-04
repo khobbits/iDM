@@ -43,7 +43,7 @@ on *:TEXT:!startclan*:*: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
-  if ($readini(Clannames.ini,Clan,$remove($2,$chr(36),$chr(37)))) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
+  if ($ini(Clannames.ini,$remove($2,$chr(36),$chr(37)))) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
   if ($readini(Personalclan.ini,Person,$nick)) { notice $nick You're already in a clan ( $+ $gettok($readini(Personalclan.ini,Person,$nick),1,58) $+ ). | halt }
   writeini Personalclan.ini Person $nick $remove($2,$chr(36),$chr(37)) $+ :owner
   writeini Clans.ini Clan $nick $remove($2,$chr(36),$chr(37))

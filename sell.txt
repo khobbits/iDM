@@ -1,5 +1,6 @@
 on *:TEXT:!sell*:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   if ($readini(lent.ini,borrowing,$nick)) { notice $nick You cannot sell this item as you are borrowing it. | halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if ($regex($2-,/^void(\s|-)?range$/Si)) {
@@ -16,9 +17,9 @@ on *:TEXT:!sell*:#: {
   }
   if ($regex($2,/^ely?s+ian/Si)) {
     if (!$readini(Equipment.ini,elshield,$nick)) { notice $nick You don't have a Elysian spirit shield. | halt }
-    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 5000000000)
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 4000000000)
     remini -n Equipment.ini elshield $nick     
-    notice $nick You have sold $s1(Elysian spirit shield) for $s2(5B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+    notice $nick You have sold $s1(Elysian spirit shield) for $s2(4B) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
   }
   if ($regex($2-,/^b(ar+ows?)?(\s|-)?glo?ves?/Si)) {
     if (!$readini(Equipment.ini,bgloves,$nick)) { notice $nick You don't have barrow gloves. | halt }
@@ -73,6 +74,18 @@ on *:TEXT:!sell*:#: {
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 200000000)
     remini -n Equipment.ini zgs $nick     
     notice $nick You have sold $s1(Zamorak godsword) for $s2(200M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt 
+  }
+  if ($2 == mbook) || ($2 == mage's) || ($2 == mages) { 
+    if (!$readini(Equipment.ini,mbook,$nick)) { notice $nick You don't have a Mage's book.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 500000000)
+    remini -n Equipment.ini mbook $nick     
+    notice $nick You have sold $s1(Mage's Book) for $s2(500M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt
+  }
+  if ($2 == accumulator) || ($2 == accum) || ($2 == backpack) { 
+    if (!$readini(Equipment.ini,accumulator,$nick)) { notice $nick You don't have an Accumulator.. | halt }
+    writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) + 500000000)
+    remini -n Equipment.ini accumulator $nick     
+    notice $nick You have sold $s1(Accumulator) for $s2(500M) $+ . You now have: $s2($price($readini(Money.ini,money,$nick))) $+ . | halt
   }
   else notice $nick You don't have any items bought from the store. For information about items that can be bought at the store, type: !store
 }

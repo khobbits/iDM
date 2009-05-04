@@ -1,14 +1,8 @@
 on *:TEXT:!dm:#: {
+  if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
-  if ($readini(Clans.ini,Clan,$nick)) {
-    if ($readini(Clans.ini,Clan,$nick) == $readini(Clans.ini,Clan,%p2 [ $+ [ $chan ] ]) || $readini(Clans.ini,Clan,$nick) == $readini(Clans.ini,Clan,%p1 [ $+ [ $chan ] ])) {
-      if ($readini(clannames.ini,$readini(Clans.ini,Clan,%p2 [ $+ [ $chan ] ]),share) == on || $readini(clannames.ini,$readini(Clans.ini,Clan,%p1 [ $+ [ $chan ] ]),share) == on) {
-        notice $Nick You cannot DM a clan mate when lootshare is on. Turn off lootshare in order to DM a fellow clanmate.
-        halt 
-      }
-    }
-  }
   if (%wait. [ $+ [ $chan ] ]) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
@@ -59,8 +53,8 @@ alias cancel {
     unset %stun [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
-    unset %frozen [ $+ [ $1 ] ]
-    unset %frozen [ $+ [ $2 ] ]
+    unset %frozen* [ $+ [ $1 ] ]
+    unset %frozen* [ $+ [ $2 ] ]
     unset %stake* [ $+ [ $1 ] ]
     unset $+(%*,$1)
     .timer $+ $1 off
@@ -112,7 +106,7 @@ on *:TEXT:?status:#: {
   }
 }
 alias status {
-  return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) Food: $s1(%p1 [ $+ [ $1 ] ]) $s2(%food1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%food2 [ $+ [ $1 ] ]) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))
+  return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))
 }
 
 alias blockmultidm {

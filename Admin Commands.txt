@@ -1,48 +1,32 @@
-On $*:TEXT:/^[!@]ViewItems/Si:#iDM.Staff: {
-  if ($me != iDM) { halt }
-  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (!$2) { 
-    notice $nick $logo(Special Items) Belong Blade: $s2($ini(sitems.ini,belong,0)) Strychnine Scimitar: $s2($ini(sitems.ini,allegra,0)) Beaumerang: $s2($ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($ini(sitems.ini,snake,0))
-    ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
-  }
-  else {
-    if ($2 == Belongtome) {
-      var %sitem.max = 1
-      while (%sitem.max <= $ini(sitems.ini,belong,0)) {
-        var %sitem.final $ini(sitems.ini,belong,%sitem.max) %sitem.final
-        inc %sitem.max
-      }
-      notice $nick $logo(Special Items) $replace(%sitem.final,$chr(32),$chr(44) $+ $chr(32))
+On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
+  if ($readini(Admins.ini,Admins,$address($nick,3))) {
+    if (!$regex($2,/\#(.*)/)) {
+      if ($me == iDM) notice $nick $logo(ERROR) You must enter a channel. Example: $s2(!warn #Belong)
     }
-    elseif ($2 == Allegra || $2 == Strychnine) {
-      var %sitem.max = 1
-      while (%sitem.max <= $ini(sitems.ini,allegra,0)) {
-        var %sitem.final $ini(sitems.ini,allegra,%sitem.max) %sitem.final
-        inc %sitem.max
-      }
-      notice $nick $logo(Special Items) $replace(%sitem.final,$chr(32),$chr(44) $+ $chr(32))
+    elseif ($istok(#iDM:#iDM.Staff:#iStake:#iDM.Support,$2,58)) {
+      if ($me == iDM) notice $nick $logo(ERROR) You are trying to warn a channel which you cannot warn.
     }
-    elseif ($2 == [PCN]Sct_Snake || $2 == snake) {
-      var %sitem.max = 1
-      while (%sitem.max <= $ini(sitems.ini,snake,0)) {
-        var %sitem.final $ini(sitems.ini,snake,%sitem.max) %sitem.final
-        inc %sitem.max
+    else {
+      if ($me ison $2) {
+        msg $2 $logo(WARNING) This channel has been warned officially by $s2($nick) for $s2(Self-DMing) $+ . This is your first and FINAL warning please stop doing $&
+          what you are doing or this channel will be blacklisted.
+        part $2 Please invite this bot back if you wish to use it correctly. Requested by: $nick
+        notice $nick I have parted $2
       }
-      notice $nick $logo(Special Items) $replace(%sitem.final,$chr(32),$chr(44) $+ $chr(32))
-    }
-    elseif ($2 == beau) {
-      var %sitem.max = 1
-      while (%sitem.max <= $ini(sitems.ini,beau,0)) {
-        var %sitem.final $ini(sitems.ini,beau,%sitem.max) %sitem.final
-        inc %sitem.max
-      }
-      notice $nick $logo(Special Items) $replace(%sitem.final,$chr(32),$chr(44) $+ $chr(32))
     }
   }
 }
 
 
 
+On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
+  if ($me != iDM) { halt }
+  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) {
+    notice $nick $logo(Special Items) Belong Blade: $s2($ini(sitems.ini,belong,0)) Strychnine Scimitar: $s2($ini(sitems.ini,allegra,0)) Beaumerang: $s2($ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($ini(sitems.ini,snake,0))
+    ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
+  }
+}
 
 
 
@@ -110,7 +94,7 @@ On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
 on *:TEXT:!admin:#iDM.staff: {
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Admin commands:) $s2(!part #, !bl #, !ubl #, !cbl #, !chans, !active, !amsg, !join bot #, !msg #, !pass nick, !setpass nick password, !ignore host, !rignore host, !listbl, !except host, !remdm nick, !partall, !idle, !giveitem nick, !takeitem nick, !viewitems)
+  notice $nick $s1(Admin commands:) $s2(!part #, !bl #, !ubl #, !cbl #, !chans, !active, !amsg, !join bot #, !msg #, !pass nick, !setpass nick password, !ignore host, !rignore host, !cignore host, !listbl, !except host, !remdm nick, !partall, !idle, !giveitem nick, !takeitem nick, !viewitems)
 }
 on *:TEXT:!except*:#iDm.staff: {
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
@@ -125,7 +109,7 @@ on *:TEXT:!ignore*:#idm.staff: {
   ignore $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been added to the ignore list. Please notify the user of this.
-  writeini ignore.ini Ignore $2- ~> $nick ~> $fulldate
+  writeini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
 }
 on *:TEXT:!rignore*:#idm.staff: {
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
@@ -133,7 +117,7 @@ on *:TEXT:!rignore*:#idm.staff: {
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
-  remini ignore.ini Ignore $2- ~> $nick ~> $fulldate
+  remini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
 }
 alias position {
   if ($readini(Positions.ini,Positions,$nick)) {
@@ -166,7 +150,15 @@ on *:TEXT:!part*:#: {
     notice $nick I have parted $2
   }
 }
-
+on *:TEXT:!cignore*:#: { 
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if ($readini(admins.ini,admins,$address($nick,3))) || ($readini(admins.ini,support,$address($nick,3))) {
+    if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+    if (!$2) { notice $nick $logo(ERROR) Type !cignore address. | halt }
+    if ($readini(ignore.ini,ignore,$2)) { notice $nick $logo(IGNORE INFO) $s2($2) was blacklisted by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-,32)) $+ . }
+    else { notice $nick $logo(IGNORE INFO) $s2($2) is not ignored. }
+  }
+}
 on *:TEXT:!cbl*:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($readini(admins.ini,admins,$address($nick,3))) || ($readini(admins.ini,support,$address($nick,3))) {

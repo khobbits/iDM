@@ -48,7 +48,6 @@ Toktz-ket-xil:244600
 Obsidian Cape:196900
 Giant Nib:1337
 Master Wand:546700
-Mage's Book:1980000
 Dark Bow:818000
 Ranger Boots:6600000
 Black D'hide Body:7926
@@ -62,6 +61,7 @@ Shark:780
 Monkfish:263
 Vesta's Chainbody:720900
 Robin Hood Hat:1900000
+Morrigan's Javelin:50000
 Vesta's Spear:1300000
 Vesta's Longsword:6100000
 Statius's Full Helm:353900

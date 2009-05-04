@@ -20,3 +20,6 @@ Saradomin Hilt:48800000
 Armadyl Hilt:66300000
 3rd Age Full Helmet:56000000
 3rd Age Amulet:53700000
+Mudkip:50000000
+Mage's Book:100000000
+Accumulator:100000000

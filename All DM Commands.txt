@@ -1,29 +1,91 @@
-on *:TEXT:!eat:#: {
+on *:TEXT:!*:#iDM.Staff: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
-    if (%food1 [ $+ [ $chan ] ] >= 1) { dec %food1 [ $+ [ $chan ] ]
-      if ($calc($+(%,hp1,#) + 20) > 99) { set %hp1 [ $+ [ $chan ] ] 99 }
-      if ($calc($+(%,hp1,#) + 20) <= 99) { inc %hp1 [ $+ [ $chan ] ] 20 }
-      set %turn [ $+ [ $chan ] ] 2
-      unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]  
-      unset %stun [ $+ [ $nick ] ] | unset %stun [ $+ [ $2 ] ] | unset %stun [ $+ [ $1 ] ]
-      msg # $logo(DM) $s1($nick) eats a shark, healing $s2(20) HP. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
-    }
-  }
-  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
-    if (%food2 [ $+ [ $chan ] ] >= 1) { dec %food2 [ $+ [ $chan ] ]
-      if ($calc($+(%,hp2,#) + 20) > 99) { set %hp2 [ $+ [ $chan ] ] 99 }
-      if ($calc($+(%,hp2,#) + 20) <= 99) { inc %hp2 [ $+ [ $chan ] ] 20 }
-      set %turn [ $+ [ $chan ] ] 1
-      unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
-      unset %stun [ $+ [ $nick ] ] | unset %stun [ $+ [ $2 ] ] | unset %stun [ $+ [ $1 ] ]
-      msg # $logo(DM) $s1($nick) eats a shark, healing $s2(20) HP. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+  if ($attack($right($1,-1))) { 
+    if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
+      if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$iif($nick == %p1 [ $+ [ # ] ],1,2),#),2)) { 
+        echo -a $calc($specused($right($1,-1)) /25) > $($+(%,sp,$iif($nick == %p1 [ $+ [ # ] ],1,2),#),2))
+        notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
+        halt
+      }
+      if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+      if (%stun [ $+ [ $nick ] ]) { 
+        msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp $+ $iif($nick == %p1 [ $+ [ # ] ],1,2) [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp $+ $iif($nick == %p1 [ $+ [ # ] ],1,2) [ $+ [ $chan ] ]) 
+        set %turn [ $+ [ $chan ] ] $iif($nick == %p1 [ $+ [ # ] ],2,1)
+        unset %stun [ $+ [ $nick ] ]  
+        halt 
+      }
+      if (%frozen [ $+ [ $nick ] ] == on) { 
+        notice $nick You're frozen and can't use melee.
+        halt 
+      }
+      if ($ini(pvp.ini,$right($1,-1))) {
+        if ($readini(pvp.ini,$right($1,-1),$nick)) {
+          damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
+          halt
+        }
+        else notice $nick You don't have this weapon.
+        halt
+      }
+      damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
     }
   }
 }
+alias damage {
+  ;1 is person attacking
+  ;2 is other person
+  ;3 is weapon
+  ;4 is chan
+  if ($ini(pvp.ini,$3)) {
+    if ($readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
+    elseif ($readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($readini(PvP.ini,$3,$1) -1) }
+  }
+  var %hit [ $+ [ $4 ] ] $hit($3,$1,$2)
+  dec $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
+  unset %frozen [ $+ [ $iif($1 == %p1 [ $+ [ $4 ] ],$v2,%p2 [ $+ [ $4 ] ]) ] ]
+  if ($freezer($3)) { 
+    var %freeze [ $+ [ $4 ] ] $r(1,$v1) 
+  }
+  if (%freeze [ $+ [ $4 ] ] == 1) { 
+    set %frozen [ $+ [ $iif($1 == %p1 [ $+ [ $4 ] ],%p2 [ $+ [ $4 ] ],$v2) ] ] on 
+    notice $iif($1 == %p1 [ $+ [ $4 ] ],%p2 [ $+ [ $4 ] ],$v2) You have been frozen and can't use melee!
+  }
+  if ($gettok($healer($3),1,32)) {
+    var %heal [ $+ [ $4 ] ] $r(1,$v1)
+  }
+  if (%heal [ $+ [ $4 ] ] == 1) {
+    $iif($calc($floor($($+(%,hp,$player($1,$4),$4),2)) + $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32)))) > 99,set $+(%,hp,$player($1,$4),$4) 99,inc $+(%,hp,$player($1,$4),$4) $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32))))
+  }
+  goto displaymsg
+  :displaymsg
+  if ($3 == vlong) { 
+    msg $4 $logo(DM) $s1($1) slashes their Vesta's longsword at $s1($2) $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == sgs) {
+    msg $4 $logo(DM) $s1($1) crushes their godsword down on $s1($2) and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $s2($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4))) - HP $s2($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4)))
+  }
+  if ($specused($3)) { 
+    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25) | notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
+  }
+  set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
+}
+alias player {
+  if ($1 == %p1 [ $+ [ $2 ] ]) { return 1 }
+  if ($1 == %p2 [ $+ [ $2 ] ]) { return 2 }
+}
+on *:TEXT:!eat:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    notice $nick $logo(ERROR) Eat has been $s2(disabled)
+  }
+  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    notice $nick $logo(ERROR) Eat has been $s2(disabled)
+  }
+}
+
 on *:TEXT:!whip:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %whiphit [ $+ [ $chan ] ] $hit(whip,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
@@ -36,6 +98,7 @@ on *:TEXT:!whip:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %whiphit [ $+ [ $chan ] ] $hit(whip,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
@@ -51,6 +114,7 @@ on *:TEXT:!whip:#: {
 on *:TEXT:!dds:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do this. | halt }
@@ -66,6 +130,7 @@ on *:TEXT:!dds:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do this. | halt }
@@ -85,6 +150,7 @@ on *:TEXT:!ags:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(Equipment.ini,ags,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -101,6 +167,7 @@ on *:TEXT:!ags:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(Equipment.ini,ags,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -119,21 +186,25 @@ on *:TEXT:!ags:#: {
 on *:TEXT:!cbow:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %cbowhit [ $+ [ $chan ] ] $hit(cbow,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
     if (%hp2 [ $+ [ $chan ] ] < %cbowhit [ $+ [ $chan ] ]) { set %cbowhit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] }
     dec %hp2 [ $+ [ $chan ] ] %cbowhit [ $+ [ $chan ] ]
     unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
-    msg # $logo(DM) $s1($nick) shoots a dragon bolt at $s1(%p2 [ $+ [ $chan ] ]) with a rune c'bow, hitting $s2(%cbowhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    msg # $logo(DM) $s1($nick) $iif(%cbowspec [ $+ [ $nick ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1(%p2 [ $+ [ $chan ] ]) with a rune c'bow, hitting $s2(%cbowhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    unset %cbowspec [ $+ [ $nick ] ]
     set %turn [ $+ [ $chan ] ] 2
     if (%hp2 [ $+ [ $chan ] ] < 1) { dead # %p2 [ $+ [ $chan ] ] $nick | halt }
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %cbowhit [ $+ [ $chan ] ] $hit(cbow,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
     if (%hp1 [ $+ [ $chan ] ] < %cbowhit [ $+ [ $chan ] ]) { set %cbowhit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] }
     dec %hp1 [ $+ [ $chan ] ] %cbowhit [ $+ [ $chan ] ]
     unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
-    msg # $logo(DM) $s1($nick) shoots a dragon bolt at $s1(%p1 [ $+ [ $chan ] ]) with a rune c'bow, hitting $s2(%cbowhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    msg # $logo(DM) $s1($nick) $iif(%cbowspec [ $+ [ $nick ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1(%p1 [ $+ [ $chan ] ]) with a rune c'bow, hitting $s2(%cbowhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    unset %cbowspec [ $+ [ $nick ] ]
     set %turn [ $+ [ $chan ] ] 1
     if (%hp1 [ $+ [ $chan ] ] < 1) { dead # %p1 [ $+ [ $chan ] ] $nick | halt }
     if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
@@ -142,6 +213,7 @@ on *:TEXT:!cbow:#: {
 on *:TEXT:!dbow:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do this. | halt }
     dec %sp1 [ $+ [ $chan ] ] 3
     var %dbowhit [ $+ [ $chan ] ] $hit(dbow,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
@@ -155,6 +227,7 @@ on *:TEXT:!dbow:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do this. | halt }
     dec %sp2 [ $+ [ $chan ] ] 3
     var %dbowhit [ $+ [ $chan ] ] $hit(dbow,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
@@ -171,6 +244,7 @@ on *:TEXT:!dbow:#: {
 on *:TEXT:!dh:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %dharokhit [ $+ [ $chan ] ] $hit($iif(%hp1 [ $+ [ $chan ] ] <= 9,d_h9,d_h10),%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
@@ -183,6 +257,7 @@ on *:TEXT:!dh:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %dharokhit [ $+ [ $chan ] ] $hit($iif(%hp1 [ $+ [ $chan ] ] <= 9,d_h9,d_h10),%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
@@ -199,6 +274,7 @@ on *:TEXT:!bgs:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(Equipment.ini,bgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -215,6 +291,7 @@ on *:TEXT:!bgs:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(Equipment.ini,bgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -234,6 +311,7 @@ on *:TEXT:!sgs:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(Equipment.ini,sgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -252,6 +330,7 @@ on *:TEXT:!sgs:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(Equipment.ini,sgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -272,6 +351,7 @@ on *:TEXT:!sgs:#: {
 on *:TEXT:!gmaul:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -288,6 +368,7 @@ on *:TEXT:!gmaul:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -307,6 +388,7 @@ on *:TEXT:!gmaul:#: {
 on *:TEXT:!guth:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     set %heal [ $+ [ $chan ] ] $r(1,3)
@@ -323,6 +405,7 @@ on *:TEXT:!guth:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     set %heal [ $+ [ $chan ] ] $r(1,3)
@@ -339,9 +422,10 @@ on *:TEXT:!guth:#: {
     if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
 }
-on $*:TEXT:/^!(barrage|ice)/Si:#: {
+on *:TEXT:!ice:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %icehit [ $+ [ $chan ] ] $hit(ice,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
     if (%hp2 [ $+ [ $chan ] ] < %icehit [ $+ [ $chan ] ]) { set %icehit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] }
     dec %hp2 [ $+ [ $chan ] ] %icehit [ $+ [ $chan ] ]
@@ -356,6 +440,7 @@ on $*:TEXT:/^!(barrage|ice)/Si:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %icehit [ $+ [ $chan ] ] $hit(ice,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
     if (%hp1 [ $+ [ $chan ] ] < %icehit [ $+ [ $chan ] ]) { set %icehit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] }
     dec %hp1 [ $+ [ $chan ] ] %icehit [ $+ [ $chan ] ]
@@ -374,6 +459,7 @@ on *:TEXT:!zgs:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(Equipment.ini,zgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -394,6 +480,7 @@ on *:TEXT:!zgs:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(Equipment.ini,zgs,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -437,6 +524,7 @@ on *:TEXT:!specpot:#: {
 on *:TEXT:!blood:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %bloodhit [ $+ [ $chan ] ] $hit(blood,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
     if (%hp2 [ $+ [ $chan ] ] < %bloodhit [ $+ [ $chan ] ]) { set %bloodhit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] }
     set %hp1 [ $+ [ $chan ] ] $calc( %hp1 [ $+ [ $chan ] ] + $ceil( $calc( %bloodhit [ $+ [ $chan ] ] / 4 )))
@@ -448,6 +536,7 @@ on *:TEXT:!blood:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %bloodhit [ $+ [ $chan ] ] $hit(blood,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
     if (%hp1 [ $+ [ $chan ] ] < %bloodhit [ $+ [ $chan ] ]) { set %bloodhit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] }
     set %hp2 [ $+ [ $chan ] ] $calc( %hp2 [ $+ [ $chan ] ] + $ceil( $calc( %bloodhit [ $+ [ $chan ] ] / 4 )))
@@ -463,6 +552,7 @@ on *:TEXT:!surf:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(equipment.ini,mudkip,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %mudhit [ $+ [ $chan ] ] $hit(surf,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
     if (%hp2 [ $+ [ $chan ] ] < %mudhit [ $+ [ $chan ] ]) { set %mudhit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] }
     dec %hp2 [ $+ [ $chan ] ] %mudhit [ $+ [ $chan ] ]
@@ -474,6 +564,7 @@ on *:TEXT:!surf:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(equipment.ini,mudkip,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     var %mudhit [ $+ [ $chan ] ] $hit(surf,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
     if (%hp1 [ $+ [ $chan ] ] < %mudhit [ $+ [ $chan ] ]) { set %mudhit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] }
     dec %hp1 [ $+ [ $chan ] ] %mudhit [ $+ [ $chan ] ]
@@ -488,6 +579,7 @@ on *:TEXT:!dclaws:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
     if (!$readini(Equipment.ini,dclaws,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -505,6 +597,7 @@ on *:TEXT:!dclaws:#: {
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
     if (!$readini(Equipment.ini,dclaws,$nick)) { notice $nick You have to buy this weapon before you can use it. !buy $remove($1,!) $+ . | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
@@ -525,6 +618,7 @@ on *:TEXT:!dclaws:#: {
 on *:TEXT:!dmace:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do that. | halt }
@@ -540,6 +634,7 @@ on *:TEXT:!dmace:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do that. | halt }
@@ -558,6 +653,7 @@ on *:TEXT:!dmace:#: {
 on *:TEXT:!d2h:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do that. | halt }
@@ -573,6 +669,7 @@ on *:TEXT:!d2h:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do that. | halt }
@@ -591,6 +688,7 @@ on *:TEXT:!d2h:#: {
 on *:TEXT:!dscim:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %dscimhit [ $+ [ $chan ] ] $hit(dscim,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
@@ -603,6 +701,7 @@ on *:TEXT:!dscim:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     var %dscimhit [ $+ [ $chan ] ] $hit(dscim,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
@@ -618,6 +717,7 @@ on *:TEXT:!dscim:#: {
 on *:TEXT:!dspear:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
     unset %stun [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
@@ -636,6 +736,7 @@ on *:TEXT:!dspear:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ] | halt }
     unset %stun [ $+ [ %p1 [ $+ [ $chan ] ] ] ]
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
@@ -657,6 +758,7 @@ on *:TEXT:!dspear:#: {
 on *:TEXT:!dlong:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do that. | halt }
@@ -672,6 +774,7 @@ on *:TEXT:!dlong:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do that. | halt }
@@ -690,6 +793,7 @@ on *:TEXT:!dlong:#: {
 on *:TEXT:!dhally:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do that. | halt }
@@ -706,6 +810,7 @@ on *:TEXT:!dhally:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 3) { notice $nick You need 75% special to do that. | halt }
@@ -727,6 +832,7 @@ on *:TEXT:!dhally:#: {
 on *:TEXT:!ssword:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -745,6 +851,7 @@ on *:TEXT:!ssword:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ] | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
@@ -766,6 +873,7 @@ on *:TEXT:!ssword:#: {
 on *:TEXT:!anchor:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp1 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
     var %anchorhit [ $+ [ $chan ] ] $hit(anchor,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ])
@@ -780,6 +888,7 @@ on *:TEXT:!anchor:#: {
     if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
     if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
     if (%sp2 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
     var %anchorhit [ $+ [ $chan ] ] $hit(anchor,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ])
@@ -794,13 +903,176 @@ on *:TEXT:!anchor:#: {
     if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
   }
 }
-
+on *:TEXT:!vlong:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if (!$readini(PvP.ini,vlong,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
+    if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
+    dec %sp1 [ $+ [ $chan ] ] 2
+    if ($readini(PvP.ini,vlong,$nick) < 1) { remini -n PvP.ini vlong $nick }
+    if ($readini(PvP.ini,vlong,$nick) >= 1) { writeini -n PvP.ini vlong $nick $calc($readini(PvP.ini,vlong,$nick) -1) }
+    var %vlonghit [ $+ [ $chan ] ] $hit(vlong,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
+    if (%hp2 [ $+ [ $chan ] ] < %vlonghit [ $+ [ $chan ] ]) {  set %vlonghit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] | set %hp2 [ $+ [ $chan ] ] 0 }
+    if (%hp2 [ $+ [ $chan ] ] >= 1) { dec %hp2 [ $+ [ $chan ] ] %vlonghit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) slashes their Vesta's longsword at $s1(%p2 [ $+ [ $chan ] ]) $+ $chr(44) hitting $s2(%vlonghit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 2
+    if (%hp2 [ $+ [ $chan ] ] < 1) { dead # %p2 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if (!$readini(PvP.ini,vlong,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
+    if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
+    dec %sp2 [ $+ [ $chan ] ] 2
+    if ($readini(PvP.ini,vlong,$nick) < 1) { remini -n PvP.ini vlong $nick }
+    if ($readini(PvP.ini,vlong,$nick) >= 1) { writeini -n PvP.ini vlong $nick $calc($readini(PvP.ini,vlong,$nick) -1) }
+    var %vlonghit [ $+ [ $chan ] ] $hit(vlong,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
+    if (%hp1 [ $+ [ $chan ] ] < %vlonghit [ $+ [ $chan ] ]) { set %vlonghit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] | set %hp1 [ $+ [ $chan ] ] 0 }
+    if (%hp1 [ $+ [ $chan ] ] >= 1) { dec %hp1 [ $+ [ $chan ] ] %vlonghit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) slashes their Vesta's longsword at $s1(%p1 [ $+ [ $chan ] ]) $+ $chr(44) hitting $s2(%vlonghit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 1
+    if (%hp1 [ $+ [ $chan ] ] < 1) { dead # %p1 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+}
+on *:TEXT:!statius:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if (!$readini(PvP.ini,statius,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
+    if (%sp1 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
+    dec %sp1 [ $+ [ $chan ] ] 4
+    if ($readini(PvP.ini,statius,$nick) < 1) { remini -n PvP.ini statius $nick }
+    if ($readini(PvP.ini,statius,$nick) >= 1) { writeini -n PvP.ini statius $nick $calc($readini(PvP.ini,statius,$nick) -1) }
+    var %statiushit [ $+ [ $chan ] ] $hit(statius,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
+    if (%hp2 [ $+ [ $chan ] ] < %statiushit [ $+ [ $chan ] ]) {  set %statiushit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] | set %hp2 [ $+ [ $chan ] ] 0 }
+    if (%hp2 [ $+ [ $chan ] ] >= 1) { dec %hp2 [ $+ [ $chan ] ] %statiushit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) pwns $s1(%p2 [ $+ [ $chan ] ]) with a Statius's warhammer, hitting $s2(%statiushit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 2
+    if (%hp2 [ $+ [ $chan ] ] < 1) { dead # %p2 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if (!$readini(PvP.ini,statius,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
+    if (%sp2 [ $+ [ $chan ] ] < 4) { notice $nick You need 100% special to do this. | halt }
+    dec %sp2 [ $+ [ $chan ] ] 4
+    if ($readini(PvP.ini,statius,$nick) < 1) { remini -n PvP.ini statius $nick }
+    if ($readini(PvP.ini,statius,$nick) >= 1) { writeini -n PvP.ini statius $nick $calc($readini(PvP.ini,statius,$nick) -1) }
+    var %statiushit [ $+ [ $chan ] ] $hit(statius,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
+    if (%hp1 [ $+ [ $chan ] ] < %statiushit [ $+ [ $chan ] ]) { set %statiushit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] | set %hp1 [ $+ [ $chan ] ] 0 }
+    if (%hp1 [ $+ [ $chan ] ] >= 1) { dec %hp1 [ $+ [ $chan ] ] %statiushit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) pwns $s1(%p1 [ $+ [ $chan ] ]) with a Statius's warhammer, hitting $s2(%statiushit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 1
+    if (%hp1 [ $+ [ $chan ] ] < 1) { dead # %p1 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+}
+on *:TEXT:!vspear:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if (!$readini(PvP.ini,vspear,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're frozen and can't use melee. | halt }
+    if (%sp1 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
+    dec %sp1 [ $+ [ $chan ] ] 2
+    if ($readini(PvP.ini,vspear,$nick) < 1) { remini -n PvP.ini vspear $nick }
+    if ($readini(PvP.ini,vspear,$nick) >= 1) { writeini -n PvP.ini vspear $nick $calc($readini(PvP.ini,vspear,$nick) -1) }
+    var %vspearhit [ $+ [ $chan ] ] $hit(vspear,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
+    if (%hp2 [ $+ [ $chan ] ] < %vspearhit [ $+ [ $chan ] ]) {  set %vspearhit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] | set %hp2 [ $+ [ $chan ] ] 0 }
+    if (%hp2 [ $+ [ $chan ] ] >= 1) { dec %hp2 [ $+ [ $chan ] ] %vspearhit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) 12freezes $s1(%p2 [ $+ [ $chan ] ]) using a Vesta's spear, and hits $s2(%vspearhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    set %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ] on | notice %p2 [ $+ [ $chan ] ] You're unable to use melee attacks.
+    notice $nick Specbar: $iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 2
+    if (%hp2 [ $+ [ $chan ] ] < 1) { dead # %p2 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if (!$readini(PvP.ini,vspear,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%frozen [ $+ [ $nick ] ] == on) { notice $nick You're unable to use melee for one turn. | halt }
+    if (%sp2 [ $+ [ $chan ] ] < 2) { notice $nick You need 50% special to do this. | halt }
+    dec %sp2 [ $+ [ $chan ] ] 2
+    if ($readini(PvP.ini,vspear,$nick) < 1) { remini -n PvP.ini vspear $nick }
+    if ($readini(PvP.ini,vspear,$nick) >= 1) { writeini -n PvP.ini vspear $nick $calc($readini(PvP.ini,vspear,$nick) -1) }
+    var %vspearhit [ $+ [ $chan ] ] $hit(vspear,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
+    if (%hp1 [ $+ [ $chan ] ] < %vspearhit [ $+ [ $chan ] ]) { set %vspearhit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] | set %hp1 [ $+ [ $chan ] ] 0 }
+    if (%hp1 [ $+ [ $chan ] ] >= 1) { dec %hp1 [ $+ [ $chan ] ] %vspearhit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) 12freezes $s1(%p1 [ $+ [ $chan ] ]) using a Vesta's spear, and hits $s2(%vspearhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    set %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] on | notice %p1 [ $+ [ $chan ] ] You're unable to use melee attacks.
+    notice $nick Specbar: $iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 1
+    if (%hp1 [ $+ [ $chan ] ] < 1) { dead # %p1 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+}
+on *:TEXT:!mjavelin:#: {
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1) {
+    if (!$readini(PvP.ini,MJavelin,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 2 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%sp1 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do this. | halt }
+    dec %sp1 [ $+ [ $chan ] ] 1
+    if ($readini(PvP.ini,MJavelin,$nick) < 1) { remini -n PvP.ini MJavelin $nick }
+    if ($readini(PvP.ini,MJavelin,$nick) >= 1) { writeini -n PvP.ini MJavelin $nick $calc($readini(PvP.ini,MJavelin,$nick) -1) }
+    var %mjavelinhit [ $+ [ $chan ] ] $hit(MJavelin,%p1 [ $+ [ $chan ] ],%p2 [ $+ [ $chan ] ]) 
+    if (%hp2 [ $+ [ $chan ] ] < %mjavelinhit [ $+ [ $chan ] ]) {  set %mjavelinhit [ $+ [ $chan ] ] %hp2 [ $+ [ $chan ] ] | set %hp2 [ $+ [ $chan ] ] 0 }
+    if (%hp2 [ $+ [ $chan ] ] >= 1) { dec %hp2 [ $+ [ $chan ] ] %mjavelinhit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) throws a Morrigan's javelin at $s1(%p2 [ $+ [ $chan ] ]) hitting $s2(%mjavelinhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 2
+    if (%hp2 [ $+ [ $chan ] ] < 1) { dead # %p2 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p2 [ $+ [ $chan ] ] ] ]) { veng %p2 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+  if ($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2) {
+    if (!$readini(PvP.ini,MJavelin,$nick)) { notice $nick You can only use this once you've received it as a drop. | halt }
+    if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+    if (%stun [ $+ [ $nick ] ]) { msg # $logo(DM) $s1($nick) is stunned and unable to attack. HP $+($chr(91),$s2($iif(%hp2 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp2 [ $+ [ $chan ] ]) | set %turn [ $+ [ $chan ] ] 1 | unset %stun [ $+ [ $nick ] ]  | halt }
+    if (%sp2 [ $+ [ $chan ] ] < 1) { notice $nick You need 25% special to do this. | halt }
+    dec %sp2 [ $+ [ $chan ] ] 1
+    if ($readini(PvP.ini,MJavelin,$nick) < 1) { remini -n PvP.ini MJavelin $nick }
+    if ($readini(PvP.ini,MJavelin,$nick) >= 1) { writeini -n PvP.ini MJavelin $nick $calc($readini(PvP.ini,MJavelin,$nick) -1) }
+    var %mjavelinhit [ $+ [ $chan ] ] $hit(MJavelin,%p2 [ $+ [ $chan ] ],%p1 [ $+ [ $chan ] ]) 
+    if (%hp1 [ $+ [ $chan ] ] < %mjavelinhit [ $+ [ $chan ] ]) { set %mjavelinhit [ $+ [ $chan ] ] %hp1 [ $+ [ $chan ] ] | set %hp1 [ $+ [ $chan ] ] 0 }
+    if (%hp1 [ $+ [ $chan ] ] >= 1) { dec %hp1 [ $+ [ $chan ] ] %mjavelinhit [ $+ [ $chan ] ] }
+    unset %frozen [ $+ [ %p1 [ $+ [ $chan ] ] ] ] | unset %frozen [ $+ [ %p2 [ $+ [ $chan ] ] ] ]
+    msg # $logo(DM) $s1($nick) throws a Morrigan's javelin at $s1(%p1 [ $+ [ $chan ] ]) hitting $s2(%mjavelinhit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif(%hp1 [ $+ [ $chan ] ] < 1,0,$v1)),$chr(93)) $hpbar(%hp1 [ $+ [ $chan ] ])
+    notice $nick Specbar: $iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32)) $+ $chr(37)
+    set %turn [ $+ [ $chan ] ] 1
+    if (%hp1 [ $+ [ $chan ] ] < 1) { dead # %p1 [ $+ [ $chan ] ] $nick | halt }
+    if (%veng [ $+ [ %p1 [ $+ [ $chan ] ] ] ]) { veng %p1 [ $+ [ $chan ] ] $nick $chan % [ $+ [ $remove($1,$chr(33)) ] ] [ $+ [ hit ] ] [ $+ [ $chan ] ] }
+  }
+}
 alias hit {
   var %acc [ $+ [ $2 ] ] $r(1,100)
   var %atk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,Firecape,$2),5,0) + $iif($readini(Equipment.ini,bgloves,$2),3,0))
-  var %def [ $+ [ $2 ] ] $iif($readini(Equipment.ini,elshield,$3),$calc($r(75,99) / 100),1)
-  var %ratk [ $+ [ $2 ] ] $iif($readini(Equipment.ini,void,$2),5,0)
-  var %matk [ $+ [ $2 ] ] $iif($readini(Equipment.ini,void-mage,$2),5,0)
+  var %def [ $+ [ $2 ] ] $iif($readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
+  var %ratk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,void,$2),5,0) + $iif($readini(Equipment.ini,accumulator,$2),5,0))
+  var %matk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,void-mage,$2),5,0) + $iif($readini(Equipment.ini,mbook,$2),5,0))
   goto $1
   :whip
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
@@ -818,7 +1090,7 @@ alias hit {
   if (%acc [ $+ [ $2 ] ] isnum 1-15) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 16-30) return $r(11,20)
   if (%acc [ $+ [ $2 ] ] isnum 31-100) {
-    if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($readini(Equipment.ini,void,$2)) { return $r(60,69) | halt }
+    if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($readini(Equipment.ini,void,$2) || $readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
     return $floor($calc($r(21,$calc(35 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   }
   :dbow
@@ -858,7 +1130,7 @@ alias hit {
   if (%acc [ $+ [ $2 ] ] isnum 21-30) return $r(11,15)
   if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,22)
   :dclaws
-  var %dclaws $r(19,24) $floor($calc($r(20,$calc(30 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  var %dclaws $r(19,24) $floor($calc($r(20,$calc(24 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   var %dclaws2 $ceil($calc($gettok(%dclaws,1,32) / 2)) $ceil($calc($gettok(%dclaws,2,32) / 2))
   var %dclaws3 $ceil($calc($gettok(%dclaws2,1,32) / 2)) $ceil($calc($gettok(%dclaws2,2,32) / 2))
   var %dclaws4 $ceil($calc($gettok(%dclaws3,1,32) / 2)) $ceil($calc($gettok(%dclaws3,2,32) / 2))
@@ -901,4 +1173,20 @@ alias hit {
   return $floor($calc($r(0,$calc(75 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :d_h10
   return $floor($calc($r(0,$calc(40 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  :vlong
+  if (%acc [ $+ [ $2 ] ] isnum 1-2) return $r(0,10)
+  if (%acc [ $+ [ $2 ] ] isnum 3-25) return $r(10,35)
+  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc(50 + $(,%atk [ $+ [ $2 ] ])))))
+  :statius
+  if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,15)
+  if (%acc [ $+ [ $2 ] ] isnum 5-25) return $r(15,35)
+  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc(65 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  :vspear
+  if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,10)
+  if (%acc [ $+ [ $2 ] ] isnum 4-20) return $r(11,35)
+  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(35,$calc(45 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  :mjavelin
+  if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,7)
+  if (%acc [ $+ [ $2 ] ] isnum 5-38) return $r(8,25)
+  if (%acc [ $+ [ $2 ] ] isnum 39-100) return $floor($calc($r(25,$calc(40 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
 }
