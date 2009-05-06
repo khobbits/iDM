@@ -99,7 +99,8 @@ alias totalhit {
   return $false
 }
 
-on *:TEXT:*top*:#: {
+on *:TEXT:?top*:#: {
+  if ($left($1,1) !isin !@) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($right($1,-1) != top) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }

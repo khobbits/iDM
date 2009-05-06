@@ -90,7 +90,7 @@ on *:TEXT:!enddm:#: {
 }
 
 alias hpbar { 
-  if ($left($1,1) == $chr(45)) {
+  if (- isin $1) {
     tokenize 32 0
   }
   if ($1 > 99) {
