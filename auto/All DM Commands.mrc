@@ -1192,7 +1192,7 @@ alias hit {
   :dds
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,20) $r(5,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(11,$calc(20 + %atk [ $+ [ $2 ] ])) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(11,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :ags
   if (%acc [ $+ [ $2 ] ] isnum 1-10) return 0
   if (%acc [ $+ [ $2 ] ] isnum 11-30) return $r(15,20)
