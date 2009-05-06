@@ -26,7 +26,7 @@ on *:TEXT:!*:#iDM.Staff: {
       }
       if ($ini(equipment.ini,$right($1,-1))) {
         if (!$readini(equipment.ini,$right($1,-1),$nick)) {
-          else notice $nick You have to unlock this weapon before you can use it.
+          notice $nick You have to unlock this weapon before you can use it.
           halt
         }
       }
@@ -142,6 +142,10 @@ alias damage {
   }
   if ($3 == dh) {
     msg $4 $logo(DM) $s1($1) crushes $s1($2) with their great axe, and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == dspear || $3 == dhally || $3 == anchor || $3 == ssword) {
+    ;remove this when $attack has been updated
+    halt
   }
   if ($specused($3)) { 
     dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25) 
