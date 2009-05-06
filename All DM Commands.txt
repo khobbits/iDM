@@ -2,8 +2,8 @@ on *:TEXT:!*:#iDM.Staff: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($attack($right($1,-1))) { 
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
-      if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$iif($nick == %p1 [ $+ [ # ] ],1,2),#),2)) { 
-        echo -a $calc($specused($right($1,-1)) /25) > $($+(%,sp,$iif($nick == %p1 [ $+ [ # ] ],1,2),#),2))
+      if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2)) { 
+        echo -a $calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2))
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
@@ -161,7 +161,6 @@ alias damage {
     inc $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
     msg $4 $logo(DM) KHobbits lends $s1($2) his KHonfound Ring, allowing $s1($2) to avoid the attack. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
-    halt
   }
   if ($readini(sitems.ini,allegra,$2)) && ($r(1,30) == 1) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
     var %allegra.heal [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) >= 89,$calc(99- $($+(%,hp,$player($2,$4),$4),2)),10)
