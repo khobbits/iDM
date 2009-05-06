@@ -9,18 +9,7 @@ on *:CONNECT: {
   remini status.ini currentdm 
   remini login.ini login
 }
-alias nsid {
-  return sl39xkzmall1
-}
-alias password {
-  return sl39xkzmall1
-}
 
-on *:text:You were*connected*:?: {
-  if ($nick == -sbnc) {
-    ns id shocking879
-  }
-}
 alias update {
   ;True if you don't want people using the store at all while updating.
   return $false
