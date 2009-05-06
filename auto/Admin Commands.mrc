@@ -103,9 +103,9 @@ On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
 on *:TEXT:!rehash:#iDM.staff: {
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($cid != $scon(1)) { halt }
-  timer 1 1 privmsg $chan $s1(Reloading Scripts:) Done
-  rehash
-  
+  set %rand $rand(5,60)
+  privmsg $chan $s1(Reloading Scripts) Running update script in %rand seconds.
+  timer 1 %rand rehash
 }
 
 on *:TEXT:!admin:#iDM.staff: {
