@@ -9,6 +9,7 @@ on *:INVITE:#: {
     halt
   }
   notice $nick $logo(BOT) Searching for an open bot...(If a bot doesn't join in the next minute, join #iDM.Support)
+  ;notice $nick $logo(Disabled) We have found a bug in our invite system so we had to disable it. Please wait till we bring it back online.
 
   if ($port == 12000) {
     var %a 0

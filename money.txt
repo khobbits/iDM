@@ -44,6 +44,7 @@ alias sitems {
   if ($readini(sitems.ini,allegra,$1)) { var %e %e Strychnine:Scimitar }
   if ($readini(sitems.ini,beau,$1)) { var %e %e Beaumerang }
   if ($readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Eyed:Trouser:Snake,e,$chr(233)) }
+  if ($readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {

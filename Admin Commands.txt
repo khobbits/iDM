@@ -57,6 +57,11 @@ On $*:TEXT:/^[!@]GiveItem .*/Si:#iDM.Staff: {
       writeini sitems.ini snake $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
+    elseif ($nick == KHobbits) { 
+      if ($readini(sitems.ini,kh,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      writeini sitems.ini kh $2 true 
+      notice $nick $logo(Give-Item) Gave your item to $s2($2)
+    }
   }
 }
 
@@ -85,6 +90,11 @@ On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
     elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { 
       if (!$readini(sitems.ini,snake,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini snake $2 
+      notice $nick $logo(Take-Item) Took your item from $s2($2)
+    }
+    elseif ($nick == KHobbits) { 
+      if (!$readini(sitems.ini,kh,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      remini sitems.ini kh $2 
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
   }

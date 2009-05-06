@@ -53,9 +53,9 @@ alias cancel {
     unset %stun [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
-    unset %frozen* [ $+ [ $1 ] ]
-    unset %frozen* [ $+ [ $2 ] ]
     unset %stake* [ $+ [ $1 ] ]
+    unset %frozen [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
+    unset %frozen [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset $+(%*,$1)
     .timer $+ $1 off
   }
@@ -90,7 +90,7 @@ on *:TEXT:!enddm:#: {
 }
 
 alias hpbar { 
-  if ($left($1,1) == -) {
+  if ($left($1,1) == $chr(45)) {
     tokenize 32 0
   }
   if ($1 > 99) {

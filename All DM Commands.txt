@@ -14,17 +14,21 @@ on *:TEXT:!*:#iDM.Staff: {
         unset %stun [ $+ [ $nick ] ]  
         halt 
       }
-      if (%frozen [ $+ [ $nick ] ] == on) { 
+      if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,$right($1,-1))) { 
         notice $nick You're frozen and can't use melee.
         halt 
       }
       if ($ini(pvp.ini,$right($1,-1))) {
-        if ($readini(pvp.ini,$right($1,-1),$nick)) {
-          damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
+        if (!$readini(pvp.ini,$right($1,-1),$nick)) {
+          notice $nick You don't have this weapon.
           halt
         }
-        else notice $nick You don't have this weapon.
-        halt
+      }
+      if ($ini(equipment.ini,$right($1,-1))) {
+        if (!$readini(equipment.ini,$right($1,-1),$nick)) {
+          else notice $nick You have to unlock this weapon before you can use it.
+          halt
+        }
       }
       damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
     }
@@ -39,15 +43,27 @@ alias damage {
     if ($readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
     elseif ($readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($readini(PvP.ini,$3,$1) -1) }
   }
-  var %hit [ $+ [ $4 ] ] $hit($3,$1,$2)
-  dec $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
-  unset %frozen [ $+ [ $iif($1 == %p1 [ $+ [ $4 ] ],$v2,%p2 [ $+ [ $4 ] ]) ] ]
+  if ($3 != dh) { 
+    var %hit [ $+ [ $4 ] ] $hit($3,$1,$2) 
+  }
+  elseif ($3 == dh) {
+    if ($($+(%,hp,$player($1,$4),$4),2) < 10) { var %hit [ $+ [ $4 ] ] $hit(d_h9,$1,$2) }
+    else var %hit [ $+ [ $4 ] ] $hit(d_h10,$1,$2)
+  }
+  if (!$gettok(%hit [ $+ [ $4 ] ],2,32)) && ($($+(%,hp,$player($2,$4),$4),2) < %hit [ $+ [ $4 ] ]) {
+    var %hit [ $+ [ $4 ] ] $($+(%,hp,$player($2,$4),$4),2)
+    set $+(%,hp,$player($2,$4),$4) 0
+  }
+  else {
+    dec $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
+  }
+  unset $+(%,frozen,$1)
   if ($freezer($3)) { 
     var %freeze [ $+ [ $4 ] ] $r(1,$v1) 
   }
   if (%freeze [ $+ [ $4 ] ] == 1) { 
-    set %frozen [ $+ [ $iif($1 == %p1 [ $+ [ $4 ] ],%p2 [ $+ [ $4 ] ],$v2) ] ] on 
-    notice $iif($1 == %p1 [ $+ [ $4 ] ],%p2 [ $+ [ $4 ] ],$v2) You have been frozen and can't use melee!
+    set $+(%,frozen,$2) on 
+    notice $2 You have been frozen and can't use melee!
   }
   if ($gettok($healer($3),1,32)) {
     var %heal [ $+ [ $4 ] ] $r(1,$v1)
@@ -55,16 +71,112 @@ alias damage {
   if (%heal [ $+ [ $4 ] ] == 1) {
     $iif($calc($floor($($+(%,hp,$player($1,$4),$4),2)) + $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32)))) > 99,set $+(%,hp,$player($1,$4),$4) 99,inc $+(%,hp,$player($1,$4),$4) $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32))))
   }
+  if ($readini(sitems.ini,belong,$1)) && ($r(1,30) == 1) { 
+    var %sitem.belong [ $+ [ $4 ] ] on
+  }
+  if ($3 == dds) {
+    if ($readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
+      set $+(%,pois,$player($2,$4),$4) on
+      echo -a $+(%,pois,$player($2,$4),$4) - $($+(%,pois,$player($2,$4),$4),2)
+    }
+    elseif (!$readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) && ($r(1,3) == 1) {
+      set $+(%,pois,$player($2,$4),$4) on
+    }
+  }
   goto displaymsg
   :displaymsg
   if ($3 == vlong) { 
     msg $4 $logo(DM) $s1($1) slashes their Vesta's longsword at $s1($2) $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
   }
+  if ($3 == vspear) {
+    msg $4 $logo(DM) $s1($1) 12freezes $s1($2) using a Vesta's spear, and hits $s2(%hit [ $+ [ $chan ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == statius) {
+    msg $4 $logo(DM) $s1($1) critically hits $s1($2) with a Statius's warhammer, hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == mjavelin) {
+    msg $4 $logo(DM) $s1($1) throws a Morrigan's javelin at $s1($2) hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
   if ($3 == sgs) {
     msg $4 $logo(DM) $s1($1) crushes their godsword down on $s1($2) and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $s2($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4))) - HP $s2($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4)))
   }
+  if ($3 == ags) {
+    msg $4 $logo(DM) $s1($1) spins around and slashes at $s1($2) with an Armadyl godsword, speccing $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == zgs) {
+    msg $4 $logo(DM) $s1($1) attempts to freeze $s1($2) $iif(%freeze [ $+ [ $4 ] ] == 1,and successfully 12FROZE them,but failed to) $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == bgs) {
+    msg $4 $logo(DM) $s1($1) crushes their godsword down on $s1($2) and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == guth) {
+    msg $4 $logo(DM) $s1($1) $iif(%heal [ $+ [ $4 ] ] == 1,09HEALS on,fails to heal on) $s1($2) $iif(%heal [ $+ [ $4 ] ] == 1,and hits,but hits) $s2(%hit [ $+ [ $4 ] ]) $+ . HP $s2($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4))) - HP $s2($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4)))
+  }
+  if ($3 == blood) {
+    msg $4 $logo(DM) $s1($1) casts blood barrage on $s1($2) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed.,hitting $s2(%hit [ $+ [ $4 ] ]) $+ .) HP $s2($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4))) - HP $s2($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4)))
+  }
+  if ($3 == ice) {
+    msg $4 $logo(DM) $s1($1) casts ice barrage on $s1($2) $iif(%freeze [ $+ [ $4 ] ] == 1,(12FROZEN)) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed.,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ .) HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == cbow) {
+    msg $4 $logo(DM) $s1($1) $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($2) with a rune c'bow, hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+    unset %cbowspec [ $+ [ $1 ] ]
+  }
+  if ($3 == dbow) {
+    msg $4 $logo(DM) $s1($1) fires two dragon arrows towards $s1($2) $+ , speccing  $s2($gettok(%hit [ $+ [ $4 ] ],1,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],2,32)) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == whip) {
+    msg $4 $logo(DM) $s1($1) slashes $s1($2) with their abyssal whip, hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == dds) {
+    msg $4 $logo(DM) $s1($1) stabs $s1($2) with a dragon dagger, hitting $s2($gettok(%hit [ $+ [ $4 ] ],1,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],2,32)) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == dclaws) {
+    msg $4 $logo(DM) $s1($1) scratches $s1($2) with their dragon claws, hitting $s2($gettok(%hit [ $+ [ $4 ] ],1,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],2,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],3,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],4,32)) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == surf) {
+    msg $4 $logo(DM) $s1($1) summons their mudkip, surfing at $s1($2) $+ , hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == gmaul) {
+    msg $4 $logo(DM) $s1($1) whacks $s1($2) with their granite maul, speccing $s2($gettok(%hit [ $+ [ $4 ] ],1,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],2,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],3,32)) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($3 == dh) {
+    msg $4 $logo(DM) $s1($1) crushes $s1($2) with their great axe, and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
   if ($specused($3)) { 
-    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25) | notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
+    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25) 
+    notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
+  }
+  if ($($+(%,pois,$player($2,$4),$4),2)) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+    var %extra [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) < 6,$($v1,2),6)
+    dec $+(%,hp,$player($2,$4),$4) %extra [ $+ [ $4 ] ]
+    msg $4 $logo(DM) $s1($2) is 03poisoned, and lost $s2(%extra [ $+ [ $4 ] ]) HP. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if (%sitem.belong [ $+ [ $4 ] ] == on) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+    var %extra [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) < 10,$($v1,2),10)
+    dec $+(%,hp,$player($2,$4),$4) %extra [ $+ [ $4 ] ]
+    msg $4 $logo(DM) $s1($1) whips out their Belong Blade and deals $s2(%extra [ $+ [ $4 ] ]) extra damage. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($readini(sitems.ini,kh,$2)) && ($r(1,30) == 1) {
+    inc $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
+    msg $4 $logo(DM) KHobbits lends $s1($2) his KHonfound Ring, allowing $s1($2) to avoid the attack. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+    set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
+    halt
+  }
+  if ($readini(sitems.ini,allegra,$2)) && ($r(1,30) == 1) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+    var %allegra.heal [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) >= 89,$calc(99- $($+(%,hp,$player($2,$4),$4),2)),10)
+    inc $+(%,hp,$player($2,$4),$4) %allegra.heal [ $+ [ $4 ] ]
+    msg $4 $logo(DM) Allegra gives $s1($2) Allergy pills, healing $s2(%allegra.heal [ $+ [ $4 ] ]) HP. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+  }
+  if ($($+(%,hp,$player($2,$4),$4),2) < 1) { 
+    if ($readini(sitems.ini,beau,$2)) && ($r(1,15) == 1) { 
+      set $+(%,hp,$player($2,$4),$4) 1
+      msg $4 $logo(DM) $s1($2) $+ 's Beaumerang brings $s1($2) back to life, barely. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4)))
+      set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
+      halt
+    }
+    dead $4 $2 $1
+    halt 
   }
   set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
 }
@@ -1134,8 +1246,8 @@ alias hit {
   var %dclaws2 $ceil($calc($gettok(%dclaws,1,32) / 2)) $ceil($calc($gettok(%dclaws,2,32) / 2))
   var %dclaws3 $ceil($calc($gettok(%dclaws2,1,32) / 2)) $ceil($calc($gettok(%dclaws2,2,32) / 2))
   var %dclaws4 $ceil($calc($gettok(%dclaws3,1,32) / 2)) $ceil($calc($gettok(%dclaws3,2,32) / 2))
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0 0 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-70) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
+  if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0 0 0 0
+  if (%acc [ $+ [ $2 ] ] isnum 4-70) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
   if (%acc [ $+ [ $2 ] ] isnum 71-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
   :dmace
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
