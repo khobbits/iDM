@@ -100,6 +100,13 @@ On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
   }
 }
 
+on *:TEXT:!rehash:#iDM.staff: {
+  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (# == #iDM || # == #iDM.staff) { halt }
+  if ($cid != $scon(1)) { halt }
+  rehash
+  privmsg $chan $s1(Reloading Scripts:) Done
+}
 
 on *:TEXT:!admin:#iDM.staff: {
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
