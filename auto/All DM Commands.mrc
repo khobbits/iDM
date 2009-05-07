@@ -1,4 +1,4 @@
-on *:TEXT:!*:#iDM.Staff: {
+on *:TEXT:!*:#iDM.Staff,#idm.beta: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($attack($right($1,-1))) { 
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
