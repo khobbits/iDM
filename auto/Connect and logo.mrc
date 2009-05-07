@@ -2,8 +2,7 @@ alias logo { return $+(07[,03,$$1-,07],) }
 alias s1 { return $+($chr(3),03,$1-,) }
 alias s2 { return $+($chr(3),07,$1-,) }
 
-on *:CONNECT: {  
-  ns id alemakqnozz493mk 
+on *:CONNECT: {
   mode $me +pB 
   unsetall 
   remini status.ini currentdm 

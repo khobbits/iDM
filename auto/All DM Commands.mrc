@@ -143,8 +143,9 @@ alias damage {
   if ($3 == dh) {
     msg $4 $logo(DM) $s1($1) crushes $s1($2) with their great axe, and hit $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
-  if ($3 == dspear || $3 == dhally || $3 == anchor || $3 == ssword || $3 == dlong) {
+  if ($3 == dspear || $3 == dhally || $3 == anchor || $3 == ssword || $3 == dlong  || $3 == dscim) {
     ;remove this when $attack has been updated
+    msg $4 This attack is under consideration for being removed.
     halt
   }
   if ($specused($3)) { 

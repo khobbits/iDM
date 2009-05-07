@@ -10,6 +10,7 @@ on *:start: {
 }
 
 on *:connect: {
+  if ($me == iDM[Hub]) { nick iDM | mnick iDM }
   if (%botnum != $null) {
     timer 1 10 msg #idm.staff Autoconnected on load.  Botnum: %botnum
     unset %botnum
@@ -25,8 +26,11 @@ alias loadbot {
   if ($1 == 1 || $1 == 0) {
     echo -a loading bot1
     bind 6
+    mnick iDM
     server idm-bot.com 12000 idmhub:Sp4rh4wk`Gh0$t`B0t
+    mnick iDM[LL]
     server -m idm-bot.com 12000 idmll:Sp4rh4wk`Gh0$t`B0t
+    mnick iDM[US]
     server -m idm-bot.com 12000 idmus:Sp4rh4wk`Gh0$t`B0t
   } 
   elseif ($1 == 2) {
