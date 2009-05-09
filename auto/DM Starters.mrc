@@ -15,16 +15,16 @@ on *:TEXT:!dm:#: {
     if (!$readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2)) && !$readini(exceptions.ini,exceptions,$address(%p2 [ $+ [ $chan ] ],2))) {
       if (%p1 [ $+ [ $chan ] ] isin %p2 [ $+ [ $chan ] ] || %p2 [ $+ [ $chan ] ] isin %p1 [ $+ [ $chan ] ]) {
         msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
-        msg #idm.staff $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
+        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
         halt
       }
       elseif ($strip($cloneStats(%p1 [ $+ [ $chan ] ])) == 0gp/0W/0L || $strip($cloneStats(%p2 [ $+ [ $chan ] ])) == 0gp/0W/0L) {
         msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
-        msg #idm.staff $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
+        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
         halt
       }
       else {
-        msg #idm.staff $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan)
+        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan)
         halt
       }
     }

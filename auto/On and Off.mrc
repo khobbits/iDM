@@ -63,8 +63,3 @@ alias disable {
   }
   notice $2 $logo(DISABLE $3) $iif(%b,$s1(Disabled) $+ : $replace(%b,$chr(32),$chr(44))) $iif(%c,$s1(Errors) $+ : $replace(%c,$chr(32),$chr(44)) (These are either already off, or not an attack))
 }
-alias attack {
-  if ($1 == whip) || ($1 == dds) || ($1 == ags) || ($1 == bgs) || ($1 == sgs) || ($1 == zgs) || ($1 == dh) || ($1 == gmaul) || ($1 == guth) || ($1 == surf) || ($1 == dclaws) || ($1 == dmace) || ($1 == dhally) || ($1 == dspear) || ($1 == dscim) || ($1 == dlong) || ($1 == d2h) || ($1 == ssword) || ($1 == anchor) || ($1 == vlong) || ($1 == vspear) || ($1 == statius) || ($1 == cbow) || ($1 == dbow) || ($1 == mjavelin) || ($1 == ice) || ($1 == blood) {
-    return $true
-  }   
-}

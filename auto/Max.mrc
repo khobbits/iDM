@@ -28,12 +28,8 @@ alias max {
     if ($2 == dclaws) return 24-12-6-3 27-14-7-4 29-15-8-4 32-16-8-4
     if ($2 == dmace) return 45 48 50 53
     if ($2 == dhally) return 35-35 38-38 40-40 43-43
-    if ($2 == dspear) return 20 23 25 28
     if ($2 == dscim) return 30 33 35 38
     if ($2 == dlong) return 35 38 40 43
-    if ($2 == d2h) return 35 38 40 43
-    if ($2 == ssword) return 35+16 38+16 40+16 43+16
-    if ($2 == anchor) return 55 58 60 63
     if ($2 == vlong) return 50 53 55 58
     if ($2 == vspear) return 45 48 50 53
     if ($2 == statius) return 65 68 70 73
@@ -58,15 +54,16 @@ alias specused {
   if ($1 == dclaws) return 50
   if ($1 == dmace) return 50
   if ($1 == dhally) return 75
-  if ($1 == dspear) return 50
   if ($1 == dscim) return $false
   if ($1 == dlong) return 25
-  if ($1 == d2h) return 75
-  if ($1 == ssword) return 100
-  if ($1 == anchor) return 100
   if ($1 == vlong) return 50
   if ($1 == vspear) return 50
   if ($1 == statius) return 100
+}
+alias attack {
+  if ($1 == whip) || ($1 == dds) || ($1 == ags) || ($1 == bgs) || ($1 == sgs) || ($1 == zgs) || ($1 == dh) || ($1 == gmaul) || ($1 == guth) || ($1 == surf) || ($1 == dclaws) || ($1 == dmace) || ($1 == dhally) || ($1 == dscim) || ($1 == dlong) || ($1 == vlong) || ($1 == vspear) || ($1 == statius) || ($1 == cbow) || ($1 == dbow) || ($1 == mjavelin) || ($1 == ice) || ($1 == blood) {
+    return $true
+  }   
 }
 alias freezer {
   ;The number is the chance of it freezing (Ice is 1/3).

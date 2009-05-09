@@ -17,3 +17,6 @@ alias allupdate {
   ;True if you don't want people DMing while updating.
   return $false
 }
+alias secondchan {
+  return #iDM.Staff
+}
