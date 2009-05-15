@@ -102,21 +102,3 @@ Zamorak page 1:365200
 Zamorak page 2:291100
 Zamorak page 3:289900
 Zamorak page 4:268300
-Rune 2h sword:52300
-Rune axe:9923
-Rune battleaxe:25000
-Rune chainbody:31700
-Rune dagger:4678
-Rune full helm:21100
-Rune kiteshield:51000
-Rune longsword:19000
-Rune mace:8520
-Rune med helm:11400
-Rune pickaxe:19100
-Rune platebody:58200
-Rune platelegs:51400
-Rune plateskirt:47200
-Rune scimitar:33100
-Rune sq shield:23100
-Rune sword:12700
-Rune warhammer:28100

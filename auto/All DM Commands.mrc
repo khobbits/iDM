@@ -5,6 +5,7 @@ on *:TEXT:!*:#: {
       if (!$readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
+      writeini -n equipment.ini specpot $nick $calc($readini(equipment.ini,specpot,$nick) -1)
       msg # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
       set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
       halt
@@ -65,8 +66,10 @@ alias damage {
     var %freeze [ $+ [ $4 ] ] $r(1,$v1) 
   }
   if (%freeze [ $+ [ $4 ] ] == 1) { 
-    set $+(%,frozen,$2) on 
-    notice $2 You have been frozen and can't use melee!
+    if (%hit [ $+ [ $4 ] ] >= 1) {
+      set $+(%,frozen,$2) on 
+      notice $2 You have been frozen and can't use melee!
+    }
   }
   if ($gettok($healer($3),1,32)) {
     var %heal [ $+ [ $4 ] ] $r(1,$v1)
@@ -74,14 +77,14 @@ alias damage {
   if (%heal [ $+ [ $4 ] ] == 1) {
     $iif($calc($floor($($+(%,hp,$player($1,$4),$4),2)) + $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32)))) > 99,set $+(%,hp,$player($1,$4),$4) 99,inc $+(%,hp,$player($1,$4),$4) $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32))))
   }
-  if ($readini(sitems.ini,belong,$1)) && ($r(1,30) == 1) { 
+  if ($readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) { 
     var %sitem.belong [ $+ [ $4 ] ] on
   }
   if ($3 == dds) {
     if ($readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
       set $+(%,pois,$player($2,$4),$4) 6
     }
-    elseif (!$readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) && ($r(1,3) == 1) {
+    elseif (!$readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) && ($r(1,100) <= 33) {
       set $+(%,pois,$player($2,$4),$4) 6
     }
   }
@@ -121,10 +124,10 @@ alias damage {
     msg $4 $logo(DM) $s1($1) $iif(%heal [ $+ [ $4 ] ] == 1,09HEALS on,fails to heal on) $s1($2) $iif(%heal [ $+ [ $4 ] ] == 1,and hits,but hits) $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $s1($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2)) $iif(%heal [ $+ [ $4 ] ] == 1,- HP $s1($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4),2)))
   }
   if ($3 == blood) {
-    msg $4 $logo(DM) $s1($1) casts blood barrage on $s1($2) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed $iif(%extra [ $+ [ $4 ] ],03 $+ $v1 $+) .,hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ .) HP $s1($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2)) $iif(%heal [ $+ [ $4 ] ] == 1,- HP $s1($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4),2)))
+    msg $4 $logo(DM) $s1($1) casts blood barrage on $s1($2) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed $+ $iif(%extra [ $+ [ $4 ] ],$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ .) HP $s1($2) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2)) $iif(%heal [ $+ [ $4 ] ] == 1,- HP $s1($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4),2)))
   }
   if ($3 == ice) {
-    msg $4 $logo(DM) $s1($1) casts ice barrage on $s1($2) $iif(%freeze [ $+ [ $4 ] ] == 1,(12FROZEN)) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed $iif(%extra [ $+ [ $4 ] ],03 $+ $v1 $+) .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ .) HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
+    msg $4 $logo(DM) $s1($1) casts ice barrage on $s1($2) $iif(%freeze [ $+ [ $4 ] ] == 1,(12FROZEN)) $iif(%hit [ $+ [ $4 ] ] == 0, and splashed $+ $iif(%extra [ $+ [ $4 ] ],$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ .) HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
   if ($3 == cbow) {
     msg $4 $logo(DM) $s1($1) $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($2) with a rune c'bow, hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
@@ -172,18 +175,18 @@ alias damage {
     dec $+(%,hp,$player($2,$4),$4) %extra [ $+ [ $4 ] ]
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra [ $+ [ $4 ] ]) extra damage. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
-  if ($readini(sitems.ini,kh,$2)) && ($r(1,30) == 1) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+  if ($readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
     inc $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
     msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the attack. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
   }
-  if ($readini(sitems.ini,allegra,$2)) && ($r(1,30) == 1) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+  if ($readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
     var %allegra.heal [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) >= 89,$calc(99- $($+(%,hp,$player($2,$4),$4),2)),10)
     inc $+(%,hp,$player($2,$4),$4) %allegra.heal [ $+ [ $4 ] ]
     msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%allegra.heal [ $+ [ $4 ] ]) HP. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
   if ($($+(%,hp,$player($2,$4),$4),2) < 1) { 
-    if ($readini(sitems.ini,beau,$2)) && ($r(1,15) == 1) { 
+    if ($readini(sitems.ini,beau,$2)) && ($r(1,100) <= 6) { 
       set $+(%,hp,$player($2,$4),$4) 1
       msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
       set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
@@ -209,98 +212,82 @@ alias hit {
   :whip
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :dds
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,20) $r(5,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(11,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :ags
-  if (%acc [ $+ [ $2 ] ] isnum 1-10) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 11-30) return $r(15,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(21,$calc(55 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 1-2) return 0
+  if (%acc [ $+ [ $2 ] ] isnum 3-20) return $r(1,20)
+  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(21,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :cbow
   if (%acc [ $+ [ $2 ] ] isnum 1-15) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 16-30) return $r(11,20)
   if (%acc [ $+ [ $2 ] ] isnum 31-100) {
     if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($readini(Equipment.ini,void,$2) || $readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
-    return $floor($calc($r(21,$calc(35 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+    return $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   }
   :dbow
-  if (%acc [ $+ [ $2 ] ] isnum 1-6) return 8 8
-  if (%acc [ $+ [ $2 ] ] isnum 7-30) return $r(9,20) $r(9,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(21,$calc(35 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(21,$calc(35 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 1-8) return 8 8
+  if (%acc [ $+ [ $2 ] ] isnum 9-50) return $r(9,20) $r(9,20)
+  if (%acc [ $+ [ $2 ] ] isnum 51-100) return $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :bgs
   if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
   if (%acc [ $+ [ $2 ] ] isnum 6-35) return $r(1,35)
-  if (%acc [ $+ [ $2 ] ] isnum 36-100) return $floor($calc($r(36,$calc(75 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 36-100) return $floor($calc($r(36,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :sgs
   if (%acc [ $+ [ $2 ] ] isnum 1-7) return 0
   if (%acc [ $+ [ $2 ] ] isnum 8-23) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 24-100) return $floor($calc($r(16,$calc(50 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 24-100) return $floor($calc($r(16,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :gmaul
-  if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,7) $r(0,7) $r(0,7)
+  if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,8) $r(0,8) $r(0,8)
   if (%acc [ $+ [ $2 ] ] isnum 4-40) return $r(1,12) $r(1,12) $r(1,12)
-  if (%acc [ $+ [ $2 ] ] isnum 41-100) return $floor($calc($r(13,$calc(30 + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc(30 + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc(30 + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 41-100) return $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ])))
   :guth
-  if (%acc [ $+ [ $2 ] ] isnum 1-9) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 10-13) return $r(1,10)
-  if (%acc [ $+ [ $2 ] ] isnum 14-100) return $floor($calc($r(11,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
+  if (%acc [ $+ [ $2 ] ] isnum 6-13) return $r(1,20)
+  if (%acc [ $+ [ $2 ] ] isnum 14-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :ice
   if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0
   if (%acc [ $+ [ $2 ] ] isnum 4-30) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$calc(30 + $(,%matk [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk [ $+ [ $2 ] ])))
   :zgs
   if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
   if (%acc [ $+ [ $2 ] ] isnum 6-30) return $r(1,22)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(23,$calc(50 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(23,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :blood
   if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0
   if (%acc [ $+ [ $2 ] ] isnum 4-30) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$calc(30 + $(,%matk [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk [ $+ [ $2 ] ])))
   :surf
   if (%acc [ $+ [ $2 ] ] isnum 1-20) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 21-30) return $r(11,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,22)
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$gettok($gettok($max(m,$1),1,32),1,45))
   :dclaws
-  var %dclaws $r(19,24) $floor($calc($r(20,$calc(24 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  var %dclaws $r(18,24) $floor($calc($r(20,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   var %dclaws2 $ceil($calc($gettok(%dclaws,1,32) / 2)) $ceil($calc($gettok(%dclaws,2,32) / 2))
   var %dclaws3 $ceil($calc($gettok(%dclaws2,1,32) / 2)) $ceil($calc($gettok(%dclaws2,2,32) / 2))
   var %dclaws4 $ceil($calc($gettok(%dclaws3,1,32) / 2)) $ceil($calc($gettok(%dclaws3,2,32) / 2))
   if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0 0 0 0
-  if (%acc [ $+ [ $2 ] ] isnum 4-70) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
-  if (%acc [ $+ [ $2 ] ] isnum 71-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
+  if (%acc [ $+ [ $2 ] ] isnum 4-55) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
+  if (%acc [ $+ [ $2 ] ] isnum 56-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
   :dmace
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
   if (%acc [ $+ [ $2 ] ] isnum 5-60) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 61-100) return $floor($calc($r(26,$calc(45 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
-  :d2h
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,30)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(31,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 61-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :dscim
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc(30 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
-  :dspear
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(16,$calc(20 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :dlong
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :dhally
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0
   if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25) $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(26,$calc(35 + %atk [ $+ [ $2 ] ])) * $(,%def [ $+ [ $2 ] ])))
-  :ssword
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc(35 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
-  :anchor
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc(55 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + %atk [ $+ [ $2 ] ])) * $(,%def [ $+ [ $2 ] ])))
   :d_h9
   return $floor($calc($r(0,$calc(75 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :d_h10
@@ -308,17 +295,17 @@ alias hit {
   :vlong
   if (%acc [ $+ [ $2 ] ] isnum 1-2) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 3-25) return $r(10,35)
-  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc(50 + $(,%atk [ $+ [ $2 ] ])))))
+  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ])))))
   :statius
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,15)
   if (%acc [ $+ [ $2 ] ] isnum 5-25) return $r(15,35)
-  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc(65 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :vspear
   if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 4-20) return $r(11,35)
-  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(35,$calc(45 + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(35,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :mjavelin
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,7)
   if (%acc [ $+ [ $2 ] ] isnum 5-38) return $r(8,25)
-  if (%acc [ $+ [ $2 ] ] isnum 39-100) return $floor($calc($r(25,$calc(40 + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc [ $+ [ $2 ] ] isnum 39-100) return $floor($calc($r(25,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
 }

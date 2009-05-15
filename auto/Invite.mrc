@@ -118,7 +118,7 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: Admin special items released. Dds has 1/3 chance of poisoning (lasts whole DM.) Ssword, d2h, anchor, and dspear removed.
+  return News: 1. Admin special items released. 2. Dds has 1/3 chance of poisoning. 3. Ssword, d2h, anchor, and dspear removed.
 }
 alias bottag {
   if (!$1) {

@@ -23,7 +23,7 @@ On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) {
-    notice $nick $logo(Special Items) Belong Blade: $s2($ini(sitems.ini,belong,0)) Strychnine Scimitar: $s2($ini(sitems.ini,allegra,0)) Beaumerang: $s2($ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($ini(sitems.ini,snake,0))
+    notice $nick $logo(Special Items) Belong Blade: $s2($ini(sitems.ini,belong,0)) Allergy Pills: $s2($ini(sitems.ini,allegra,0)) Beaumerang: $s2($ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($ini(sitems.ini,snake,0)) KHonfound Ring: $s2($ini(sitems.ini,kh,0))
     ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
   }
 }
@@ -37,7 +37,7 @@ On $*:TEXT:/^[!@]GiveItem .*/Si:#iDM.Staff: {
     notice You need to include a name you want to give your item too.
   }
   else {
-    if ($nick == Belongtome || $nick == Belong|AFK) {
+    if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
       if ($readini(sitems.ini,belong,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini belong $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
@@ -72,7 +72,7 @@ On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
     notice You need to include a name you want to give your item too.
   }
   else {
-    if ($nick == Belongtome || $nick == Belong|AFK) { 
+    if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) { 
       if (!$readini(sitems.ini,belong,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini belong $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)

@@ -13,7 +13,8 @@ on *:TEXT:!part*:#: {
 on *:PART:#: {
   if (%lootimer) { part # | cancel $1 | halt }
   if ($istok(#idm #idm.staff #idm.support,#,32)) { halt }
-  if ($nick(#,0) < 5) { part # Parting channel. Need 5 or more people to have iDM.
+  if ($nick(#,0) < 5) { 
+    part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
     cancel #

@@ -1,7 +1,7 @@
 [ANAGRAM] Name the iDM Admin. LEGALRA:Allegra
 [ANAGRAM] Name the iDM Admin. ABUE:Beau
 [ANAGRAM] Name the iDM Admin. BOTEMNOGEL:Belongtome
-What is the maximum allowed stake?:100000000
+What is the maximum allowed stake?:5%
 Name the iDM Admin. [P______:[PCN]Sct_Snake
 How much is a Saradomin Godsword if bought from the store?:600M
 Who is the original creator of iDM?:Beau

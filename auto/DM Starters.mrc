@@ -108,16 +108,3 @@ on *:TEXT:?status:#: {
 alias status {
   return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))
 }
-
-alias blockmultidm {
-  if ($istok(iDM[BU] IDM[FU] IDM[SN],$me,32)) { .ctcp iDM blockmultidm $1- | .ctcp IDM[PK] blockmultidm $1- }
-  elseif ($istok(iDM iDM[LL] iDM[US],$me,32)) { .ctcp iDM[BU] blockmultidm $1- | .ctcp IDM[PK] blockmultidm $1- }
-  elseif ($istok(IDM[PK] IDM[BA] IDM[AL],$me,32)) { .ctcp iDM[BU] blockmultidm $1- | .ctcp IDM blockmultidm $1- }
-}
-
-CTCP *:*blockmultidm*:?: {
-  if ($istok(iDM[BU] IDM[FU] IDM[SN] iDM iDM[LL] iDM[US] IDM[PK] IDM[BA] IDM[AL],$nick,32)) {
-    if ($3) { unset %dming [ $+ [ $2 ] ] | unset %dming [ $+ [ $3 ] ] }
-    else { set %dming [ $+ [ $2 ] ] on }
-  }
-}
