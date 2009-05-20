@@ -237,8 +237,8 @@ alias hit {
   if (%acc [ $+ [ $2 ] ] isnum 6-35) return $r(1,35)
   if (%acc [ $+ [ $2 ] ] isnum 36-100) return $floor($calc($r(36,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :sgs
-  if (%acc [ $+ [ $2 ] ] isnum 1-7) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 8-23) return $r(1,15)
+  if (%acc [ $+ [ $2 ] ] isnum 1-6) return 0
+  if (%acc [ $+ [ $2 ] ] isnum 7-23) return $r(1,20)
   if (%acc [ $+ [ $2 ] ] isnum 24-100) return $floor($calc($r(16,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   :gmaul
   if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,8) $r(0,8) $r(0,8)

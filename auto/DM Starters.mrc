@@ -49,8 +49,6 @@ alias cancel {
     $iif(%p2 [ $+ [ $1 ] ],remini status.ini currentdm %p2 [ $+ [ $1 ] ])
     unset %veng [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %veng [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
-    unset %stun [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
-    unset %stun [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %stake* [ $+ [ $1 ] ]
@@ -90,7 +88,7 @@ on *:TEXT:!enddm:#: {
 }
 
 alias hpbar { 
-  if (- isin $1) {
+  if (-* iswm $1) {
     tokenize 32 0
   }
   if ($1 > 99) {

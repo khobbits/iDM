@@ -1,4 +1,5 @@
 on *:TEXT:!delmem*:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (!$readini(Personalclan.ini,Person,$nick)) { notice $nick You need to make a clan before you can kick any members. !startclan name of clan. | halt }
@@ -16,6 +17,7 @@ on *:TEXT:!delmem*:*: {
   }
 }
 on *:TEXT:!addmem*:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (!$readini(Personalclan.ini,Person,$nick)) { notice $nick You need to make a clan before you can start adding members. !startclan name of clan. | halt }
@@ -28,6 +30,7 @@ on *:TEXT:!addmem*:*: {
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1($gettok($readini(Personalclan.ini,Person,$remove($nick,$chr(36),$chr(37))),1,58)) $+ $chr(44) requested by $nick $+ . Type !joinclan $gettok($readini(Personalclan.ini,Person,$remove($nick,$chr(36),$chr(37))),1,58) to accept. 
 }
 on *:TEXT:!joinclan*:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
   if ($readini(Personalclan.ini,Person,$nick)) { notice $nick You're already in a clan ( $+ $gettok($readini(Personalclan.ini,Person,$nick),1,58) $+ ). | halt }
@@ -40,6 +43,7 @@ on *:TEXT:!joinclan*:*: {
   unset %invite [ $+ [ $nick ] ]
 }
 on *:TEXT:!startclan*:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
@@ -52,6 +56,7 @@ on *:TEXT:!startclan*:*: {
 }
 
 on *:TEXT:!leave:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (!$readini(Personalclan.ini,Person,$nick)) { notice $nick You're not in a clan. !startclan name of clan. | halt }
@@ -62,6 +67,7 @@ on *:TEXT:!leave:*: {
   remini -n Clannames.ini $gettok($readini(Personalclan.ini,Person,$nick),1,58) $nick
 }
 on *:TEXT:!share*:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) | halt }
   if (!$readini(Personalclan.ini,Person,$nick)) { notice $nick You're not in a clan. !startclan name of clan. | halt }

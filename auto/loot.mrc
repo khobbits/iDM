@@ -42,7 +42,7 @@ alias dead {
   if (mudkip isin %rareitem) && (!$readini(equipment.ini,mudkip,$3)) { unset %rareprice | writeini -n equipment.ini Mudkip $3 on }
   if (Clue isin %rareitem) { 
     if ($readini(equipment.ini,clue,$3)) { unset %rareitem }
-    set %clue $gettok($read(clue.txt,$r(1,$lines(clue.txt))),1,58)
+    set %clue $r(1,$lines(clue.txt))
     unset %rareprice
     writeini -n equipment.ini clue $3 %clue
   }

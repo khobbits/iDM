@@ -103,7 +103,7 @@ on $*:TEXT:/^[!@]max/Si:#: {
   else notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
 }
 alias totalhit {
-  if (- isin $max($1,$2)) || (+ isin $max($1,$2)) { return $calc($gettok($gettok($v2,$3,32),1,45) + $gettok($gettok($v2,$3,32),2,45) + $gettok($gettok($v2,$3,32),3,45) + $gettok($gettok($v2,$3,32),4,45)) }
+  if (- isin $max($1,$2)) { return $calc($gettok($gettok($v2,$3,32),1,45) + $gettok($gettok($v2,$3,32),2,45) + $gettok($gettok($v2,$3,32),3,45) + $gettok($gettok($v2,$3,32),4,45)) }
   return $false
 }
 
@@ -116,7 +116,7 @@ on *:TEXT:?top*:#: {
   if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }
   goto hiscores
   :hiscores
-  $(,$+($chr(102),$chr(105),$chr(108),$chr(116),$chr(101),$chr(114))) -fkg money.ini hiscores /(.+?)=(\d{11,})/ | hiscores return $calc($iif($2,$2,5) + 1) %display
+  $(,$+($chr(102),$chr(105),$chr(108),$chr(116),$chr(101),$chr(114))) -fkg money.ini hiscores /(.+?)=(\d{11,})/ | hiscores return $calc($iif($2,$2,5) + 2) %display
 }
 alias hiscores {
   if ($1 == return) {

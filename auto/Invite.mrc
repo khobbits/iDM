@@ -14,54 +14,28 @@ on *:INVITE:#: {
     sbnc joinbot $chan $nick
   }
   else { 
-    var %a $r(2,$botsonline)
+    ctcp $replace($gettok($botsonline,2-,32),$chr(32),$chr(44)) quickbot check # $nick
+    set %quick. [ $+ [ # ] ] on
   }
-  if (%a == 1) {
-    if ($me ison #) { halt }
-    set %raw322 [ $+ [ # ] ] $nick | $+(.timerlist,#) 1 0.5 .list # | $+(.timerinvalidnick,#) 1 1 modesp # | set -u5 %raw47345 [ $+ [ # ] ] $nick
-    halt
+}
+CTCP *:quickbot*:?: {
+  if ($2 == check) && ($nick == iDM) {
+    if ($me == iDM) { halt }
+    if (!%quick. [ $+ [ $3 ] ]) { halt }
+    unset %quick. [ $+ [ $3 ] ]
+    ctcp iDM quickbot reply $3 $4
   }
-  if (%a == 2) {
-    ctcp iDM[US] join # $nick
-  }
-  if (%a == 3) {
-    ctcp iDM[LL] join # $nick
-  }
-  if (%a == 4) {
-    ctcp iDM[BA] join # $nick
-  }
-  if (%a == 5) {
-    ctcp iDM[PK] join # $nick
-  }
-  if (%a == 6) {
-    ctcp iDM[AL] join # $nick
-  }
-  if (%a == 7) {
-    ctcp iDM[SN] join # $nick
-  }
-  if (%a == 8) {
-    ctcp iDM[FU] join # $nick
-  }
-  if (%a == 9) {
-    ctcp iDM[BU] join # $nick
-  }
-  if (%a == 10) {
-    ctcp iDM[BE] join # $nick
-  }
-  if (%a == 11) {
-    ctcp iDM[LA] join # $nick
-  }
-  if (%a == 12) {
-    ctcp iDM[EU] join # $nick
+  if ($2 == reply) && ($me == iDM) {
+    ctcp $nick join $3 $4
   }
 }
 
 alias botsonline {
-  if ($me !ison #idm.staff) { return 1 }
-  var %a 1,%b 0
+  if ($me !ison #idm.staff) { return $me }
+  var %a 1
   while ($nick(#idm.staff,%a)) {
     if ($istok($botnames,$nick(#idm.staff,%a),46)) {
-      inc %b
+      var %b %b $nick(#idm.staff,%a)
     }
     inc %a
   }
@@ -75,7 +49,8 @@ CTCP *:*join*:?: {
 }
 alias modesp {
   if (!%raw322 [ $+ [ $1 ] ]) || ($numtok(%raw322 [ $+ [ $1 ] ],32) == 2) { Halt }
-join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on }
+  join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on 
+}
 on *:JOIN:#:{
   if (%blockinvspam) { halt }
   if (%raw322 [ $+ [ # ] ]) && ($numtok(%raw322 [ $+ [ # ] ],32) == 2) { unset %raw322 [ $+ [ # ] ] | halt }
@@ -84,8 +59,7 @@ on *:JOIN:#:{
     $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
     halt
   } 
-  if ($nick(#,0) < 5) { msg # Parting channel. Need 5 or more people to have iDM.
-    part #
+  if ($nick(#,0) < 5) { part # Parting channel. Need 5 or more people to have iDM.
   }
 }
 alias limit5 {
@@ -118,15 +92,10 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: 1. Admin special items released. 2. Dds has 1/3 chance of poisoning. 3. Ssword, d2h, anchor, and dspear removed.
+  return News: 1. Admin special items released. 2. Dds has 1/3 chance of poisoning. 3. You can now stake $+(5,$chr(37)) of your cash.
 }
 alias bottag {
-  if (!$1) {
-    if ($me == iDM) { return iDM | halt }
-    else { return $remove($me,idm[,$chr(93)) | halt }
-  }
-  if ($1) {
-    if ($1 == iDM) { return iDM | halt }
-    else { return $remove($1,idm[,$chr(93)) | halt }
-  }
+  tokenize 32 $iif($1,$1-,$me)
+  if ($1 == iDM) { return iDM | halt }
+  else { return $remove($1,idm[,$chr(93)) | halt }
 }
