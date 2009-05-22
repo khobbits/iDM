@@ -114,14 +114,15 @@ on *:TEXT:!admin:#iDM.staff: {
   notice $nick $s1(Admin commands:) $s2(!part #, !bl #, !ubl #, !cbl #, !chans, !active, !amsg, !join bot #, !msg #, !pass nick, !setpass nick password, !ignore host, !rignore host, !cignore host, !listbl, !except host, !remdm nick, !partall, !idle, !giveitem nick, !takeitem nick, !viewitems)
 }
 on *:TEXT:!except*:#iDm.staff: {
-  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (!$readini(admins.ini,Support,$address($nick,3)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a hostname to except from the clone script. E.g. !except *!*@Swift43rrf435.dns.ntl.com | halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  writeini exceptions.ini Exceptions $2- on
+  writeini exceptions.ini Exceptions $2 on
   notice $nick $s2($2) has successfully been added to my exception list.
 }
 on *:TEXT:!ignore*:#idm.staff: {
-  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$readini(admins.ini,support,$address($nick,3)) && !$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
@@ -129,7 +130,7 @@ on *:TEXT:!ignore*:#idm.staff: {
   writeini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
 }
 on *:TEXT:!rignore*:#idm.staff: {
-  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$readini(admins.ini,support,$address($nick,3)) && !$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }

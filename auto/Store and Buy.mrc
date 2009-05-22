@@ -32,6 +32,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 500000000) { notice $nick You don't have $s2(500M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 500000000)
     writeini -n Equipment.ini Void $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Full Void Knight Ranged) for $s2(500M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($regex($2-,/^void(\s|-)?mage$/Si)) {
@@ -39,6 +40,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 800000000) { notice $nick You don't have $s2(800M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 800000000)
     writeini -n Equipment.ini void-mage $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Full Void Knight Mage) for $s2(800M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == ring) || ($2 == wealth) {
@@ -46,13 +48,15 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 3000000000) { notice $nick You don't have $s2(3B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 3000000000)
     writeini -n Equipment.ini Wealth $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Ring of Wealth) for $s2(3B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == Dclaws) || ($2- == Dragon Claws) {
     if ($readini(Equipment.ini,dclaws,$nick)) { notice $nick You already have Dragon Claws. | halt }
     if ($readini(money.ini,money,$nick) < 2500000000) { notice $nick You don't have $s2(2.5B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 2500000000)
-    writeini -n Equipment.ini Dclaws $nick on                                 
+    writeini -n Equipment.ini Dclaws $nick on        
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address                         
     notice $nick You have bought $s1(Dragon Claws) for $s2(2.5B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == mudkip) {
@@ -60,20 +64,23 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 200000000) { notice $nick You don't have $s2(200M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 200000000)
     writeini -n Equipment.ini mudkip $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought a $s1(Mudkip Pouch) for $s2(200M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == fire) || ($2 == cape) {
     if ($readini(Equipment.ini,Firecape,$nick)) { notice $nick You already have a fire cape.. | halt }
     if ($readini(money.ini,money,$nick) < 4000000000) { notice $nick You don't have $s2(4B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 4000000000)
-    writeini -n Equipment.ini Firecape $nick on    
+    writeini -n Equipment.ini Firecape $nick on   
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address 
     notice $nick You have bought $s1(Fire Cape) for $s2(4B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == ags) || ($2 == armadyl) || ($2 == arma) || ($2 == arm) {
     if ($readini(Equipment.ini,ags,$nick)) { notice $nick You already have an Armadyl godsword.. | halt }
     if ($readini(money.ini,money,$nick) < 400000000) { notice $nick You don't have $s2(400M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 400000000)
-    writeini -n Equipment.ini ags $nick on    
+    writeini -n Equipment.ini ags $nick on   
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address 
     notice $nick You have bought $s1(Armadyl godsword) for $s2(400M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == bgs) || ($2 == bandos) || ($2 == bando) {
@@ -81,6 +88,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 500000000) { notice $nick You don't have $s2(500M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 500000000)
     writeini -n Equipment.ini bgs $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Bandos godsword) for $s2(500M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == sgs) || ($2 == Sara) || ($2 == saradomin) {
@@ -88,6 +96,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 600000000) { notice $nick You don't have $s2(600M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 600000000)
     writeini -n Equipment.ini sgs $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Saradomin godsword) for $s2(600M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == zgs) || ($2 == Zammy) || ($2 == zamorak) {
@@ -95,6 +104,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 400000000) { notice $nick You don't have $s2(400M) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 400000000)
     writeini -n Equipment.ini zgs $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Zamorak godsword) for $s2(400M) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($regex($2,/^ely?s+ian/Si)) {
@@ -102,6 +112,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 8000000000) { notice $nick You don't have $s2(8B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 8000000000)
     writeini -n Equipment.ini elshield $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Elysian spirit shield) for $s2(8B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($regex($2-,/^b(ar+ows?)?(\s|-)?glo?ves?/Si)) {
@@ -110,6 +121,7 @@ on *:TEXT:!buy*:#: {
     if ($readini(wins.ini,wins,$nick) < 1000) || ($calc($readini(wins.ini,wins,$nick) + $readini(losses.ini,losses,$nick)) < 2000) { notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves. | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 3000000000)
     writeini -n Equipment.ini bgloves $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Barrow Gloves) for $s2(3B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == mbook) || ($2 == mage's) || ($2 == mages) {
@@ -117,13 +129,15 @@ on *:TEXT:!buy*:#: {
     if ($readini(money.ini,money,$nick) < 1000000000) { notice $nick You don't have $s2(1B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 1000000000)
     writeini -n Equipment.ini mbook $nick on    
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
     notice $nick You have bought $s1(Mage's book) for $s2(1B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   if ($2 == accumulator) || ($2 == accum) || ($2 == backpack) {
     if ($readini(Equipment.ini,accumulator,$nick)) { notice $nick You already have an Accumulator.. | halt }
     if ($readini(money.ini,money,$nick) < 1000000000) { notice $nick You don't have $s2(1B) to buy this! | halt }
     writeini -n Money.ini Money $nick $calc($readini(Money.ini,money,$nick) - 1000000000)
-    writeini -n Equipment.ini accumulator $nick on    
+    writeini -n Equipment.ini accumulator $nick on   
+    write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address 
     notice $nick You have bought $s1(Accumulator) for $s2(1B) $+ . You have: $s2($price($readini(Money.ini,money,$nick))) left. | halt 
   }
   else notice $nick Type !store for a list of items that can currently be bought.

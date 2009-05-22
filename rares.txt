@@ -1,25 +1,25 @@
 Dragon Claws:27600000
-Red Partyhat:124500000
+Red Partyhat:125700000
 Blue Partyhat:310300000
-Yellow Partyhat:102300000
-Purple Partyhat:89100000
-Green Partyhat:103400000
+Yellow Partyhat:103300000
+Purple Partyhat:90000000
+Green Partyhat:104400000
 White Partyhat:166500000
-3rd Age Platebody:72900000
+3rd Age Platebody:69200000
 3rd Age Platelegs:62100000
 Christmas Cracker:688800000
-Saradomin godsword:45000000
-Bandos godsword:17300000
-Armadyl godsword:66900000
+Saradomin godsword:46500000
+Bandos godsword:16800000
+Armadyl godsword:67900000
 Zamorak godsword:24200000
 Clue Scroll:140
-Arcane sigil:104000000
-Arcane Spirit Shield:107200000
-3rd Age Kiteshield:62400000
-Saradomin Hilt:44600000
-Armadyl Hilt:66500000
-3rd Age Full Helmet:43400000
-3rd Age Amulet:44900000
+Arcane sigil:98800000
+Arcane Spirit Shield:101900000
+3rd Age Kiteshield:59300000
+Saradomin Hilt:46100000
+Armadyl Hilt:67500000
+3rd Age Full Helmet:41200000
+3rd Age Amulet:42700000
 Mudkip:50000000
 Mage's Book:100000000
 Accumulator:100000000
