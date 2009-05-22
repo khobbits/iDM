@@ -37,7 +37,7 @@ on *:QUIT: {
       msg $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
       enddmcatch quit $nick $1-
 
-      if ($enddmcatch(quit,$nick,$1-) == 1) {
+      if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
         if (%oldmoney > 100) {
           var %oldmoney = $readini(money.ini,money,$nick)
           var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
@@ -101,7 +101,7 @@ alias enddmcatch {
   goto pass
 
   :quit
-  var %action = quit $network ( $+ $3- $+ )
+  var %action = quit $network & $3 ( $+ $4- $+ )
   if ($3 == Quit:) {
     goto pass
   } 
