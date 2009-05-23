@@ -85,7 +85,8 @@ on *:TEXT:!enddm:#: {
       notice $nick Please wait at least 30s before ending a dm.
       halt
     }
-    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended.
+    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
+    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 20 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancel $chan %p1 [ $+ [ $chan ] ]
 
@@ -95,7 +96,8 @@ on *:TEXT:!enddm:#: {
       notice $nick Please wait at least 30s before ending a dm.
       halt
     }
-    notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended.
+    notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
+    notice $nick %p2 [ $+ [ $chan ] ] has been warned, the dm will end in 20 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancel $chan %p2 [ $+ [ $chan ] ]
   }

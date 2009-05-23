@@ -41,3 +41,7 @@ Njr99 parted channel #codie during a dm oldcash 585411573 newcash 573703342
 Sasake1350 parted channel #blitzcreed during a dm oldcash 205643684 newcash 201530811
 KHobbits parted channel #Allegra.DM during a dm oldcash 881254058 newcash 863628977
 Thor_90222 parted channel #iDM during a dm oldcash 473174754 newcash 463711259
+KHobbits got !enddm'd on #Allegra.DM oldcash 863628977 newcash 854992688
+man_u_dicl parted channel #tank during a dm oldcash 709175131 newcash 694991629
+KHobbits got !enddm'd on #Allegra.DM oldcash 854992688 newcash 846442762
+RangkoE parted channel #iDM during a dm oldcash 1155680904 newcash 1132567286
