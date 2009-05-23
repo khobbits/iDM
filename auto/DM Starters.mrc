@@ -10,7 +10,12 @@ on *:TEXT:!dm:#: {
   if ($readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. | .timer $+ # 1 20 enddm # | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true | set %p1 [ $+ [ $chan ] ] $nick | set %dmon [ $+ [ $chan ] ] on | halt }
-  if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) { .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true | set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 | set %food1 [ $+ [ $chan ] ] 10 | set %food2 [ $+ [ $chan ] ] 10 | msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. }
+  if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) { 
+    .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true 
+    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 
+    set %food1 [ $+ [ $chan ] ] 10 | set %food2 [ $+ [ $chan ] ] 10 | set -u25 %enddm [ $+ [ $chan ] ] 0
+    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
+  }
   if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) {  
     if (!$readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2)) {
       if (%p1 [ $+ [ $chan ] ] isin %p2 [ $+ [ $chan ] ] || %p2 [ $+ [ $chan ] ] isin %p1 [ $+ [ $chan ] ]) {
