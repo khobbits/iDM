@@ -9,7 +9,14 @@ on *:TEXT:!dm:#: {
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
-  if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. | .timer $+ # 1 20 enddm # | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true | set %p1 [ $+ [ $chan ] ] $nick | set %dmon [ $+ [ $chan ] ] on | halt }
+  if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. 
+    .timer $+ # 1 20 enddm # 
+    set %dming [ $+ [ $nick ] ] on 
+    writeini -n status.ini currentdm $nick true 
+    set %p1 [ $+ [ $chan ] ] $nick 
+    set %dmon [ $+ [ $chan ] ] on 
+    halt 
+  }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) { 
     .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true 
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 
@@ -87,7 +94,7 @@ on *:TEXT:!enddm:#: {
   } 
   elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
     if (%enddm [ $+ [ $chan ] ] == 0) {
-      notice $nick Please wait at least 30s before ending a dm.
+      notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
     notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
@@ -98,7 +105,7 @@ on *:TEXT:!enddm:#: {
   } 
   elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
     if (%enddm [ $+ [ $chan ] ] == 0) {
-      notice $nick Please wait at least 30s before ending a dm.
+      notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
     notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
@@ -107,7 +114,7 @@ on *:TEXT:!enddm:#: {
     timer 1 20 delaycancel $chan %p2 [ $+ [ $chan ] ]
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
-    notice $nick It is your turn.
+    notice $nick You can only end the dm on the other players turn.
   }
 }
 
