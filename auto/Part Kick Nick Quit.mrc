@@ -35,8 +35,6 @@ on *:QUIT: {
   while (%a <= $chan(0)) {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       msg $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
-      enddmcatch quit $nick $1-
-
       if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
         var %oldmoney = $readini(money.ini,money,$nick)
         if (%oldmoney > 100) {
