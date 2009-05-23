@@ -78,12 +78,45 @@ on *:TEXT:!enddm:#: {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel #
     msg # $logo(DM) The DM has been canceled by an admin.
-    halt
+
+  } 
+  elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
+    if (%enddm [ $+ [ $chan ] ] == 0) {
+      notice $nick Please wait at least 30s before ending a dm.
+      halt
+    }
+    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended.
+    set %enddm [ $+ [ $chan ] ] 1
+    timer 1 20 delaycancel $chan %p1 [ $+ [ $chan ] ]
+
+  } 
+  elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
+    if (%enddm [ $+ [ $chan ] ] == 0) {
+      notice $nick Please wait at least 30s before ending a dm.
+      halt
+    }
+    notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended.
+    set %enddm [ $+ [ $chan ] ] 1
+    timer 1 20 delaycancel $chan %p2 [ $+ [ $chan ] ]
   }
-  if ($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ]) {
-    cancel #
-    msg # $logo(DM) The DM has been canceled.
-    halt
+  elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
+    notice $nick It is your turn.
+  }
+}
+
+alias delaycancel {
+  if (%enddm [ $+ [ $1 ] ] == 1) {
+    cancel $1
+    msg $1 $logo(DM) The DM has been canceled.
+
+    var %oldmoney = $readini(money.ini,money,$2)
+    if (%oldmoney > 100) {
+      var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.01)))
+      notice $2 You got kicked out of a dm, you loose $s2($price($calc(%oldmoney - %newmoney))) cash
+      write penalty.txt $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
+      writeini -n money.ini money $2 %newmoney
+    }
+
   }
 }
 

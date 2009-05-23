@@ -34,6 +34,7 @@ on *:TEXT:!*:#: {
           halt
         }
       }
+      set -u25 %enddm [ $+ [ $chan ] ] 0
       damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
     }
   }
