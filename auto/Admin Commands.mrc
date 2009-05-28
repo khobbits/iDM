@@ -149,6 +149,10 @@ on *:JOIN:#: {
   if ($readini(Admins.ini,Admins,$address($nick,3))) || ($readini(admins.ini,support,$address($nick,3))) { 
     msg # $logo($iif($readini(admins.ini,support,$address($nick,3)),SUPPORT,ADMIN)) $iif($readini(admins.ini,support,$address($nick,3)),Bot support,$position($nick)) $nick has joined the channel.
   }
+  if ($nick == $me) {
+    if (# == #iDm || # == #iDM.staff) { halt }
+    .timer 1 1 scanbots $chan
+  }
 }
 alias botnames {
   return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU]

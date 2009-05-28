@@ -52,6 +52,17 @@ alias modesp {
   if (!%raw322 [ $+ [ $1 ] ]) || ($numtok(%raw322 [ $+ [ $1 ] ],32) == 2) { Halt }
   join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on 
 }
+on *:JOIN:#:{
+  if (%blockinvspam) { halt }
+  if (%raw322 [ $+ [ # ] ]) && ($numtok(%raw322 [ $+ [ # ] ],32) == 2) { unset %raw322 [ $+ [ # ] ] | halt }
+  if (%forcedj. [ $+ [ # ] ]) { unset %forcedj. [ $+ [ # ] ] | halt }
+  if ($nick == $me) { 
+    $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
+    halt
+  } 
+  if ($nick(#,0) < 5) { part # Parting channel. Need 5 or more people to have iDM.
+  }
+}
 alias limit5 {
   if ($nick($1,0) < 5) { msg $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
