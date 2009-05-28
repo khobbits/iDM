@@ -17,8 +17,6 @@ On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
   }
 }
 
-
-
 On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
@@ -27,8 +25,6 @@ On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
     ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
   }
 }
-
-
 
 On $*:TEXT:/^[!@]GiveItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
@@ -152,10 +148,6 @@ on *:JOIN:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($readini(Admins.ini,Admins,$address($nick,3))) || ($readini(admins.ini,support,$address($nick,3))) { 
     msg # $logo($iif($readini(admins.ini,support,$address($nick,3)),SUPPORT,ADMIN)) $iif($readini(admins.ini,support,$address($nick,3)),Bot support,$position($nick)) $nick has joined the channel.
-  }
-  if ($nick == $me) {
-    if (# == #iDm || # == #iDM.staff) { halt }
-    .timer 1 1 scanbots $chan
   }
 }
 alias botnames {
@@ -299,31 +291,6 @@ alias forcejoin {
   set %forcedj. [ $+ [ $1 ] ] true
   join $1
   .timer 1 1 msg $1 $logo(JOIN) I was requested to join this channel by $position($2) $2 $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
-}
-on *:TEXT:?read*:#: {
-  if ($left($1,1) isin !@) {
-    if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-    if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
-    if (!$read(suggestions.txt)) { notice $nick There are currently no suggestions | halt }
-    $iif($left($1,1) == @,msg #,notice $nick) $iif(!$2, $suggestions, $suggestions($2))
-  }
-}
-alias suggestions {
-  if (!$1) {
-    unset %b
-    var %a 1
-    while ($read(suggestions.txt,%a)) {
-      set %b %b %a $+ .) $gettok($read(suggestions.txt,%a),7-,32)
-      inc %a
-    }
-    return $logo(SUGGESTIONS) %b
-    unset %b
-  }
-  else {
-    if ($1 == @last) return $logo(SUGGESTIONS) $read(suggestions.txt,$lines(suggestions.txt))
-    elseif ($1 == @count) return $logo(SUGGESTIONS) Suggestions: $lines(suggestions.txt)
-    else return $logo(SUGGESTIONS) $read(suggestions.txt,$1)
-  }
 }
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
