@@ -92,7 +92,8 @@ alias createtable {
   }
 }
 
-on *:LOAD: {
+on *:START: {
+  load -rs $mircdir/sqllite/msqlite.mrc
   set %db $sqlite_open(idm.db)
   if (!%db) {
     echo 4 -s Error: %sqlite_errstr
