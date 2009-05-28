@@ -330,6 +330,6 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($istok(#idm #idm.staff,#,32)) && ($me != iDM) { halt }
   if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$readini(status.ini,currentdm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
-  remini status.ini currentdm $2
+  remini -n status.ini currentdm $2
   notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
 }

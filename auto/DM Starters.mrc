@@ -97,7 +97,7 @@ on *:TEXT:!enddm:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
+    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will lose 1% of your money.
     notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 20 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancel $chan %p1 [ $+ [ $chan ] ]
@@ -108,29 +108,33 @@ on *:TEXT:!enddm:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will loose 1% of your money.
+    notice %p2 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will lose 1% of your money.
     notice $nick %p2 [ $+ [ $chan ] ] has been warned, the dm will end in 20 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancel $chan %p2 [ $+ [ $chan ] ]
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
-    notice $nick You can only end the dm on the other players turn.
+    if (%turn [ $+ [ $chan ] ]) {
+      notice $nick You can only end the dm on the other players turn.
+    } 
+    else {
+      cancel $chan
+      msg $chan $logo(DM) The DM has been canceled.
+    }
   }
 }
 
 alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] == 1) {
     cancel $1
-    msg $1 $logo(DM) The DM has been canceled.
-
+    msg $1 $logo(DM) The DM has ended due to timeout.
     var %oldmoney = $readini(money.ini,money,$2)
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.01)))
-      notice $2 You got kicked out of a dm, you loose $s2($price($calc(%oldmoney - %newmoney))) cash
+      notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
       write penalty.txt $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
       writeini -n money.ini money $2 %newmoney
     }
-
   }
 }
 

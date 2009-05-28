@@ -18,7 +18,7 @@ on *:PART:#: {
         var %oldmoney = $readini(money.ini,money,$nick)
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-          notice $nick You left the channel during a dm, you loose $s2($price($calc(%oldmoney - %newmoney))) cash
+          notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
           write penalty.txt $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
           writeini -n money.ini money $nick %newmoney
         }
@@ -81,7 +81,7 @@ on *:KICK:#: {
         var %oldmoney = $readini(money.ini,money,$knick)
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-          notice $nick You left the channel during a dm, you loose $s2($price($calc(%oldmoney - %newmoney))) cash
+          notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
           write penalty.txt $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
           writeini -n money.ini money $knick %newmoney
         }

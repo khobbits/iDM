@@ -18,20 +18,20 @@ alias money {
 }
 
 alias equipment {
-  if ($readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged }
-  if ($readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage }
-  if ($readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth }
-  if ($readini(Equipment.ini,bgloves,$1)) { var %e %e Barrow:Gloves }
-  if ($readini(Equipment.ini,Firecape,$1)) { var %e %e Fire:Cape }
-  if ($readini(Equipment.ini,elshield,$1)) { var %e %e Elysian:Shield }
-  if ($readini(Equipment.ini,ags,$1)) { var %e %e AGS }
-  if ($readini(Equipment.ini,bgs,$1)) { var %e %e BGS }
-  if ($readini(Equipment.ini,sgs,$1)) { var %e %e SGS }
-  if ($readini(Equipment.ini,zgs,$1)) { var %e %e ZGS }
-  if ($readini(Equipment.ini,dclaws,$1)) { var %e %e Dragon:Claws }
-  if ($readini(Equipment.ini,mudkip,$1)) { var %e %e Mudkip }
-  if ($readini(Equipment.ini,mbook,$1)) { var %e %e Mage's:Book }
-  if ($readini(Equipment.ini,accumulator,$1)) { var %e %e Accumulator }
+  if ($readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,bgloves,$1)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,Firecape,$1)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,elshield,$1)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,ags,$1)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,bgs,$1)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,sgs,$1)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,zgs,$1)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,dclaws,$1)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,mudkip,$1)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,mbook,$1)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($readini(Equipment.ini,accumulator,$1)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($readini(Equipment.ini,Clue,$1)) { var %e %e Clue:Scroll }
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }

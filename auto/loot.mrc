@@ -37,17 +37,19 @@ alias dead {
     set %rareitem $gettok($read(rares.txt,%raredrop),1,58)
     set %rareprice $gettok($read(rares.txt,%raredrop),2,58)
   }
-  if (godsword isin %rareitem) && (!$readini(equipment.ini,$replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags),$3)) { unset %rareprice | writeini -n equipment.ini $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 on }
-  if (claws isin %rareitem) && (!$readini(equipment.ini,dclaws,$3)) { unset %rareprice | writeini -n equipment.ini dclaws $3 on }
-  if (mudkip isin %rareitem) && (!$readini(equipment.ini,mudkip,$3)) { unset %rareprice | writeini -n equipment.ini Mudkip $3 on }
+  if (godsword isin %rareitem) { unset %rareprice | writeini -n equipment.ini $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 $calc($readini(equipment.ini,$replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags),$3) + 1) }
+  if (claws isin %rareitem) { unset %rareprice | writeini -n equipment.ini dclaws $3 $calc($readini(equipment.ini,dclaws,$3) +1) }
+  if (mudkip isin %rareitem) { unset %rareprice | writeini -n equipment.ini Mudkip $3 $calc($readini(equipment.ini,mudkip,$3) +1) }
   if (Clue isin %rareitem) { 
     if ($readini(equipment.ini,clue,$3)) { unset %rareitem }
-    set %clue $r(1,$lines(clue.txt))
-    unset %rareprice
-    writeini -n equipment.ini clue $3 %clue
+    else {
+      set %clue $r(1,$lines(clue.txt))
+      unset %rareprice
+      writeini -n equipment.ini clue $3 %clue
+    }
   }
-  if (mage's isin %rareitem) && (!$readini(equipment.ini,mbook,$3)) { unset %rareprice | writeini -n equipment.ini mbook $3 on }
-  if (accumulator isin %rareitem) && (!$readini(equipment.ini,accumulator,$3)) { unset %rareprice | writeini -n equipment.ini accumulator $3 on }
+  if (mage's isin %rareitem) { unset %rareprice | writeini -n equipment.ini mbook $3 $calc($readini(equipment.ini,mbook,$3) +1) }
+  if (accumulator isin %rareitem) { unset %rareprice | writeini -n equipment.ini accumulator $3 $calc($readini(equipment.ini,accumulator,$3) +1) }
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
   if ($gettok($readini(personalclan.ini,person,$2),1,58) != $gettok($readini(personalclan.ini,person,$3),1,58)) {
     if ($readini(Clannames.ini,$gettok($readini(Personalclan.ini,Person,$3),1,58),share) == on) && ($ini(Clannames.ini,$gettok($readini(Personalclan.ini,Person,$3),1,58),0) > 2) { var %a 1,%d 0 | while ($ini(Clannames.ini,$gettok($readini(Personalclan.ini,Person,$3),1,58),%a)) { inc %d | inc %a } | sharedrop $calc(%d -1) $gettok($readini(Personalclan.ini,Person,$3),1,58) %combined $1 $3 $replace(%item1,$chr(32),$chr(95)) $replace(%item2,$chr(32),$chr(95)) $replace(%item3,$chr(32),$chr(95)) $replace(%rareitem,$chr(32),$chr(95)) | unset %item*
