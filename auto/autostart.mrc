@@ -9,6 +9,7 @@ on *:start: {
   }
 }
 
+
 on *:connect: {
   if ($me == iDM[Hub]) { nick iDM | mnick iDM }
   if (%botnum != $null) {
@@ -16,6 +17,7 @@ on *:connect: {
     unset %botnum
   }
 }
+
 
 alias loadbot {
   if ($1 == 0) {
