@@ -1,7 +1,11 @@
-on *:TEXT:!*:#: {
+on $*:TEXT:/^[!@.]/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($right($1,-1) == specpot) { 
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
+      if (!$.readini(login.ini,login,$nick)) { 
+        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) 
+        halt 
+      }
       if (!$.readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
@@ -18,7 +22,10 @@ on *:TEXT:!*:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($.readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+      if ($.readini(OnOff.ini,#,$right($1,-1))) { 
+        notice $nick $logo(ERROR) This command has been disabled for this channel.
+        halt 
+      }
       if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,$right($1,-1))) { 
         notice $nick You're frozen and can't use melee.
         halt 
@@ -27,6 +34,10 @@ on *:TEXT:!*:#: {
         if (!$.readini(pvp.ini,$right($1,-1),$nick)) {
           notice $nick You don't have this weapon.
           halt
+        }
+        if (!$.readini(login.ini,login,$nick)) { 
+          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) 
+          halt 
         }
       }
       if ($.ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {

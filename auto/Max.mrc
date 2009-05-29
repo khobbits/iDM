@@ -102,7 +102,7 @@ alias poisoner {
 alias c124 {
   return $chr(124)
 }
-on $*:TEXT:/^[!@]max/Si:#: { 
+on $*:TEXT:/^[!@.]max/Si:#: { 
   if (# == #iDM) || (# == #iDM.Staff) && ($me != iDM) { halt }
   if (!$2) { $iif($left($1,1) == !,notice $nick,msg #) Please specify the weapon to look up. Syntax: !max whip | halt }
   if (!$attack($2)) { 
@@ -121,7 +121,7 @@ alias totalhit {
   return $false
 }
 
-on $*:TEXT:/^[!@]top/Si:#: { 
+on $*:TEXT:/^[!@.]top/Si:#: { 
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }

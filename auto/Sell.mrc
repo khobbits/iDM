@@ -1,4 +1,4 @@
-on *:TEXT:!sell*:#: {
+on $*:TEXT:/^[!@.]sell/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   if ($.readini(lent.ini,borrowing,$nick)) { notice $nick You cannot sell this item as you are borrowing it. | halt }

@@ -1,9 +1,9 @@
-on $*:TEXT:/^[!@]dmclue/Si:#: { 
+on $*:TEXT:/^[!@.]dmclue/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(equipment.ini,clue,$nick)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
   $iif($left($1,1) == @,msg #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$.readini(equipment.ini,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Join #iDM or #iDM.Support for help.
 }
-on *:text:!solve*:#: {
+on $*:TEXT:/^[!@.]solve/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(equipment.ini,clue,$nick)) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
   if ($istok($gettok($read(clue.txt,$.readini(equipment.ini,clue,$nick)),2,58),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Join #iDM or #iDM.Support for assistance. | halt }

@@ -1,4 +1,4 @@
-On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]Warn .*/Si:#iDM.Staff: {
   if ($.readini(Admins.ini,Admins,$address($nick,3))) {
     if (!$regex($2,/\#(.*)/)) {
       if ($me == iDM) notice $nick $logo(ERROR) You must enter a channel. Example: $s2(!warn #Belong)
@@ -17,7 +17,7 @@ On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) {
@@ -26,7 +26,7 @@ On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@]GiveItem .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { 
@@ -61,7 +61,7 @@ On $*:TEXT:/^[!@]GiveItem .*/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@]TakeItem .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { 

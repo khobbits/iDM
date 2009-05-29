@@ -6,15 +6,14 @@ on *:TEXT:?*commands:#: {
   }
 }
 
-on *:TEXT:!suggest:#: {
+on $*:TEXT:/^[!@.]suggest/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%sugg.spam [ $+ [ $nick ] ]) { halt }
   inc -u10 %sugg.spam [ $+ [ $nick ] ]
   notice $nick $LOGO(SUGGESTIONS FORUM) To suggest new content please goto: http://forum.idm-bot.com/viewforum.php?f=6
 } 
 
-
-off *:TEXT:!set*:#: {
+off $*:TEXT:/^[!@.]set/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($nick isop #) || ($.readini(admins.ini,admins,$address($nick,3)) || $.readini(admins.ini,support,$address($nick,3))) {

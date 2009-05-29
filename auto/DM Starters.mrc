@@ -1,4 +1,4 @@
-on *:TEXT:!dm:#: {
+on $*:TEXT:/^[!@.]dm\b/Si:#: { 
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
@@ -75,7 +75,7 @@ alias enddm {
   msg $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
   cancel $1
 }
-on *:TEXT:!enddm:#: {
+on $*:TEXT:/^[!@.]enddm/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) { 
     if ($.readini(Admins.ini,Admins,$nick)) || ($.readini(Admins.ini,Admins,$address($nick,3))) {
@@ -151,7 +151,7 @@ alias hpbar {
   }
   return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /5))),$str($+(04,$chr(44),04,.),$floor($calc((99- $1 ) /5)))) $+ 
 }
-on *:TEXT:?status:#: {
+on $*:TEXT:/^[!@.]status/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($left($1,1) isin !@) {
     if (!%p2 [ $+ [ $chan ] ]) { halt }

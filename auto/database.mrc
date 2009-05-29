@@ -45,7 +45,7 @@ alias remdb {
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
-  if (%debugq) echo 5 -a Query %sql executed
+  if (%debugq == $me) echo 5 -s Query %sql executed
 }
 
 alias writedb {
@@ -57,7 +57,7 @@ alias writedb {
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
-  if (%debugq) echo 3 -a Query %sql executed
+  if (%debugq == $me) echo 3 -s Query %sql executed
 }
 
 alias insertdb {
@@ -83,7 +83,7 @@ alias readdb {
   if (%request) {
     var %result = $sqlite_fetch_field(%request, c3)
     sqlite_free %request
-    if (%debugq) echo 7 -a Query %sql returned %result
+    if (%debugq == $me) echo 7 -s Query %sql returned %result
     return %result
   }
   else {
@@ -129,7 +129,7 @@ alias listdb {
     if (%numrow == 1) { var %result = $sqlite_num_rows(%request) }
     else { var %result = $sqlite_fetch_field(%request, %column) }
     sqlite_free %request
-    if (%debugq) echo 6 -a Query %sql returned %result
+    if (%debugq == $me) echo 6 -s Query %sql returned %result
     return %result
   }
   else {
@@ -157,7 +157,7 @@ alias dbinit {
     echo 4 -s Error: %sqlite_errstr
     return
     } else {
-    echo 4 -s MYSQL LOADED
+    echo 4 -s SQLDB LOADED
   }
 }
 
@@ -189,10 +189,10 @@ alias exportiniall {
   unset %db
   set %db $sqlite_open_memory(database/idm.db)
   if (%db) {
-    echo -a Memory database created and opened successfully.
+    echo -s Memory database created and opened successfully.
   }
   else {
-    echo -a Error opening a memory database: %sqlite_errstr
+    echo 4 -s Error opening a memory database: %sqlite_errstr
     halt
   }
   .timer 1 1 exportinibatch1

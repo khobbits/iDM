@@ -1,4 +1,4 @@
-on *:TEXT:?store:#: {
+on $*:TEXT:/^[!@.]store/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   if ($left($1,1) isin !@) && ($right($1,-1) == store) {
@@ -20,7 +20,7 @@ on *:TEXT:?store:#: {
       $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2(3B) $+ )
   }
 }
-on *:TEXT:!buy*:#: {
+on $*:TEXT:/^[!@.]buy/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }

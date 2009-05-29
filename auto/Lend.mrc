@@ -12,10 +12,12 @@ on *:CONNECT:{
   inc %x }
 }
 
-on *:TEXT:!lend*:#: {
+on $*:TEXT:/^[!@.]lend/Si:#: { 
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($3 == $nick) { halt }
+  msg $nick Sorry this feature is currently disabled
+  halt
   if (!$2) || (!$.readini(lent.ini,lendable,$2)) { notice $nick $logo(ERROR) You can't lend this, try a real item. For example: !lend Ags Allegra | halt }
   if (!$3) || (!$3 ison $chan) { notice $nick $logo(ERROR) Please specify a nick to lend the item to someone in the channel. | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick $logo(ERROR) You need to log in to lend items (/msg $me $iif($.readini(passes.ini,passes,$nick),id,reg) pass). | halt }
