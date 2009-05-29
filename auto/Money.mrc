@@ -13,44 +13,44 @@ on *:TEXT:?money*:#: {
 }
 
 alias money {
-  if ($1 == iBelong) return $s1(Money) $+ : $s2($bytes(999999999999999,db)) $+ gp $s1(Wins) $+ : $iif($readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($readini(wins.ini,wins,$1) / $calc($readini(wins.ini,wins,$1) + $readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $readini(equipment.ini,specpot,$1)) 
-  else return $s1(Money) $+ : $iif($readini(Money.ini,Money,$1),$s2($bytes($v1,bd)),$s2(0)) $+ gp $s1(Wins) $+ : $iif($readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($readini(wins.ini,wins,$1) / $calc($readini(wins.ini,wins,$1) + $readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $readini(equipment.ini,specpot,$1)) 
+  if ($1 == iBelong) return $s1(Money) $+ : $s2($bytes(999999999999999,db)) $+ gp $s1(Wins) $+ : $iif($.readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($.readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($.readini(wins.ini,wins,$1) / $calc($.readini(wins.ini,wins,$1) + $.readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $.readini(equipment.ini,specpot,$1)) 
+  else return $s1(Money) $+ : $iif($.readini(Money.ini,Money,$1),$s2($bytes($v1,bd)),$s2(0)) $+ gp $s1(Wins) $+ : $iif($.readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($.readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($.readini(wins.ini,wins,$1) / $calc($.readini(wins.ini,wins,$1) + $.readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $.readini(equipment.ini,specpot,$1)) 
 }
 
 alias equipment {
-  if ($readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,bgloves,$1)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,Firecape,$1)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,elshield,$1)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,ags,$1)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,bgs,$1)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,sgs,$1)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,zgs,$1)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,dclaws,$1)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,mudkip,$1)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,mbook,$1)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,accumulator,$1)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($readini(Equipment.ini,Clue,$1)) { var %e %e Clue:Scroll }
+  if ($.readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,bgloves,$1)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,Firecape,$1)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,elshield,$1)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,ags,$1)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,bgs,$1)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,sgs,$1)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,zgs,$1)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,dclaws,$1)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,mudkip,$1)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,mbook,$1)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,accumulator,$1)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($.readini(Equipment.ini,Clue,$1)) { var %e %e Clue:Scroll }
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias clan {
-  if ($readini(Clans.ini,Clan,$1)) { return $s1(Clan) $+ : $readini(Clans.ini,Clan,$1) }
+  if ($.readini(Clans.ini,Clan,$1)) { return $s1(Clan) $+ : $.readini(Clans.ini,Clan,$1) }
 } 
 
 alias sitems {
-  if ($readini(sitems.ini,belong,$1)) { var %e %e Bêlong:Blade }
-  if ($readini(sitems.ini,allegra,$1)) { var %e %e Allergy:Pills }
-  if ($readini(sitems.ini,beau,$1)) { var %e %e Beaumerang }
-  if ($readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
-  if ($readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
+  if ($.readini(sitems.ini,belong,$1)) { var %e %e Bêlong:Blade }
+  if ($.readini(sitems.ini,allegra,$1)) { var %e %e Allergy:Pills }
+  if ($.readini(sitems.ini,beau,$1)) { var %e %e Beaumerang }
+  if ($.readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
+  if ($.readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {
-  if ($readini(PvP.ini,vspear,$1)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
-  if ($readini(PvP.ini,vlong,$1)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
-  if ($readini(PvP.ini,statius,$1)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
-  if ($readini(PvP.ini,MJavelin,$1)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
+  if ($.readini(PvP.ini,vspear,$1)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
+  if ($.readini(PvP.ini,vlong,$1)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
+  if ($.readini(PvP.ini,statius,$1)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
+  if ($.readini(PvP.ini,MJavelin,$1)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }

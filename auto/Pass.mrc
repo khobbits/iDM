@@ -1,16 +1,16 @@
 on *:TEXT:!pass*:#: {
-  if (!$readini(Admins.ini,Admins,$Nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { 
+  if (!$.readini(Admins.ini,Admins,$Nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { 
     return
   }
   if (# == #iDM || # == #iDM.staff || # == #idm.support) && ($me != iDM) { halt }
   if (!$2) { notice $Nick Please specify a username | halt }
-  if (!$readini(Passes.ini,Passes,$2)) { notice $nick $2 $+ 's password was not found. | halt }
-  if ($readini(Admins.ini,Admins,$address($2,3))) { notice $nick You don't need to know this usernames password. | halt }
-  notice $nick $2 $+ 's password is: $s2($readini(Passes.ini,Passes,$2))
+  if (!$.readini(Passes.ini,Passes,$2)) { notice $nick $2 $+ 's password was not found. | halt }
+  if ($.readini(Admins.ini,Admins,$address($2,3))) { notice $nick You don't need to know this usernames password. | halt }
+  notice $nick $2 $+ 's password is: $s2($.readini(Passes.ini,Passes,$2))
 }
 
 on *:TEXT:!setpass*:#: {
-  if (!$readini(Admins.ini,Admins,$nick)) && (!$readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   if (!$2) || (!$3) { notice $nick Please specify a user or new password. }
   remini -n Passes.ini Passes $2
@@ -50,13 +50,13 @@ on *:notice:*:?: {
 }
 
 alias resetuserpass {
-  if (!$readini(Passes.ini,Passes,$2)) { 
+  if (!$.readini(Passes.ini,Passes,$2)) { 
     msg #idm.support User $2 $+ 's password was not found.
   }
   else {   
     remini -n Passes.ini Passes $2
     writeini -n Passes.ini Passes $2 $s2($remove($strip($randuserpass),$chr(36),$chr(37)))
-    notice $2 Your idm password is " $+ $readini(Passes.ini,Passes,$2) $+ ".  To change it /msg idm changepass $readini(Passes.ini,Passes,$2) Pass
+    notice $2 Your idm password is " $+ $.readini(Passes.ini,Passes,$2) $+ ".  To change it /msg idm changepass $.readini(Passes.ini,Passes,$2) Pass
   }
 }
 

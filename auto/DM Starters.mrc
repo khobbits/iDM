@@ -7,7 +7,7 @@ on *:TEXT:!dm:#: {
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-  if ($readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
+  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. 
     .timer $+ # 1 20 enddm # 
@@ -24,7 +24,7 @@ on *:TEXT:!dm:#: {
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
   }
   if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) {
-    if (!$readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2))) {
+    if (!$.readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2))) {
       if (%p1 [ $+ [ $chan ] ] isin %p2 [ $+ [ $chan ] ] || %p2 [ $+ [ $chan ] ] isin %p1 [ $+ [ $chan ] ]) {
         msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
         msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
@@ -45,13 +45,13 @@ on *:TEXT:!dm:#: {
 
 alias winloss {
   if ($1) {
-    return $s2($chr(91)) $+ Wins $s1($iif($readini(Wins.ini,Wins,$1),$bytes($v1,bd),0)) Losses $s1($iif($readini(Losses.ini,Losses,$1),$bytes($v1,bd),0)) $+ $s2($chr(93))
+    return $s2($chr(91)) $+ Wins $s1($iif($.readini(Wins.ini,Wins,$1),$bytes($v1,bd),0)) Losses $s1($iif($.readini(Losses.ini,Losses,$1),$bytes($v1,bd),0)) $+ $s2($chr(93))
   }
   return
 }
 
 alias cloneStats {
-  return $price($iif($readini(Money.ini,Money,$1),$v1,0))) $+ $s2(/) $+ $iif($readini(Wins.ini,Wins,$1),$v1 $+ W,0W) $+ $s2(/) $+ $iif($readini(Losses.ini,Losses,$1),$v1 $+ L,0L))
+  return $price($iif($.readini(Money.ini,Money,$1),$v1,0))) $+ $s2(/) $+ $iif($.readini(Wins.ini,Wins,$1),$v1 $+ W,0W) $+ $s2(/) $+ $iif($.readini(Losses.ini,Losses,$1),$v1 $+ L,0L))
 }
 
 
@@ -78,7 +78,7 @@ alias enddm {
 on *:TEXT:!enddm:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) { 
-    if ($readini(Admins.ini,Admins,$nick)) || ($readini(Admins.ini,Admins,$address($nick,3))) {
+    if ($.readini(Admins.ini,Admins,$nick)) || ($.readini(Admins.ini,Admins,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel #
       msg # $logo(DM) The DM has been canceled by an admin.
@@ -86,7 +86,7 @@ on *:TEXT:!enddm:#: {
     }
     else { notice $nick You are currently in a stake, you cannot forfeit! | halt }
   }
-  if ($readini(Admins.ini,Admins,$nick)) || ($readini(Admins.ini,Admins,$address($nick,3))) {
+  if ($.readini(Admins.ini,Admins,$nick)) || ($.readini(Admins.ini,Admins,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel #
     msg # $logo(DM) The DM has been canceled by an admin.
@@ -132,7 +132,7 @@ alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] == 1) {
     cancel $1
     msg $1 $logo(DM) The DM has ended due to timeout.
-    var %oldmoney = $readini(money.ini,money,$2)
+    var %oldmoney = $.readini(money.ini,money,$2)
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
       notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash

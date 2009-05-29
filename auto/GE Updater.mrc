@@ -1,5 +1,5 @@
 on *:text:!lootupdate*:#idm.staff:{
-  if ($readini(Admins.ini,Admins,$address($nick,3))) {
+  if ($.readini(Admins.ini,Admins,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
     if (%lootupdating) && ($2 != -r) { notice $nick $logo(ERROR) Loot is already being updated.. (Loot $iif(%l,%l,$lines(loot.txt)) $+ / $+ $lines(loot.txt) - Rares $iif(%r,%r,0) $+ / $+ $lines(rares.txt) $+ ) | halt }
     if ($read(lootupdate.txt)) { remove lootupdate.txt }

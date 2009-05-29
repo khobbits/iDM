@@ -1,7 +1,7 @@
 on *:TEXT:!part*:#: {
   if (# == #iDM) || (# == #iDM.Staff) { halt }
   if ($2 == $me) {
-    if ($nick isop #) || ($readini(Admins.ini,Admins,$address($nick,3))) || ($readini(Admins.ini,Support,$address($nick,3))) {
+    if ($nick isop #) || ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on
@@ -24,7 +24,7 @@ on *:PART:#: {
 
 
 on *:TEXT:!idle*:#iDM.Staff: {
-  if ($readini(admins.ini,admins,$address($nick,3))) {
+  if ($.readini(admins.ini,admins,$address($nick,3))) {
     var %a = 1,%c
     while (%a <= $chan(0)) {
       if ($nick($chan(%a),$me).idle > 1800) {

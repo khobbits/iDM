@@ -2,10 +2,10 @@ on *:TEXT:!*:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($right($1,-1) == specpot) { 
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
-      if (!$readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
+      if (!$.readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
-      writeini -n equipment.ini specpot $nick $calc($readini(equipment.ini,specpot,$nick) -1)
+      writeini -n equipment.ini specpot $nick $calc($.readini(equipment.ini,specpot,$nick) -1)
       msg # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
       unset %laststyle [ $+ [ # ] ]
       set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
@@ -18,19 +18,19 @@ on *:TEXT:!*:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
+      if ($.readini(OnOff.ini,#,$right($1,-1))) { notice $nick $logo(ERROR) This command has been disabled for this channel. | halt }
       if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,$right($1,-1))) { 
         notice $nick You're frozen and can't use melee.
         halt 
       }
       if ($ini(pvp.ini,$right($1,-1))) {
-        if (!$readini(pvp.ini,$right($1,-1),$nick)) {
+        if (!$.readini(pvp.ini,$right($1,-1),$nick)) {
           notice $nick You don't have this weapon.
           halt
         }
       }
       if ($ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {
-        if (!$readini(equipment.ini,$replace($right($1,-1),surf,mudkip),$nick)) {
+        if (!$.readini(equipment.ini,$replace($right($1,-1),surf,mudkip),$nick)) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
@@ -46,8 +46,8 @@ alias damage {
   ;3 is weapon
   ;4 is chan
   if ($ini(pvp.ini,$3)) {
-    if ($readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
-    elseif ($readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($readini(PvP.ini,$3,$1) -1) }
+    if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
+    elseif ($.readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($.readini(PvP.ini,$3,$1) -1) }
   }
   if ($3 != dh) { 
     var %hit [ $+ [ $4 ] ] $hit($3,$1,$2,$4) 
@@ -79,12 +79,12 @@ alias damage {
   if (%heal [ $+ [ $4 ] ] == 1) {
     $iif($calc($floor($($+(%,hp,$player($1,$4),$4),2)) + $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32)))) > 99,set $+(%,hp,$player($1,$4),$4) 99,inc $+(%,hp,$player($1,$4),$4) $floor($calc($($+(%,hit,$4),2) / $gettok($healer($3),2,32))))
   }
-  if ($readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) { 
+  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) { 
     var %sitem.belong [ $+ [ $4 ] ] on
   }
   if ($poisoner($3)) { 
     var %pois.chance [ $+ [ $4 ] ] $r(1,$v1) 
-    if (%pois.chance [ $+ [ $4 ] ] == 1) || ($readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) { 
+    if (%pois.chance [ $+ [ $4 ] ] == 1) || ($.readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) { 
       if (%hit [ $+ [ $4 ] ] >= 1) {
         set $+(%,pois,$player($2,$4),$4) 6
       }
@@ -188,18 +188,18 @@ alias damage {
     dec $+(%,hp,$player($2,$4),$4) %extra [ $+ [ $4 ] ]
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra [ $+ [ $4 ] ]) extra damage. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
-  if ($readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
     inc $+(%,hp,$player($2,$4),$4) $calc($replace(%hit [ $+ [ $4 ] ],$chr(32),$chr(43)))
     msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the attack. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
   }
-  if ($readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
+  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
     var %allegra.heal [ $+ [ $4 ] ] $iif($($+(%,hp,$player($2,$4),$4),2) >= 89,$calc(99- $($+(%,hp,$player($2,$4),$4),2)),10)
     inc $+(%,hp,$player($2,$4),$4) %allegra.heal [ $+ [ $4 ] ]
     msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%allegra.heal [ $+ [ $4 ] ]) HP. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
   if ($($+(%,hp,$player($2,$4),$4),2) < 1) { 
-    if ($readini(sitems.ini,beau,$2)) && ($r(1,100) <= 6) { 
+    if ($.readini(sitems.ini,beau,$2)) && ($r(1,100) <= 6) { 
       set $+(%,hp,$player($2,$4),$4) 1
       msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
       set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
@@ -268,10 +268,10 @@ alias hit {
   elseif ($accuracy($1,$4) == 1) {
     var %acc [ $+ [ $2 ] ] $r($r(10,25),100)
   }
-  var %atk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,Firecape,$2),5,0) + $iif($readini(Equipment.ini,bgloves,$2),3,0))
-  var %def [ $+ [ $2 ] ] $iif($readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
-  var %ratk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,void,$2),5,0) + $iif($readini(Equipment.ini,accumulator,$2),5,0))
-  var %matk [ $+ [ $2 ] ] $calc($iif($readini(Equipment.ini,void-mage,$2),5,0) + $iif($readini(Equipment.ini,mbook,$2),5,0))
+  var %atk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,Firecape,$2),5,0) + $iif($.readini(Equipment.ini,bgloves,$2),3,0))
+  var %def [ $+ [ $2 ] ] $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
+  var %ratk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
+  var %matk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0))
   goto $1
   :whip
   if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
@@ -289,7 +289,7 @@ alias hit {
   if (%acc [ $+ [ $2 ] ] isnum 1-15) return $r(0,10)
   if (%acc [ $+ [ $2 ] ] isnum 16-30) return $r(11,20)
   if (%acc [ $+ [ $2 ] ] isnum 31-100) {
-    if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($readini(Equipment.ini,void,$2) || $readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
+    if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($.readini(Equipment.ini,void,$2) || $.readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
     return $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
   }
   :dbow

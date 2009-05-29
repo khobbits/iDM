@@ -135,7 +135,7 @@ on *:TEXT:?top*:#: {
 alias hiscores {
   if ($1 == return) {
     var %x = $sorttok($regsubex(%tophi,/(.+?)=(\d+)(?:\s|$)/g,$+(\2,=,\1,$chr(32))),32,nr)
-    $3- $logo(TOP) Total DM's: $bytes($readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) $regsubex($gettok($regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32))),$+(1-,$2),124),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
+    $3- $logo(TOP) Total DM's: $bytes($.readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) $regsubex($gettok($regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32))),$+(1-,$2),124),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
     unset %tophi
     halt
   }

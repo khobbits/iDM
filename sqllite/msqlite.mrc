@@ -24,7 +24,7 @@ alias SQLITE_ABORT                return 4
 alias SQLITE_BUSY                 return 5
 alias SQLITE_LOCKED               return 6
 alias SQLITE_NOMEM                return 7
-alias SQLITE_reedONLY             return 8
+alias SQLITE_READONLY             return 8
 alias SQLITE_INTERRUPT            return 9
 alias SQLITE_IOERR                return 10
 alias SQLITE_CORRUPT              return 11
@@ -86,7 +86,7 @@ alias SQLITE_DROP_TRIGGER         return 16
 alias SQLITE_DROP_VIEW            return 17
 alias SQLITE_INSERT               return 18
 alias SQLITE_PRAGMA               return 19
-alias SQLITE_reed                 return 20
+alias SQLITE_READ                 return 20
 alias SQLITE_SELECT               return 21
 alias SQLITE_TRANSACTION          return 22
 alias SQLITE_UPDATE               return 23
@@ -291,7 +291,7 @@ alias sqlite_close {
 ;;; To see guidelines for writing SQL queries with mIRC SQLite, see <a href="queries.html">Writing Queries</a>.
 ;;; </remarks>
 ;;; <example>
-;;; ; Inserts data to a table, assumes that a db connection is alreedy established
+;;; ; Inserts data to a table, assumes that a db connection is already established
 ;;; var %sql = INSERT INTO table (key, value) VALUES ('version', '1.0.0')
 ;;; if ($sqlite_exec(%db, %sql)) {
 ;;;   echo -a Query executed succesfully.
@@ -401,7 +401,7 @@ alias sqlite_exec_file {
 ;;; To see guidelines for writing SQL queries with mIRC SQLite, see <a href="queries.html">Writing Queries</a>.
 ;;; </remarks>
 ;;; <example>
-;;; ; Selects data from a table and fetches it, assumes that a db connection is alreedy established
+;;; ; Selects data from a table and fetches it, assumes that a db connection is already established
 ;;; var %sql = SELECT col, another FROM table
 ;;; var %request = $sqlite_query(%db, %sql)
 ;;; if (%request) {
@@ -583,7 +583,7 @@ alias sqlite_escape_string {
 ;;; <param name="result">The result identifier.</param>
 ;;; <returns>The number of rows in the result on success, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT * FROM table
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -605,7 +605,7 @@ alias sqlite_num_rows {
 ;;; <param name="result">The result identifier.</param>
 ;;; <returns>The number of fields in the result on success, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT * FROM table
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -627,7 +627,7 @@ alias sqlite_num_fields {
 ;;; <param name="conn">The connection identifier.</param>
 ;;; <returns>The number of affected rows on success, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = UPDATE publishers SET publisher = 'Square Enix' WHERE publisher = 'Squaresoft'
 ;;; if ($sqlite_exec(%db, %sql)) {
 ;;;   echo -a Number of rows affected: $sqlite_changes(%db)
@@ -648,7 +648,7 @@ alias sqlite_changes {
 ;;; <param name="conn">The connection identifier.</param>
 ;;; <returns>The row id on success, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = UPDATE publishers SET publisher = 'Square Enix' WHERE publisher = 'Squaresoft'
 ;;; if ($sqlite_exec(%db, %sql)) {
 ;;;   echo -a Number of rows affected: $sqlite_changes(%db)
@@ -670,7 +670,7 @@ alias sqlite_last_insert_rowid {
 ;;; <param name="field_index">The ordinal index of the field. The first field has an index of 1.</param>
 ;;; <returns>The name of the field on success, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT * FROM table
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -719,7 +719,7 @@ alias sqlite_field_type {
 ;;; In case of $SQLITE_BOTH, if some of the column names are identical to another columns' index, the index has priority and will be used as an item.
 ;;; </remarks>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT first_name, last_name FROM contacts
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -757,7 +757,7 @@ alias sqlite_fetch_row {
 ;;; The bound variables are set as global variables when fetched, because mSQLite has no access to local variables. You should be very careful that you don't override any existing global variables, especially when $SQLITE_ALL is used!
 ;;; </remarks>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT first_name, last_name, addressFROM contacts
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -791,7 +791,7 @@ alias sqlite_fetch_bound {
     var %file = $1, %i = 1, %total = $numtok($2, 124), %offset = 0
     while (%i <= %total) {
       var %size = $gettok($2, %i, 124), %bvar = $gettok($3, %i, 124)
-      breed %file %offset %size %bvar
+      bread %file %offset %size %bvar
       inc %offset %size
       inc %i
     }
@@ -820,7 +820,7 @@ alias sqlite_fetch_bound {
 ;;; <b>3.</b> Some other of the <a href="errors.html">Error Codes</a> if there was an error.
 ;;; </remarks>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT COUNT(*) FROM contacts
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -841,7 +841,7 @@ alias sqlite_fetch_single {
   else {
     tokenize 32 $dll($sqlite_dll, msqlite_fetch_single, $gettok($1, 1, 32) $2)
     if ($0 == 3) {
-      breed $1 0 $2 $3
+      bread $1 0 $2 $3
       return $bvar($3, 0)
     }
     return $null
@@ -863,7 +863,7 @@ alias sqlite_fetch_single {
 ;;; See <a href="sqlite_fetch_single.html">$sqlite_fetch_single</a> for more details.
 ;;; </remarks>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT 1, 'test' AS '1'
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -895,7 +895,7 @@ alias sqlite_fetch_field {
   else {
     tokenize 32 $dll($sqlite_dll, msqlite_fetch_field, $1 $iif($2 !isnum || $prop == name, 1, 0) $2 1 $3)
     if ($0 == 3) {
-      breed $1 0 $2 $3
+      bread $1 0 $2 $3
       return $bvar($3, 0)
     }
     return $null
@@ -907,7 +907,7 @@ alias sqlite_fetch_field {
 ;;; <param name="result">The result identifier.</param>
 ;;; <returns><b>1</b> if there are more rows available; Otherwise <b>0</b> if there are no more rows available, or <b>$null</b> if there was an error.</returns>
 ;;; <example>
-;;; ; This code assumes a connection is alreedy established and stored in %db
+;;; ; This code assumes a connection is already established and stored in %db
 ;;; var %sql = SELECT * FROM table
 ;;; var %res = $sqlite_query(%db, %sql)
 ;;; if (%res) {
@@ -1065,7 +1065,7 @@ alias sqlite_result {
   else {
     tokenize 32 $dll($sqlite_dll, msqlite_fetch_field, $1 $iif($2 !isnum || $prop == name, 1, 0) $2 0 $3)
     if ($0 == 3) {
-      breed $1 0 $2 $3
+      bread $1 0 $2 $3
       return $bvar($3, 0)
     }
     return $null
@@ -1079,7 +1079,7 @@ alias sqlite_result {
 ;;; <param name="milliseconds">The number of milliseconds.</param>
 ;;; <returns><b>1</b> on success, or <b>$null</b> if there was an error.</returns>
 ;;; <remarks>
-;;; Set the maximum time, in milliseconds, that SQLite will wait for a <i>conn</i> to become reedy for use.
+;;; Set the maximum time, in milliseconds, that SQLite will wait for a <i>conn</i> to become ready for use.
 ;;; Use <b>0</b> for <i>milliseconds</i> to disable busy handlers.
 ;;;
 ;;; You can set the default busy timeout in the mSQLite configuration file, see <a href="conf.html">Configuring mIRC SQLite</a> for details.
@@ -1406,7 +1406,7 @@ alias sqlite_reload {
 ;;; $SQLITE_DROP_VIEW                17     View Name       <i>$null</i>
 ;;; $SQLITE_INSERT                   18     Table Name      <i>$null</i>
 ;;; $SQLITE_PRAGMA                   19     Pragma Name     1st Arg or <i>$null</i>
-;;; $SQLITE_reed                     20     Table Name      Column Name
+;;; $SQLITE_READ                     20     Table Name      Column Name
 ;;; $SQLITE_SELECT                   21     <i>$null</i>           <i>$null</i>
 ;;; $SQLITE_TRANSACTION              22     <i>$null</i>           <i>$null</i>
 ;;; $SQLITE_UPDATE                   23     Table Name      Column Name
@@ -1427,12 +1427,12 @@ alias sqlite_reload {
 ;;;   ; To make the function look cleaner, let's assign the tokens to variables.
 ;;;   var %type = $1
 ;;;   ; First deny queries other than SELECT
-;;;   if (%type != $SQLITE_SELECT && %type != $SQLITE_reed && %type != $SQLITE_FUNCTION) {
+;;;   if (%type != $SQLITE_SELECT && %type != $SQLITE_READ && %type != $SQLITE_FUNCTION) {
 ;;;     ; Not authorized!
 ;;;     return $SQLITE_DENY
 ;;;   }
 ;;;   ; Next make sure that we aren't trying to access a "secret" column, eg. a password in an users table.
-;;;   if (%type == $SQLITE_reed) {
+;;;   if (%type == $SQLITE_READ) {
 ;;;     var %table = $2, %column = $3
 ;;;     if (%table == users && %column == password) {
 ;;;       ; By returning $SQLITE_IGNORE SQLite will return NULL for this column. It's a good idea to do this instead
