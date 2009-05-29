@@ -34,13 +34,21 @@ alias dbformat {
   }
 }
 
+alias db.query {
+  var %query = $1
+  var %htable = $2
+
+
+
+}
+
 alias remdb {
   var %table = $lower($1)
   var %key1 = $sqlite_escape_string($2)
   var %key2 = $sqlite_escape_string($3-)
-  var %sql = DELETE FROM $sqlite_qt(%table) WHERE c1 LIKE $sqlite_qt(%key1)
+  var %sql = DELETE FROM $sqlite_qt(%table) WHERE c1 = $sqlite_qt(%key1)
   if (%key2 != $null) {
-    %sql = %sql AND c2 LIKE $sqlite_qt(%key2)
+    %sql = %sql AND c2 = $sqlite_qt(%key2)
   }
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
@@ -77,8 +85,8 @@ alias readdb {
   var %key2 = $sqlite_escape_string($3)
   var %key3 = $sqlite_escape_string($4)
 
-  var %sql = SELECT * FROM $sqlite_qt(%table) WHERE c1 LIKE $sqlite_qt(%key1) AND c2 LIKE $sqlite_qt(%key2)
-  if (%key3 != $null) { %sql = %sql AND c3 LIKE $sqlite_qt(%key3) }
+  var %sql = SELECT * FROM $sqlite_qt(%table) WHERE c1 = $sqlite_qt(%key1) AND c2 = $sqlite_qt(%key2)
+  if (%key3 != $null) { %sql = %sql AND c3 = $sqlite_qt(%key3) }
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
     var %result = $sqlite_fetch_field(%request, c3)
@@ -105,14 +113,14 @@ alias listdb {
   }
   else {    
     var %sql = SELECT * FROM $sqlite_qt(%table)
-    if ($2 !isnum) { var %key1 = LIKE $sqlite_qt($sqlite_escape_string($2)) }
+    if ($2 !isnum) { var %key1 = = $sqlite_qt($sqlite_escape_string($2)) }
     else { var %key1 = = (SELECT DISTINCT c1 FROM $sqlite_qt(%table) LIMIT $calc($2 -1) $+ ,1) }
     var %column = c2
     if ($3 == 0) { var %numrow = 1 }
     elseif ($3 isnum) { var %limit = $calc($3 -1) $+ ,1 }
     else { 
       if ($sqlite_escape_string($3)) {
-        var %key2 = LIKE $sqlite_qt($sqlite_escape_string($3)) 
+        var %key2 = = $sqlite_qt($sqlite_escape_string($3)) 
       }
     }
   }
@@ -121,7 +129,7 @@ alias listdb {
     if (%key2 != $null) { %sql = %sql AND c2 %key2 }
   }
   else {
-    if (%key2 != $null) { %sql = %sql WHERE c2 LIKE $sqlite_qt(%key2) }
+    if (%key2 != $null) { %sql = %sql WHERE c2 = $sqlite_qt(%key2) }
   }
   if (%limit != $null) { %sql = %sql LIMIT %limit }
   var %request = $sqlite_query(%db, %sql)
