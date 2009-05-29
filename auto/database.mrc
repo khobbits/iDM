@@ -45,7 +45,7 @@ alias remdb {
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
-  echo 5 -a Query %sql executed
+  if (%debugq) echo 5 -a Query %sql executed
 }
 
 alias writedb {
@@ -57,7 +57,7 @@ alias writedb {
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
-  echo 3 -a Query %sql executed
+  if (%debugq) echo 3 -a Query %sql executed
 }
 
 alias insertdb {
@@ -83,7 +83,7 @@ alias readdb {
   if (%request) {
     var %result = $sqlite_fetch_field(%request, c3)
     sqlite_free %request
-    echo 7 -a Query %sql returned %result
+    if (%debugq) echo 7 -a Query %sql returned %result
     return %result
   }
   else {
@@ -129,7 +129,7 @@ alias listdb {
     if (%numrow == 1) { var %result = $sqlite_num_rows(%request) }
     else { var %result = $sqlite_fetch_field(%request, %column) }
     sqlite_free %request
-    echo 6 -a Query %sql returned %result
+    if (%debugq) echo 6 -a Query %sql returned %result
     return %result
   }
   else {
@@ -147,7 +147,7 @@ alias createtable {
 }
 
 on *:START: {
-  load -rs $mircdir/sqllite/msqlite.mrc
+  load -rs " $+ $mircdir/sqllite/msqlite.mrc"
   dbinit
 }
 
