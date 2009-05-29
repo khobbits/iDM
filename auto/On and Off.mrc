@@ -15,11 +15,11 @@ on *:TEXT:*:#: {
   }
 }
 alias displayoff {
-  if (!$ini(OnOff.ini,$2,0)) {
+  if (!$.ini(OnOff.ini,$2,0)) {
     notice $1 $logo(DISABLED) All of the attacks for # are on. | halt 
   }
   var %a 1
-  while ($ini(OnOff.ini,$2,%a)) { var %o %o $v1 | inc %a }
+  while ($.ini(OnOff.ini,$2,%a)) { var %o %o $v1 | inc %a }
   notice $1 $logo(DISABLED) These attacks are currently disabled: $replace(%o,$chr(32),$chr(44))
 }
 alias enable {

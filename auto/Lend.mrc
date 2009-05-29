@@ -1,13 +1,13 @@
 on *:DISCONNECT:{
   var %x = 1
-  while ($ini(lent.ini,lent,%x)) {
+  while ($.ini(lent.ini,lent,%x)) {
     $+(timerlend,$v1) -p
   inc %x }
 }
 
 on *:CONNECT:{
   var %x = 1
-  while ($ini(lent.ini,lent,%x)) {
+  while ($.ini(lent.ini,lent,%x)) {
     $+(timerlend,$v1) -r
   inc %x }
 }

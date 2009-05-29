@@ -47,7 +47,7 @@ on *:TEXT:!startclan*:*: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
-  if ($ini(Clannames.ini,$remove($2,$chr(36),$chr(37)))) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
+  if ($.ini(Clannames.ini,$remove($2,$chr(36),$chr(37)))) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
   if ($.readini(Personalclan.ini,Person,$nick)) { notice $nick You're already in a clan ( $+ $gettok($.readini(Personalclan.ini,Person,$nick),1,58) $+ ). | halt }
   writeini Personalclan.ini Person $nick $remove($2,$chr(36),$chr(37)) $+ :owner
   writeini Clans.ini Clan $nick $remove($2,$chr(36),$chr(37))
@@ -83,16 +83,16 @@ alias deleteclan {
   remini Clannames.ini $1
   if ($1) {
     var %a 1
-    while ($ini(clans.ini,clan,%a)) {
-      if ($remove($.readini(clans.ini,clan,$ini(clans.ini,clan,%a)),:owner) == $1) {
-        remini -n Clans.ini Clan $ini(clans.ini,clan,%a)
+    while ($.ini(clans.ini,clan,%a)) {
+      if ($remove($.readini(clans.ini,clan,$.ini(clans.ini,clan,%a)),:owner) == $1) {
+        remini -n Clans.ini Clan $.ini(clans.ini,clan,%a)
       }
       inc %a
     }
     var %a 1
-    while ($ini(personalclan.ini,person,%a)) {
-      if ($remove($.readini(personalclan.ini,person,$ini(personalclan.ini,person,%a)),:owner) == $1) {
-        remini -n Personalclan.ini Person $ini(personalclan.ini,person,%a)
+    while ($.ini(personalclan.ini,person,%a)) {
+      if ($remove($.readini(personalclan.ini,person,$.ini(personalclan.ini,person,%a)),:owner) == $1) {
+        remini -n Personalclan.ini Person $.ini(personalclan.ini,person,%a)
       }
       inc %a
     }
@@ -103,14 +103,14 @@ on *:TEXT:?dmclan*:#: {
   if ($left($1,1) isin !@) && ($right($1,-1) == dmclan) {
     if (!$2) {
       if ($.readini(Clans.ini,Clan,$nick)) {
-        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$nick)) $clanstats($.readini(clans.ini,clan,$nick)) (Total clans $s1($ini(clannames.ini,0)) $+ )
+        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$nick)) $clanstats($.readini(clans.ini,clan,$nick)) (Total clans $s1($.ini(clannames.ini,0)) $+ )
         halt
       }
       notice $nick $logo(ERROR) You're not in a clan. | halt
     }
     if ($2) {
       if ($.readini(Clans.ini,Clan,$2)) {
-        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$2)) $clanstats($.readini(clans.ini,clan,$2)) (Total clans $s1($ini(clannames.ini,0)) $+ )
+        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$2)) $clanstats($.readini(clans.ini,clan,$2)) (Total clans $s1($.ini(clannames.ini,0)) $+ )
         halt      
       }
       notice $nick $logo(ERROR) $qt($2) isn't in a clan. | halt 
@@ -121,9 +121,9 @@ alias claninfo {
   unset %ci
   unset %tc
   var %a 1
-  while ($ini(clans.ini,clan,%a)) {
-    if ($.readini(clans.ini,clan,$ini(clans.ini,clan,%a)) == $1) && ($ini(clans.ini,clan,%a) != share) {
-      set %ci %ci $ini(clans.ini,clan,%a)
+  while ($.ini(clans.ini,clan,%a)) {
+    if ($.readini(clans.ini,clan,$.ini(clans.ini,clan,%a)) == $1) && ($.ini(clans.ini,clan,%a) != share) {
+      set %ci %ci $.ini(clans.ini,clan,%a)
       inc %tc
     }
     inc %a
@@ -139,6 +139,6 @@ alias clanrank {
   HALT
   ;I never understood how to script ranks..
   var %a 1
-  while ($ini(clantracker.ini,wins,%a)) { var %crank %crank $+($ini(clantracker.ini,wins,%a),$chr(58),$.readini(clantracker.ini,wins,$ini(clantracker.ini,wins,%a))) | inc %a }
+  while ($.ini(clantracker.ini,wins,%a)) { var %crank %crank $+($.ini(clantracker.ini,wins,%a),$chr(58),$.readini(clantracker.ini,wins,$.ini(clantracker.ini,wins,%a))) | inc %a }
   echo -a %crank
 }

@@ -23,13 +23,13 @@ on *:TEXT:!*:#: {
         notice $nick You're frozen and can't use melee.
         halt 
       }
-      if ($ini(pvp.ini,$right($1,-1))) {
+      if ($.ini(pvp.ini,$right($1,-1))) {
         if (!$.readini(pvp.ini,$right($1,-1),$nick)) {
           notice $nick You don't have this weapon.
           halt
         }
       }
-      if ($ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {
+      if ($.ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {
         if (!$.readini(equipment.ini,$replace($right($1,-1),surf,mudkip),$nick)) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
@@ -45,7 +45,7 @@ alias damage {
   ;2 is other person
   ;3 is weapon
   ;4 is chan
-  if ($ini(pvp.ini,$3)) {
+  if ($.ini(pvp.ini,$3)) {
     if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
     elseif ($.readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($.readini(PvP.ini,$3,$1) -1) }
   }

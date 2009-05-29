@@ -1,11 +1,3 @@
-;alias write {
-;  dbformat writedb $1-
-;}
-
-;alias read {
-;  return $dbformat(readdb,$1-)
-;}
-
 alias writeini {
   dbformat writedb $1-
 }
@@ -19,38 +11,22 @@ alias remini {
 }
 
 alias ini {
-  return $dbformat(checkdb,$1-)
+  return $dbformat(listdb,$1-)
 }
 
 alias dbformat {
+  if (!%db) {
+    dbinit
+  }
   tokenize 32 $1-
-  var %string = $remove($2,$chr(32) $+ -n) $3-
+  var %string = $remove($2,-n) $3-
   %string = $remove(%string,.ini,.txt)
+  %string = $replace(%string,$chr(32) $+ $chr(32),$chr(32))
   tokenize 32 $1 %string
   if ($1 == readdb) {
     return $readdb($2,$3,$4)
   }
-  elseif ($1 == checkdb) {
-
-    if ($4 == $null) {
-      echo -a this should return $ini($2,$3)
-      echo -a this regards topics only
-      if ($3 == 0) {
-        echo -a this returns number of topics
-      } 
-      else {
-        echo -a this returns topic title number $3
-      }
-    } 
-    else {
-      return $ini($2,$3,$4)
-      if ($4 == 0) {
-        echo -a this returns number of items in topic $3
-      }
-      else {
-        echo -a this returns item $4 of items in topic $3
-      } 
-    }
+  elseif ($1 == listdb) {
     return $listdb($2,$3,$4)
   }
   else {
@@ -62,9 +38,9 @@ alias remdb {
   var %table = $lower($1)
   var %key1 = $sqlite_escape_string($2)
   var %key2 = $sqlite_escape_string($3-)
-  var %sql = DELETE FROM ' $+ %table $+ ' WHERE c1 LIKE ' $+ %key1 $+ '
+  var %sql = DELETE FROM $sqlite_qt(%table) WHERE c1 LIKE $sqlite_qt(%key1)
   if (%key2 != $null) {
-    %sql = %sql AND c2 LIKE ' $+ %key2 $+ '
+    %sql = %sql AND c2 LIKE $sqlite_qt(%key2)
   }
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr
@@ -76,7 +52,7 @@ alias writedb {
   var %key1 = $sqlite_escape_string($2)
   var %key2 = $sqlite_escape_string($3)
   var %key3 = $sqlite_escape_string($4-)
-  var %sql = REPLACE INTO ' $+ %table $+ ' VALUES ( ' $+ %key1 $+ ', ' $+ %key2 $+ ', ' $+ %key3 $+ ' )
+  var %sql = REPLACE INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr
   }
@@ -87,7 +63,7 @@ alias insertdb {
   var %key1 = $sqlite_escape_string($2)
   var %key2 = $sqlite_escape_string($3)
   var %key3 = $sqlite_escape_string($4-)
-  var %sql = INSERT INTO ' $+ %table $+ ' VALUES ( ' $+ %key1 $+ ', ' $+ %key2 $+ ', ' $+ %key3 $+ ' )
+  var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr
   }
@@ -99,10 +75,8 @@ alias readdb {
   var %key2 = $sqlite_escape_string($3)
   var %key3 = $sqlite_escape_string($4)
 
-  var %sql = SELECT * FROM ' $+ %table $+ ' WHERE c1 LIKE ' $+ %key1 $+ ' AND c2 LIKE ' $+ %key2 $+ '
-  if (%key3 != $null) {
-    %sql = %sql AND c3 LIKE ' $+ %key3 $+ '
-  }
+  var %sql = SELECT * FROM $sqlite_qt(%table) WHERE c1 LIKE $sqlite_qt(%key1) AND c2 LIKE $sqlite_qt(%key2)
+  if (%key3 != $null) { %sql = %sql AND c3 LIKE $sqlite_qt(%key3) }
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
     var %result = $sqlite_fetch_field(%request, c3)
@@ -117,44 +91,36 @@ alias readdb {
 
 alias listdb {
   var %table = $lower($1)
-  if ($2 == 0) {
+  if ($$2 == 0) {
+    var %sql = SELECT DISTINCT c1 FROM $sqlite_qt(%table)
     var %numrow = 1
   }
-  elseif ($2 isnum) {
-    var %limit = $2
+  elseif ($2 isnum && $3 == $null) {
+    var %sql = SELECT DISTINCT c1 FROM $sqlite_qt(%table)
+    var %limit = $calc($2 -1) $+ ,1
+    var %column = c1
+  }
+  else {    
+    var %sql = SELECT * FROM $sqlite_qt(%table)
+    if ($2 !isnum) { var %key1 = LIKE $sqlite_qt($sqlite_escape_string($2)) }
+    else { var %key1 = = (SELECT DISTINCT c1 FROM $sqlite_qt(%table) LIMIT $calc($2 -1) $+ ,1) }
     var %column = c2
+    if ($3 == 0) { var %numrow = 1 }
+    elseif ($3 isnum) { var %limit = $calc($3 -1) $+ ,1 }
+    else { var %key2 = LIKE $sqlite_qt($sqlite_escape_string($3)) }
   }
-  else {  
-    var %key1 = $sqlite_escape_string($2)
-    var %column = c3
-    if ($3 == 0) {
-      var %numrow = 1
-    }
-    elseif ($3 isnum) {
-      var %limit = $3
-    }
-    else {  
-      var %key2 = $sqlite_escape_string($3)
-    }
-  }
-  var %sql = SELECT * FROM ' $+ %table $+ '
   if (%key1 != $null) {
-    %sql = %sql WHERE c1 LIKE ' $+ %key1 $+ '
+    %sql = %sql WHERE c1 %key1
+    if (%key2 != $null) { %sql = %sql AND c2 %key2 }
   }
-  if (%key2 != $null) {
-    %sql = %sql AND c2 LIKE ' $+ %key2 $+ '
+  else {
+    if (%key2 != $null) { %sql = %sql WHERE c2 LIKE $sqlite_qt(%key2) }
   }
-  if (%limit != $null) {
-    %sql = %sql LIMIT %limit
-  }
+  if (%limit != $null) { %sql = %sql LIMIT %limit }
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
-    if (%numrow == 0) {
-      var %result = $sqlite_num_rows(%request)
-    }
-    else {
-      var %result = $sqlite_fetch_field(%request, %column)
-    }
+    if (%numrow == 1) { var %result = $sqlite_num_rows(%request) }
+    else { var %result = $sqlite_fetch_field(%request, %column) }
     sqlite_free %request
     return %result
   }
@@ -165,7 +131,6 @@ alias listdb {
 }
 
 alias createtable {
-
   var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ' $+ $lower($1) $+ ' (c1, c2, c3, PRIMARY KEY (c1, c2))
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error: %sqlite_errstr
@@ -175,6 +140,10 @@ alias createtable {
 
 on *:START: {
   load -rs $mircdir/sqllite/msqlite.mrc
+  dbinit
+}
+
+alias dbinit {
   set %db $sqlite_open(database/idm.db)
   if (!%db) {
     echo 4 -s Error: %sqlite_errstr
@@ -203,13 +172,14 @@ alias exportiniline {
     set %ex.section $remove($1,[,])
     return
   }
-  insertdb %ex.table %ex.section $gettok($1,1,61) $gettok($1,2,61)
+  var %ex.key = $regsubex($gettok($1,1,61),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
+  insertdb %ex.table %ex.section %ex.key $gettok($1,2,61)
 }
 
 alias exportiniall {
   sqlite_close %db
   unset %db
-  set %db $sqlite_open_memory(idm.db)
+  set %db $sqlite_open_memory(database/idm.db)
   if (%db) {
     echo -a Memory database created and opened successfully.
   }
@@ -221,7 +191,6 @@ alias exportiniall {
 }
 alias exportinibatch1 {
   exportini admins
-  return
   exportini blacklist
   exportini clannames
   exportini clans
@@ -257,6 +226,6 @@ alias exportinibatch4 {
   timer 1 1 exportinibatch5
 }
 alias exportinibatch5 {
-  sqlite_write_to_file %db idm.db
-  set %db $sqlite_open(idm.db)
+  sqlite_write_to_file %db database/idm.db
+  set %db $sqlite_open(database/idm.db)
 }

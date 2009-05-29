@@ -21,7 +21,7 @@ On $*:TEXT:/^[!@]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) {
-    notice $nick $logo(Special Items) Belong Blade: $s2($ini(sitems.ini,belong,0)) Allergy Pills: $s2($ini(sitems.ini,allegra,0)) Beaumerang: $s2($ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($ini(sitems.ini,snake,0)) KHonfound Ring: $s2($ini(sitems.ini,kh,0))
+    notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0))
     ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
   }
 }

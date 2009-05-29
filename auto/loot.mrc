@@ -52,7 +52,7 @@ alias dead {
   if (accumulator isin %rareitem) { unset %rareprice | writeini -n equipment.ini accumulator $3 $calc($.readini(equipment.ini,accumulator,$3) +1) }
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
   if ($gettok($.readini(personalclan.ini,person,$2),1,58) != $gettok($.readini(personalclan.ini,person,$3),1,58)) {
-    if ($.readini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),share) == on) && ($ini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),0) > 2) { var %a 1,%d 0 | while ($ini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),%a)) { inc %d | inc %a } | sharedrop $calc(%d -1) $gettok($.readini(Personalclan.ini,Person,$3),1,58) %combined $1 $3 $replace(%item1,$chr(32),$chr(95)) $replace(%item2,$chr(32),$chr(95)) $replace(%item3,$chr(32),$chr(95)) $replace(%rareitem,$chr(32),$chr(95)) | unset %item*
+    if ($.readini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),share) == on) && ($.ini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),0) > 2) { var %a 1,%d 0 | while ($.ini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),%a)) { inc %d | inc %a } | sharedrop $calc(%d -1) $gettok($.readini(Personalclan.ini,Person,$3),1,58) %combined $1 $3 $replace(%item1,$chr(32),$chr(95)) $replace(%item2,$chr(32),$chr(95)) $replace(%item3,$chr(32),$chr(95)) $replace(%rareitem,$chr(32),$chr(95)) | unset %item*
       unset %price*
       unset %rare*
       unset %drop*
@@ -87,11 +87,11 @@ alias price {
 alias sharedrop {
   set %sharedrop $floor($calc($3 / $1))
   var %a 1
-  while ($ini(clannames.ini,$2,%a)) {
-    if ($ini(clannames.ini,$2,%a) != share) {
+  while ($.ini(clannames.ini,$2,%a)) {
+    if ($.ini(clannames.ini,$2,%a) != share) {
       if ($.readini(events.ini,event,double)) { var %sharedrop $calc(%sharedrop *2) }
       if ($.readini(events.ini,event,triple)) { var %sharedrop $calc(%sharedrop *3) }
-      writeini -n money.ini money $ini(clannames.ini,$2,%a) $calc($.readini(money.ini,money,$ini(clannames.ini,$2,%a)) + %sharedrop)
+      writeini -n money.ini money $.ini(clannames.ini,$2,%a) $calc($.readini(money.ini,money,$.ini(clannames.ini,$2,%a)) + %sharedrop)
     }
     inc %a
   }

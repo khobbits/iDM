@@ -60,7 +60,7 @@ on *:TEXT:!join:#iDM.Tournaments: {
     notice $nick $logo(ERROR) You need at least $s1($price(10000000)) to join a tournament.
     halt
   }
-  if ($ini(tournament.ini,players,0) > 16) {
+  if ($.ini(tournament.ini,players,0) > 16) {
     notice $nick $logo(ERROR) There are already 16 players.
     halt
   }

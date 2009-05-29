@@ -121,23 +121,21 @@ alias totalhit {
   return $false
 }
 
-on *:TEXT:?top*:#: {
-  if ($left($1,1) !isin !@) { halt }
-  var %display = $iif(@* iswm $1,msg #,notice $nick)
-  if ($right($1,-1) != top) { halt }
+on $*:TEXT:/^[!@]top/Si:#: { 
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  if (!$2) { goto hiscores | halt }
+  var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }
-  goto hiscores
-  :hiscores
-  $(,$+($chr(102),$chr(105),$chr(108),$chr(116),$chr(101),$chr(114))) -fkg money.ini hiscores /(.+?)=(\d{11,})/ | hiscores return $calc($iif($2,$2,5) + 2) %display
+  filter -fkg money.ini hiscores /(.+?)=(\d{11,})/ 
+  set %results $calc($iif($2,$2,5) + 2)
+  var %x = $sorttok($regsubex(%tophi,/(.+?)=(\d+)(?:\s|$)/g,$+(\2,=,\1,$chr(32))),32,nr)
+
+  var %output = $regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32)))
+
+  var %output = $gettok(%output,$+(1-,%results),124)
+  var %output = $regsubex(%output,/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
+  %display $logo(TOP) Total DM's: $bytes($readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) %output
+  unset %tophi
 }
 alias hiscores {
-  if ($1 == return) {
-    var %x = $sorttok($regsubex(%tophi,/(.+?)=(\d+)(?:\s|$)/g,$+(\2,=,\1,$chr(32))),32,nr)
-    $3- $logo(TOP) Total DM's: $bytes($.readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) $regsubex($gettok($regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32))),$+(1-,$2),124),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
-    unset %tophi
-    halt
-  }
   set %tophi %tophi $1-
 }
