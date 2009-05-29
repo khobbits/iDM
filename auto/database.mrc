@@ -18,7 +18,7 @@ alias dbformat {
   if (!%db) {
     dbinit
   }
-  tokenize 32 $1-
+  tokenize 32 $lower($1-)
   var %string = $remove($2,-n) $3-
   %string = $remove(%string,.ini,.txt)
   %string = $replace(%string,$chr(32) $+ $chr(32),$chr(32))
@@ -43,8 +43,9 @@ alias remdb {
     %sql = %sql AND c2 LIKE $sqlite_qt(%key2)
   }
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
+  echo 5 -a Query %sql executed
 }
 
 alias writedb {
@@ -54,8 +55,9 @@ alias writedb {
   var %key3 = $sqlite_escape_string($4-)
   var %sql = REPLACE INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
+  echo 3 -a Query %sql executed
 }
 
 alias insertdb {
@@ -65,7 +67,7 @@ alias insertdb {
   var %key3 = $sqlite_escape_string($4-)
   var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
 }
 
@@ -81,10 +83,11 @@ alias readdb {
   if (%request) {
     var %result = $sqlite_fetch_field(%request, c3)
     sqlite_free %request
+    echo 7 -a Query %sql returned %result
     return %result
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
 }
@@ -107,7 +110,11 @@ alias listdb {
     var %column = c2
     if ($3 == 0) { var %numrow = 1 }
     elseif ($3 isnum) { var %limit = $calc($3 -1) $+ ,1 }
-    else { var %key2 = LIKE $sqlite_qt($sqlite_escape_string($3)) }
+    else { 
+      if ($sqlite_escape_string($3)) {
+        var %key2 = LIKE $sqlite_qt($sqlite_escape_string($3)) 
+      }
+    }
   }
   if (%key1 != $null) {
     %sql = %sql WHERE c1 %key1
@@ -122,10 +129,11 @@ alias listdb {
     if (%numrow == 1) { var %result = $sqlite_num_rows(%request) }
     else { var %result = $sqlite_fetch_field(%request, %column) }
     sqlite_free %request
+    echo 6 -a Query %sql returned %result
     return %result
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
 }
@@ -133,7 +141,7 @@ alias listdb {
 alias createtable {
   var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ' $+ $lower($1) $+ ' (c1, c2, c3, PRIMARY KEY (c1, c2))
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error: %sqlite_errstr
+    echo 4 -s Error: %sqlite_errstr - Query %sql
     halt 
   }
 }
@@ -164,7 +172,7 @@ alias exportini {
   set %ex.table $1
   set %ex.section NULL
   filter -fk %ex.file exportiniline *
-
+  unset %ex.*
   echo -s Exported $1
 }
 alias exportiniline {
@@ -173,7 +181,7 @@ alias exportiniline {
     return
   }
   var %ex.key = $regsubex($gettok($1,1,61),/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
-  insertdb %ex.table %ex.section %ex.key $gettok($1,2,61)
+  insertdb $lower(%ex.table) $lower(%ex.section) $lower(%ex.key) $lower($gettok($1,2,61))
 }
 
 alias exportiniall {
@@ -187,7 +195,7 @@ alias exportiniall {
     echo -a Error opening a memory database: %sqlite_errstr
     halt
   }
-  timer 1 1 exportinibatch1
+  .timer 1 1 exportinibatch1
 }
 alias exportinibatch1 {
   exportini admins
@@ -199,7 +207,7 @@ alias exportinibatch1 {
   exportini exceptions
   exportini ignore
   exportini lent
-  exportini login TEMP
+  exportini login
   exportini onoff
   exportini personalclan
   exportini positions
@@ -207,25 +215,27 @@ alias exportinibatch1 {
   exportini sitems
   exportini status
   exportini totalwins
-  timer 1 1 exportinibatch2
+  .timer 1 1 exportinibatch2
 }
 
 alias exportinibatch2 {
   exportini passes
   exportini pvp
-  timer 1 1 exportinibatch3
+  .timer 1 1 exportinibatch3
 }
 alias exportinibatch3 {
   exportini equipment
   exportini wins
-  timer 1 1 exportinibatch4
+  .timer 1 1 exportinibatch4
 }
 alias exportinibatch4 {
   exportini losses  
   exportini money
-  timer 1 1 exportinibatch5
+  .timer 1 1 exportinibatch5
 }
 alias exportinibatch5 {
   sqlite_write_to_file %db database/idm.db
   set %db $sqlite_open(database/idm.db)
+
+  echo -a Finished Exporting ini files to .db
 }
