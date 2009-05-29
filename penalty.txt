@@ -566,3 +566,13 @@ jesse[doom] got !enddm'd on #a_channel oldcash 340232455 newcash 338531293
 twizzy got !enddm'd on #cam22 oldcash 218647583 newcash 217554346
 g0d_of_w4rs got !enddm'd on #sandnigger oldcash 914081616 newcash 909511208
 Alexpeeex got !enddm'd on #mchughz oldcash 122135816 newcash 121525137
+Shinn_Gundam parted channel #istake during a dm oldcash 45803962382 newcash 44887883135
+Xz got !enddm'd on #ColaBot oldcash 11027331 newcash 10972195
+Nodnoc parted channel #free4all during a dm oldcash 42804646 newcash 41948554
+Jake|J4k3_1 got !enddm'd on #iDM oldcash 29408793 newcash 29261750
+Zxzdavidzxz got !enddm'd on #iDM oldcash 2852601423 newcash 2838338416
+yasmin got !enddm'd on #iDM oldcash 6170024492 newcash 6139174370
+mjr_merlin got !enddm'd on #dalinz oldcash 609487809 newcash 606440370
+HeathyBoy95_ parted channel #iDM during a dm oldcash 7263270 newcash 7118005
+Dead_Red_Man parted channel #gfcorp during a dm oldcash 192172061 newcash 188328620
+Last_Essence got !enddm'd on #legends oldcash 2689800 newcash 2676351
