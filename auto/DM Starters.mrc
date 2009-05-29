@@ -23,8 +23,8 @@ on *:TEXT:!dm:#: {
     set %food1 [ $+ [ $chan ] ] 10 | set %food2 [ $+ [ $chan ] ] 10 | set -u25 %enddm [ $+ [ $chan ] ] 0
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
   }
-  if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) {  
-    if (!$readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2)) {
+  if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) {
+    if (!$readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2))) {
       if (%p1 [ $+ [ $chan ] ] isin %p2 [ $+ [ $chan ] ] || %p2 [ $+ [ $chan ] ] isin %p1 [ $+ [ $chan ] ]) {
         msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
         msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]

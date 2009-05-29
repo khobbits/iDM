@@ -1,118 +1,118 @@
-Grapes:201
+Grapes:203
 Bucket:7
 Apple Mush:39
 Wimpy Feather:11
 Needle:1
 Thread:3
-1/2 Plain Pizza:127
+1/2 Plain Pizza:124
 1/3 Evil Turnip:13
 Hammer:95700
-Hair:98
+Hair:102
 Gnome Scarf:1200000
-Pat of Butter:421
-Zamorak Cloak:899200
-Zamorak d'hide:934800
-Dragon Platebody:8700000
+Pat of Butter:445
+Zamorak Cloak:922900
+Zamorak d'hide:947600
+Dragon Platebody:8500000
 Specpot:1
-Guthan's Helm:2200000
-Guthan's Chainskirt:252200
-Guthan's Platebody:177400
-Guthan's Spear:655100
-Torag's Helm:495700
-Torag's Platelegs:327500
-Torag's Platebody:211500
+Guthan's Helm:2100000
+Guthan's Chainskirt:238700
+Guthan's Platebody:180300
+Guthan's Spear:684800
+Torag's Helm:492400
+Torag's Platelegs:331600
+Torag's Platebody:216900
 Torag's Hammers:95700
-Ahrim's Hood:45900
-Ahrim's Staff:53200
-Ahrim's Skirt:743000
-Ahrim's Robetop:415000
+Ahrim's Hood:50300
+Ahrim's Staff:51400
+Ahrim's Skirt:758800
+Ahrim's Robetop:421800
 Verac's Helm:1700000
-Verac's Plateskirt:471400
-Verac's Brassard:214400
-Verac's Flail:143100
-Dharok's Helm:4000000
-Dharok's Platelegs:312100
-Dharok's Platebody:198200
+Verac's Plateskirt:477100
+Verac's Brassard:216400
+Verac's Flail:157400
+Dharok's Helm:4100000
+Dharok's Platelegs:327500
+Dharok's Platebody:195900
 Dharok's Axe:124500
-Dragon Hatchet:1900000
-Dragon Chainbody:682700
-Dragon Dagger:29800
-Dragon Mace:30400
-Dragon Med Helm:251200
-Dragon Platelegs:337300
+Dragon Hatchet:1700000
+Dragon Chainbody:648500
+Dragon Dagger:29600
+Dragon Mace:30000
+Dragon Med Helm:239300
+Dragon Platelegs:320700
 Dragon Plateskirt:185700
-Dragon Boots:279800
+Dragon Boots:280000
 Abyssal Whip:1500000
-Toktz-ket-xil:126000
-Obsidian Cape:155400
-Master Wand:585300
-Dark Bow:857400
-Ranger Boots:6600000
-Black D'hide Body:8052
-Archers Ring:386800
+Toktz-ket-xil:126900
+Obsidian Cape:153500
+Master Wand:500700
+Dark Bow:795600
+Ranger Boots:6800000
+Black D'hide Body:7946
+Archers Ring:383800
 Berserker Ring:1300000
-Warrior Ring:102300
-Seers Ring:63000
-Lobster:2704
-Shark:959
-Monkfish:331
+Warrior Ring:95200
+Seers Ring:57000
+Lobster:2753
+Shark:973
+Monkfish:340
 Vesta's Chainbody:361200
 Robin Hood Hat:2000000
-Morrigan's Javelin:8032
+Morrigan's Javelin:7943
 Vesta's Spear:419300
 Vesta's Longsword:1200000
 Statius's Full Helm:201800
 Statius's Platebody:325000
 Statius's Platelegs:283400
-Statius's Warhammer:891900
-Ancient staff:62200
-Anti-dragon shield:361
-Apprentice wand:1731
+Statius's Warhammer:885500
+Ancient staff:61200
+Anti-dragon shield:372
+Apprentice wand:1607
 Archer helm:53600
-Armadyl chestplate:10300000
+Armadyl chestplate:10400000
 Armadyl helmet:4000000
-Armadyl plateskirt:10900000
-Bandos boots:756300
-Bandos chestplate:13400000
-Bandos tassets:11800000
-Berserker helm:76600
-Berserker necklace:156600
+Armadyl plateskirt:11000000
+Bandos boots:767700
+Bandos chestplate:13300000
+Bandos tassets:11700000
+Berserker helm:76900
+Berserker necklace:142800
 Black salamander:91
 Blessed spirit shield:3000000
-Crystal shield:756400
+Crystal shield:760000
 Disk of returning:4800000
 Draconic visage:16900000
-Dragon 2h sword:640400
-Dragon arrows:2440
-Dragon full helm:9200000
-Dragon halberd:195200
+Dragon 2h sword:622000
+Dragon arrows:2509
+Dragon full helm:8800000
+Dragon halberd:195500
 Dragon spear:37200
-Dragonfire shield:16000000
-Gilded full helm:395500
+Dragonfire shield:15800000
+Gilded full helm:395300
 Gilded kiteshield:451100
 Gilded platebody:1200000
-Gilded platelegs:569200
-Gilded plateskirt:153900
+Gilded platelegs:581000
+Gilded plateskirt:150700
 Godsword shard 1:299700
 Godsword shard 2:299700
 Godsword shard 3:299700
-Mystic gloves:17900
-Mystic hat:12500
+Mystic gloves:19400
+Mystic hat:13700
 Mystic robe bottom:48300
-Mystic robe top:72500
-Magic longbow:1273
-Magic shortbow:756
-Rock-shell boots:2286
-Rock-shell gloves:2354
+Mystic robe top:72400
+Magic longbow:1257
+Magic shortbow:776
+Rock-shell boots:2392
+Rock-shell gloves:2315
 Rock-shell helm:21000
-Rock-shell legs:49900
-Rock-shell plate:49200
-Rune full helm:287400
-Rune full helm (g):287400
-Rune full helm (t):287400
-Rune halberd:76700
-Rune platebody:563300
-Saradomin full helm:792300
-Saradomin sword:6300000
+Rock-shell legs:50300
+Rock-shell plate:48800
+Rune full helm:288200
+Rune full helm (g):288200
+Rune full helm (t):288200
+Rune halberd:76600
+Rune platebody:579800
+Saradomin full helm:806600
+Saradomin sword:6200000
 Bandos hilt:17000000
-Zamorak hilt:24100000
+Zamorak hilt:24200000

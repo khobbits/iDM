@@ -1,3 +1,7 @@
+on *:load: {
+
+}
+
 on *:start: {
   if (*-Auto* iswm $cmdline) {
     set %botnum $right($matchtok($cmdline,-Auto,1,32),1)
