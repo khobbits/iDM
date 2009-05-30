@@ -65,7 +65,7 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
     halt
   }
   if (!$.readini(Equipment.ini,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
-  updateini Money.ini Money $nick +250000000
+  updateini Money.ini Money $nick + $+ %price
   updateini Equipment.ini %sname $nick -1
   if ($.readini(equipment.ini,%sname,$nick) < 1) {
     remini -n Equipment.ini %sname $nick
