@@ -34,27 +34,27 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   }
   else {
     if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-      if ($.readini(sitems.ini,belong,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      if ($.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini belong $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
     elseif ($nick == Allegra || $nick == Strychnine) { 
-      if ($.readini(sitems.ini,allegra,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      if ($.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini allegra $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
     elseif ($nick == Beau) { 
-      if ($.readini(sitems.ini,beau,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      if ($.readini(sitems.ini,beau,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini beau $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
     elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { 
-      if ($.readini(sitems.ini,snake,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      if ($.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini snake $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
     elseif ($nick == KHobbits) { 
-      if ($.readini(sitems.ini,kh,$2)) { notice $logo(ERROR) $nick $2 already has your item | halt } 
+      if ($.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
       writeini sitems.ini kh $2 true 
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
@@ -69,27 +69,27 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   }
   else {
     if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) { 
-      if (!$.readini(sitems.ini,belong,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      if (!$.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini belong $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
     elseif ($nick == Allegra || $nick == Strychnine) { 
-      if (!$.readini(sitems.ini,allegra,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      if (!$.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini allegra $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
     elseif ($nick == Beau) { 
-      if (!$.readini(sitems.ini,beaumerang,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      if (!$.readini(sitems.ini,beaumerang,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini beau $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
     elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { 
-      if (!$.readini(sitems.ini,snake,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      if (!$.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini snake $2 
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
     elseif ($nick == KHobbits) { 
-      if (!$.readini(sitems.ini,kh,$2)) { notice $logo(ERROR) $nick $2 doesn't have your item | halt } 
+      if (!$.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
       remini sitems.ini kh $2 
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
@@ -111,7 +111,7 @@ on *:TEXT:!admin:#iDM.staff: {
 }
 on *:TEXT:!except*:#iDm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (!$.readini(admins.ini,Support,$address($nick,3)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$2) { notice $Nick Please specify a hostname to except from the clone script. E.g. !except *!*@Swift43rrf435.dns.ntl.com | halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   writeini exceptions.ini Exceptions $2 on
