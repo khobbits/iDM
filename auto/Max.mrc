@@ -122,6 +122,7 @@ alias totalhit {
 }
 
 on $*:TEXT:/^[!@.]top/Si:#: { 
+  halt
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }

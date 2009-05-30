@@ -650,3 +650,4 @@ sparrok parted channel #tmc during a dm oldcash 958563839 newcash 939392563
 mastervin89 parted channel #iDM during a dm oldcash 282939798 newcash 277281003
 Hotshot3242 got !enddm'd on #iDM oldcash 28278248642 newcash 28136857399
 gmaul4life parted channel #calamity_soulwars during a dm oldcash 1725424951 newcash 1690916452
+[Whiteboieric] got !enddm'd on #sg_dragon2 oldcash 99280957 newcash 98784553
