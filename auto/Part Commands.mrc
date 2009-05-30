@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!@.]part/Si:#: { 
   if (# == #iDM) || (# == #iDM.Staff) { halt }
   if ($2 == $me) {
-    if ($nick isop #) || ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+    if ($nick isop #) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on

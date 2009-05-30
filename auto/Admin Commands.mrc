@@ -19,7 +19,7 @@ On $*:TEXT:/^[!@.]Warn .*/Si:#iDM.Staff: {
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) {
     notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0))
     ;notice $nick $logo(Special Items) To view all who owns an item type !viewitems admin name.
@@ -28,7 +28,7 @@ On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
 
 On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { 
     notice You need to include a name you want to give your item too.
   }
@@ -63,7 +63,7 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
 
 On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { 
     notice You need to include a name you want to give your item too.
   }
@@ -97,7 +97,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
 }
 
 on *:TEXT:!rehash:#iDM.staff: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($cid != $scon(1)) { halt }
   set %rand $rand(5000,30000)
   privmsg $chan $s1(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
@@ -105,20 +105,20 @@ on *:TEXT:!rehash:#iDM.staff: {
 }
 
 on *:TEXT:!admin:#iDM.staff: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s1(Admin commands:) $s2(!part #, !bl #, !ubl #, !cbl #, !chans, !active, !amsg, !join bot #, !msg #, !pass nick, !setpass nick password, !ignore host, !rignore host, !cignore host, !listbl, !except host, !remdm nick, !partall, !idle, !giveitem nick, !takeitem nick, !viewitems)
 }
 on *:TEXT:!except*:#iDm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a hostname to except from the clone script. E.g. !except *!*@Swift43rrf435.dns.ntl.com | halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   writeini exceptions.ini Exceptions $2 on
   notice $nick $s2($2) has successfully been added to my exception list.
 }
 on *:TEXT:!ignore*:#idm.staff: {
-  if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
@@ -126,7 +126,7 @@ on *:TEXT:!ignore*:#idm.staff: {
   writeini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
 }
 on *:TEXT:!rignore*:#idm.staff: {
-  if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
@@ -134,10 +134,6 @@ on *:TEXT:!rignore*:#idm.staff: {
   remini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
 }
 alias position {
-  if ($.readini(Positions.ini,Positions,$nick)) {
-    return $v1
-    halt
-  }
   if ($.readini(Positions.ini,Positions,$address($nick,3))) {
     return $v1
     halt
@@ -146,8 +142,11 @@ alias position {
 }
 on *:JOIN:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) { 
-    msg # $logo($iif($.readini(admins.ini,support,$address($nick,3)),SUPPORT,ADMIN)) $iif($.readini(admins.ini,support,$address($nick,3)),Bot support,$position($nick)) $nick has joined the channel.
+  if ($.readini(Admins.ini,Admins,$address($nick,3))) { 
+    msg # $logo(ADMIN) $position($nick) $nick has joined the channel.
+  } 
+  elseif ($.readini(admins.ini,support,$address($nick,3))) { 
+    msg # $logo(SUPPORT) Bot support $nick has joined the channel.
   }
   if ($nick == $me) {
     if (# == #iDm || # == #iDM.staff) { halt }
@@ -158,7 +157,7 @@ alias botnames {
   return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU]
 }
 on *:TEXT:!part*:#: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($left($2,1) == $chr(35)) && ($me ison $2) {
     part $2 Part requested by $position($nick) $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93))) 
     notice $nick I have parted $2
@@ -226,11 +225,11 @@ alias ubl {
   }
 }
 on *:TEXT:!chans*:*: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
 }
 on *:TEXT:!clear*:*: {
-  if (!$.readini(Admins.ini,Admins,$Nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (%dmon [ $+ [ $chan ] ]) { halt }
   var %a $comchan($me,0),%c
   while (%a) { 
@@ -266,7 +265,7 @@ alias chans {
   $iif($isid,return,echo -a) %b
 }
 on *:TEXT:!active*:*: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - $actives
 }
 alias actives {
@@ -284,7 +283,7 @@ alias actives {
   }
 }
 on *:TEXT:!join*:*: {
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($left($3,1) != $chr(35)) { halt }
   if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
   if ($2 == $me) && ($left($3,1) == $chr(35)) {
@@ -299,7 +298,7 @@ alias forcejoin {
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($istok(#idm #idm.staff,#,32)) && ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$nick)) && (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$.readini(status.ini,currentdm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   remini -n status.ini currentdm $2
   notice $nick $logo(REM-DM) $s1($2) is no longer DMing.

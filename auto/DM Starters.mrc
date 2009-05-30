@@ -78,7 +78,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) { 
-    if ($.readini(Admins.ini,Admins,$nick)) || ($.readini(Admins.ini,Admins,$address($nick,3))) {
+    if ($.readini(Admins.ini,Admins,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel #
       msg # $logo(DM) The DM has been canceled by an admin.
@@ -86,7 +86,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick You are currently in a stake, you cannot forfeit! | halt }
   }
-  if ($.readini(Admins.ini,Admins,$nick)) || ($.readini(Admins.ini,Admins,$address($nick,3))) {
+  if ($.readini(Admins.ini,Admins,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel #
     msg # $logo(DM) The DM has been canceled by an admin.
@@ -153,10 +153,8 @@ alias hpbar {
 }
 on $*:TEXT:/^[!@.]status/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($left($1,1) isin !@) {
-    if (!%p2 [ $+ [ $chan ] ]) { halt }
-    $iif($left($1,1) == !,notice $nick,msg #) $status($chan)
-  }
+  if (!%p2 [ $+ [ $chan ] ]) { halt }
+  $iif($left($1,1) == !,notice $nick,msg #) $status($chan)
 }
 alias status {
   return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))

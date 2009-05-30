@@ -16,7 +16,7 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
   set %cprice3 $gettok($read(clueloot.txt,%c),2,58)
   var %combined $calc(%cprice1 + %cprice2 + %cprice3)
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ %clue1 $+ , $+ %clue2 $+ , $+ %clue3 $+ $s1($chr(93)) 
-  writeini -n money.ini money $nick $calc($.readini(money.ini,money,$nick) + %combined )
+  updateini money.ini money $nick + %combined
   remini -n equipment.ini clue $nick
   unset %clue* %cprice*
 }

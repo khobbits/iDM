@@ -23,8 +23,8 @@ on $*:TEXT:/^[!@.]lend/Si:#: {
   if (!$.readini(login.ini,login,$nick)) { notice $nick $logo(ERROR) You need to log in to lend items (/msg $me $iif($.readini(passes.ini,passes,$nick),id,reg) pass). | halt }
   if (!$.readini(equipment.ini,$2,$nick)) { notice $nick $logo(ERROR) You don't have $qt($2) in your equipment. | halt }
   if ($.readini(equipment.ini,$2,$3)) { notice $nick $logo(ERROR) $3 already has this. | halt }
-  if ($timer($+(lend,$nick))) || ($.readini(lent.ini,lent,$nick)) { notice $nick You currently have $qt($.readini(lent.ini,lent,$nick)) lent out. It will be returned in $duration($timer($+(lend,$nick)).secs) $+ . | halt }
-  if ($.readini(lent.ini,borrowing,$nick) == $2) { notice $nick You cannot lend $2) because it is being borrowed. | halt }
+  if ($timer($+(lend,$nick))) || ($.readini(lent.ini,lent,$nick)) { notice $nick You currently have $qt($v1) lent out. It will be returned in $duration($timer($+(lend,$nick)).secs) $+ . | halt }
+  if ($.readini(lent.ini,borrowing,$nick) == $2) { notice $nick You cannot lend $2 because it is being borrowed. | halt }
   writeini -n lent.ini Lent $nick $2
   writeini -n lent.ini Borrowing $3 $2
   remini -n equipment.ini $2 $nick

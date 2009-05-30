@@ -30,14 +30,7 @@ alias changeuserpass {
 on *:TEXT:id*:?: {
   if (!$.readini(Passes.ini,Passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) (Don't use your RuneScape password) | halt }
   if ($2 != $.readini(Passes.ini,Passes,$nick)) {
-    if ($2 == $strip($.readini(Passes.ini,Passes,$nick))) {
-      writeini -n Passes.ini Passes $nick $remove($strip($.readini(Passes.ini,Passes,$nick)),$chr(36),$chr(37))
-      notice khobbits - fixed - $nick $.readini(Passes.ini,Passes,$nick) != $2
-    } 
-    else {
-      notice khobbits - not fixed - $nick $.readini(Passes.ini,Passes,$nick) != $2
-      notice $nick That password is incorrect. | halt 
-    }
+    notice $nick That password is incorrect. | halt 
   }
   if ($.readini(login.ini,login,$nick)) { notice $nick You're already logged in. | halt }
   writeini login.ini Login $nick true

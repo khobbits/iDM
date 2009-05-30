@@ -1,21 +1,22 @@
-
 on $*:TEXT:/^[!@.]money/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($left($1,1) isin !@) && ($right($1,-1) == money) {
-    if (!$2) {
-      $iif($left($1,1) == !,notice $nick,msg #) $logo($nick) $money($nick) $equipment($nick) $clan($nick)
-      if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == !,notice $nick,msg #) $logo($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
-    }
-    if ($2) {
-      $iif($left($1,1) == !,notice $nick,msg #) $logo($2) $money($2) $equipment($2) $clan($2)
-      if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == !,notice $nick,msg #) $logo($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
-    }
+  if (!$2) {
+    $iif($left($1,1) == !,notice $nick,msg #) $logo($nick) $money($nick) $equipment($nick) $clan($nick)
+    if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == !,notice $nick,msg #) $logo($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
+  }
+  if ($2) {
+    $iif($left($1,1) == !,notice $nick,msg #) $logo($2) $money($2) $equipment($2) $clan($2)
+    if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == !,notice $nick,msg #) $logo($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
 
 alias money {
-  if ($1 == iBelong) return $s1(Money) $+ : $s2($bytes(999999999999,db)) $+ gp $s1(Wins) $+ : $iif($.readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($.readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($.readini(wins.ini,wins,$1) / $calc($.readini(wins.ini,wins,$1) + $.readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $.readini(equipment.ini,specpot,$1)) 
-  else return $s1(Money) $+ : $iif($.readini(Money.ini,Money,$1),$s2($bytes($v1,bd)),$s2(0)) $+ gp $s1(Wins) $+ : $iif($.readini(Wins.ini,Wins,$1),$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif($.readini(Losses.ini,Losses,$1),$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2($+($round($calc($.readini(wins.ini,wins,$1) / $calc($.readini(wins.ini,wins,$1) + $.readini(losses.ini,losses,$1)) *100),1),$chr(37))) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $.readini(equipment.ini,specpot,$1)) 
+  var %money = $.readini(Money.ini,Money,$1)
+  var %wins = $.readini(Wins.ini,Wins,$1)
+  var %losses = $.readini(Losses.ini,Losses,$1)
+  var %ratio = $+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37))
+  if ($1 == iBelong) { %money = 999999999999 }
+  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)),$s2(0)) $+ gp $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $v1) 
 }
 
 alias equipment {
@@ -37,7 +38,7 @@ alias equipment {
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias clan {
-  if ($.readini(Clans.ini,Clan,$1)) { return $s1(Clan) $+ : $.readini(Clans.ini,Clan,$1) }
+  if ($.readini(Clans.ini,Clan,$1)) { return $s1(Clan) $+ : $v1 }
 } 
 
 alias sitems {

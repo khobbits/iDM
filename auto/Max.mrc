@@ -122,21 +122,19 @@ alias totalhit {
 }
 
 on $*:TEXT:/^[!@.]top/Si:#: { 
-  halt
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  var %display = $iif(@* iswm $1,msg #,notice $nick)
-  if ($2 !isnum 1-9) { %display $logo(ERROR) The maximum number of users you can lookup is 9. Syntax: !top 9 | halt }
-  filter -fkg money.ini hiscores /(.+?)=(\d{11,})/ 
-  set %results $calc($iif($2,$2,5) + 2)
-  var %x = $sorttok($regsubex(%tophi,/(.+?)=(\d+)(?:\s|$)/g,$+(\2,=,\1,$chr(32))),32,nr)
+  var %display = $iif(!* iswm $1,notice $nick,msg #)
+  if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
+  var %output, %i = 0
+  var %sql = SELECT * FROM 'money' WHERE c1 = 'money' ORDER BY c3 +0 DESC LIMIT 0, $+ $2
+  var %result = $db.query(%sql)
+  while ($db.query_row(%result,row)) {
+    inc %i
+    ;    %output = %output $chr(124) $s1(%i $+ .) $hget(row,c2) $s2($price($hget(row,c3)))
+    %output = %output $chr(124) %i $+ . $s1($hget(row,c2)) $s2($price($hget(row,c3)))
 
-  var %output = $regsubex(%x,/(\d+)=(\S+)(?:\s|$)/g,$+($chr(3),03,$findtok(%x,$wildtok(%x,$+(*,\2,*),1,32),32),.,$chr(3)) \2 $+($chr(3),07,$chr(40),$chr(3),03,$bytes(\1,bd),$chr(3),07,$chr(41)) $+($chr(3),$chr(124),$chr(32)))
+  }
+  db.query_end %result
 
-  var %output = $gettok(%output,$+(1-,%results),124)
-  var %output = $regsubex(%output,/~(.+?)~/g,$+($chr(91),\1,$chr(93)))
-  %display $logo(TOP) Total DM's: $bytes($readini(totalwins.ini,totalwins,totalwins),bd) $chr(124) %output
-  unset %tophi
-}
-alias hiscores {
-  set %tophi %tophi $1-
+  %display $logo(TOP) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
 }

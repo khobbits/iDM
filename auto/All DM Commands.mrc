@@ -3,13 +3,13 @@ on $*:TEXT:/^[!@.]/Si:#: {
   if ($right($1,-1) == specpot) { 
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
       if (!$.readini(login.ini,login,$nick)) { 
-        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) 
+        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password) 
         halt 
       }
       if (!$.readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
-      writeini -n equipment.ini specpot $nick $calc($.readini(equipment.ini,specpot,$nick) -1)
+      updateini equipment.ini specpot $nick -1
       msg # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
       unset %laststyle [ $+ [ # ] ]
       set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
@@ -58,7 +58,7 @@ alias damage {
   ;4 is chan
   if ($.ini(pvp.ini,$3)) {
     if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
-    elseif ($.readini(PvP.ini,$3,$1) >= 1) { writeini -n PvP.ini $3 $1 $calc($.readini(PvP.ini,$3,$1) -1) }
+    elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
   }
   if ($3 != dh) { 
     var %hit [ $+ [ $4 ] ] $hit($3,$1,$2,$4) 
@@ -271,120 +271,120 @@ alias hit {
   ;3 is Attackee
   ;4 is Chan
   if ($accuracy($1,$4) == 0) {
-    var %acc [ $+ [ $2 ] ] $r(1,100)
+    var %acc $r(1,100)
   }
   elseif ($accuracy($1,$4) == -1) {
-    var %acc [ $+ [ $2 ] ] $r(1,$r(75,90))
+    var %acc $r(1,$r(75,90))
   }
   elseif ($accuracy($1,$4) == 1) {
-    var %acc [ $+ [ $2 ] ] $r($r(10,25),100)
+    var %acc $r($r(10,25),100)
   }
-  var %atk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,Firecape,$2),5,0) + $iif($.readini(Equipment.ini,bgloves,$2),3,0))
-  var %def [ $+ [ $2 ] ] $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
-  var %ratk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
-  var %matk [ $+ [ $2 ] ] $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0))
+  var %atk $calc($iif($.readini(Equipment.ini,Firecape,$2),5,0) + $iif($.readini(Equipment.ini,bgloves,$2),3,0))
+  var %def $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
+  var %ratk $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
+  var %matk $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0))
   goto $1
   :whip
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0
+  if (%acc isnum 5-30) return $r(5,25)
+  if (%acc isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dds
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,20) $r(5,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0 0
+  if (%acc isnum 5-30) return $r(5,20) $r(5,20)
+  if (%acc isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def))) $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :ags
-  if (%acc [ $+ [ $2 ] ] isnum 1-2) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 3-20) return $r(1,20)
-  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(21,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-2) return 0
+  if (%acc isnum 3-20) return $r(1,20)
+  if (%acc isnum 21-100) return $floor($calc($r(21,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :cbow
-  if (%acc [ $+ [ $2 ] ] isnum 1-15) return $r(0,10)
-  if (%acc [ $+ [ $2 ] ] isnum 16-30) return $r(11,20)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) {
-    if (%acc [ $+ [ $2 ] ] isnum 98-100) && ($.readini(Equipment.ini,void,$2) || $.readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
-    return $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-15) return $r(0,10)
+  if (%acc isnum 16-30) return $r(11,20)
+  if (%acc isnum 31-100) {
+    if (%acc isnum 98-100) && ($.readini(Equipment.ini,void,$2) || $.readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(60,69) | halt }
+    return $floor($calc($r(21,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
   }
   :dbow
-  if (%acc [ $+ [ $2 ] ] isnum 1-8) return 8 8
-  if (%acc [ $+ [ $2 ] ] isnum 9-50) return $r(9,25) $r(9,25)
-  if (%acc [ $+ [ $2 ] ] isnum 51-100) return $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-8) return 8 8
+  if (%acc isnum 9-50) return $r(9,25) $r(9,25)
+  if (%acc isnum 51-100) return $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def))) $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
   :bgs
-  if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 6-35) return $r(1,35)
-  if (%acc [ $+ [ $2 ] ] isnum 36-100) return $floor($calc($r(36,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-5) return 0
+  if (%acc isnum 6-35) return $r(1,35)
+  if (%acc isnum 36-100) return $floor($calc($r(36,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :sgs
-  if (%acc [ $+ [ $2 ] ] isnum 1-6) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 7-23) return $r(1,20)
-  if (%acc [ $+ [ $2 ] ] isnum 24-100) return $floor($calc($r(16,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-6) return 0
+  if (%acc isnum 7-23) return $r(1,20)
+  if (%acc isnum 24-100) return $floor($calc($r(16,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :gmaul
-  if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,8) $r(0,8) $r(0,8)
-  if (%acc [ $+ [ $2 ] ] isnum 4-40) return $r(1,12) $r(1,12) $r(1,12)
-  if (%acc [ $+ [ $2 ] ] isnum 41-100) return $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk [ $+ [ $2 ] ]) / 2)))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-3) return $r(0,8) $r(0,8) $r(0,8)
+  if (%acc isnum 4-40) return $r(1,12) $r(1,12) $r(1,12)
+  if (%acc isnum 41-100) return $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def)))
   :guth
-  if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 6-13) return $r(1,20)
-  if (%acc [ $+ [ $2 ] ] isnum 14-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-5) return 0
+  if (%acc isnum 6-13) return $r(1,20)
+  if (%acc isnum 14-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :ice
-  if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 4-30) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk [ $+ [ $2 ] ])))
+  if (%acc isnum 1-3) return 0
+  if (%acc isnum 4-30) return $r(1,15)
+  if (%acc isnum 31-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk)))
   :zgs
-  if (%acc [ $+ [ $2 ] ] isnum 1-5) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 6-30) return $r(1,22)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(23,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-5) return 0
+  if (%acc isnum 6-30) return $r(1,22)
+  if (%acc isnum 31-100) return $floor($calc($r(23,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :blood
-  if (%acc [ $+ [ $2 ] ] isnum 1-3) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 4-25) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk [ $+ [ $2 ] ])))
+  if (%acc isnum 1-3) return 0
+  if (%acc isnum 4-25) return $r(1,15)
+  if (%acc isnum 26-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk)))
   :smoke
-  if (%acc [ $+ [ $2 ] ] isnum 1-2) return $r(0,5)
-  if (%acc [ $+ [ $2 ] ] isnum 3-26) return $r(1,15)
-  if (%acc [ $+ [ $2 ] ] isnum 27-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk [ $+ [ $2 ] ])))
+  if (%acc isnum 1-2) return $r(0,5)
+  if (%acc isnum 3-26) return $r(1,15)
+  if (%acc isnum 27-100) return $r(16,$calc($gettok($gettok($max(ma,$1),1,32),1,45) + $(,%matk)))
   :surf
-  if (%acc [ $+ [ $2 ] ] isnum 1-20) return $r(0,10)
-  if (%acc [ $+ [ $2 ] ] isnum 21-30) return $r(11,15)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $r(16,$gettok($gettok($max(m,$1),1,32),1,45))
+  if (%acc isnum 1-20) return $r(0,10)
+  if (%acc isnum 21-30) return $r(11,15)
+  if (%acc isnum 31-100) return $r(16,$gettok($gettok($max(m,$1),1,32),1,45))
   :dclaws
-  var %dclaws $r(10,24) $floor($calc($r(24,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  var %dclaws $r(10,24) $floor($calc($r(24,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   var %dclaws2 $ceil($calc($gettok(%dclaws,1,32) / 2)) $ceil($calc($gettok(%dclaws,2,32) / 2))
   var %dclaws3 $ceil($calc($gettok(%dclaws2,1,32) / 2)) $ceil($calc($gettok(%dclaws2,2,32) / 2))
   var %dclaws4 $ceil($calc($gettok(%dclaws3,1,32) / 2)) $ceil($calc($gettok(%dclaws3,2,32) / 2))
-  if (%acc [ $+ [ $2 ] ] isnum 1-7) return 0 0 $r(0,$r(15,20)) $r(0,$r(15,20))
-  if (%acc [ $+ [ $2 ] ] isnum 8-55) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
-  if (%acc [ $+ [ $2 ] ] isnum 56-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
+  if (%acc isnum 1-7) return 0 0 $r(0,$r(15,20)) $r(0,$r(15,20))
+  if (%acc isnum 8-55) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
+  if (%acc isnum 56-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
   :dmace
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-60) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 61-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0
+  if (%acc isnum 5-60) return $r(5,25)
+  if (%acc isnum 61-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dscim
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0
+  if (%acc isnum 5-30) return $r(5,25)
+  if (%acc isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dlong
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-30) return $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0
+  if (%acc isnum 5-30) return $r(5,25)
+  if (%acc isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dhally
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return 0 0
-  if (%acc [ $+ [ $2 ] ] isnum 5-50) return $r(5,25) $r(5,25)
-  if (%acc [ $+ [ $2 ] ] isnum 51-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ]))) $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return 0 0
+  if (%acc isnum 5-50) return $r(5,25) $r(5,25)
+  if (%acc isnum 51-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def))) $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :d_h9
-  return $floor($calc($r(1,$calc($gettok($gettok($gettok($max(m,dh),1,32),1,45),2,47) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  return $floor($calc($r(1,$calc($gettok($gettok($gettok($max(m,dh),1,32),1,45),2,47) + $(,%atk))) * $(,%def)))
   :d_h10
-  return $floor($calc($r(1,$calc($gettok($gettok($gettok($max(m,dh),1,32),1,45),1,47) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  return $floor($calc($r(1,$calc($gettok($gettok($gettok($max(m,dh),1,32),1,45),1,47) + $(,%atk))) * $(,%def)))
   :vlong
-  if (%acc [ $+ [ $2 ] ] isnum 1-2) return $r(0,10)
-  if (%acc [ $+ [ $2 ] ] isnum 3-25) return $r(10,35)
-  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ])))))
+  if (%acc isnum 1-2) return $r(0,10)
+  if (%acc isnum 3-25) return $r(10,35)
+  if (%acc isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk)))))
   :statius
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,15)
-  if (%acc [ $+ [ $2 ] ] isnum 5-25) return $r(15,35)
-  if (%acc [ $+ [ $2 ] ] isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return $r(0,15)
+  if (%acc isnum 5-25) return $r(15,35)
+  if (%acc isnum 26-100) return $floor($calc($r(30,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :vspear
-  if (%acc [ $+ [ $2 ] ] isnum 1-3) return $r(0,10)
-  if (%acc [ $+ [ $2 ] ] isnum 4-20) return $r(11,35)
-  if (%acc [ $+ [ $2 ] ] isnum 21-100) return $floor($calc($r(35,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-3) return $r(0,10)
+  if (%acc isnum 4-20) return $r(11,35)
+  if (%acc isnum 21-100) return $floor($calc($r(35,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :mjavelin
-  if (%acc [ $+ [ $2 ] ] isnum 1-4) return $r(0,7)
-  if (%acc [ $+ [ $2 ] ] isnum 5-38) return $r(8,25)
-  if (%acc [ $+ [ $2 ] ] isnum 39-100) return $floor($calc($r(25,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%ratk [ $+ [ $2 ] ]))) * $(,%def [ $+ [ $2 ] ])))
+  if (%acc isnum 1-4) return $r(0,7)
+  if (%acc isnum 5-38) return $r(8,25)
+  if (%acc isnum 39-100) return $floor($calc($r(25,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
 }

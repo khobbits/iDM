@@ -14,6 +14,10 @@ alias ini {
   return $dbformat(listdb,$1-)
 }
 
+alias updateini {
+  dbformat updatedb $1-
+}
+
 alias dbformat {
   if (!%db) {
     dbinit
@@ -34,6 +38,14 @@ alias dbformat {
   }
 }
 
+alias db.safe {
+  return $sqlite_qt($sqlite_escape_string($1-))
+}
+
+alias db.quote {
+  return $sqlite_qt($1-)
+}
+
 alias db.select {
   var %sql = $1
   var %col = $2
@@ -42,10 +54,10 @@ alias db.select {
     var %result = $sqlite_result(%request, %col)
     sqlite_free %request
     return %result
-    else {
-      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
-      return $null
-    }
+  }
+  else {
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    return $null
   }
 }
 
@@ -53,11 +65,12 @@ alias db.query {
   var %sql = $1
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
+    if (%debugq == $me) echo 12 -s Query %sql returned %request
     return %request
-    else {
-      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
-      return $null
-    }
+  }
+  else {
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    return $null
   }
 }
 
@@ -65,6 +78,7 @@ alias db.query_row_data {
   var %request = $1
   var %col = $2
   var %result = $sqlite_fetch_field( %request, %col )
+  if (%debugq == $me) echo 12 -s Fetched feild of %request col %col - Result %result
   return %result
 }
 
@@ -72,6 +86,12 @@ alias db.query_row {
   var %request = $1
   var %htable = $2
   var %result = $sqlite_fetch_row( %request, %htable )
+  return %result
+}
+
+alias db.query_num_rows {
+  var %request = $1
+  var %result = $sqlite_num_rows(%request)
   return %result
 }
 
@@ -113,6 +133,28 @@ alias writedb {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
   if (%debugq == $me) echo 3 -s Query %sql executed
+}
+
+alias updatedb {
+  var %table = $lower($1)
+  var %key1 = $sqlite_escape_string($2)
+  var %key2 = $sqlite_escape_string($3)
+  if (%key2 == $null) {
+    var %sql = UPDATE $sqlite_qt(%table) SET c3 = c3 $3 WHERE c1 = $sqlite_qt(%key1) 
+  }
+  else {
+    var %sql = UPDATE $sqlite_qt(%table) SET c3 = c3 $4- WHERE c1 = $sqlite_qt(%key1) AND c2 = $sqlite_qt(%key2)
+  }
+  if (!$sqlite_exec(%db, %sql)) {
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+  }
+  if ($sqlite_changes(%db) < 1) && ($abs($4-) isnum) {
+    var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $abs($4-) )
+    if (!$sqlite_exec(%db, %sql)) {
+      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    }
+  }
+  if (%debugq == $me) echo 14 -s Query %sql executed
 }
 
 alias insertdb {

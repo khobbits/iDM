@@ -99,37 +99,26 @@ alias deleteclan {
 }
 on $*:TEXT:/^[!@.]dmclan/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($left($1,1) isin !@) && ($right($1,-1) == dmclan) {
-    if (!$2) {
-      if ($.readini(Clans.ini,Clan,$nick)) {
-        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$nick)) $clanstats($.readini(clans.ini,clan,$nick)) (Total clans $s1($.ini(clannames.ini,0)) $+ )
-        halt
-      }
-      notice $nick $logo(ERROR) You're not in a clan. | halt
-    }
-    if ($2) {
-      if ($.readini(Clans.ini,Clan,$2)) {
-        $iif($left($1,1) == !,notice $nick,msg #) $claninfo($.readini(Clans.ini,Clan,$2)) $clanstats($.readini(clans.ini,clan,$2)) (Total clans $s1($.ini(clannames.ini,0)) $+ )
-        halt      
-      }
-      notice $nick $logo(ERROR) $qt($2) isn't in a clan. | halt 
-    }
+  if (!$2) { var %nick = $nick }
+  else { var %nick = $2 }
+  var %clan = $.readini(Clans.ini,Clan,%nick)
+  if (%clan) {
+    $iif($left($1,1) == !,notice $nick,msg #) $claninfo(%clan) $clanstats(%clan) (Total clans $s1($.ini(clannames.ini,0)) $+ )
+    halt
   }
+  notice $nick $logo(ERROR) %nick is not in a clan. | halt
 }
+
 alias claninfo {
-  unset %ci
-  unset %tc
-  var %a 1
-  while ($.ini(clans.ini,clan,%a)) {
-    if ($.readini(clans.ini,clan,$.ini(clans.ini,clan,%a)) == $1) && ($.ini(clans.ini,clan,%a) != share) {
-      set %ci %ci $.ini(clans.ini,clan,%a)
-      inc %tc
-    }
-    inc %a
+  var $ci,%tc = 0
+  var %sql = SELECT * FROM 'clans' WHERE c1 = 'clan' AND c3 = $db.safe($1)
+  var %result = $db.query(%sql)
+  while ($db.query_row_data(%result,c2)) {
+    var %ci = %ci $v1
+    inc %tc
   }
-  return $logo(CLAN) There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . %ci (Lootshare: $iif($.readini(clannames.ini,$1,share) == on,$s1(on),$s2(off)) $+ )
-  unset %tc
-  unset %ci
+  db.query_end %result
+  return $logo(CLAN) There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($.readini(clannames.ini,$1,share) == on,$s1(on),$s2(off)) $+ )
 }
 alias clanstats {
   return $s1(Wins) $+ : $iif($.readini(clantracker.ini,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($.readini(clantracker.ini,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($.readini(clantracker.ini,money,$1),$s2($price($v1)),$s2($price(0)))
