@@ -34,12 +34,59 @@ alias dbformat {
   }
 }
 
+alias db.select {
+  var %sql = $1
+  var %col = $2
+  var %request = $sqlite_query(%db, %sql)
+  if (%request) {
+    var %result = $sqlite_result(%request, %col)
+    sqlite_free %request
+    return %result
+    else {
+      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+      return $null
+    }
+  }
+}
+
 alias db.query {
-  var %query = $1
+  var %sql = $1
+  var %request = $sqlite_query(%db, %sql)
+  if (%request) {
+    return %request
+    else {
+      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+      return $null
+    }
+  }
+}
+
+alias db.query_row_data {
+  var %request = $1
+  var %col = $2
+  var %result = $sqlite_fetch_field( %request, %col )
+  return %result
+}
+
+alias db.query_row {
+  var %request = $1
   var %htable = $2
+  var %result = $sqlite_fetch_row( %request, %htable )
+  return %result
+}
 
+alias db.query_end {
+  var %request = $1
+  sqlite_free %request
+}
 
-
+alias db.exec {
+  var %sql = $1
+  if (!$sqlite_exec(%db, %sql)) {
+    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    return $null
+  }
+  return 1
 }
 
 alias remdb {
