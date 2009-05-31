@@ -22,7 +22,7 @@ on $*:TEXT:/^[!@.]stake/Si:#: {
   }
   if (!%p2 [ $+ [ $chan ] ]) && ($2 <= %stake [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) { notice $nick A wager of $s2($price(%stake [ $+ [ $chan ] ])) has already been risked by %p1 [ $+ [ $chan ] ] $+ . To accept, type !stake. | halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
-  if (!%p2 [ $+ [ $chan ] ]) && (($iif($.readini(money.ini,money,$nick),$v1,0) < %stake [ $+ [ $chan ] ]) || ($maxstake($nick) < %stake [ $+ [ $chan ] ])) { notice $nick You either don't have enough money to stake, or your staking limit ( $+ $s1($price($maxstake($nick))) $+ ) is too low. | halt }
+  if (!%p2 [ $+ [ $chan ] ]) && (($iif(%money,$v1,0) < %stake [ $+ [ $chan ] ]) || ($maxstake(%money) < %stake [ $+ [ $chan ] ])) { notice $nick You either don't have enough money to stake, or your staking limit ( $+ $s1($price($maxstake(%money))) $+ ) is too low. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM. | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) {

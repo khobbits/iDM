@@ -2,21 +2,21 @@ on $*:TEXT:/^[!@.]store/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   $iif($left($1,1) == !,notice $nick,msg #) $logo(STORE) $&
-    $s1(Void Range) (+5 to ranged attacks) ( $+ $s2(500M) $+ ) - $&
-    $s1(Void Mage) (+5 to mage attacks) ( $+ $s2(800M) $+ ) - $&
-    $s1(Fire Cape) (+5 to melee attacks) ( $+ $s2(4B) $+ ) - $&
-    $s1(Barrow Gloves) (+3 to melee attacks) ( $+ $+($s2(3B),$chr(44),$chr(32),$s2(2K+ DMs),$chr(44),$chr(32),$s2(1K+ Wins)) $+ ) - $&
-    $s1(Mage's Book) (+5 to mage attacks) ( $+ $s2(1B) $+ ) - $&
-    $s1(Accumulator) (+5 to range attacks) ( $+ $s2(1B) $+ )
+    $s1(Void Range) (+5 to ranged attacks) ( $+ $s2($buyprice(void range)) $+ ) - $&
+    $s1(Void Mage) (+5 to mage attacks) ( $+ $s2($buyprice(void mage)) $+ ) - $&
+    $s1(Fire Cape) (+5 to melee attacks) ( $+ $s2($buyprice(fire cape)) $+ ) - $&
+    $s1(Barrow Gloves) (+3 to melee attacks) ( $+ $+($s2($buyprice(barrows gloves)),$chr(44),$chr(32),$s2(2K+ DMs),$chr(44),$chr(32),$s2(1K+ Wins)) $+ ) - $&
+    $s1(Mage's Book) (+5 to mage attacks) ( $+ $s2($buyprice(mage book)) $+ ) - $&
+    $s1(Accumulator) (+5 to range attacks) ( $+ $s2($buyprice(accumulator)) $+ )
   $iif($left($1,1) == !,notice $nick,msg #) $logo(STORE) $&
-    $s1(Armadyl Godsword) ( $+ $s2(400M) $+ ) - $&
-    $s1(Bandos Godsword) ( $+ $s2(500M) $+ ) - $&
-    $s1(Saradomin Godsword) ( $+ $s2(600M) $+ ) - $&
-    $s1(Zamorak Godsword) ( $+ $s2(400M) $+ ) - $&
-    $s1(Dragon Claws) ( $+ $s2(2.5B) $+ ) - $&
-    $s1(Mudkip) ( $+ $s2(200M) $+ ) - $&
-    $s1(Elysian Spirit Shield) (Reduces melee and range atks up to 15 $+ $chr(37) $+ ) ( $+ $s2(8B) $+ ) - $&
-    $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2(3B) $+ )
+    $s1(Armadyl Godsword) ( $+ $s2($buyprice(ags)) $+ ) - $&
+    $s1(Bandos Godsword) ( $+ $s2($buyprice(bgs)) $+ ) - $&
+    $s1(Saradomin Godsword) ( $+ $s2($buyprice(sgs)) $+ ) - $&
+    $s1(Zamorak Godsword) ( $+ $s2($buyprice(zgs)) $+ ) - $&
+    $s1(Dragon Claws) ( $+ $s2($buyprice(dclaws)) $+ ) - $&
+    $s1(Mudkip) ( $+ $s2($buyprice(mudkip)) $+ ) - $&
+    $s1(Elysian Spirit Shield) (Reduces melee and range atks up to 15 $+ $chr(37) $+ ) ( $+ $s2($buyprice(elysian)) $+ ) - $&
+    $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2($buyprice(ring of wealth)) $+ )
 }
 
 on $*:TEXT:/^[!@.]buy/Si:#: { 
@@ -74,6 +74,16 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   return
 }
 
+alias buyprice {
+  if ($storematch($1) != 0) {
+    var %price = $price($calc($gettok($v1,1,32)*2))
+  }
+  else {
+    var %price = 0
+  }
+  return %price
+}
+
 alias storematch {
   tokenize 32 - $1
   if ($regex($2-,/^void(\s|-)?range$/Si)) {
@@ -111,7 +121,7 @@ alias storematch {
     var %fname = Ring of Wealth
     var %price = 1500000000
   }
-  elseif ($2 == fire) || ($2 == cape) {
+  elseif ($2 == fire) || ($2 == cape) || ($2 == firecape) {
     var %sname = firecape
     var %fname = Fire Cape
     var %price = 2000000000

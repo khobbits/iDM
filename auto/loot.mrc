@@ -49,7 +49,7 @@ alias dead {
     }
   }
   if (mage's isin %rareitem) { unset %rareprice | updateini equipment.ini mbook $3 +1 }
-  if (accumulator isin %rareitem) { unset %rareprice | updateini equipment.ini accumulator $3 +1) }
+  if (accumulator isin %rareitem) { unset %rareprice | updateini equipment.ini accumulator $3 +1 }
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
   if ($gettok($.readini(personalclan.ini,person,$2),1,58) != $gettok($.readini(personalclan.ini,person,$3),1,58)) {
     if ($.readini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),share) == on) && ($.ini(Clannames.ini,$gettok($.readini(Personalclan.ini,Person,$3),1,58),0) > 2) { 
@@ -64,8 +64,8 @@ alias dead {
       halt 
     }
   }
-  writeini -n Money.ini Money $3 $calc($.readini(Money.ini,Money,$3) + %combined) 
-  .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93)) 
+  updateini -n Money.ini Money $3 + $+ %combined
+  .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
   unset %item*
   unset %price*
   unset %rare*

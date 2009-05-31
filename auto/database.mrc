@@ -101,11 +101,12 @@ alias db.query_end {
 }
 
 alias db.exec {
-  var %sql = $1
+  var %sql = $1-
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
+  echo -a query - %sql
   return 1
 }
 
@@ -335,4 +336,27 @@ alias exportinibatch5 {
   set %db $sqlite_open(database/idm.db)
 
   echo -a Finished Exporting ini files to .db
+}
+
+alias renamenick {
+  tokenize 32 $lower($1) $lower($2)
+
+  echo -a erm 1 is $1 and 2 is $2
+  halt
+  db.exec UPDATE OR REPLACE 'passes' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in passes.ini
+  db.exec UPDATE OR REPLACE 'money' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in money.ini
+  db.exec UPDATE OR REPLACE 'wins' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in wins.ini
+  db.exec UPDATE OR REPLACE 'losses' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in losses.ini
+  db.exec UPDATE OR REPLACE 'equipment' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) items of equipment
+  db.exec UPDATE OR REPLACE 'clans' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in clans.ini
+  db.exec UPDATE OR REPLACE 'personalclan' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in personalclan.ini
+  db.exec UPDATE OR REPLACE 'pvp' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  echo -a Updated $sqlite_changes(%db) rows in pvp.ini
 }
