@@ -86,7 +86,7 @@ alias sharedrop {
   var %a 1
   while ($.ini(clannames.ini,$2,%a)) {
     if ($v1 != share) {
-      updateini money.ini money $.ini(clannames.ini,$2,%a) + %sharedrop
+      updateini money.ini money $.ini(clannames.ini,$2,%a) + $+ %sharedrop
     }
     inc %a
   }

@@ -81,22 +81,13 @@ on $*:TEXT:/^[!@.]share/Si:*: {
 alias deleteclan {
   remini Clannames.ini $1
   if ($1) {
-    var %a 1
-    while ($.ini(clans.ini,clan,%a)) {
-      if ($remove($.readini(clans.ini,clan,$.ini(clans.ini,clan,%a)),:owner) == $1) {
-        remini -n Clans.ini Clan $.ini(clans.ini,clan,%a)
-      }
-      inc %a
-    }
-    var %a 1
-    while ($.ini(personalclan.ini,person,%a)) {
-      if ($remove($.readini(personalclan.ini,person,$.ini(personalclan.ini,person,%a)),:owner) == $1) {
-        remini -n Personalclan.ini Person $.ini(personalclan.ini,person,%a)
-      }
-      inc %a
-    }
+    var %sql = DELETE FROM 'clans' WHERE c3 = $db.safe($1)
+    db.exec %sql
+    var %sql = DELETE FROM 'personalclan' WHERE c3 = $db.safe($1) OR c3 = $db.safe($1 $+ :owner)
+    db.exec %sql
   }
 }
+
 on $*:TEXT:/^[!@.]dmclan/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$2) { var %nick = $nick }
@@ -126,7 +117,4 @@ alias clanstats {
 alias clanrank {
   HALT
   ;I never understood how to script ranks..
-  var %a 1
-  while ($.ini(clantracker.ini,wins,%a)) { var %crank %crank $+($.ini(clantracker.ini,wins,%a),$chr(58),$.readini(clantracker.ini,wins,$.ini(clantracker.ini,wins,%a))) | inc %a }
-  echo -a %crank
 }

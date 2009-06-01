@@ -17,6 +17,8 @@ on $*:TEXT:/^[!@.]lend/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($3 == $nick) { halt }
   msg $nick Sorry this feature is currently disabled
+  ; it needs to check if there is multiple and subtract instead of removing or lend all and not just one
+
   halt
   if (!$2) || (!$.readini(lent.ini,lendable,$2)) { notice $nick $logo(ERROR) You can't lend this, try a real item. For example: !lend Ags Allegra | halt }
   if (!$3) || (!$3 ison $chan) { notice $nick $logo(ERROR) Please specify a nick to lend the item to someone in the channel. | halt }
@@ -38,7 +40,7 @@ alias itemlend {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   remini -n lent.ini Lent $1
   remini -n lent.ini borrowing $3
-  writeini -n equipment.ini $2 $1 true
+  updateini -n equipment.ini $2 $1 +1
   remini -n equipment.ini $2 $3
   notice $1 $logo(Lent) $2 has successfully been retrieved from $3 $+ .
   notice $3 $logo(Lent) $2 has been returned to $1 $+ .
