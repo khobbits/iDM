@@ -118,20 +118,22 @@ on *:TEXT:!except*:#iDm.staff: {
   notice $nick $s2($2) has successfully been added to my exception list.
 }
 on *:TEXT:!ignore*:#idm.staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
-  ignore $2-
+  ignore $2
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been added to the ignore list. Please notify the user of this.
-  writeini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
+  writeini -n ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
 }
 on *:TEXT:!rignore*:#idm.staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
-  remini -n ignore.ini Ignore $2- ~> $nick ~> $fulldate
+  remini -n ignore.ini Ignore $2
 }
 alias position {
   if ($.readini(Positions.ini,Positions,$address($nick,3))) {
@@ -168,7 +170,7 @@ on *:TEXT:!cignore*:#: {
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
     if (!$2) { notice $nick $logo(ERROR) Type !cignore address. | halt }
-    if ($.readini(ignore.ini,ignore,$2)) { notice $nick $logo(IGNORE INFO) $s2($2) was blacklisted by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-,32)) $+ . }
+    if ($.readini(ignore.ini,ignore,$2)) { notice $nick $logo(IGNORE INFO) $s2($2) was blacklisted by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-8,32)) for $s1($iif($gettok($.readini(ignore.ini,ignore,$2),10-,32),$v1,No reason)) $+ . }
     else { notice $nick $logo(IGNORE INFO) $s2($2) is not ignored. }
   }
 }

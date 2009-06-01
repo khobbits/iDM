@@ -92,7 +92,7 @@ alias storematch {
     var %price = 250000000
   } 
   elseif ($regex($2-,/^void(\s|-)?mage$/Si)) {
-    var %sname = void-name
+    var %sname = void-mage
     var %fname = Full Void Knight Mage
     var %price = 400000000
   } 
