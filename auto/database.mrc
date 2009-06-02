@@ -18,10 +18,14 @@ alias updateini {
   dbformat updatedb $1-
 }
 
-alias dbformat {
+alias dbcheck {
   if (!%db) {
     dbinit
   }
+}
+
+alias dbformat {
+  dbcheck
   tokenize 32 $lower($1-)
   var %string = $remove($2,-n) $3-
   %string = $remove(%string,.ini,.txt)
@@ -47,12 +51,14 @@ alias db.quote {
 }
 
 alias db.select {
+  dbcheck
   var %sql = $1
   var %col = $2
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
     var %result = $sqlite_result(%request, %col)
     sqlite_free %request
+    if (%debugq == $me) echo 12 -s Query %sql returned %result
     return %result
   }
   else {
@@ -62,6 +68,7 @@ alias db.select {
 }
 
 alias db.query {
+  dbcheck
   var %sql = $1
   var %request = $sqlite_query(%db, %sql)
   if (%request) {
@@ -101,12 +108,13 @@ alias db.query_end {
 }
 
 alias db.exec {
+  dbcheck
   var %sql = $1-
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
-  echo -a query - %sql
+  if (%debugq == $me) echo 12 -s Query %sql executed
   return 1
 }
 
@@ -245,7 +253,7 @@ alias createtable {
 }
 
 on *:START: {
-  load -rs " $+ $mircdir/sqllite/msqlite.mrc"
+  load -rs " $+ $mircdirsqllite/msqlite.mrc"
   dbinit
 }
 

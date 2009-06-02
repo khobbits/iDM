@@ -56,7 +56,6 @@ alias dead {
   if (%looserclan) && ($.readini(Clannames.ini,%looserclan,share) == on) { trackclan LOSE %looserclan }
 
   if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(Clannames.ini,%winnerclan,share) == on) { 
-
     var %nummember = $.ini(Clannames.ini,%winnerclan,0)
     var %sharedrop = $floor($calc(%combined / $calc(%nummember -1)))
     trackclan WIN %winnerclan %sharedrop
@@ -66,13 +65,11 @@ alias dead {
     db.exec %sql
 
     .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
-
     unset %sharedrop
   }
   else {
     updateini -n Money.ini Money $3 + $+ %combined
     .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
-
   }
   unset %item*
   unset %price*
