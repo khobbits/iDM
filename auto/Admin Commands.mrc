@@ -1,7 +1,7 @@
 on *:TEXT:!admin:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn, !viewitems) $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !remdm nick, !amsg, !pass nick, !setpass nick password, !idle)
+  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !remdm nick, !amsg, !pass nick, !setpass nick password, !idle) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
 }
 on *:TEXT:!ignore*:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
