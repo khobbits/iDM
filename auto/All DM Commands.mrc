@@ -305,8 +305,8 @@ alias hit {
   }
   :dbow
   if (%acc isnum 1-8) return 8 8
-  if (%acc isnum 9-50) return $r(9,25) $r(9,25)
-  if (%acc isnum 51-100) return $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def))) $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
+  if (%acc isnum 9-49) return $r(9,20) $r(9,20)
+  if (%acc isnum 50-100) return $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def))) $floor($calc($r(20,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
   :bgs
   if (%acc isnum 1-5) return 0
   if (%acc isnum 6-35) return $r(1,35)
@@ -364,9 +364,9 @@ alias hit {
   if (%acc isnum 5-30) return $r(5,25)
   if (%acc isnum 31-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dhally
-  if (%acc isnum 1-4) return 0 0
-  if (%acc isnum 5-50) return $r(5,25) $r(5,25)
-  if (%acc isnum 51-100) return $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def))) $floor($calc($r(26,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
+  if (%acc isnum 1-5) return 0 0
+  if (%acc isnum 6-49) return $r(5,20) $r(5,20)
+  if (%acc isnum 50-100) return $floor($calc($r(20,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def))) $floor($calc($r(20,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :d_h9
   return $floor($calc($r(1,$calc($gettok($gettok($gettok($max(m,dh),1,32),1,45),2,47) + $(,%atk))) * $(,%def)))
   :d_h10
