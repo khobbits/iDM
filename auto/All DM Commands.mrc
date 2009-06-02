@@ -51,6 +51,7 @@ on $*:TEXT:/^[!@.]/Si:#: {
     }
   }
 }
+
 alias damage {
   ;1 is person attacking
   ;2 is other person
@@ -221,10 +222,12 @@ alias damage {
   }
   set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
 }
+
 alias player {
   if ($1 == %p1 [ $+ [ $2 ] ]) { return 1 }
   if ($1 == %p2 [ $+ [ $2 ] ]) { return 2 }
 }
+
 alias accuracy {
   ;1 is Attack
   ;2 is Chan
@@ -265,6 +268,7 @@ alias accuracy {
   }
   return 0
 }
+
 alias hit {
   ;1 is Weapon
   ;2 is Attacker

@@ -978,3 +978,6 @@ Pilgrim153|Aj parted channel #mchughz during a dm oldcash 28443762 newcash 27874
 tristan|poon got !enddm'd on #poony oldcash 2669617434 newcash 2656269347
 chito got !enddm'd on #tfc_war oldcash 1398954792 newcash 1391960019
 Vissertje got !enddm'd on #ur-dead324 oldcash 3622818610 newcash 3604704517
+Sir_Moytoy parted channel #nz-dm during a dm oldcash 836344007 newcash 819617127
+iaculch parted channel #angry during a dm oldcash 2742137573 newcash 2687294822
+Quin got !enddm'd on #mc_tisto oldcash 709200 newcash 705654
