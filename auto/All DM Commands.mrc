@@ -16,7 +16,7 @@ on $*:TEXT:/^[!@.]/Si:#: {
       halt
     } 
   }
-  if ($attack($right($1,-1))) {
+  if ($attack($right($1,-1))) || (# == #iDM.Staff && $1 == !shadow) {
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) {
       if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2)) { 
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
@@ -124,7 +124,7 @@ alias damage {
     msg $4 $logo(DM) $s1($1) 12freezes $s1($2) using a Vesta's spear, and hits $s2(%hit [ $+ [ $chan ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
   if ($3 == statius) {
-    msg $4 $logo(DM) $s1($1) critically hits $s1($2) with a Statius's warhammer, hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
+    msg $4 $logo(DM) $s1($1) critically injures $s1($2) with a Statius's warhammer, hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
   }
   if ($3 == mjavelin) {
     msg $4 $logo(DM) $s1($1) throws a Morrigan's javelin at $s1($2) hitting $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2))
