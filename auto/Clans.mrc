@@ -94,7 +94,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
   else { var %nick = $2 }
   var %clan = $.readini(Clans.ini,Clan,%nick)
   if (%clan) {
-    $iif($left($1,1) == !,notice $nick,msg #) $claninfo(%clan) $clanstats(%clan) (Total clans $s1($.ini(clannames.ini,0)) $+ )
+    $iif($left($1,1) == @,msg #,notice $nick) $claninfo(%clan) $clanstats(%clan) (Total clans $s1($.ini(clannames.ini,0)) $+ )
     halt
   }
   notice $nick $logo(ERROR) %nick is not in a clan. | halt

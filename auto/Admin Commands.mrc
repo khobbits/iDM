@@ -1,9 +1,9 @@
-on *:TEXT:!admin:#iDM.staff: {
+on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !remdm nick, !amsg, !pass nick, !setpass nick password, !idle) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
 }
-on *:TEXT:!ignore*:#idm.staff: {
+on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
@@ -12,7 +12,7 @@ on *:TEXT:!ignore*:#idm.staff: {
   notice $nick $s2($2-) has been added to the ignore list. Please notify the user of this.
   writeini -n ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
 }
-on *:TEXT:!rignore*:#idm.staff: {
+on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
@@ -22,7 +22,7 @@ on *:TEXT:!rignore*:#idm.staff: {
   remini -n ignore.ini Ignore $2
 }
 
-on *:TEXT:!cignore*:#: { 
+on $*:TEXT:/^[!.]cignore .*/Si:#: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -32,7 +32,7 @@ on *:TEXT:!cignore*:#: {
   }
 }
 
-on *:TEXT:!cbl*:#: {
+on $*:TEXT:/^[!.]cbl .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -42,7 +42,7 @@ on *:TEXT:!cbl*:#: {
   }
 }
 
-on *:TEXT:!except*:#iDm.staff: {
+on $*:TEXT:/^[!.]except .*/Si:#iDm.staff: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
@@ -51,7 +51,7 @@ on *:TEXT:!except*:#iDm.staff: {
   notice $nick $s2($2) has successfully been added to my exception list.
 }
 
-On $*:TEXT:/^[!@.]Warn .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$regex($2,/\#(.*)/)) {
     if ($me == iDM) notice $nick $logo(ERROR) You must enter a channel. Example: $s2(!warn #Belong)
@@ -69,7 +69,7 @@ On $*:TEXT:/^[!@.]Warn .*/Si:#iDM.Staff: {
   }
 }
 
-on *:TEXT:!part*:#: {
+on $*:TEXT:/^[!.]part .*/Si:#: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($left($2,1) == $chr(35)) && ($me ison $2) {
     part $2 Part requested by $position($nick) $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93))) 
@@ -77,12 +77,15 @@ on *:TEXT:!part*:#: {
   }
 }
 
-on *:TEXT:!*bl*:#iDM.Staff: {
+on $*:TEXT:/^[!.]bl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if ($left($2,1) == $chr(35)) && (($1 == !bl) || ($1 == !ubl)) {
-    $right($1,-1) $2 $nick $chan $3-
-  }
+  bl $2 $nick $chan $3-
+}
+on $*:TEXT:/^[!.]ubl .*/Si:#iDM.Staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  ubl $2 $nick $chan $3-
 }
 alias bl {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -119,25 +122,9 @@ alias ubl {
     }
   }
 }
-on *:TEXT:!chans*:*: {
+on $*:TEXT:/^[!.chans$/Si:*: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
-}
-on *:TEXT:!clear*:*: {
-  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (%dmon [ $+ [ $chan ] ]) { halt }
-  var %a $comchan($me,0),%c
-  while (%a) { 
-    if ($nick($comchan($me,%a),0)  < 4) { 
-      PART $comchan($me,%a) Clear users command used by $nick
-      var %c %c $comchan($me,%a)
-    }
-    dec %a  
-  }
-  if (%c) notice $Nick I have parted: %c
-  else {
-    if ($comchan($me,0) > 5) { notice $nick I have parted no chans. }
-  }
 }
 alias chans {
   unset %b
@@ -159,7 +146,7 @@ alias chans {
   }
   $iif($isid,return,echo -a) %b
 }
-on *:TEXT:!active*:*: {
+on $*:TEXT:/^[!.]active$/Si:*: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - $actives
 }
@@ -178,11 +165,11 @@ alias actives {
   }
 }
 
-on *:TEXT:!join*:*: {
+on $*:TEXT:/^[!.]join .*/Si:*: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($left($3,1) != $chr(35)) { halt }
   if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
-  if ($2 == $me) && ($left($3,1) == $chr(35)) {
+  if ($2 == $me) {
     forcejoin $3 $nick
   }
 }
@@ -190,6 +177,13 @@ alias forcejoin {
   set %forcedj. [ $+ [ $1 ] ] true
   join $1
   .timer 1 1 msg $1 $logo(JOIN) I was requested to join this channel by $position($2) $2 $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
+}
+
+on $*:TEXT:/^[!.]rename.*/Si:*: {
+  if ($me != iDM) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
+  renamenick $2 $3 $chan
 }
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
@@ -268,7 +262,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   }
 }
 
-on *:TEXT:!rehash:#iDM.staff: {
+on $*:TEXT:/^[!.rehash$/Si:#iDM.staff: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($cid != $scon(1)) { halt }
   set %rand $rand(5000,30000)

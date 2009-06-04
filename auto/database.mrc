@@ -347,24 +347,25 @@ alias exportinibatch5 {
 }
 
 alias renamenick {
+  if ($3) { var %target = msg $3 }
+  else { var %target = echo -s RENAME $1 to $2 - }
   tokenize 32 $lower($1) $lower($2)
-
-  echo -a erm 1 is $1 and 2 is $2
-  halt
+  db.exec UPDATE OR REPLACE 'sitems' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in sitems.ini
   db.exec UPDATE OR REPLACE 'passes' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in passes.ini
+  %target Updated $sqlite_changes(%db) rows in passes.ini
   db.exec UPDATE OR REPLACE 'money' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in money.ini
+  %target Updated $sqlite_changes(%db) rows in money.ini
   db.exec UPDATE OR REPLACE 'wins' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in wins.ini
+  %target Updated $sqlite_changes(%db) rows in wins.ini
   db.exec UPDATE OR REPLACE 'losses' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in losses.ini
+  %target Updated $sqlite_changes(%db) rows in losses.ini
   db.exec UPDATE OR REPLACE 'equipment' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) items of equipment
+  %target Updated $sqlite_changes(%db) items of equipment
   db.exec UPDATE OR REPLACE 'clans' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in clans.ini
+  %target Updated $sqlite_changes(%db) rows in clans.ini
   db.exec UPDATE OR REPLACE 'personalclan' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in personalclan.ini
+  %target Updated $sqlite_changes(%db) rows in personalclan.ini
   db.exec UPDATE OR REPLACE 'pvp' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  echo -a Updated $sqlite_changes(%db) rows in pvp.ini
+  %target Updated $sqlite_changes(%db) rows in pvp.ini
 }

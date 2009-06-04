@@ -135,14 +135,44 @@ alias delaycancel {
     var %oldmoney = $.readini(money.ini,money,$2)
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
-      notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
+      notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
       write penalty.txt $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
       writeini -n money.ini money $2 %newmoney
     }
   }
 }
-
+on $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: { 
+  if (# == #iDM.Support) { halt }
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
+  if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
+  if (%wait. [ $+ [ $chan ] ]) { halt }
+  if (%dm.spam [ $+ [ $nick ] ]) { halt }
+  if ($.readini(gwd.ini,$chan,$nick)) { halt }
+  if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
+  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
+  if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
+  if ($.ini(gwd.ini,$chan,0)) > 3) { notice $nick $logo(ERROR) There are already 4 people going to Godwars. | halt }
+  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | msg # $logo(GWD) You're going on a trip to to $s2(%gwd [ $+ [ $chan ] ]) $+ . | writeini -n gwd.ini # $nick true }
+  .timer $+ # 1 20 enddm # 
+  set %dming [ $+ [ $nick ] ] on 
+  writeini -n status.ini currentdm $nick true 
+  set %p1 [ $+ [ $chan ] ] $nick 
+  set %gwd [ $+ [ $chan ] ] on 
+}
+alias npcs {
+  return gwd
+}
 alias hpbar { 
+  if ($istok($npcs,$2,32)) {
+    if (-* iswm $1) {
+      tokenize 32 0
+    }
+    if ($1 > 1000) {
+      tokenize 32 1000
+    }
+    return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /40))),$str($+(04,$chr(44),04,.),$ceil($calc((1000- $1 ) /40)))) $+ 
+  }
   if (-* iswm $1) {
     tokenize 32 0
   }
@@ -154,7 +184,7 @@ alias hpbar {
 on $*:TEXT:/^[!@.]status/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!%p2 [ $+ [ $chan ] ]) { halt }
-  $iif($left($1,1) == !,notice $nick,msg #) $status($chan)
+  $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
 }
 alias status {
   return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))
