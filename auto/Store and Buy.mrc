@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!@.]store/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  $iif($left($1,1) == !,notice $nick,msg #) $logo(STORE) $&
+  $iif($left($1,1) == @,msg #,notice $nick) $logo(STORE) $&
     $s1(Void Range) (+5 to ranged attacks) ( $+ $s2($buyprice(void range)) $+ ) - $&
     $s1(Void Mage) (+5 to mage attacks) ( $+ $s2($buyprice(void mage)) $+ ) - $&
     $s1(Fire Cape) (+5 to melee attacks) ( $+ $s2($buyprice(fire cape)) $+ ) - $&

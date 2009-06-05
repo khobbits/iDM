@@ -104,14 +104,14 @@ alias c124 {
 }
 on $*:TEXT:/^[!@.]max/Si:#: { 
   if (# == #iDM) || (# == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$2) { $iif($left($1,1) == !,notice $nick,msg #) Please specify the weapon to look up. Syntax: !max whip | halt }
+  if (!$2) { $iif($left($1,1) == @,msg #,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
   if (!$attack($2)) { 
     notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
     halt
   }
-  if ($max(r,$2)) { $iif($left($1,1) == !,notice $nick,msg #) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(r,$2),1,32)) $iif($totalhit(r,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range or Accumulator $s2($gettok($max(r,$2),2,32)) $iif($totalhit(r,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range and Accumulator $s2($gettok($max(r,$2),3,32)) $iif($totalhit(r,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
-  elseif ($max(ma,$2)) { $iif($left($1,1) == !,notice $nick,msg #) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(ma,$2),1,32)) $iif($totalhit(ma,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage or Mage's book $s2($gettok($max(ma,$2),2,32)) $iif($totalhit(ma,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage and Mage's book $s2($gettok($max(ma,$2),3,32)) $iif($totalhit(ma,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
-  elseif ($max(m,$2)) { $iif($left($1,1) == !,notice $nick,msg #) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $s2($gettok($max(m,$2),1,32)) $iif($totalhit(m,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves $s2($gettok($max(m,$2),2,32)) $iif($totalhit(m,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Fire cape $s2($gettok($max(m,$2),3,32)) $iif($totalhit(m,$2,3),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves and Fire cape $s2($gettok($max(m,$2),4,32)) $iif($totalhit(m,$2,4),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
+  if ($max(r,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(r,$2),1,32)) $iif($totalhit(r,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range or Accumulator $s2($gettok($max(r,$2),2,32)) $iif($totalhit(r,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range and Accumulator $s2($gettok($max(r,$2),3,32)) $iif($totalhit(r,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
+  elseif ($max(ma,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(ma,$2),1,32)) $iif($totalhit(ma,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage or Mage's book $s2($gettok($max(ma,$2),2,32)) $iif($totalhit(ma,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage and Mage's book $s2($gettok($max(ma,$2),3,32)) $iif($totalhit(ma,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
+  elseif ($max(m,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $s2($gettok($max(m,$2),1,32)) $iif($totalhit(m,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves $s2($gettok($max(m,$2),2,32)) $iif($totalhit(m,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Fire cape $s2($gettok($max(m,$2),3,32)) $iif($totalhit(m,$2,3),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves and Fire cape $s2($gettok($max(m,$2),4,32)) $iif($totalhit(m,$2,4),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
   else notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
 }
 alias totalhit {
@@ -123,7 +123,7 @@ alias totalhit {
 
 on $*:TEXT:/^[!@.]top/Si:#: { 
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  var %display = $iif(!* iswm $1,notice $nick,msg #)
+  var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
   var %output, %i = 0
   var %sql = SELECT * FROM 'money' WHERE c1 = 'money' ORDER BY c3 +0 DESC LIMIT 0, $+ $2

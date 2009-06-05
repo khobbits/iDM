@@ -122,7 +122,7 @@ alias ubl {
     }
   }
 }
-on $*:TEXT:/^[!.chans$/Si:*: {
+on $*:TEXT:/^[!.]chans$/Si:*: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
 }
@@ -179,7 +179,7 @@ alias forcejoin {
   .timer 1 1 msg $1 $logo(JOIN) I was requested to join this channel by $position($2) $2 $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
 }
 
-on $*:TEXT:/^[!.]rename.*/Si:*: {
+on $*:TEXT:/^[!.]rename .*/Si:*: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }

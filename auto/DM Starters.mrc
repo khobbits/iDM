@@ -3,6 +3,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
+  if (%dming [ $+ [ $nick ] ] == on) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
@@ -68,10 +69,13 @@ alias cancel {
     unset %frozen [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset $+(%*,$1)
     .timer $+ $1 off
+    remini -n gwd.ini $1
+    $+(.timer,gwd,$1) off
   }
 }
 alias enddm {
   if (%p2 [ $+ [ $2 ] ]) { halt }
+  if ($.ini(gwd.ini,$1,0) > 1) { halt }
   msg $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
   cancel $1
 }
@@ -141,24 +145,39 @@ alias delaycancel {
     }
   }
 }
-on $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: { 
+off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: { 
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
-  if ($.readini(gwd.ini,$chan,$nick)) { halt }
+  if ($.readini(gwd.ini,$chan,$nick)) { notice $nick $logo(ERROR) You're already at Godwars. | halt }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
-  if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
-  if ($.ini(gwd.ini,$chan,0)) > 3) { notice $nick $logo(ERROR) There are already 4 people going to Godwars. | halt }
-  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | msg # $logo(GWD) You're going on a trip to to $s2(%gwd [ $+ [ $chan ] ]) $+ . | writeini -n gwd.ini # $nick true }
-  .timer $+ # 1 20 enddm # 
-  set %dming [ $+ [ $nick ] ] on 
-  writeini -n status.ini currentdm $nick true 
-  set %p1 [ $+ [ $chan ] ] $nick 
-  set %gwd [ $+ [ $chan ] ] on 
+  if ($.ini(gwd.ini,$chan,0)) { notice $nick $logo(ERROR) Somebody is already at Godwars. | halt }
+  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | writeini -n gwd.ini # $nick true | msg # $logo(GWD) You're going on a trip to $s2(%gwd [ $+ [ $chan ] ]) $+ . $s1($nick) can go by typing !go. }
+  set %dming [ $+ [ $nick ] ] gwd
+  set %p1 [ $+ [ $chan ] ] $nick
+  set %p2 [ $+ [ $chan ] ] %gwd [ $+ [ $chan ] ]
+}
+on $*:TEXT:/^[!@.]go/Si:#iDM.Staff: {
+  if (# == #iDM.Support) { halt }
+  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
+  if ($.ini(gwd.ini,#,1) != $nick) { halt }
+  if (%turn [ $+ [ # ] ]) { halt }
+  set %turn [ $+ [ # ] ] 1
+  set %hp1 [ $+ [ # ] ] 99
+  set %hp2 [ $+ [ # ] ] 400
+  $+(.timer,gwd,#) 0 5 gwd #
+  msg # $logo(GWD) Get ready!
+}
+alias gwd {
+  tokenize 32 $1 %gwd [ $+ [ $1 ] ]
+  damage $2 $.ini(gwd.ini,$1,$r(1,$.ini(gwd.ini,$1,0))) GWD $1
+  set %turn [ $+ [ $1 ] ] 2
+  .timer 1 3 set %turn [ $+ [ $1 ] ] 1
 }
 alias npcs {
   return gwd
@@ -168,10 +187,10 @@ alias hpbar {
     if (-* iswm $1) {
       tokenize 32 0
     }
-    if ($1 > 1000) {
-      tokenize 32 1000
+    if ($1 > 400) {
+      tokenize 32 400
     }
-    return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /40))),$str($+(04,$chr(44),04,.),$ceil($calc((1000- $1 ) /40)))) $+ 
+    return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /20))),$str($+(04,$chr(44),04,.),$ceil($calc((400- $1 ) /20)))) $+ 
   }
   if (-* iswm $1) {
     tokenize 32 0
