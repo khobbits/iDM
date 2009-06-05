@@ -53,15 +53,15 @@ alias dead {
 
   var %winnerclan = $getclanname($3)
   var %looserclan = $getclanname($2)
-  if (%looserclan) && ($.readini(clantracker.ini,%looserclan,share) == on) { trackclan LOSE %looserclan }
+  if (%looserclan) && ($.readini(clantracker.ini,share,%looserclan) == on) { trackclan LOSE %looserclan }
 
-  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,%winnerclan,share) == on) { 
+  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,share,%winnerclan) == on) { 
     var %nummember = $clanmembers(%winnerclan)
     var %sharedrop = $floor($calc(%combined / $calc(%nummember -1)))
     trackclan WIN %winnerclan %sharedrop
 
     var %sql.winnerclan = $db.safe(%winnerclan)
-    var %sql = UPDATE 'money' SET c3 = c3 + $+ %sharedrop WHERE c2 IN (SELECT c2 FROM 'clan' WHERE c1 = %sql.winnerclan ) AND 'money'.c1 = 'money' AND 'money'.c2 != 'share';
+    var %sql = UPDATE 'money' SET c3 = c3 + $+ %sharedrop WHERE c2 IN (SELECT c2 FROM 'clan' WHERE c1 = %sql.winnerclan ) AND 'money'.c1 = 'money';
     db.exec %sql
 
     .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]

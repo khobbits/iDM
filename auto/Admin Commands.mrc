@@ -287,7 +287,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   }
 }
 
-on $*:TEXT:/^[!.rehash$/Si:#iDM.staff: {
+on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($cid != $scon(1)) { halt }
   set %rand $rand(5000,30000)

@@ -66,10 +66,10 @@ on $*:TEXT:/^[!@.]share/Si:*: {
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
   if ($2 == on) { notice $nick $logo(CLAN) The drop share option for your clan has been enabled.
-    writeini clantracker.ini %clanname Share on
+    writeini clantracker.ini Share %clanname on
   }
   if ($2 == off) { notice $nick $logo(CLAN) The drop share option for your clan has been disabled.
-    remini clantracker.ini %clanname Share
+    remini clantracker.ini Share %clanname
   }
 }
 on $*:TEXT:/^[!@.]dmclan/Si:#: { 
@@ -93,7 +93,7 @@ alias claninfo {
     inc %tc
   }
   db.query_end %result
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($.readini(clantracker.ini,$1,share) == on,$s1(on),$s2(off)) $+ )
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($.readini(clantracker.ini,share,$1) == on,$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {
