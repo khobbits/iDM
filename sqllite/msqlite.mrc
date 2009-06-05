@@ -86,22 +86,6 @@ alias SQLITE_DROP_VTABLE          return 30
 alias SQLITE_FUNCTION             return 31
 
 /*
-** On Load Event
-*/
-
-on *:LOAD:{
-  if ($version < 6.2) {
-    echo 4 -a Obsoloete mIRC version $version
-    echo 4 -a mSQLite requires at least mIRC 6.2
-    echo 4 -a Script wasn't loaded.
-    unload -rs $+(",$script,")
-    halt
-  }
-
-  echo 3 -a mIRC SQLite loaded successfully.
-}
-
-/*
 ** SQLite DLL Path
 */
 
