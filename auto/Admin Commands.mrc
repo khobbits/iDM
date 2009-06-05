@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !remdm nick, !amsg, !pass nick, !setpass nick password, !idle) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
+  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !amsg, !remdm nick, !pass nick, !setpass nick password, !idle) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
 }
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -179,12 +179,37 @@ alias forcejoin {
   .timer 1 1 msg $1 $logo(JOIN) I was requested to join this channel by $position($2) $2 $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
 }
 
-on $*:TEXT:/^[!.]rename .*/Si:*: {
+on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
   renamenick $2 $3 $chan
 }
+
+alias renamenick {
+  if ($3) { var %target = msg $3 $logo(RENAME) }
+  else { var %target = echo -s RENAME $1 to $2 - }
+  tokenize 32 $lower($1) $lower($2)
+  db.exec UPDATE OR REPLACE 'sitems' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in sitems.ini
+  db.exec UPDATE OR REPLACE 'passes' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in passes.ini
+  db.exec UPDATE OR REPLACE 'money' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in money.ini
+  db.exec UPDATE OR REPLACE 'wins' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in wins.ini
+  db.exec UPDATE OR REPLACE 'losses' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in losses.ini
+  db.exec UPDATE OR REPLACE 'equipment' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) items of equipment
+  db.exec UPDATE OR REPLACE 'clans' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in clans.ini
+  db.exec UPDATE OR REPLACE 'personalclan' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in personalclan.ini
+  db.exec UPDATE OR REPLACE 'pvp' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $sqlite_changes(%db) rows in pvp.ini
+}
+
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
@@ -270,34 +295,24 @@ on $*:TEXT:/^[!.rehash$/Si:#iDM.staff: {
   timer -m 1 %rand rehash
 }
 
+on *:TEXT:!amsg*:*: {
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) { notice $nick Syntax: !amsg 03message | halt }
+  if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
+  if ($me == iDM) { amsg $logo(AMSG) $2- 07[03 $+ $nick $+ 07] | halt }
+  var %x = 1
+  while ($chan(%x)) {
+    if ($chan(%x) != #iDM && $chan(%x) != #iDM.Staff) {
+      msg $chan(%x) $logo(AMSG) $2- 07[03 $+ $nick $+ 07]
+    }
+    inc %x 
+  }
+}
+
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($istok(#idm #idm.staff,#,32)) && ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$.readini(status.ini,currentdm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   remini -n status.ini currentdm $2
   notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
-}
-
-alias position {
-  if ($.readini(Positions.ini,Positions,$address($nick,3))) {
-    return $v1
-    halt
-  }
-  return Bot admin
-}
-on *:JOIN:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($.readini(Admins.ini,Admins,$address($nick,3))) { 
-    msg # $logo(ADMIN) $position($nick) $nick has joined the channel.
-  } 
-  elseif ($.readini(admins.ini,support,$address($nick,3))) { 
-    msg # $logo(SUPPORT) Bot support $nick has joined the channel.
-  }
-  if ($nick == $me) {
-    if (# == #iDm || # == #iDM.staff) { halt }
-    .timer 1 1 scanbots $chan
-  }
-}
-alias botnames {
-  return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU]
 }

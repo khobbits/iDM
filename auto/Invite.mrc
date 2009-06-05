@@ -42,6 +42,11 @@ alias botsonline {
   }
   return %b
 }
+
+alias botnames {
+  return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU]
+}
+
 CTCP *:*join*:?: {
   if ($nick == iDM) {
     if ($me ison $2) { halt }
@@ -52,31 +57,77 @@ alias modesp {
   if (!%raw322 [ $+ [ $1 ] ]) || ($numtok(%raw322 [ $+ [ $1 ] ],32) == 2) { Halt }
   join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on 
 }
+
 on *:JOIN:#:{
-  if (%blockinvspam) { halt }
-  if (%raw322 [ $+ [ # ] ]) && ($numtok(%raw322 [ $+ [ # ] ],32) == 2) { unset %raw322 [ $+ [ # ] ] | halt }
-  if (%forcedj. [ $+ [ # ] ]) { unset %forcedj. [ $+ [ # ] ] | halt }
   if ($nick == $me) { 
-    $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
-    halt
+    if (%raw322 [ $+ [ # ] ]) && ($numtok(%raw322 [ $+ [ # ] ],32) == 2) { unset %raw322 [ $+ [ # ] ] }
+    if (%forcedj. [ $+ [ # ] ]) {
+      unset %forcedj. [ $+ [ # ] ] 
+    }
+    else {
+      if (# != #iDM && # != #iDM.Staff) { 
+        $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
+        .timer 1 1 scanbots $chan
+      }
+    }
   } 
-  if ($nick(#,0) < 5) { part # Parting channel. Need 5 or more people to have iDM.
+  else {
+    if ($nick(#,0) < 5) { 
+      part # Parting channel. Need 5 or more people to have iDM.
+      return
+    }
+    if (# != #iDM && # != #iDM.Staff) || ($me == iDM) { 
+      if ($.readini(Admins.ini,Admins,$address($nick,3))) { 
+        msg # $logo(ADMIN) $position($nick) $nick has joined the channel.
+      } 
+      elseif ($.readini(admins.ini,support,$address($nick,3))) { 
+        msg # $logo(SUPPORT) Bot support $nick has joined the channel.
+      }
+    }
   }
 }
+
 alias limit5 {
   if ($nick($1,0) < 5) { msg $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msg $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]
 }
 
+alias scanbots {
+  if (# == #iDM || # == #iDM.Staff) { halt }
+  var %a 1
+  while (%a <= $nick($1,0)) {
+    if ($istok($botnames,$nick($1,%a),46)) && ($nick($1,%a) != $me) {
+      part $1 Bot already in channel. ( $+ $nick($1,%a) $+ )
+      halt
+    }
+    inc %a
+  }
+}
+
+alias position {
+  if ($.readini(Positions.ini,Positions,$address($nick,3))) {
+    return $v1
+    halt
+  }
+  return Bot admin
+}
+
 raw 322:*:{
   if ($numtok(%raw322 [ $+ [ $2 ] ],32) == 1) {
-    if ($3 < 5) { msg %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 5 or more is needed to have iDM join. | unset %raw322 [ $+ [ $2 ] ] | Halt }
-    $+(.timerinvalidnick,$2) off
-    set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
-    join $2 
-  idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) | $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32)) }
+    if ($3 < 4) { 
+      msg %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 4 or more is needed to have iDM join. 
+      unset %raw322 [ $+ [ $2 ] ]
+    }
+    else {
+      $+(.timerinvalidnick,$2) off
+      set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
+      join $2 
+      idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) | $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
+    }
+  }
 }
+
 raw 323:*:{ /window -h "Channels list" }
 raw 474:*: { if (%raw47345 [ $+ [ $2 ] ]) {
     msg %raw47345 [ $+ [ $2 ] ] $logo(ERROR) I'm currently banned from $2 so im unable to join. | unset %raw47345 [ $+ [ $2 ] ]

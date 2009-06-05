@@ -143,13 +143,12 @@ alias enddmcatch {
 
   :quit
   var %action = quit $network & $3 ( $+ $4- $+ )
-  if ($3 == Quit:) {
+  if ($4 == Quit:) {
     goto pass
   } 
   else {
-    goto fail
+    goto qfail
   }
-
   :kick
   var %action = was kicked from $4 by $3 for " $+ $5- $+ "
   if ($3 == $2) {
@@ -170,5 +169,8 @@ alias enddmcatch {
 
   :fail
   msg #idm.staff $logo(ENDDM) $2 %action
+  return 0
+
+  :qfail
   return 0
 }

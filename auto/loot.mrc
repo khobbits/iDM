@@ -51,17 +51,17 @@ alias dead {
   if (accumulator isin %rareitem) { unset %rareprice | updateini equipment.ini accumulator $3 +1 }
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
 
-  var %winnerclan = $gettok($.readini(Personalclan.ini,Person,$3),1,58)
-  var %looserclan = $gettok($.readini(Personalclan.ini,Person,$2),1,58)
-  if (%looserclan) && ($.readini(Clannames.ini,%looserclan,share) == on) { trackclan LOSE %looserclan }
+  var %winnerclan = $getclanname($3)
+  var %looserclan = $getclanname($2)
+  if (%looserclan) && ($.readini(clantracker.ini,%looserclan,share) == on) { trackclan LOSE %looserclan }
 
-  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(Clannames.ini,%winnerclan,share) == on) { 
-    var %nummember = $.ini(Clannames.ini,%winnerclan,0)
+  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,%winnerclan,share) == on) { 
+    var %nummember = $clanmembers(%winnerclan)
     var %sharedrop = $floor($calc(%combined / $calc(%nummember -1)))
     trackclan WIN %winnerclan %sharedrop
 
     var %sql.winnerclan = $db.safe(%winnerclan)
-    var %sql = UPDATE 'money' SET c3 = c3 + $+ %sharedrop WHERE c2 IN (SELECT c2 FROM 'clannames' WHERE c1 = %sql.winnerclan ) AND 'money'.c1 = 'money' AND 'money'.c2 != 'share';
+    var %sql = UPDATE 'money' SET c3 = c3 + $+ %sharedrop WHERE c2 IN (SELECT c2 FROM 'clan' WHERE c1 = %sql.winnerclan ) AND 'money'.c1 = 'money' AND 'money'.c2 != 'share';
     db.exec %sql
 
     .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
