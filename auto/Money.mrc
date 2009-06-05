@@ -38,8 +38,8 @@ alias equipment {
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias clan {
-  if ($getclanname($nick)) { return $s1(Clan) $+ : $v1 }
-} 
+  if ($getclanname($1)) { return $s1(Clan) $+ : $v1 }
+}
 
 alias sitems {
   if ($.readini(sitems.ini,belong,$1)) { var %e %e Bêlong:Blade }
