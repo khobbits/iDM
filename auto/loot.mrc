@@ -53,9 +53,9 @@ alias dead {
 
   var %winnerclan = $getclanname($3)
   var %looserclan = $getclanname($2)
-  if (%looserclan) && ($.readini(clantracker.ini,share,%looserclan) == on) { trackclan LOSE %looserclan }
+  if (%looserclan) && ($.readini(clantracker.ini,share,%looserclan)) { trackclan LOSE %looserclan }
 
-  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,share,%winnerclan) == on) { 
+  if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,share,%winnerclan)) { 
     var %nummember = $clanmembers(%winnerclan)
     var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
