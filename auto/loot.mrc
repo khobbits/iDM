@@ -57,7 +57,7 @@ alias dead {
 
   if (%winnerclan != %looserclan) && (%winnerclan) && ($.readini(clantracker.ini,share,%winnerclan) == on) { 
     var %nummember = $clanmembers(%winnerclan)
-    var %sharedrop = $floor($calc(%combined / $calc(%nummember -1)))
+    var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
 
     var %sql.winnerclan = $db.safe(%winnerclan)
