@@ -72,7 +72,7 @@ on *:JOIN:#:{
     }
   } 
   else {
-    if ($nick(#,0) < 5) { 
+    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) { 
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }

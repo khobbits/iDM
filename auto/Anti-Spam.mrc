@@ -13,12 +13,15 @@ on $*:TEXT:/^[!@.]((end)?dm|stake|top|dmclue|solve|money|status|buy|sell|store|s
 on *:TEXT:*:?:{
   if ($nick == -sbnc) { halt }
   close -m $nick
-  $iif(%cmdspam. [ $+ [ $nick ] ],inc %cmdspam. [ $+ [ $nick ] ],inc -u4 %cmdspam. [ $+ [ $nick ] ]) 
-  if (%cmdspam. [ $+ [ $nick ] ] >= 8) {
-    msg $secondchan $logo(SPAM) $s1(PM) spam detected by $s2($nick) $+ . Added to ignore for two minutes.
-    notice $nick $logo(SPAM) You are now added to ignore for $s2(TWO minutes) due to spam.
-    ignore -u120 $nick 3
-    halt
+  if (!%spam) {
+    set -u10 %spam on
+    $iif(%cmdspam. [ $+ [ $nick ] ],inc %cmdspam. [ $+ [ $nick ] ],inc -u4 %cmdspam. [ $+ [ $nick ] ]) 
+    if (%cmdspam. [ $+ [ $nick ] ] >= 8) {
+      msg $secondchan $logo(SPAM) $s1(PM) spam detected by $s2($nick) $+ . Added to ignore for two minutes.
+      notice $nick $logo(SPAM) You are now added to ignore for $s2(TWO minutes) due to spam.
+      ignore -u120 $nick 3
+      halt
+    }
   }
 }
 
