@@ -8,7 +8,7 @@ on *:start: {
     load -rv scripts\vars.ini
     echo -a This bot was started manually.
   }
-dll scripts\medit.dll Load
+  dll scripts\medit.dll Load
 }
 
 

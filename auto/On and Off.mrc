@@ -29,6 +29,7 @@ alias enable {
     remini -n OnOff.ini $3 guth
     remini -n OnOff.ini $3 sgs
     remini -n OnOff.ini $3 blood
+    remini -n OnOff.ini $3 onyx
     notice $2 $logo(ENABLE) Healing attacks are now on in $3 $+ .
     halt
   }
@@ -52,6 +53,7 @@ alias disable {
     writeini -n OnOff.ini $3 guth true
     writeini -n OnOff.ini $3 sgs true
     writeini -n OnOff.ini $3 blood true
+    ;writeini -n OnOff.ini $3 onyx true
     notice $2 $logo(DISABLE) Healing attacks are now off.
     halt
   }

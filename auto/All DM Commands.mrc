@@ -196,6 +196,9 @@ alias damage {
   if ($3 == dhally) {
     msg $4 $logo(DM) $s1($1) slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit [ $+ [ $4 ] ],1,32)) - $s2($gettok(%hit [ $+ [ $4 ] ],2,32)) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
   }
+  if ($3 == onyx) {
+    msg $4 $logo(DM) $s1($1) shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal [ $+ [ $4 ] ] == 1,09HEALING,hitting) a $s2(%hit [ $+ [ $4 ] ]) $+ $iif(%extra [ $+ [ $4 ] ], $chr(32) - 03 $+ $v1 $+  $+) $+ . HP $s1($replace($2,$chr(58),$chr(32))) $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp)) $iif(%heal [ $+ [ $4 ] ] == 1,- HP $s1($1) $+($chr(91),$s2($iif($($+(%,hp,$player($1,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4),2)))
+  }
   if ($3 == gwd) {
     msg $4 $logo(GWD) $s1($replace($1,$chr(58),$chr(32))) brutally attacks $s1($2) $+ , hitting $s2(%hit [ $+ [ $4 ] ]) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),hp)
   }
@@ -319,11 +322,11 @@ alias hit {
   goto $1
   :whip
   if (%acc isnum 1-4) return 0
-  if (%acc isnum 5-30) return $r(5,25)
-  if (%acc isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
+  if (%acc isnum 5-25) return $r(0,25)
+  if (%acc isnum 26-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :dds
   if (%acc isnum 1-4) return 0 0
-  if (%acc isnum 5-30) return $r(5,20) $r(5,20)
+  if (%acc isnum 5-30) return $r(0,20) $r(0,20)
   if (%acc isnum 31-100) return $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def))) $floor($calc($r(11,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :ags
   if (%acc isnum 1-2) return 0
@@ -350,8 +353,8 @@ alias hit {
   if (%acc isnum 24-100) return $floor($calc($r(16,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%atk))) * $(,%def)))
   :gmaul
   if (%acc isnum 1-3) return $r(0,8) $r(0,8) $r(0,8)
-  if (%acc isnum 4-40) return $r(1,12) $r(1,12) $r(1,12)
-  if (%acc isnum 41-100) return $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def)))
+  if (%acc isnum 4-25) return $r(1,15) $r(1,15) $r(1,15)
+  if (%acc isnum 26-100) return $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def))) $floor($calc($r(13,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $ceil($calc($(,%atk) / 2)))) * $(,%def)))
   :guth
   if (%acc isnum 1-5) return 0
   if (%acc isnum 6-13) return $r(1,20)
@@ -382,8 +385,8 @@ alias hit {
   var %dclaws3 $ceil($calc($gettok(%dclaws2,1,32) / 2)) $ceil($calc($gettok(%dclaws2,2,32) / 2))
   var %dclaws4 $ceil($calc($gettok(%dclaws3,1,32) / 2)) $ceil($calc($gettok(%dclaws3,2,32) / 2))
   if (%acc isnum 1-7) return 0 0 $r(0,$r(15,20)) $r(0,$r(15,20))
-  if (%acc isnum 8-55) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
-  if (%acc isnum 56-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
+  if (%acc isnum 8-50) return $gettok(%dclaws,1,32) $gettok(%dclaws2,1,32) $gettok(%dclaws3,1,32) $gettok(%dclaws4,1,32)
+  if (%acc isnum 51-100) return $gettok(%dclaws,2,32) $gettok(%dclaws2,2,32) $gettok(%dclaws3,2,32) $gettok(%dclaws4,2,32)
   :dmace
   if (%acc isnum 1-4) return 0
   if (%acc isnum 5-60) return $r(5,25)
@@ -419,7 +422,11 @@ alias hit {
   :mjavelin
   if (%acc isnum 1-4) return $r(0,7)
   if (%acc isnum 5-38) return $r(8,25)
-  if (%acc isnum 39-100) return $floor($calc($r(25,$calc($gettok($gettok($max(m,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
+  if (%acc isnum 39-100) return $floor($calc($r(25,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
+  :onyx
+  if (%acc isnum 1-5) return $r(0,10)
+  if (%acc isnum 6-33) return $r(10,30)
+  if (%acc isnum 34-100) return $floor($calc($r(25,$calc($gettok($gettok($max(r,$1),1,32),1,45) + $(,%ratk))) * $(,%def)))
   :gwd
   return $r(0,50)
 }

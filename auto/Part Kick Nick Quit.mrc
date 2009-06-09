@@ -20,7 +20,7 @@ on *:TEXT:!idle*:#iDM.Staff: {
 on $*:TEXT:/^[!@.]part/Si:#: { 
   if (# == #iDM) || (# == #iDM.Staff) { halt }
   if ($2 == $me) {
-    if ($nick isop #) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+    if ($nick isop # || $nick ishop #) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on

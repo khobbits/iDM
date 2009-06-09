@@ -5,6 +5,7 @@ alias max {
     if ($2 == cbow) return 35 40 45
     if ($2 == dbow) return 35-35 40-40 45-45
     if ($2 == mjavelin) return 40 45 50
+    if ($2 == onyx) return 35 40 45
   }
   if ($1 == ma) {
     ;Mage
@@ -23,7 +24,7 @@ alias max {
     if ($2 == sgs) return 50 53 55 58
     if ($2 == zgs) return 50 53 55 58
     if ($2 == dh) return 40/75 43/78 45/80 48/83
-    if ($2 == gmaul) return 30-30-30 31-31-31 33-33-33 34-34-34
+    if ($2 == gmaul) return 25-25-25 28-28-28 31-31-31 33-33-33
     if ($2 == guth) return 35 38 40 43
     if ($2 == surf) return 22 22 22 22
     if ($2 == dclaws) return 24-12-6-3 27-14-7-4 29-15-8-4 32-16-8-4
@@ -39,6 +40,7 @@ alias max {
 alias specused {
   if ($1 == cbow) return $false
   if ($1 == dbow) return 75
+  if ($1 == onyx) return $false
   if ($1 == mjavelin) return 25
   if ($1 == ice) return $false
   if ($1 == blood) return $false
@@ -72,6 +74,7 @@ alias bonus {
   if ($1 == guth) return Heals whatever you hit.
   if ($1 == statius) return Ignores all defence bonuses.
   if ($1 == smoke) return 1/2 Chance of poisoning opponent.
+  if ($1 == onyx) return Heals 1/3 of whatever you hit.
 }
 alias attack {
   if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke,$1,32)) {
@@ -91,6 +94,7 @@ alias healer {
   if ($1 == guth) return 3 1
   if ($1 == sgs) return 1 2
   if ($1 == blood) return 1 3
+  if ($1 == onyx) return 2 3
   return $false
 }
 alias poisoner {
