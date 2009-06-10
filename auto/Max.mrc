@@ -321,7 +321,7 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     }
   }
   else { var %highchance = 0 }
-  $iif($left($1,1) == @,msg #,notice $nick) $logo(HITCHANCE) There is a ( $+ $floor($calc(%lowchance *100)) + $floor($calc(%midchance *100)) + $floor($calc(%highchance *100)) $+ ) $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $3 or higher each hit without any bonuses..
+  $iif($left($1,1) == @,msg #,notice $nick) $logo(HITCHANCE) There is a $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $s1($3) or higher each hit without bonuses.  Use !max $2 to check bonuses and special infomation.
 }
 
 alias totalhit {
