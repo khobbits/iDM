@@ -266,7 +266,8 @@ alias dbinit {
   if (!%db) {
     echo 4 -s Error: %sqlite_errstr
     return
-    } else {
+  } 
+  else {
     echo 4 -s SQLDB LOADED
   }
 }

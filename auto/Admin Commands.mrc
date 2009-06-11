@@ -22,7 +22,7 @@ on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   remini -n ignore.ini Ignore $2
 }
 
-on $*:TEXT:/^[!.]cignore .*/Si:#: { 
+on $*:TEXT:/^[!.]cignore .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -37,7 +37,7 @@ on $*:TEXT:/^[!.]cbl .*/Si:#: {
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
     if (!$2) || ($left($2,1) != $chr(35)) { notice $nick $logo(ERROR) Syntax: !cbl #chan | halt }
-    if (!$.readini(blacklist.ini,chans,$2)) { notice $nick $logo(BLACKLIST INFO) $s2($2) is not blacklisted. | halt } 
+    if (!$.readini(blacklist.ini,chans,$2)) { notice $nick $logo(BLACKLIST INFO) $s2($2) is not blacklisted. | halt }
     notice $nick $logo(BLACKLIST INFO) $s2($2) has been blacklisted by $s1($iif($.readini(blacklist.ini,who,$2),$v1,Unknown)) for: $.readini(blacklist.ini,chans,$2)
   }
 }
@@ -72,7 +72,7 @@ On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
 on $*:TEXT:/^[!.]part .*/Si:#: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($left($2,1) == $chr(35)) && ($me ison $2) {
-    part $2 Part requested by $position($nick) $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93))) 
+    part $2 Part requested by $position($nick) $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93)))
     notice $nick I have parted $2
   }
 }
@@ -130,13 +130,13 @@ alias chans {
   unset %b
   var %a 1
   while (%a <= $chan(0)) {
-    if ($me isop $chan(%a)) { 
+    if ($me isop $chan(%a)) {
       var %b %b $+(@,$chan(%a))
     }
-    if ($me ishop $chan(%a)) { 
+    if ($me ishop $chan(%a)) {
       var %b %b $+($chr(37),$chan(%a))
     }
-    if ($me isvoice $chan(%a)) { 
+    if ($me isvoice $chan(%a)) {
       var %b %b $+(+,$chan(%a))
     }
     if ($me isreg $chan(%a)) {
@@ -220,33 +220,33 @@ On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
 On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (!$2) { 
+  if (!$2) {
     notice You need to include a name you want to give your item too.
   }
   else {
     if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-      if ($.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
-      writeini sitems.ini belong $2 true 
+      if ($.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini belong $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
-    elseif ($nick == Allegra || $nick == Strychnine) { 
-      if ($.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
-      writeini sitems.ini allegra $2 true 
+    elseif ($nick == Allegra || $nick == Strychnine) {
+      if ($.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini allegra $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
-    elseif ($nick == Beau) { 
-      if ($.readini(sitems.ini,beau,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
-      writeini sitems.ini beau $2 true 
+    elseif ($nick == Beau) {
+      if ($.readini(sitems.ini,beau,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini beau $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
-    elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { 
-      if ($.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
-      writeini sitems.ini snake $2 true 
+    elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
+      if ($.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini snake $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
-    elseif ($nick == KHobbits) { 
-      if ($.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt } 
-      writeini sitems.ini kh $2 true 
+    elseif ($nick == KHobbits) {
+      if ($.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini kh $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
   }
@@ -255,33 +255,33 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
 On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (!$2) { 
+  if (!$2) {
     notice You need to include a name you want to give your item too.
   }
   else {
-    if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) { 
-      if (!$.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
+    if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
+      if (!$.readini(sitems.ini,belong,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       remini sitems.ini belong $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
-    elseif ($nick == Allegra || $nick == Strychnine) { 
-      if (!$.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
+    elseif ($nick == Allegra || $nick == Strychnine) {
+      if (!$.readini(sitems.ini,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       remini sitems.ini allegra $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
-    elseif ($nick == Beau) { 
-      if (!$.readini(sitems.ini,beaumerang,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
+    elseif ($nick == Beau) {
+      if (!$.readini(sitems.ini,beaumerang,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       remini sitems.ini beau $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
-    elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { 
-      if (!$.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
-      remini sitems.ini snake $2 
+    elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
+      if (!$.readini(sitems.ini,snake,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+      remini sitems.ini snake $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
-    elseif ($nick == KHobbits) { 
-      if (!$.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt } 
-      remini sitems.ini kh $2 
+    elseif ($nick == KHobbits) {
+      if (!$.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+      remini sitems.ini kh $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
   }
@@ -305,8 +305,15 @@ on *:TEXT:!amsg*:*: {
     if ($chan(%x) != #iDM && $chan(%x) != #iDM.Staff) {
       msg $chan(%x) $logo(AMSG) $2- 07[03 $+ $nick $+ 07]
     }
-    inc %x 
+    inc %x
   }
+}
+
+on *:TEXT:!whois*:#: {
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) { Notice $nick Please specify a channel | halt }
+  if (%p1 [ $+ [ $2 ] ]) && (%p2 [ $+ [ $2 ] ]) && ($Me ison $2) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address(%p1 [ $+ [ $2 ] ],2)) and Player2: $s1($address(%p2 [ $+ [ $2 ] ],2)) $+ . }
+  else { halt }
 }
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {

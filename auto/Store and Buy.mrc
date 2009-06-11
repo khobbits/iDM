@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.]store/Si:#: { 
+on $*:TEXT:/^[!@.]store/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   $iif($left($1,1) == @,msg #,notice $nick) $logo(STORE) $&
@@ -19,7 +19,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
     $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2($buyprice(ring of wealth)) $+ )
 }
 
-on $*:TEXT:/^[!@.]buy/Si:#: { 
+on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -36,23 +36,22 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick Type !store for a list of items that can currently be bought.
     halt
   }
-  if (%sname == bgloves) && (($.readini(wins.ini,wins,$nick) < 1000) || ($calc($.readini(wins.ini,wins,$nick) + $.readini(losses.ini,losses,$nick)) < 2000)) { 
-    notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves. 
+  if (%sname == bgloves) && (($.readini(wins.ini,wins,$nick) < 1000) || ($calc($.readini(wins.ini,wins,$nick) + $.readini(losses.ini,losses,$nick)) < 2000)) {
+    notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves.
     halt
   }
   if ($.readini(Equipment.ini,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
   if ($.readini(money.ini,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   updateini Money.ini Money $nick - $+ %price
-  writeini -n Equipment.ini %sname $nick 1   
-  write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address 
+  writeini -n Equipment.ini %sname $nick 1
+  write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($.readini(Money.ini,money,$nick))) left.
 
 }
 
-on $*:TEXT:/^[!@.]sell/Si:#: { 
+on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if ($.readini(lent.ini,borrowing,$nick)) { notice $nick You cannot sell this item as you are borrowing it. | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
 
   if ($storematch($2-) != 0) {
@@ -69,7 +68,7 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   updateini Equipment.ini %sname $nick -1
   if ($.readini(equipment.ini,%sname,$nick) < 1) {
     remini -n Equipment.ini %sname $nick
-  }    
+  }
   notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($.readini(Money.ini,money,$nick))) $+ .
   return
 }
@@ -90,17 +89,17 @@ alias storematch {
     var %sname = void
     var %fname = Full Void Knight Ranged
     var %price = 250000000
-  } 
+  }
   elseif ($regex($2-,/^void(\s|-)?mage$/Si)) {
     var %sname = void-mage
     var %fname = Full Void Knight Mage
     var %price = 400000000
-  } 
+  }
   elseif ($regex($2,/^ely?s+ian/Si)) {
     var %sname = elshield
     var %fname = Elysian spirit shield
     var %price = 4000000000
-  } 
+  }
   elseif ($regex($2-,/^b(ar+ows?)?(\s|-)?glo?ves?/Si)) {
     var %sname = bgloves
     var %fname = Barrow Gloves
@@ -146,12 +145,12 @@ alias storematch {
     var %fname = Zamorak godsword
     var %price = 200000000
   }
-  elseif ($2 == mbook) || ($2 == mage's) || ($2 == mages) || ($2- == mage book) { 
+  elseif ($2 == mbook) || ($2 == mage's) || ($2 == mages) || ($2- == mage book) {
     var %sname = mbook
     var %fname = Mage's Book
     var %price = 500000000
   }
-  elseif ($2 == accumulator) || ($2 == accum) || ($2 == backpack) { 
+  elseif ($2 == accumulator) || ($2 == accum) || ($2 == backpack) {
     var %sname = accumulator
     var %fname = Accumulator
     var %price = 500000000
