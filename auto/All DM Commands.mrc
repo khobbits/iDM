@@ -372,7 +372,7 @@ alias hit {
   :statius
   return $hitdmg(m,statius,%acc,1,%atk,1)
   :vspear
-  return $hitdmg(m,vpear,%acc,1,%atk,%def)
+  return $hitdmg(m,vspear,%acc,1,%atk,%def)
   :mjavelin
   return $hitdmg(r,mjavelin,%acc,1,%ratk,%def)
   :onyx
