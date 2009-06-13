@@ -8,7 +8,11 @@ on *:CONNECT: {
   unsetall
   remini status.ini currentdm 
   remini login.ini login
-  timerpingo 0 120 .msg sbnc ping
+  timerpingo 0 120 pingo
+}
+
+alias pingo {
+  .msg -sbnc ping
 }
 
 on *:START:.timerAnti-10053 -o 0 60 scon -at1 raw -q ping Anti-10053
