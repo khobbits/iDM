@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.]dm\b/Si:#: { 
+on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
@@ -10,22 +10,22 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
-  if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. 
-    .timer $+ # 1 20 enddm # 
-    set %dming [ $+ [ $nick ] ] on 
-    writeini -n status.ini currentdm $nick true 
-    set %p1 [ $+ [ $chan ] ] $nick 
-    set %dmon [ $+ [ $chan ] ] on 
-    halt 
+  if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
+    .timer $+ # 1 20 enddm #
+    set %dming [ $+ [ $nick ] ] on
+    writeini -n status.ini currentdm $nick true
+    set %p1 [ $+ [ $chan ] ] $nick
+    set %dmon [ $+ [ $chan ] ] on
+    halt
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
     if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
-      msg # $logo(ERROR) We no longer allow two players on the same IP to DM each other.  You are free to DM others.  If you think your IP requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
+      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
     }
-    .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true 
-    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 
+    .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true
+    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
-    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
+    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
   }
 }
 
@@ -56,7 +56,7 @@ alias cancel {
     .timer $+ $1 off
     remini -n gwd.ini $1
     $+(.timer,gwd,$1) off
-  }  
+  }
 }
 alias enddm {
   if (%p2 [ $+ [ $2 ] ]) { halt }
@@ -64,9 +64,9 @@ alias enddm {
   msg $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
   cancel $1
 }
-on $*:TEXT:/^[!@.]enddm/Si:#: { 
+on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (%stake [ $+ [ $chan ] ]) { 
+  if (%stake [ $+ [ $chan ] ]) {
     if ($.readini(Admins.ini,Admins,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel #
@@ -80,7 +80,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     cancel #
     msg # $logo(DM) The DM has been canceled by an admin.
 
-  } 
+  }
   elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
     if (%enddm [ $+ [ $chan ] ] == 0) {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
@@ -91,7 +91,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancel $chan %p1 [ $+ [ $chan ] ]
 
-  } 
+  }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
     if (%enddm [ $+ [ $chan ] ] == 0) {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
@@ -109,7 +109,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     elseif (%turn [ $+ [ $chan ] ]) {
       notice $nick You can only end the dm on the other players turn.
-    } 
+    }
     else {
       cancel $chan
       msg $chan $logo(DM) The DM has been canceled.
@@ -130,7 +130,7 @@ alias delaycancel {
     }
   }
 }
-off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: { 
+off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: {
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
@@ -167,7 +167,7 @@ alias gwd {
 alias npcs {
   return gwd
 }
-alias hpbar { 
+alias hpbar {
   if ($istok($npcs,$2,32)) {
     if (-* iswm $1) {
       tokenize 32 0
@@ -185,7 +185,7 @@ alias hpbar {
   }
   return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /5))),$str($+(04,$chr(44),04,.),$floor($calc((99- $1 ) /5)))) $+ 
 }
-on $*:TEXT:/^[!@.]status/Si:#: { 
+on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!%p2 [ $+ [ $chan ] ]) { halt }
   $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
