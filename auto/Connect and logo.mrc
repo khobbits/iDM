@@ -3,11 +3,16 @@ alias s1 { return $+($chr(3),03,$1-,) }
 alias s2 { return $+($chr(3),07,$1-,) }
 
 on *:CONNECT: {
-  mode $me +pB 
-  unsetall 
+  mode $me +pB
+  sqlite_close %db
+  unsetall
   remini status.ini currentdm 
   remini login.ini login
+  timerpingo 0 120 .msg sbnc ping
 }
+
+on *:START:.timerAnti-10053 -o 0 60 scon -at1 raw -q ping Anti-10053
+on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
   ;True if you don't want people using the store at all while updating.
@@ -21,7 +26,8 @@ alias secondchan {
   return #iDM.Staff
 }
 
-on *:DISCONNECT: { 
+on *:DISCONNECT: {
+  sqlite_close %db
   unsetall
   remini status.ini currentdm
   remini login.ini login

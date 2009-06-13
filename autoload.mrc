@@ -4,6 +4,9 @@ alias rehash {
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
       inc %i
     }
+    if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
+      inc %i
+    }
     echo -a Unloading Script " $+ $script(%i) $+ "
     .unload -rs " $+ $script(%i) $+ "
   }

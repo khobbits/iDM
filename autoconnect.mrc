@@ -1,12 +1,12 @@
 on *:start: {
   if (*-Auto* iswm $cmdline) {
     set %botnum $right($matchtok($cmdline,-Auto,1,32),1)
-    echo -a This bot was started by autostart. Bot %botnum
+    echo -s This bot was started by autostart. Bot %botnum
     loadbot %botnum
-  } 
+  }
   else {
     load -rv scripts\vars.ini
-    echo -a This bot was started manually.
+    echo -s This bot was started manually.
   }
   ;dll scripts\medit.dll Load
 }
@@ -14,6 +14,7 @@ on *:start: {
 
 on *:connect: {
   if ($me == iDM[Hub]) { nick iDM | mnick iDM }
+  join #idm.staff
   if (%botnum != $null) {
     timer 1 10 msg #idm.staff Autoconnected on load.  Botnum: %botnum
     unset %botnum
@@ -32,6 +33,7 @@ alias loadbot {
     load -rv scripts\bot1var.ini
     bind 6
     mnick iDM
+    anick iDM_
     server idm-bot.com 12000 idmhub:Sp4rh4wk`Gh0$t`B0t
     mnick iDM[LL]
     server -m idm-bot.com 12000 idmll:Sp4rh4wk`Gh0$t`B0t

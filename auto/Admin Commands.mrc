@@ -9,7 +9,7 @@ on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
   ignore $2
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s2($2-) has been added to the ignore list. Please notify the user of this.
+  notice $nick $s2($2) has been added to the ignore list. Please notify the user of this.
   writeini -n ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
 }
 on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
