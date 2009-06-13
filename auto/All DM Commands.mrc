@@ -55,6 +55,21 @@ on $*:TEXT:/^[!.]/Si:#: {
   }
 }
 
+alias damage_test {
+  set -u60 %dmtest 1
+  var %chan = #idm.staff
+
+  set %p1 [ $+ [ %chan ] ] KHobbits
+  set %p2 [ $+ [ %chan ] ] Shinn_Gundam
+  set %hp1 [ $+ [ %chan ] ] 99
+  set %hp2 [ $+ [ %chan ] ] 99
+
+  damage KHobbits Shinn_Gundam $1 %chan
+  cancel %chan
+  set %dmtest 0
+}
+
+
 alias damage {
   ;1 is person attacking
   ;2 is other person
@@ -228,6 +243,7 @@ alias damage {
       set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
       halt
     }
+    if (%dmtest == 1) { halt }
     if ($istok($bosses,$2,32)) {
       gwdloot $4 $1 $2
       halt

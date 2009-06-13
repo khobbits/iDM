@@ -1,14 +1,14 @@
 on $*:TEXT:/^[!@.]dm\b/Si:#: { 
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
-  if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
+  if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%dming [ $+ [ $nick ] ] == on) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
-  if (%dm.spam [ $+ [ $nick ] ]) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
+  if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
+  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept. 
     .timer $+ # 1 20 enddm # 
@@ -18,29 +18,14 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     set %dmon [ $+ [ $chan ] ] on 
     halt 
   }
-  if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) { 
+  if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
+    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
+      msg # $logo(ERROR) We no longer allow two players on the same IP to DM each other.  You are free to DM others.  If you think your IP requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
+    }
     .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true 
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 
-    set %food1 [ $+ [ $chan ] ] 10 | set %food2 [ $+ [ $chan ] ] 10 | set -u25 %enddm [ $+ [ $chan ] ] 0
+    set -u25 %enddm [ $+ [ $chan ] ] 0
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
-  }
-  if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) {
-    if (!$.readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2))) {
-      if (%p1 [ $+ [ $chan ] ] isin %p2 [ $+ [ $chan ] ] || %p2 [ $+ [ $chan ] ] isin %p1 [ $+ [ $chan ] ]) {
-        msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
-        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
-        halt
-      }
-      elseif ($strip($cloneStats(%p1 [ $+ [ $chan ] ])) == 0gp/0W/0L || $strip($cloneStats(%p2 [ $+ [ $chan ] ])) == 0gp/0W/0L) {
-        msg # $logo(Warning) I have detected that you are self DMing. I suggest you end this DM or risk the channel being blacklisted and banned from iDM.
-        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan) [Warned]
-        halt
-      }
-      else {
-        msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan)
-        halt
-      }
-    }
   }
 }
 
@@ -71,7 +56,7 @@ alias cancel {
     .timer $+ $1 off
     remini -n gwd.ini $1
     $+(.timer,gwd,$1) off
-  }
+  }  
 }
 alias enddm {
   if (%p2 [ $+ [ $2 ] ]) { halt }

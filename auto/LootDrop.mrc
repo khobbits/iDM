@@ -73,7 +73,6 @@ alias dead {
   unset %rare*
   unset %drop*
   unset %combined
-  unset %veng*
 }
 alias price {
   tokenize 32 $remove($1-,$chr(44))
