@@ -290,6 +290,43 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   }
 }
 
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
+  if ($me != iDM) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$4) { notice Syntax $1 <account> <item> <amount> | halt }
+        if ($1 == increase) { var %sign +}
+        elseif ($1 == decrease) { var %sign - }
+        elseif ($1 == define) { var %sign = }
+        else { notice Syntax $1 <account> <item> <amount> | halt }
+        if ($4 !isnum) { notice Syntax $1 <account> <item> <amount> | halt }
+      if ($storematch($3) != 0) {
+        var %table = equipment
+        var %item = $gettok($v1,2,32)
+       }
+       elseif ($.ini(pvp.ini,$3)) {
+       var %table = pvp
+       var %item = $3
+       }
+       elseif ($3 == money) {
+       var %table = money
+var %item = money
+       }
+       elseif ($3 == wins) {
+       var %table = wins
+var %item = wins
+       }
+       elseif ($3 == losses) {
+       var %table = losses
+var %item = losses
+       }
+       else {
+msg $chan couldnt find
+return
+       }
+       msg $chan table %table item %item sign %sign amount $4
+  }
+}
+
 on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if ($cid != $scon(1)) { halt }
