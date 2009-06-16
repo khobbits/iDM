@@ -95,12 +95,12 @@ alias storematch {
     var %fname = Full Void Knight Mage
     var %price = 400000000
   }
-  elseif ($regex($2,/^ely?s+ian/Si)) {
+  elseif ($regex($2,/^ely(sian)?(\s|-)?(s(pirit)?)?(\s|-)?(s(hield)?)?/Si)) {
     var %sname = elshield
     var %fname = Elysian spirit shield
     var %price = 4000000000
   }
-  elseif ($regex($2-,/^b(ar+ows?)?(\s|-)?glo?ves?/Si)) {
+  elseif ($regex($2-,/^bar+ows?(\s|-)?(glo(ves))?/Si)) {
     var %sname = bgloves
     var %fname = Barrow Gloves
     var %price = 1500000000

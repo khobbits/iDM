@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !amsg, !remdm nick, !pass nick, !setpass nick password, !idle) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
+  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !amsg, !remdm nick, !pass nick, !setpass nick password, !idle, !define/increase/decrease account item amount) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
 }
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -293,38 +293,47 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (!$4) { notice Syntax $1 <account> <item> <amount> | halt }
-        if ($1 == increase) { var %sign +}
-        elseif ($1 == decrease) { var %sign - }
-        elseif ($1 == define) { var %sign = }
-        else { notice Syntax $1 <account> <item> <amount> | halt }
-        if ($4 !isnum) { notice Syntax $1 <account> <item> <amount> | halt }
-      if ($storematch($3) != 0) {
-        var %table = equipment
-        var %item = $gettok($v1,2,32)
-       }
-       elseif ($.ini(pvp.ini,$3)) {
-       var %table = pvp
-       var %item = $3
-       }
-       elseif ($3 == money) {
-       var %table = money
-var %item = money
-       }
-       elseif ($3 == wins) {
-       var %table = wins
-var %item = wins
-       }
-       elseif ($3 == losses) {
-       var %table = losses
-var %item = losses
-       }
-       else {
-msg $chan couldnt find
-return
-       }
-       msg $chan table %table item %item sign %sign amount $4
+  if (!$4) { goto error }
+  if ($1 == !increase) { var %sign + }
+  elseif ($1 == !decrease) { var %sign - }
+  elseif ($1 == !define) { var %sign = }
+  else { goto error }
+  if ($4 !isnum) { goto error }
+  if ($storematch($3) != 0) {
+    var %table = equipment
+    var %item = $gettok($v1,2,32)
   }
+  elseif ($.ini(pvp.ini,$3)) {
+    var %table = pvp
+    var %item = $3
+  }
+  elseif ($3 == money) {
+    var %table = money
+    var %item = money
+  }
+  elseif ($3 == wins) {
+    var %table = wins
+    var %item = wins
+  }
+  elseif ($3 == losses) {
+    var %table = losses
+    var %item = losses
+  }
+  else {
+    notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin + !store items.
+    return
+  }
+  if (%sign == =) {
+    writeini %table %item $2 $4
+  }
+  else {
+    var %adjust = %sign $+ $4
+    updateini %table %item $2 %adjust
+  }
+  msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $.readini(%table, %item, $2)
+  return
+  :error
+  notice $nick Syntax !define/increase/decrease <account> <item> <amount> 
 }
 
 on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
