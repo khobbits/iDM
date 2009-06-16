@@ -183,12 +183,12 @@ on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
-if (!$4) {
-  renamenick $2 $3 $nick
-}
-else {
- renamenick $2 $3 $4
-}
+  if (!$4) {
+    renamenick $2 $3 $nick
+  }
+  else {
+    renamenick $2 $3 $4
+  }
 }
 
 alias renamenick {
@@ -361,5 +361,5 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if (!$.readini(status.ini,currentdm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   unset %dming [ $+ [ $2 ] ]
   remini -n status.ini currentdm $2
-  notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
+  if ($me == iDM) notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
 }
