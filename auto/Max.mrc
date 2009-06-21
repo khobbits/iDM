@@ -87,8 +87,8 @@ alias dmg {
     }
     if ($2 == surf) {
       if ($3 == 1) return 0,10
-      elseif ($3 == 2) return 11,15
-      elseif ($3 == 3) return 16,22
+      elseif ($3 == 2) return 11,17
+      elseif ($3 == 3) return 18,25
       else return 2 30
     }
     if ($2 == dscim) {
@@ -182,6 +182,7 @@ alias max {
     ;Normal Barrowgloves Firecape Both
     var %dmg = $maxdmg(m, $2, 3)
     if (%dmg == $null) { return }
+    if ($2 == surf) return %dmg %dmg %dmg %dmg
     if ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     if ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     if ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
