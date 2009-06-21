@@ -172,13 +172,13 @@ alias damage {
     var %msg %msg $iif(%heal == 1,09HEALS on,fails to heal on) $s1($replace($2,$chr(58),$chr(32))) $iif(%heal == 1,and hits,but hits) $s2(%hit)
   }
   elseif ($3 == blood) {
-    var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
+    var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit))
   }
   elseif ($3 == ice) {
-    var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit) )
+    var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit))
   }
   elseif ($3 == smoke) {
-    var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
+    var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit))
   }
   elseif ($3 == cbow) {
     var %msg %msg $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($replace($2,$chr(58),$chr(32))) with a rune c'bow, hitting $s2(%hit)
@@ -225,6 +225,9 @@ alias damage {
   }
   if (%extra) {
     var %msg %msg $+ $iif(%extra, $chr(32) - 03 $+ $v1 $+  $+) $+ .
+  }
+  else {
+    var %msg %msg $+ .
   }
   if (%heal == 1) {
     var %msg %msg HP $s1($replace($2,$chr(58),$chr(32))) $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp)) - HP $s1($1) $+($chr(91),$s2(%hp1),$chr(93)) $hpbar(%hp1)
