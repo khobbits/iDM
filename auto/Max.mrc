@@ -232,6 +232,7 @@ alias bonus {
   if ($1 == vspear) return Freezes your opponent for one turn.
   if ($1 == guth) return 1/3 Chance of healing whatever you hit.
   if ($1 == statius) return Ignores all defence bonuses.
+  if ($1 == surf) return Highly accurate and ignores all defence bonuses.
   if ($1 == smoke) return 1/2 Chance of poisoning opponent.
   if ($1 == onyx) return Heals 1/3 of whatever you hit.
 }

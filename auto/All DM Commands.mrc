@@ -375,13 +375,13 @@ alias hit {
   :guth
   return $hitdmg(m,guth,%acc,1,%atk,%def)
   :ice
-  return $hitdmg(ma,ice,%acc,1,%matk,1)
+  return $hitdmg(ma,ice,%acc,1,%matk,%def)
   :zgs
   return $hitdmg(m,zgs,%acc,1,%atk,%def)
   :blood
-  return $hitdmg(ma,blood,%acc,1,%matk,1)
+  return $hitdmg(ma,blood,%acc,1,%matk,%def)
   :smoke
-  return $hitdmg(ma,smoke,%acc,1,%matk,1)
+  return $hitdmg(ma,smoke,%acc,1,%matk,%def)
   :surf
   return $hitdmg(m,surf,%acc,1,0,1)
   :dclaws
