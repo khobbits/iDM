@@ -335,7 +335,6 @@ alias hit {
   var %def $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
   var %ratk $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
   var %matk $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0))
-
   goto $1
   :whip
   return $hitdmg(m,whip,%acc,1,%atk,%def)
