@@ -71,12 +71,12 @@ alias dmg {
       if ($3 == 1) return 0,0
       elseif ($3 == 2) return 1,20
       elseif ($3 == 3) return 16,50
-      else return 6 24
+      else return 5 25
     }
     if ($2 == zgs) {
       if ($3 == 1) return 0,0
-      elseif ($3 == 2) return 1,22
-      elseif ($3 == 3) return 23,50
+      elseif ($3 == 2) return 1,25
+      elseif ($3 == 3) return 26,50
       else return 5 30
     }
     if ($2 == guth) {
@@ -204,30 +204,22 @@ alias dclawsdmg {
 }
 
 alias specused {
-  if ($1 == cbow) return $false
   if ($1 == dbow) return 75
-  if ($1 == onyx) return $false
   if ($1 == mjavelin) return 25
-  if ($1 == ice) return $false
-  if ($1 == blood) return $false
-  if ($1 == whip) return $false
   if ($1 == dds) return 25
   if ($1 == ags) return 50
   if ($1 == bgs) return 100
   if ($1 == sgs) return 50
   if ($1 == zgs) return 50
-  if ($1 == dh) return $false
   if ($1 == gmaul) return 100
-  if ($1 == guth) return $false
-  if ($1 == surf) return $false
   if ($1 == dclaws) return 50
   if ($1 == dmace) return 50
   if ($1 == dhally) return 75
-  if ($1 == dscim) return $false
   if ($1 == dlong) return 25
   if ($1 == vlong) return 50
   if ($1 == vspear) return 50
   if ($1 == statius) return 100
+  return $false
 }
 alias bonus {
   if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 60-69 $+ $chr(44) void or accumulator required.

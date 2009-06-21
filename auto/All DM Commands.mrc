@@ -75,6 +75,9 @@ alias damage {
   ;2 is other person
   ;3 is weapon
   ;4 is chan
+  var %hp1 $($+(%,hp,$player($1,$4),$4),2)
+  var %hp2 $($+(%,hp,$player($2,$4),$4),2)
+
   if ($4 == #iDM.Staff) { echo #iDM.Staff - %hp2 [ $+ [ #idm.staff ] ] - $1- }
   if ($.ini(pvp.ini,$3)) {
     if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
@@ -84,34 +87,23 @@ alias damage {
     var %hit $hit($3,$1,$2,$4)
   }
   elseif ($3 == dh) {
-    if ($($+(%,hp,$player($1,$4),$4),2) < 10) { var %hit $hit(d_h9,$1,$2,$4) }
+    if (%hp1 < 10) { var %hit $hit(d_h9,$1,$2,$4) }
     else var %hit $hit(d_h10,$1,$2,$4)
   }
-  if ($gettok(%hit,2,32)) {
-    var %hitdmg $calc($replace(%hit,$chr(32),$chr(43)))
-    if ($($+(%,hp,$player($2,$4),$4),2) < %hitdmg) {
-      if ($gettok(%hit,1,32) > $($+(%,hp,$player($2,$4),$4),2)) {
-        var %hit $($+(%,hp,$player($2,$4),$4),2) 0
-      }
-      else {
-        var %hit $gettok(%hit,1,32) $calc($($+(%,hp,$player($2,$4),$4),2) - $gettok(%hit,1,32))
-      }
-      set $+(%,hp,$player($2,$4),$4) 0
+
+  var %i = 1
+  while (%i <= $numtok(%hit,32)) {
+    var %hitdmg $gettok(%hit,%i,32)
+    if (%hp2 <= %hitdmg) {
+      var %hit $puttok(%hit,%hp2,%i,32)
+      set %hp2 0
     }
     else {
-      dec $+(%,hp,$player($2,$4),$4) %hitdmg
+      dec %hp2 %hitdmg
     }
+    inc %i
   }
-  else {
-    var %hitdmg %hit
-    if ($($+(%,hp,$player($2,$4),$4),2) < %hitdmg) {
-      var %hit $($+(%,hp,$player($2,$4),$4),2)
-      set $+(%,hp,$player($2,$4),$4) 0
-    }
-    else {
-      dec $+(%,hp,$player($2,$4),$4) %hitdmg
-    }
-  }
+
   unset $+(%,frozen,$1)
   if ($freezer($3)) {
     var %freeze $r(1,$v1)
@@ -126,10 +118,7 @@ alias damage {
     var %heal $r(1,$v1)
   }
   if (%heal == 1) {
-    $iif($calc($floor($($+(%,hp,$player($1,$4),$4),2)) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set $+(%,hp,$player($1,$4),$4) 99,inc $+(%,hp,$player($1,$4),$4) $floor($calc(%hit / $gettok($healer($3),2,32))))
-  }
-  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) {
-    var %sitem.belong on
+    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
   }
   if ($poisoner($3)) {
     var %pois.chance $r(1,$v1)
@@ -139,10 +128,10 @@ alias damage {
       }
     }
   }
-  if ($($+(%,pois,$player($2,$4),$4),2) >= 1) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
-    var %extra $iif($($+(%,hp,$player($2,$4),$4),2) < $($+(%,pois,$player($2,$4),$4),2),$($v1,2),$($+(%,pois,$player($2,$4),$4),2))
+  if ($($+(%,pois,$player($2,$4),$4),2) >= 1) && (%hp2 >= 1) {
+    var %extra $iif(%hp2 < $($+(%,pois,$player($2,$4),$4),2),$v1,$v2)
     dec $+(%,pois,$player($2,$4),$4)
-    dec $+(%,hp,$player($2,$4),$4) %extra
+    dec %hp2 %extra
   }
   if ($max(m,$3)) {
     set %laststyle [ $+ [ $4 ] ] melee
@@ -156,132 +145,132 @@ alias damage {
   ;;tokenize 32 $replace($1,Sara,Commander:Zilyana,Arma,Kree'arra,Bandos,General:Graardor,Zammy,K'ril:Tsutsaroth) $2-
   var %msg $logo(DM) $s1($1)
   if ($3 == vlong) {
-    var %msg $msg slashes their Vesta's longsword at $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) hitting $s2(%hit)
+    var %msg %msg slashes their Vesta's longsword at $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) hitting $s2(%hit)
   }
   elseif ($3 == vspear) {
-    var %msg $msg 12freezes $s1($replace($2,$chr(58),$chr(32))) using a Vesta's spear, and hits $s2(%hit)
+    var %msg %msg 12freezes $s1($replace($2,$chr(58),$chr(32))) using a Vesta's spear, and hits $s2(%hit)
   }
   elseif ($3 == statius) {
-    var %msg $msg critically injures $s1($replace($2,$chr(58),$chr(32))) with a Statius's warhammer, hitting $s2(%hit)
+    var %msg %msg critically injures $s1($replace($2,$chr(58),$chr(32))) with a Statius's warhammer, hitting $s2(%hit)
   }
   elseif ($3 == mjavelin) {
-    var %msg $msg throws a Morrigan's javelin at $s1($replace($2,$chr(58),$chr(32))) hitting $s2(%hit)
+    var %msg %msg throws a Morrigan's javelin at $s1($replace($2,$chr(58),$chr(32))) hitting $s2(%hit)
   }
   elseif ($3 == sgs) {
-    var %msg $msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
+    var %msg %msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
   }
   elseif ($3 == ags) {
-    var %msg $msg spins around and slashes at $s1($replace($2,$chr(58),$chr(32))) with an Armadyl godsword, speccing $s2(%hit)
+    var %msg %msg spins around and slashes at $s1($replace($2,$chr(58),$chr(32))) with an Armadyl godsword, speccing $s2(%hit)
   }
   elseif ($3 == zgs) {
-    var %msg $msg attempts to freeze $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,and successfully 12FROZE them,but failed to) $+ $chr(44) hitting $s2(%hit)
+    var %msg %msg attempts to freeze $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,and successfully 12FROZE them,but failed to) $+ $chr(44) hitting $s2(%hit)
   }
   elseif ($3 == bgs) {
-    var %msg $msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
+    var %msg %msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
   }
   elseif ($3 == guth) {
-    var %msg $msg $iif(%heal == 1,09HEALS on,fails to heal on) $s1($replace($2,$chr(58),$chr(32))) $iif(%heal == 1,and hits,but hits) $s2(%hit)
+    var %msg %msg $iif(%heal == 1,09HEALS on,fails to heal on) $s1($replace($2,$chr(58),$chr(32))) $iif(%heal == 1,and hits,but hits) $s2(%hit)
   }
   elseif ($3 == blood) {
-    var %msg $msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
+    var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
   }
   elseif ($3 == ice) {
-    var %msg $msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit) )
+    var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit) )
   }
   elseif ($3 == smoke) {
-    var %msg $msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
+    var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit) )
   }
   elseif ($3 == cbow) {
-    var %msg $msg $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($replace($2,$chr(58),$chr(32))) with a rune c'bow, hitting $s2(%hit)
+    var %msg %msg $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($replace($2,$chr(58),$chr(32))) with a rune c'bow, hitting $s2(%hit)
     unset %cbowspec [ $+ [ $1 ] ]
   }
   elseif ($3 == dbow) {
-    var %msg $msg fires two dragon arrows towards $s1($replace($2,$chr(58),$chr(32))) $+ , speccing  $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
+    var %msg %msg fires two dragon arrows towards $s1($replace($2,$chr(58),$chr(32))) $+ , speccing  $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
   }
   elseif ($3 == whip) {
-    var %msg $msg slashes $s1($replace($2,$chr(58),$chr(32))) with their abyssal whip, hitting $s2(%hit)
+    var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their abyssal whip, hitting $s2(%hit)
   }
   elseif ($3 == dds) {
-    var %msg $msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon dagger, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
+    var %msg %msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon dagger, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
   }
   elseif ($3 == dclaws) {
-    var %msg $msg scratches $s1($replace($2,$chr(58),$chr(32))) with their dragon claws, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32)) - $s2($gettok(%hit,4,32))
+    var %msg %msg scratches $s1($replace($2,$chr(58),$chr(32))) with their dragon claws, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32)) - $s2($gettok(%hit,4,32))
   }
   elseif ($3 == surf) {
-    var %msg $msg summons their mudkip, surfing at $s1($replace($2,$chr(58),$chr(32))) $+ , hitting $s2(%hit)
+    var %msg %msg summons their mudkip, surfing at $s1($replace($2,$chr(58),$chr(32))) $+ , hitting $s2(%hit)
   }
   elseif ($3 == gmaul) {
-    var %msg $msg whacks $s1($replace($2,$chr(58),$chr(32))) with their granite maul, speccing $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32))
+    var %msg %msg whacks $s1($replace($2,$chr(58),$chr(32))) with their granite maul, speccing $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32))
   }
   elseif ($3 == dh) {
-    var %msg $msg crushes $s1($replace($2,$chr(58),$chr(32))) with their great axe, and hit $s2(%hit)
+    var %msg %msg crushes $s1($replace($2,$chr(58),$chr(32))) with their great axe, and hit $s2(%hit)
   }
   elseif ($3 == dscim) {
-    var %msg $msg slices $s1($replace($2,$chr(58),$chr(32))) with their dragon scimitar, hitting $s2(%hit)
+    var %msg %msg slices $s1($replace($2,$chr(58),$chr(32))) with their dragon scimitar, hitting $s2(%hit)
   }
   elseif ($3 == dlong) {
-    var %msg $msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon longsword, hitting $s2(%hit)
+    var %msg %msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon longsword, hitting $s2(%hit)
   }
   elseif ($3 == dmace) {
-    var %msg $msg crushes $s1($replace($2,$chr(58),$chr(32))) with a dragon mace, hitting $s2(%hit)
+    var %msg %msg crushes $s1($replace($2,$chr(58),$chr(32))) with a dragon mace, hitting $s2(%hit)
   }
   elseif ($3 == dhally) {
-    var %msg $msg slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
+    var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
   }
   elseif ($3 == onyx) {
-    var %msg $msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal == 1,09HEALING,hitting) a $s2(%hit)
+    var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal == 1,09HEALING,hitting) a $s2(%hit)
   }
   elseif ($3 == gwd) {
-    msg $4 $logo(GWD) $s1($replace($1,$chr(58),$chr(32))) brutally attacks $s1($2) $+ , hitting $s2(%hit) $+ . HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),hp)
+    msg $4 $logo(GWD) $s1($replace($1,$chr(58),$chr(32))) brutally attacks $s1($2) $+ , hitting $s2(%hit) $+ . HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,hp)
   }
   if (%extra) {
     var %msg %msg $+ $iif(%extra, $chr(32) - 03 $+ $v1 $+  $+) $+ .
   }
   if (%heal == 1) {
-    var %msg %msg HP $s1($replace($2,$chr(58),$chr(32))) $+($chr(91),$s2($($+(%,hp,$player($2,$4),$4),2) < 1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp)) - HP $s1($1) $+($chr(91),$s2($($+(%,hp,$player($1,$4),$4),2) < 1),$chr(93)) $hpbar($($+(%,hp,$player($1,$4),$4),2))
+    var %msg %msg HP $s1($replace($2,$chr(58),$chr(32))) $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp)) - HP $s1($1) $+($chr(91),$s2(%hp1),$chr(93)) $hpbar(%hp1)
   }
   else {
-    var %msg %msg HP $+($chr(91),$s2($($+(%,hp,$player($2,$4),$4),2) < 1),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
+    var %msg %msg HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   msg $4 %msg
   if ($specused($3)) {
     dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
     notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
   }
-  if (%sitem.belong == on) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
-    var %extra $iif($($+(%,hp,$player($2,$4),$4),2) < 10,$($v1,2),10)
-    dec $+(%,hp,$player($2,$4),$4) %extra
-    msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2($($+(%,hp,$player($2,$4),$4),2)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
+  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+    var %extra $iif(%hp2 < 10,$($v1,2),10)
+    dec %hp2 %extra
+    msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
-    inc $+(%,hp,$player($2,$4),$4) $calc($replace(%hit,$chr(32),$chr(43)))
-    msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the attack. HP $+($chr(91),$s2$($+(%,hp,$player($2,$4),$4),2),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
+  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+    inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
+    msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
   }
-  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && ($($+(%,hp,$player($2,$4),$4),2) >= 1) {
-    var %allegra.heal $iif($($+(%,hp,$player($2,$4),$4),2) >= 89,$calc(99- $($+(%,hp,$player($2,$4),$4),2)),10)
-    inc $+(%,hp,$player($2,$4),$4) %allegra.heal
-    msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%allegra.heal) HP. HP $+($chr(91),$s2($($+(%,hp,$player($2,$4),$4),2)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
+  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+    var %allegra.heal $iif(%hp2 >= 89,$calc(99- %hp2),10)
+    inc %hp2 %allegra.heal
+    msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%allegra.heal) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($($+(%,hp,$player($2,$4),$4),2) < 1) {
+  if (%hp2 < 1) {
     if ($.readini(sitems.ini,beau,$2)) && ($r(1,100) <= 6) {
-      set $+(%,hp,$player($2,$4),$4) 1
-      msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif($($+(%,hp,$player($2,$4),$4),2) < 1,0,$v1)),$chr(93)) $hpbar($($+(%,hp,$player($2,$4),$4),2),$iif($($+(%,gwd,$4),2),gwd,hp))
-      set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
-      halt
+      set %hp2 1
+      msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     }
-    if (%dmtest == 1) { halt }
-    if ($istok($bosses,$2,32)) {
+    elseif (%dmtest == 1) { halt }
+    elseif ($istok($bosses,$2,32)) {
       gwdloot $4 $1 $2
-      halt
     }
-    if ($.readini(gwd.ini,$4,$2)) {
+    elseif ($.readini(gwd.ini,$4,$2)) {
       gwdko $4 $2
+    }
+    else {
+      dead $4 $2 $1
       halt
     }
-    dead $4 $2 $1
-    halt
   }
+  set $+(%,hp,$player($1,$4),$4) %hp1
+  set $+(%,hp,$player($2,$4),$4) %hp2
   set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
 }
 alias gwdloot {
