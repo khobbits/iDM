@@ -1,43 +1,44 @@
-on $*:TEXT:/^[!@.]stake/Si:#: { 
+on $*:TEXT:/^[!@.]stake\b/Si:#: {
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (%wait. [ $+ [ $chan ] ]) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
-  if ($allupdate) { notice $nick $logo(ERROR) Staking is currently disabled, as we're performing an update. | halt }
+  if (%dming [ $+ [ $nick ] ] == on) { halt }
+  if (%wait. [ $+ [ $chan ] ]) { halt }
+  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
   tokenize 32 $1 $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44))))
+  if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
+  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
+  if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You must be logged in to use the stake command. (/msg $me $iif($.readini(passes.ini,passes,$nick),id,reg) pass) | halt }
   var %money = $.readini(money.ini,money,$nick)
   if (!%p1 [ $+ [ $chan ] ]) {
-    if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(200000)) $+ . | halt }
     if (!$2) { notice $nick Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
-    if ($2 > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
     if ($2 < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
+    if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(200000)) $+ . | halt }
+    if ($2 > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
     if (%money < $2) { notice $nick You don't have enough money. | halt }
-    if ($2 <= $maxstake(%money)) { 
-      msg # $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price($2)) $+ ! You have $s2(20 seconds) to accept. 
-      .timer $+ # 1 20 enddm # | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true 
-      set %p1 [ $+ [ $chan ] ] $nick | set %dmon [ $+ [ $chan ] ] on | set %stake [ $+ [ $chan ] ] $2 | set %stakeon [ $+ [ $chan ] ] on 
-      set %address1 [ $+ [ $chan ] ] $address($nick,4) | halt 
-    }
+    msg # $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price($2)) $+ ! You have $s2(20 seconds) to accept.
+    .timer $+ # 1 20 enddm #
+    writeini -n status.ini currentdm $nick true
+    set %p1 [ $+ [ $chan ] ] $nick | set %dming [ $+ [ $nick ] ] on
+    set %dmon [ $+ [ $chan ] ] on | set %stake [ $+ [ $chan ] ] $2 | set %stakeon [ $+ [ $chan ] ] on
+    halt
   }
-  if (!%p2 [ $+ [ $chan ] ]) && ($2 <= %stake [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) { notice $nick A wager of $s2($price(%stake [ $+ [ $chan ] ])) has already been risked by %p1 [ $+ [ $chan ] ] $+ . To accept, type !stake. | halt }
-  if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
-  if (!%p2 [ $+ [ $chan ] ]) && (($iif(%money,$v1,0) < %stake [ $+ [ $chan ] ]) || ($maxstake(%money) < %stake [ $+ [ $chan ] ])) { notice $nick You either don't have enough money to stake, or your staking limit ( $+ $s1($price($maxstake(%money))) $+ ) is too low. | halt }
-  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM. | halt }
-  if (%p2 [ $+ [ $chan ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u10 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) {
-    .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true | set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 
-    set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4 | set %food1 [ $+ [ $chan ] ] 10 | set %food2 [ $+ [ $chan ] ] 10 | set %address2 [ $+ [ $chan ] ] $address($nick,4) 
-  msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. }
-  if ($address(%p1 [ $+ [ $chan ] ],2) == $address(%p2 [ $+ [ $chan ] ],2)) && (%stake [ $+ [ $chan ] ]) {  
-    if (!$.readini(exceptions.ini,exceptions,$address(%p1 [ $+ [ $chan ] ],2)) && !$.readini(exceptions.ini,exceptions,$address(%p2 [ $+ [ $chan ] ],2)) {
-      ;msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $s1($chr(91)) $+ $s2($remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126))) $+ $s1($chr(93)) and $s1(%p2 [ $+ [ $chan ] ]) $s1($chr(91)) $+ $s2($remove($address(%p2 [ $+ [ $chan ] ],2),%p2 [ $+ [ $chan ] ] $+ ! $+ $chr(126))) $+ $s1($chr(93)) in $s1($chan) | halt }
-      msg $secondchan $logo(Clones) $s1(%p1 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p1 [ $+ [ $chan ] ]),$s2(])) and $s1(%p2 [ $+ [ $chan ] ]) $+($s2([),$cloneStats(%p2 [ $+ [ $chan ] ]),$s2(])) $s2([) $+ $remove($address(%p1 [ $+ [ $chan ] ],2),%p1 [ $+ [ $chan ] ] $+ ! $+ $chr(126)) $+ $s2(]) in $s1($chan)
-      ;msg # $logo(WARNING) DM'ing yourself is against the iDM rules and you risk getting blacklisted AND banned from iDM. Take this time to type !enddm or we will do it for you.
-      halt
+    if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
+    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
+      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
     }
+    if (!%p2 [ $+ [ $chan ] ]) && ($2 < %stake [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) { notice $nick A wager of $s2($price(%stake [ $+ [ $chan ] ])) has already been risked by %p1 [ $+ [ $chan ] ] $+ . To accept, type !stake. | halt }
+    if (!%p2 [ $+ [ $chan ] ]) && (($iif(%money,$v1,0) < %stake [ $+ [ $chan ] ]) || ($maxstake(%money) < %stake [ $+ [ $chan ] ])) { notice $nick You either don't have enough money to stake, or your staking limit ( $+ $s1($price($maxstake(%money))) $+ ) is too low. | halt }
+    .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true
+    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 
+    set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
+    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
   }
 }
+
+
 alias maxstake {
   return $iif($ceil($calc($1 *.05)) > 1000000000,$v2,$v1)
 }

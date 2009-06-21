@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Admin commands:) $s2(!part chan, !bl chan, !ubl chan, !chans, !clear, !active, !join bot chan, !giveitem nick, !takeitem nick, !rehash, !amsg, !remdm nick, !pass nick, !setpass nick password, !idle, !define/increase/decrease account item amount) $s1(Support commands:) $s2(!ignore host, !rignore host, !cignore host, !cbl chan, !except host, !warn chan !viewitems)
+  notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, !remdm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
 }
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -15,11 +15,20 @@ on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
 on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
+  if (!$2) { notice $Nick Please specify a username/host to remove ignore. | halt }
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
   remini -n ignore.ini Ignore $2
+}
+
+on $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) { notice $Nick Please specify a username/host to remove except. | halt }
+  if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
+  notice $nick $s2($2-) has been removed to the except list.
+  remini -n exceptions.ini Exceptions $2
 }
 
 on $*:TEXT:/^[!.]cignore .*/Si:#: {
@@ -39,6 +48,16 @@ on $*:TEXT:/^[!.]cbl .*/Si:#: {
     if (!$2) || ($left($2,1) != $chr(35)) { notice $nick $logo(ERROR) Syntax: !cbl #chan | halt }
     if (!$.readini(blacklist.ini,chans,$2)) { notice $nick $logo(BLACKLIST INFO) $s2($2) is not blacklisted. | halt }
     notice $nick $logo(BLACKLIST INFO) $s2($2) has been blacklisted by $s1($iif($.readini(blacklist.ini,who,$2),$v1,Unknown)) for: $.readini(blacklist.ini,chans,$2)
+  }
+}
+
+on $*:TEXT:/^[!.]cexcept .*/Si:#: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
+    if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+    if (!$2) || ($left($2,1) != $chr(35)) { notice $nick $logo(ERROR) Syntax: !cexcept host | halt }
+    if (!$.readini(exceptions.ini,Exceptions,$2)) { notice $nick $logo(EXCEPT INFO) $s2($2) is not excepted. | halt }
+    notice $nick $logo(EXCEPT INFO) $s2($2) is excepted.
   }
 }
 
@@ -333,7 +352,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
   msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $.readini(%table, %item, $2)
   return
   :error
-  notice $nick Syntax !define/increase/decrease <account> <item> <amount> 
+  notice $nick Syntax !define/increase/decrease <account> <item> <amount>
 }
 
 on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {

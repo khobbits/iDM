@@ -130,7 +130,7 @@ alias dmg {
     if ($2 == dds) {
       if ($3 == 1) return 0,0
       elseif ($3 == 2) return 0,20
-      elseif ($3 == 3) return 11,20
+      elseif ($3 == 3) return 11,22
       else return 4 30
     }
     if ($2 == dhally) {
