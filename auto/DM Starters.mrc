@@ -73,7 +73,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       msg # $logo(DM) The DM has been canceled by an admin.
       halt
     }
-    else { notice $nick You are currently in a stake, you cannot forfeit! | halt }
+    else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
   if ($.readini(Admins.ini,Admins,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }

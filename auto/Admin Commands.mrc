@@ -55,7 +55,7 @@ on $*:TEXT:/^[!.]cexcept .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-    if (!$2) || ($left($2,1) != $chr(35)) { notice $nick $logo(ERROR) Syntax: !cexcept host | halt }
+    if (!$2) { notice $nick $logo(ERROR) Syntax: !cexcept host | halt }
     if (!$.readini(exceptions.ini,Exceptions,$2)) { notice $nick $logo(EXCEPT INFO) $s2($2) is not excepted. | halt }
     notice $nick $logo(EXCEPT INFO) $s2($2) is excepted.
   }
