@@ -236,7 +236,7 @@ alias bonus {
   if ($1 == onyx) return Heals 1/3 of whatever you hit.
 }
 alias attack {
-  if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke,$1,32)) {
+  if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
     return $true
   }
 }
