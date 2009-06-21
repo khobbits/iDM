@@ -42,10 +42,10 @@ alias dmg {
       else return 4 25
     }
     if ($2 == smoke) {
-      if ($3 == 1) return 0,5
+      if ($3 == 1) return 0,4
       elseif ($3 == 2) return 1,15
       elseif ($3 == 3) return 16,30
-      else return 2 30
+      else return 4 30
     }
   }
   elseif ($1 == m) {
@@ -223,19 +223,19 @@ alias specused {
   return $false
 }
 alias bonus {
-  if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 50-69 $+ $chr(44) void or accumulator required.
-  if ($1 == ice) return 1/3 Chance of freezing your opponent for one turn.
-  if ($1 == blood) return Heals 1/3 of whatever you hit.
-  if ($1 == dds) return 1/3 Chance of poisoning opponent.
-  if ($1 == sgs) return Heals 1/2 of whatever you hit.
-  if ($1 == zgs) return 1/2 Chance of freezing your opponent for one turn.
-  if ($1 == vlong) return Ignores all defence bonuses.
-  if ($1 == vspear) return Freezes your opponent for one turn.
-  if ($1 == guth) return 1/3 Chance of healing whatever you hit.
-  if ($1 == statius) return Ignores all defence bonuses.
-  if ($1 == surf) return Highly accurate and ignores all defence bonuses.
-  if ($1 == smoke) return 1/2 Chance of poisoning opponent.
-  if ($1 == onyx) return Heals 1/3 of whatever you hit.
+  if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 50-69 $+ $chr(44) void or accumulator required
+  if ($1 == ice) return 1/3 Chance of freezing your opponent for one turn
+  if ($1 == blood) return Heals 1/3 of whatever you hit
+  if ($1 == dds) return 1/3 Chance of poisoning opponent
+  if ($1 == sgs) return Heals 1/2 of whatever you hit
+  if ($1 == zgs) return 1/2 Chance of freezing your opponent for one turn
+  if ($1 == vlong) return Ignores all defence bonuses
+  if ($1 == vspear) return Freezes your opponent for one turn
+  if ($1 == guth) return 1/3 Chance of healing whatever you hit
+  if ($1 == statius) return Ignores all defence bonuses
+  if ($1 == surf) return Highly accurate and ignores all defence bonuses
+  if ($1 == smoke) return 1/2 Chance of poisoning opponent
+  if ($1 == onyx) return Heals 1/3 of whatever you hit
 }
 alias attack {
   if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
