@@ -129,9 +129,9 @@ alias dmg {
     }
     if ($2 == dds) {
       if ($3 == 1) return 0,0
-      elseif ($3 == 2) return 0,14
+      elseif ($3 == 2) return 0,15
       elseif ($3 == 3) return 10,20
-      else return 5 35
+      else return 5 32
     }
     if ($2 == dhally) {
       if ($3 == 1) return 0,0
@@ -222,7 +222,7 @@ alias specused {
   return $false
 }
 alias bonus {
-  if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 60-69 $+ $chr(44) void or accumulator required.
+  if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 50-69 $+ $chr(44) void or accumulator required.
   if ($1 == ice) return 1/3 Chance of freezing your opponent for one turn.
   if ($1 == blood) return Heals 1/3 of whatever you hit.
   if ($1 == dds) return 1/3 Chance of poisoning opponent.
