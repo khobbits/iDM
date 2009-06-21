@@ -45,7 +45,7 @@ alias dmg {
       if ($3 == 1) return 0,4
       elseif ($3 == 2) return 1,15
       elseif ($3 == 3) return 16,30
-      else return 4 30
+      else return 4 35
     }
   }
   elseif ($1 == m) {
