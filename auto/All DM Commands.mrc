@@ -94,7 +94,10 @@ alias damage {
   var %i = 1
   while (%i <= $numtok(%hit,32)) {
     var %hitdmg $gettok(%hit,%i,32)
-    if (%hp2 <= %hitdmg) {
+    if (%hp2 == 0) {
+      var %hit $puttok(%hit,KO,%i,32)
+    }
+    elseif (%hp2 <= %hitdmg) {
       var %hit $puttok(%hit,%hp2,%i,32)
       set %hp2 0
     }
