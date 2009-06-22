@@ -5,10 +5,10 @@ on $*:TEXT:/^[!@.]store/Si:#: {
     $s1(Void Range) (+5 to ranged attacks) ( $+ $s2($buyprice(void range)) $+ ) - $&
     $s1(Void Mage) (+5 to mage attacks) ( $+ $s2($buyprice(void mage)) $+ ) - $&
     $s1(Fire Cape) (+5 to melee attacks) ( $+ $s2($buyprice(fire cape)) $+ ) - $&
-    $s1(Barrow Gloves) (+3 to melee attacks) ( $+ $+($s2($buyprice(barrows gloves)),$chr(44),$chr(32),$s2(2K+ DMs),$chr(44),$chr(32),$s2(1K+ Wins)) $+ ) - $&
+    $s1(Barrows Gloves) (+3 to melee attacks) ( $+ $+($s2($buyprice(barrows gloves)),$chr(44),$chr(32),$s2(2K+ DMs),$chr(44),$chr(32),$s2(1K+ Wins)) $+ ) - $&
     $s1(Mage's Book) (+5 to mage attacks) ( $+ $s2($buyprice(mage book)) $+ ) - $&
     $s1(Accumulator) (+5 to range attacks) ( $+ $s2($buyprice(accumulator)) $+ )
-  $iif($left($1,1) == !,notice $nick,msg #) $logo(STORE) $&
+  $iif($left($1,1) == @,msg #,notice $nick) $logo(STORE) $&
     $s1(Armadyl Godsword) ( $+ $s2($buyprice(ags)) $+ ) - $&
     $s1(Bandos Godsword) ( $+ $s2($buyprice(bgs)) $+ ) - $&
     $s1(Saradomin Godsword) ( $+ $s2($buyprice(sgs)) $+ ) - $&
