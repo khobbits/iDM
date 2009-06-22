@@ -27,6 +27,7 @@ alias loadbot {
     run "mirc.exe" -Auto2
     run "mirc.exe" -Auto3
     run "mirc.exe" -Auto4
+    run "mirc.exe" -Auto5
   } 
   if ($1 == 1 || $1 == 0) {
     echo -a loading bot1
@@ -35,10 +36,6 @@ alias loadbot {
     mnick iDM
     anick iDM_
     server idm-bot.com 12000 idmhub:Sp4rh4wk`Gh0$t`B0t
-    mnick iDM[LL]
-    server -m idm-bot.com 12000 idmll:Sp4rh4wk`Gh0$t`B0t
-    mnick iDM[US]
-    server -m idm-bot.com 12000 idmus:Sp4rh4wk`Gh0$t`B0t
   } 
   elseif ($1 == 2) {
     echo -a loading bot2
@@ -63,5 +60,13 @@ alias loadbot {
     server idm-bot.com 12000 idmbe:Sp4rh4wk`Gh0$t`B0t
     server -m idm-bot.com 12000 idmla:Sp4rh4wk`Gh0$t`B0t
     server -m idm-bot.com 12000 idmeu:Sp4rh4wk`Gh0$t`B0t    
+  } 
+  elseif ($1 == 5) {
+    echo -a loading bot5
+    load -rv scripts\bot5var.ini
+    bind 7
+    server idm-bot.com 12000 idmll:Sp4rh4wk`Gh0$t`B0t
+    server -m idm-bot.com 12000 idmus:Sp4rh4wk`Gh0$t`B0t
+    server -m idm-bot.com 12000 idmgo:Sp4rh4wk`Gh0$t`B0t
   } 
 }
