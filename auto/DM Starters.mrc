@@ -19,7 +19,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     halt
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
-    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
+    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) && (1 == 2) {
       msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
     }
     .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true

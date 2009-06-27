@@ -221,7 +221,7 @@ alias damage {
     var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
   }
   elseif ($3 == onyx) {
-    var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal == 1,09HEALING,hitting) a $s2(%hit)
+    var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, hitting a $s2(%hit) $iif(%heal == 1,and 09HEALS)
   }
   elseif ($3 == gwd) {
     msg $4 $logo(GWD) $s1($replace($1,$chr(58),$chr(32))) brutally attacks $s1($2) $+ , hitting $s2(%hit) $+ . HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,hp)

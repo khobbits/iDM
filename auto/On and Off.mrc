@@ -1,4 +1,4 @@
-on *:TEXT:*:#: {
+on $*:TEXT:*/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on) {
@@ -53,7 +53,7 @@ alias disable {
     writeini -n OnOff.ini $3 guth true
     writeini -n OnOff.ini $3 sgs true
     writeini -n OnOff.ini $3 blood true
-    ;writeini -n OnOff.ini $3 onyx true
+    writeini -n OnOff.ini $3 onyx true
     notice $2 $logo(DISABLE) Healing attacks are now off.
     halt
   }

@@ -144,7 +144,7 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: 1. You can now stake $+(5,$chr(37)) of your cash. 2. Equipment now stacks. 3. Combat triangle introduced.
+  return News: 1. Combat triangle introduced. 2. !onyx attack released. 3. !hitchance <weapon> <hit> released.
 }
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)
