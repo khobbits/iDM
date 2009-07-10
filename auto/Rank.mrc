@@ -84,7 +84,7 @@ alias ranks {
   ; $2 = position or username
   if ($2 isnum) {
     if ($2 isnum 1-50000) {
-      var %sql = SELECT * FROM $db.quote($1) WHERE c1 = $db.quote($1) ORDER BY c3 +0 DESC LIMIT $calc($2 - 1) $+ ,1
+      var %sql = SELECT * FROM $db.quote($1) WHERE c1 = $db.quote($1) AND c2 NOT LIKE '~banned~%' ORDER BY c3 +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
       if ($db.query_row(%query,row) == 1) {
         return $hget(row,2) $+ : $+ $hget(row,3)
@@ -96,7 +96,7 @@ alias ranks {
     if ($db.select(%sql,c3) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM $db.quote($1) AS r1 $&
-      INNER JOIN $db.quote($1) AS r2 ON (r1.c3 +0) < (r2.c3 +0) $&
+      INNER JOIN (SELECT * FROM $db.quote($1) WHERE c2 NOT LIKE '~banned~%') AS r2 ON (r1.c3 +0) < (r2.c3 +0) $&
       WHERE r1.c2 = $db.quote($2)
 
     var %query = $db.query(%sql)
