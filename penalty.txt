@@ -3483,3 +3483,4 @@ Bram got !enddm'd on #mc_tisto oldcash 8251323 newcash 8210067
 pooninranger got !enddm'd on #worldwide oldcash 1342535223 newcash 1335822547
 ztzert parted channel #iDM during a dm oldcash 133795298 newcash 131119393
 tiny739_ parted channel #bv-chat during a dm oldcash 624406696 newcash 611918563
+Johneyeboy got !enddm'd on #We.dm oldcash 24495919 newcash 24373440

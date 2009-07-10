@@ -21,7 +21,6 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
     if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address(%p1 [ $+ [ $chan ] ],2)) > 3) {
       if (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
-        ;msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
         msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake or needs exception please drop by #iDM.Support.
         inc -u5 %dm.spam [ $+ [ $nick ] ]
         halt
