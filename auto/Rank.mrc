@@ -46,6 +46,7 @@ alias toplist {
 }
 
 on $*:TEXT:/^[!@.]dmrank/Si:#: {
+  tokenize 32 $1- $nick
   ;if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick) 
   if ($2 isnum) {
