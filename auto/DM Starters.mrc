@@ -19,8 +19,13 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     halt
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
-    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && (!$.readini(exceptions.ini,exceptions,$address($nick,2))) && (1 == 2) {
-      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
+    if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address(%p1 [ $+ [ $chan ] ],2)) > 3) {
+      if (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
+        ;msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others.  If you think your hostmask or IP range requires an exception, please visit #idm.support channel and explain your situation to an admin. | inc -u5 %dm.spam [ $+ [ $nick ] ] | halt
+        msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake or needs exception please drop by #iDM.Support.
+        inc -u5 %dm.spam [ $+ [ $nick ] ]
+        halt
+      }
     }
     .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
@@ -67,7 +72,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) {
-    if ($.readini(Admins.ini,Admins,$address($nick,3))) {
+    if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel #
       msg # $logo(DM) The DM has been canceled by an admin.
@@ -75,7 +80,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
-  if ($.readini(Admins.ini,Admins,$address($nick,3))) {
+  if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel #
     msg # $logo(DM) The DM has been canceled by an admin.

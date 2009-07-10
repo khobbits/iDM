@@ -31,6 +31,14 @@ on $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
   remini -n exceptions.ini Exceptions $2
 }
 
+OFF $*:TEXT:/^[!.]ClearExcepts$/Si:#idm.staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
+  db.exec DELETE * FROM exceptions
+  notice $nick Exceptions list has been cleared.
+}
+
 on $*:TEXT:/^[!.]cignore .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
@@ -236,12 +244,14 @@ alias renamenick {
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
-  notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0))
+  notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) $&
+    Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0)) $&
+    The Supporter: $s2($.ini(sitems.ini,support,0))
 }
 
 On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$2) {
     notice You need to include a name you want to give your item too.
   }
@@ -271,12 +281,17 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
       writeini sitems.ini kh $2 true
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
+    elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
+      if ($.readini(sitems.ini,support,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      writeini sitems.ini support $2 true
+      notice $nick $logo(Give-Item) Gave your item to $s2($2)
+    }
   }
 }
 
 On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   if ($me != iDM) { halt }
-  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$2) {
     notice You need to include a name you want to give your item too.
   }
@@ -304,6 +319,11 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
     elseif ($nick == KHobbits) {
       if (!$.readini(sitems.ini,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       remini sitems.ini kh $2
+      notice $nick $logo(Take-Item) Took your item from $s2($2)
+    }
+    elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
+      if (!$.readini(sitems.ini,support,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+      remini sitems.ini support $2
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
   }

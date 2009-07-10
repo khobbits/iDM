@@ -22,6 +22,10 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
+      if ($right($1,-1) == cslap && !$.readini(Admins.ini,Admins,$address($nick,3))) {
+        notice $nick $logo(ERROR) You can't use this "weapon"
+        halt
+      }
       if ($.readini(OnOff.ini,#,$right($1,-1))) {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
@@ -83,12 +87,15 @@ alias damage {
     if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
     elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
   }
-  if ($3 != dh) {
+  if ($3 != dh && $3 != cslap) {
     var %hit $hit($3,$1,$2,$4)
   }
-  elseif ($3 == dh) {
+  elseif ($3 == dh && $3 != cslap) {
     if (%hp1 < 10) { var %hit $hit(d_h9,$1,$2,$4) }
     else var %hit $hit(d_h10,$1,$2,$4)
+  }
+  elseif ($3 == cslap) {
+    var %hit 99
   }
 
   var %i = 1
@@ -149,6 +156,9 @@ alias damage {
   var %msg $logo(DM) $s1($1)
   if ($3 == vlong) {
     var %msg %msg slashes their Vesta's longsword at $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) hitting $s2(%hit)
+  }
+  elseif ($3 == cslap) {
+    var %msg %msg uses mystical powers to summon a giant penis and slaps $s1($replace($2,$chr(58),$chr(32))) across the face and hits $s2(%hit)
   }
   elseif ($3 == vspear) {
     var %msg %msg 12freezes $s1($replace($2,$chr(58),$chr(32))) using a Vesta's spear, and hits $s2(%hit)
@@ -221,7 +231,7 @@ alias damage {
     var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
   }
   elseif ($3 == onyx) {
-    var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, hitting a $s2(%hit) $iif(%heal == 1,and 09HEALS)
+    var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal == 1,09HEALING and) hitting a $s2(%hit)
   }
   elseif ($3 == gwd) {
     msg $4 $logo(GWD) $s1($replace($1,$chr(58),$chr(32))) brutally attacks $s1($2) $+ , hitting $s2(%hit) $+ . HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,hp)
@@ -247,6 +257,11 @@ alias damage {
     var %extra $iif(%hp2 < 10,$($v1,2),10)
     dec %hp2 %extra
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
+  }
+  if ($.readini(sitems.ini,support,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+    var %extra $floor($calc(%hit / 2))
+    inc %hp2 %extra
+    msg $4 $logo(DM) $s1($2) $+ 's uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
     inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))

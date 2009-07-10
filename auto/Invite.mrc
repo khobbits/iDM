@@ -78,7 +78,7 @@ on *:JOIN:#:{
     }
     if (# != #iDM && # != #iDM.Staff) || ($me == iDM) { 
       if ($.readini(Admins.ini,Admins,$address($nick,3))) { 
-        msg # $logo(ADMIN) $position($nick) $nick has joined the channel.
+        msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       } 
       elseif ($.readini(admins.ini,support,$address($nick,3))) { 
         msg # $logo(SUPPORT) Bot support $nick has joined the channel.
@@ -144,7 +144,7 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: 1. Combat triangle introduced. 2. !onyx attack released. 3. !hitchance <weapon> <hit> released.
+  return News: New special item released - 'The Supporter'
 }
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)

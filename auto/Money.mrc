@@ -16,7 +16,7 @@ alias money {
   var %losses = $.readini(Losses.ini,Losses,$1)
   var %ratio = $+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37))
   if ($1 == iBelong) { %money = 999999999999 }
-  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)),$s2(0)) $+ gp $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $v1) 
+  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)),$s2(0)) $+ gp $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $v1) 
 }
 
 alias equipment {
@@ -47,6 +47,7 @@ alias sitems {
   if ($.readini(sitems.ini,beau,$1)) { var %e %e Beaumerang }
   if ($.readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($.readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
+  if ($.readini(sitems.ini,support,$1)) { var %e %e The:Supporter }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {

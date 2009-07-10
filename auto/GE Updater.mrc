@@ -76,6 +76,12 @@ on *:SOCKREAD:lootupdate: {
     var %sockread 
     sockread %sockread
     if (%search == specpot) { write Lootupdate.txt Specpot:1 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == zaros+statuette) { write Lootupdate.txt Zaros Statuette:5000000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == seren+statuette) { write Lootupdate.txt Seren Statuette:1000000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == armadyl+statuette) { write Lootupdate.txt Armadyl Statuette:750000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == zamorak+statuette) { write Lootupdate.txt Zamorak Statuette:500000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == saradomin+statuette) { write Lootupdate.txt Saradomin Statuette:400000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == bandos+statuette) { write Lootupdate.txt Bandos Statuette:300000 | sockclose lootupdate | geupdate %l | halt }
     if (<td>*</td> iswm %sockread) && ($calc($replace($remove(%sockread,<td>,</td>,$chr(44)),k,*1000,m,*1000000)) >= 1) {
       tokenize 32 $calc($replace($remove(%sockread,<td>,</td>,$chr(44)),k,*1000,m,*1000000))
       write Lootupdate.txt $+($replace(%search,$chr(43),$chr(32)),$chr(58),$1)
