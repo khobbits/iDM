@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, !remdm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
+  notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, !remdm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
 }
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -206,16 +206,25 @@ alias forcejoin {
   .timer 1 1 msg $1 $logo(JOIN) I was requested to join this channel by $position($2) $2 $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
 }
 
+on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
+  if ($me != iDM) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
+  renamenick $2 ~banned~ $+ $3
+}
+
+on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
+  if ($me != iDM) { halt }
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
+  renamenick ~banned~ $+ $2 $3
+}
+
 on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($me != iDM) { halt }
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
-  if (!$4) {
-    renamenick $2 $3 $nick
-  }
-  else {
-    renamenick $2 $3 $4
-  }
+  renamenick $2 $3
 }
 
 alias renamenick {
