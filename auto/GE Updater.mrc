@@ -76,7 +76,7 @@ on *:SOCKREAD:lootupdate: {
     var %sockread 
     sockread %sockread
     if (%search == specpot) { write Lootupdate.txt Specpot:1 | sockclose lootupdate | geupdate %l | halt }
-    if (%search == zaros+statuette) { write Lootupdate.txt Zaros Statuette:5000000 | sockclose lootupdate | geupdate %l | halt }
+    if (%search == ancient+statuette) { write Lootupdate.txt Ancient Statuette:5000000 | sockclose lootupdate | geupdate %l | halt }
     if (%search == seren+statuette) { write Lootupdate.txt Seren Statuette:1000000 | sockclose lootupdate | geupdate %l | halt }
     if (%search == armadyl+statuette) { write Lootupdate.txt Armadyl Statuette:750000 | sockclose lootupdate | geupdate %l | halt }
     if (%search == zamorak+statuette) { write Lootupdate.txt Zamorak Statuette:500000 | sockclose lootupdate | geupdate %l | halt }

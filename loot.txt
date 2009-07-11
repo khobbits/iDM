@@ -114,7 +114,7 @@ Saradomin full helm:868900
 Saradomin sword:7900000
 Bandos hilt:20800000
 Zamorak hilt:28900000
-Zaros Statuette:5000000
+Ancient Statuette:5000000
 Seren Statuette:1000000
 Armadyl Statuette:750000
 Zamorak Statuette:500000
