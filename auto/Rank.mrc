@@ -1,6 +1,7 @@
 on $*:TEXT:/^[!@.]top/Si:#: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
+  tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
   var %output $toplist(money,$2,1)
   %display $logo(TOP Money) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
@@ -9,6 +10,7 @@ on $*:TEXT:/^[!@.]top/Si:#: {
 on $*:TEXT:/^[!@.]wtop/Si:#: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
+  tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
   var %output $toplist(wins,$2)
   %display $logo(TOP Wins) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
@@ -17,6 +19,7 @@ on $*:TEXT:/^[!@.]wtop/Si:#: {
 on $*:TEXT:/^[!@.]ltop/Si:#: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   var %display = $iif(@* iswm $1,msg #,notice $nick)
+  tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
   var %output $toplist(losses,$2)
   %display $logo(TOP Losses) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
@@ -53,10 +56,17 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %money = $ranks(money,$2)
     var %wins = $ranks(wins,$2)
     var %losses = $ranks(losses,$2)
-    var %output = $logo(RANK) $s1(Money) $+ : $s2($gettok(%money,1,58)) with $price($gettok(%money,2,58)) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) with $gettok(%wins,2,58) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) with $gettok(%losses,2,58)
+    var %output = $logo(RANK) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
   } 
   else {
-    var %output = $logo($2) $s1(Money) $+ : $s2($rank(money,$2)) $s1(Wins) $+ : $s2($rank(wins,$2)) $s1(Losses) $+ : $s2($rank(losses,$2))
+    var %money = $ranks(money,$2)
+    var %nextmoney = $price($calc($gettok($ranks(money,$calc(%money -1)),2,58) - $.readini(Money.ini,Money,$2)))
+    var %wins = $ranks(wins,$2)
+    var %nextwins = $calc($gettok($ranks(wins,$calc(%wins -1)),2,58) - $.readini(Wins.ini,Wins,$2))
+    var %losses = $ranks(losses,$2)
+    var %nextlosses = $calc($gettok($ranks(losses,$calc(%losses -1)),2,58) - $.readini(Losses.ini,Losses,$2))
+
+    var %output = $logo($2) $s1(Money) $+ : $s2(%money) ( $+ %nextmoney from rank up) $s1(Wins) $+ : $s2(%wins) ( $+ %nextwins from rank up) $s1(Losses) $+ : $s2(%losses)  ( $+ %nextlosses from rank up)
   }
   if (%output == $null) {
     notice $nick Syntax: !rank <name>/<1 - 10000>
@@ -74,7 +84,7 @@ alias rank {
     return Unknown
   }
   else {
-    return %rank $+ $iif(%rank == 1,st,$iif(%rank == 2,nd,$iif(%rank == 3,rd,th)))
+    return $ord(%rank)
   }
 }
 

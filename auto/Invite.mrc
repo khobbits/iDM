@@ -83,6 +83,9 @@ on *:JOIN:#:{
       elseif ($.readini(admins.ini,support,$address($nick,3))) { 
         msg # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
+      elseif ($ranks(money,$nick) <= 12) { 
+        msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+      }      
     }
   }
 }
