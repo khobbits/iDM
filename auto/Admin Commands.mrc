@@ -394,7 +394,7 @@ on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
   timer -m 1 %rand rehash
 }
 
-on *:TEXT:!amsg*:*: {
+on *:TEXT:!amsg*:#iDM.staff: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $nick Syntax: !amsg 03message | halt }
   if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
