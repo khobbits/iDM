@@ -43,8 +43,8 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
   if ($.readini(Equipment.ini,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
   if ($.readini(money.ini,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   updateini Money.ini Money $nick - $+ %price
-  writeini -n Equipment.ini %sname $nick 1
-  write BuyStore.txt $nick bought from the store ( $+ $2- $+ ) $address
+  writeini Equipment.ini %sname $nick 1
+  write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($.readini(Money.ini,money,$nick))) left.
 
 }
@@ -67,7 +67,7 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   updateini Money.ini Money $nick + $+ %price
   updateini Equipment.ini %sname $nick -1
   if ($.readini(equipment.ini,%sname,$nick) < 1) {
-    remini -n Equipment.ini %sname $nick
+    remini Equipment.ini %sname $nick
   }
   notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($.readini(Money.ini,money,$nick))) $+ .
   return

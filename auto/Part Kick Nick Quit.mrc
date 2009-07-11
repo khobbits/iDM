@@ -36,16 +36,16 @@ on *:PART:#: {
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
     cancel #
-    remini -n OnOff.ini #
+    remini OnOff.ini #
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    writeini -n money.ini money %p1 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p1 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
+    writeini money.ini money %p1 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p1 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    writeini -n money.ini money %p2 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p2 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
+    writeini money.ini money %p2 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p2 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
@@ -58,8 +58,8 @@ on *:PART:#: {
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
           notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
-          write penalty.txt $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
-          writeini -n money.ini money $nick %newmoney
+          write penalty.txt $timestamp $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
+          writeini money.ini money $nick %newmoney
         }
       }
     }
@@ -79,8 +79,8 @@ on *:QUIT: {
           var %oldmoney = $.readini(money.ini,money,$nick)
           if (%oldmoney > 100) {
             var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-            write penalty.txt $nick quit during a dm oldcash %oldmoney newcash %newmoney
-            writeini -n money.ini money $nick %newmoney
+            write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney newcash %newmoney
+            writeini money.ini money $nick %newmoney
           }
         }
       }
@@ -97,14 +97,14 @@ on *:NICK: {
     if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) { msg $chan(%a) $logo(STAKE) The stake has been canceled because a player changed their nick. | cancel $chan(%a) | .timer $+ $chan(%a) off | halt }
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
       remini status.ini currentdm $nick
-      writeini -n status.ini currentdm $newnick true
+      writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
       remini login.ini login $nick
       set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       remini status.ini currentdm $nick
-      writeini -n status.ini currentdm $newnick true
+      writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
       remini login.ini login $nick
       set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
@@ -122,8 +122,8 @@ on *:KICK:#: {
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
           notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
-          write penalty.txt $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
-          writeini -n money.ini money $knick %newmoney
+          write penalty.txt  $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
+          writeini money.ini money $knick %newmoney
         }
       }
     }

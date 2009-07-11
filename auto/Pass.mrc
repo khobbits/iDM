@@ -11,8 +11,8 @@ on *:TEXT:!setpass*:#: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   if (!$2) || (!$3) { notice $nick Please specify a user or new password. }
-  remini -n Passes.ini Passes $2
-  writeini -n Passes.ini Passes $2 $remove($strip($3),$chr(36),$chr(37))
+  remini Passes.ini Passes $2
+  writeini Passes.ini Passes $2 $remove($strip($3),$chr(36),$chr(37))
   notice $nick $2 $+ 's password has been changed to: $s2($3)
 }
 
@@ -52,8 +52,8 @@ alias resetuserpass {
     msg #idm.support User $2 $+ 's password was not found.
   }
   else {   
-    remini -n Passes.ini Passes $2
-    writeini -n Passes.ini Passes $2 $remove($strip($randuserpass),$chr(36),$chr(37))
+    remini Passes.ini Passes $2
+    writeini Passes.ini Passes $2 $remove($strip($randuserpass),$chr(36),$chr(37))
     notice $2 Your idm password is " $+ $s2($.readini(Passes.ini,Passes,$2)) $+ ".  To change it /msg idm changepass $.readini(Passes.ini,Passes,$2) Pass
   }
 }

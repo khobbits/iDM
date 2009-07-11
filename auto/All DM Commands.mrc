@@ -84,7 +84,7 @@ alias damage {
 
   if ($4 == #iDM.Staff) { echo #iDM.Staff - %hp2 [ $+ [ #idm.staff ] ] - $1- }
   if ($.ini(pvp.ini,$3)) {
-    if ($.readini(PvP.ini,$3,$1) < 1) { remini -n PvP.ini $1 $3 }
+    if ($.readini(PvP.ini,$3,$1) < 1) { remini PvP.ini $1 $3 }
     elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
   }
   if ($3 != dh && $3 != cslap) {

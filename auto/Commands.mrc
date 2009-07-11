@@ -30,7 +30,7 @@ off $*:TEXT:/^[!@.]set/Si:#: {
       }
       else {
         notice $nick $logo(ERROR) $qt($2) has been enabled.
-        writeini -n set.ini # $2 on
+        writeini set.ini # $2 on
       }
     }
     if ($istok($setcommands,$2,32)) && ($3 == off) {
@@ -40,7 +40,7 @@ off $*:TEXT:/^[!@.]set/Si:#: {
       }
       else {
         notice $nick $logo(ERROR) $qt($2) has been disabled.
-        remini -n set.ini # $2
+        remini set.ini # $2
       }
     }
   }

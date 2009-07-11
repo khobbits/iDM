@@ -44,7 +44,7 @@ alias dead {
     else {
       set %clue $r(1,$lines(clue.txt))
       unset %rareprice
-      writeini -n equipment.ini clue $3 %clue
+      writeini equipment.ini clue $3 %clue
     }
   }
   if (mage's isin %rareitem) { unset %rareprice | updateini equipment.ini mbook $3 +1 }
@@ -65,7 +65,7 @@ alias dead {
     unset %sharedrop
   }
   else {
-    updateini -n Money.ini Money $3 + $+ %combined
+    updateini Money.ini Money $3 + $+ %combined
     .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
   }
   unset %item*

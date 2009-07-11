@@ -10,7 +10,7 @@ on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   ignore $2
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2) has been added to the ignore list. Please notify the user of this.
-  writeini -n ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
+  writeini ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
 }
 on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
@@ -19,7 +19,7 @@ on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   ignore -r $2-
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
-  remini -n ignore.ini Ignore $2
+  remini ignore.ini Ignore $2
 }
 
 on $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
@@ -28,7 +28,7 @@ on $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
   if (!$2) { notice $Nick Please specify a username/host to remove except. | halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the except list.
-  remini -n exceptions.ini Exceptions $2
+  remini exceptions.ini Exceptions $2
 }
 
 OFF $*:TEXT:/^[!.]ClearExcepts$/Si:#idm.staff: {
@@ -419,6 +419,6 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$.readini(status.ini,currentdm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   unset %dming [ $+ [ $2 ] ]
-  remini -n status.ini currentdm $2
+  remini status.ini currentdm $2
   if ($me == iDM) notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
 }

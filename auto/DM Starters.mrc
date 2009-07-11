@@ -13,7 +13,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
     .timer $+ # 1 20 enddm #
     set %dming [ $+ [ $nick ] ] on
-    writeini -n status.ini currentdm $nick true
+    writeini status.ini currentdm $nick true
     set %p1 [ $+ [ $chan ] ] $nick
     set %dmon [ $+ [ $chan ] ] on
     halt
@@ -26,7 +26,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
         halt
       }
     }
-    .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini -n status.ini currentdm $nick true
+    .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini status.ini currentdm $nick true
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
@@ -58,7 +58,7 @@ alias cancel {
     unset %frozen [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset $+(%*,$1)
     .timer $+ $1 off
-    remini -n gwd.ini $1
+    remini gwd.ini $1
     $+(.timer,gwd,$1) off
   }
 }
@@ -129,8 +129,8 @@ alias delaycancel {
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
       notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
-      write penalty.txt $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
-      writeini -n money.ini money $2 %newmoney
+      write penalty.txt $timestamp $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
+      writeini money.ini money $2 %newmoney
     }
   }
 }
@@ -145,7 +145,7 @@ off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: {
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
   if ($.ini(gwd.ini,$chan,0)) { notice $nick $logo(ERROR) Somebody is already at Godwars. | halt }
-  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | writeini -n gwd.ini # $nick true | msg # $logo(GWD) You're going on a trip to $s2(%gwd [ $+ [ $chan ] ]) $+ . $s1($nick) can go by typing !go. }
+  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | writeini gwd.ini # $nick true | msg # $logo(GWD) You're going on a trip to $s2(%gwd [ $+ [ $chan ] ]) $+ . $s1($nick) can go by typing !go. }
   set %dming [ $+ [ $nick ] ] gwd
   set %p1 [ $+ [ $chan ] ] $nick
   set %p2 [ $+ [ $chan ] ] %gwd [ $+ [ $chan ] ]

@@ -26,21 +26,21 @@ alias enable {
   if ($2 !isop $3) && (!$.readini(admins.ini,admins,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   if ($1 == -h) {
-    remini -n OnOff.ini $3 guth
-    remini -n OnOff.ini $3 sgs
-    remini -n OnOff.ini $3 blood
-    remini -n OnOff.ini $3 onyx
+    remini OnOff.ini $3 guth
+    remini OnOff.ini $3 sgs
+    remini OnOff.ini $3 blood
+    remini OnOff.ini $3 onyx
     notice $2 $logo(ENABLE) Healing attacks are now on in $3 $+ .
     halt
   }
   if ($1 == all) { 
-    remini -n OnOff.ini $3
+    remini OnOff.ini $3
     notice $2 $logo(ENABLE) All attacks have been turned on in $3 $+ .
     halt
   }
   var %a 1
   while ($gettok($1,%a,58)) {
-    if ($attack($gettok($1,%a,58))) && ($.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | remini -n OnOff.ini $3 $gettok($1,%a,58) }
+    if ($attack($gettok($1,%a,58))) && ($.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | remini OnOff.ini $3 $gettok($1,%a,58) }
     else { var %c %c $gettok($1,%a,58) } 
     inc %a
   }
@@ -50,16 +50,16 @@ alias disable {
   if ($2 !isop $3) && (!$.readini(admins.ini,admins,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   if ($1 == -h) {
-    writeini -n OnOff.ini $3 guth true
-    writeini -n OnOff.ini $3 sgs true
-    writeini -n OnOff.ini $3 blood true
-    writeini -n OnOff.ini $3 onyx true
+    writeini OnOff.ini $3 guth true
+    writeini OnOff.ini $3 sgs true
+    writeini OnOff.ini $3 blood true
+    writeini OnOff.ini $3 onyx true
     notice $2 $logo(DISABLE) Healing attacks are now off.
     halt
   }
   var %a 1
   while ($gettok($1,%a,58)) {
-    if ($attack($gettok($1,%a,58))) && (!$.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | writeini -n OnOff.ini $3 $gettok($1,%a,58) true }
+    if ($attack($gettok($1,%a,58))) && (!$.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | writeini OnOff.ini $3 $gettok($1,%a,58) true }
     else { var %c %c $gettok($1,%a,58) } 
     inc %a
   }
