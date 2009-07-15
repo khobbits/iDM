@@ -30,19 +30,19 @@ alias dmg {
   }
   elseif ($1 == ma) {
     if ($2 == ice) {
-      if ($3 == 1) return 0,0
+      if ($3 == 1) return 1,2
       elseif ($3 == 2) return 1,15
       elseif ($3 == 3) return 16,30
       else return 4 30
     }
     if ($2 == blood) {
-      if ($3 == 1) return 0,0
+      if ($3 == 1) return 0,2
       elseif ($3 == 2) return 1,15
       elseif ($3 == 3) return 16,30
       else return 4 25
     }
     if ($2 == smoke) {
-      if ($3 == 1) return 0,4
+      if ($3 == 1) return 1,4
       elseif ($3 == 2) return 1,15
       elseif ($3 == 3) return 16,30
       else return 4 35
