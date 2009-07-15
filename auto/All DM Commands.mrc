@@ -262,7 +262,7 @@ alias damage {
   if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
     var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
     inc %hp2 %extraup
-    msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%allegra.heal) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
+    msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) && (%extraup == $null) {
     var %extraup $calc($replace(%hit,$chr(32),$chr(43)))
