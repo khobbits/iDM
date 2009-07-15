@@ -185,13 +185,13 @@ alias damage {
     var %msg %msg $iif(%heal == 1,09HEALS on,fails to heal on) $s1($replace($2,$chr(58),$chr(32))) $iif(%heal == 1,and hits,but hits) $s2(%hit)
   }
   elseif ($3 == blood) {
-    var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit))
+    var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),hitting $s2(%hit))
   }
   elseif ($3 == ice) {
-    var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit))
+    var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit))
   }
   elseif ($3 == smoke) {
-    var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(%extra,$chr(32) 03 $+ $v1 $+) $+ .,hitting $s2(%hit))
+    var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),hitting $s2(%hit))
   }
   elseif ($3 == cbow) {
     var %msg %msg $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($replace($2,$chr(58),$chr(32))) with a rune c'bow, hitting $s2(%hit)
@@ -259,9 +259,10 @@ alias damage {
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if ($.readini(sitems.ini,support,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
-    var %extra $floor($calc(%hit / 2))
+    var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
+    var %extra $floor($calc(%temp.hit / 2))
     inc %hp2 %extra
-    msg $4 $logo(DM) $s1($2) $+ 's uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
+    msg $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
     inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
