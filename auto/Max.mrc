@@ -141,9 +141,9 @@ alias dmg {
     }
     if ($2 == gmaul) {
       if ($3 == 1) return 0,8
-      elseif ($3 == 2) return 1,15
-      elseif ($3 == 3) return 13,25
-      else return 3 25
+      elseif ($3 == 2) return 0,20
+      elseif ($3 == 3) return 14,25
+      else return 20 50
     }
     if ($2 == dclaws) {
       if ($3 == 1) return 0,10

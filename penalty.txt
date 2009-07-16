@@ -739,3 +739,21 @@
 16/7 07:22:13 meesterman got !enddm'd on #mpkers oldcash 954384440 newcash 949612518
 16/7 07:23:38 Conno got !enddm'd on #pill_manz oldcash 366179365 newcash 364348469
 16/7 07:38:24 [HP]LeGGeN got !enddm'd on #win oldcash 40266808395 newcash 40065474354
+16/7 08:17:09 Noobmagepur1 got !enddm'd on #gamecrew oldcash 455857868 newcash 453578579
+16/7 08:22:45 Protoman9111 got !enddm'd on #potnoob oldcash 202632904 newcash 201619740
+16/7 08:26:19 Poison_uk0 got !enddm'd on #potnoob oldcash 2181305956 newcash 2170399427
+16/7 09:30:14 {Nate} got !enddm'd on #LMD oldcash 2305338638 newcash 2293811945
+16/7 09:41:29 [TFP]Sc1m1d34th got !enddm'd on #worldwide oldcash 1735377210 newcash 1726700324
+16/7 09:52:54 rubenapf got !enddm'd on #benfica oldcash 186066274 newcash 185135943
+16/7 10:09:47 El_Rang||Fred got !enddm'd on #crica oldcash 175898039 newcash 175018549
+16/7 10:14:24 pk_boyke got !enddm'd on #mpkers oldcash 678369045 newcash 674977200
+16/7 10:30:17 tmg got !enddm'd on #bloodbandits oldcash 79777038 newcash 79378153
+16/7 10:32:02 pk_boyke got !enddm'd on #mpkers oldcash 1049414400 newcash 1044167328
+16/7 10:34:33 dr_pimp parted channel #daniel-1 during a dm oldcash 43339300 newcash 42472514
+16/7 10:44:30 [E]Matt|r4ng3 parted channel #e-dm during a dm oldcash 68202955 newcash 66838896
+16/7 10:59:09 Jordy-boy got !enddm'd on #monstersinc oldcash 2389578303 newcash 2377630412
+16/7 11:00:49 David|Shot got !enddm'd on #epiphany oldcash 162494495 newcash 161682023
+16/7 11:16:27 dr_pimp parted channel #daniel-1 during a dm oldcash 46555959 newcash 45624840
+16/7 11:20:47 Lwapimm_lol parted channel #SN during a dm oldcash 12499800 newcash 12249804
+16/7 12:08:17 len_da_range parted channel #gamecrew during a dm oldcash 385575720 newcash 377864206
+16/7 12:08:56 Supergirl parted channel #supegirl during a dm oldcash 126473072 newcash 123943611

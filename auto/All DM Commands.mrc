@@ -254,30 +254,30 @@ alias damage {
     dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
     notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
   }
-  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) < 3) && (%hp2 >= 1) {
     var %extra $iif(%hp2 < 12,$($v1,2),12)
     dec %hp2 %extra
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) {
+  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) {
     var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
     inc %hp2 %extraup
     msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) && (%extraup == $null) {
+  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
     var %extraup $calc($replace(%hit,$chr(32),$chr(43)))
     inc %hp2 %extraup
     msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
   }
-  if ($.readini(sitems.ini,support,$2)) && ($r(1,100) <= 3) && (%hp2 >= 1) && (%extraup == $null) {
+  if ($.readini(sitems.ini,support,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
     var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
     var %extraup $floor($calc(%temp.hit / 2))
     inc %hp2 %extraup
     msg $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if (%hp2 < 1) {
-    if ($.readini(sitems.ini,beau,$2)) && ($r(1,100) <= 6) {
+    if ($.readini(sitems.ini,beau,$2)) && ($r(1,100) < 6) {
       set %hp2 1
       msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     }
