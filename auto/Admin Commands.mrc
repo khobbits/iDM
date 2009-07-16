@@ -3,6 +3,16 @@ on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, !remdm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
 }
+
+on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
+  if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
+  msg $chan $s2($2) has been added to the support staff list with $address($2,3)
+  writeini admins.ini support $address($2,3) true
+}
+
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
