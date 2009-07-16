@@ -49,12 +49,13 @@ on *:notice:*:?: {
 
 alias resetuserpass {
   if (!$.readini(Passes.ini,Passes,$2)) { 
-    msg #idm.support User $2 $+ 's password was not found.
+    msg #idm.support User $2 $+ 's password was not found, this nick is not registered with iDM.
   }
-  else {   
+  else {
     remini Passes.ini Passes $2
     writeini Passes.ini Passes $2 $remove($strip($randuserpass),$chr(36),$chr(37))
     notice $2 Your idm password is " $+ $s2($.readini(Passes.ini,Passes,$2)) $+ ".  To change it /msg idm changepass $.readini(Passes.ini,Passes,$2) Pass
+    msg #idm.support Noticed $2 a new random iDM password.
   }
 }
 

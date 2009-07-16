@@ -84,7 +84,7 @@ on *:JOIN:#:{
         msg # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
       elseif ($ranks(money,$nick) <= 12) { 
-        msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+        msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
       }      
     }
   }
