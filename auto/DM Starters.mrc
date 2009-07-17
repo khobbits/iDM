@@ -90,10 +90,10 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice %p1 [ $+ [ $chan ] ] You have 20 seconds to make a move before the dm is ended, you will lose 1% of your money.
-    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 20 seconds if no move is made.
+    notice %p1 [ $+ [ $chan ] ] You have 30 seconds to make a move or !enddm. If you don't reply you will lose 0.5% of your money.
+    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 30 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
-    timer 1 20 delaycancel $chan %p1 [ $+ [ $chan ] ]
+    timer 1 30 delaycancel $chan %p1 [ $+ [ $chan ] ]
 
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
