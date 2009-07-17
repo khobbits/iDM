@@ -20,6 +20,12 @@ on *:TEXT:!resetpass*:#idm.support: {
   checkreg $nick resetuserpass $chan $nick
 }
 
+alias checklogin {
+  set %idm.nscheck. [ $+ [ $1 ] ] $2-
+  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but you need to be identified with nickserv to use this command.
+  ns status $1
+}
+
 alias checkreg {
   set %idm.nscheck. [ $+ [ $1 ] ] $2-
   set %idm.nsfail. [ $+ [ $1 ] ] msg #idm.support User $1 has not identified to nickserv.

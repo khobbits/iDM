@@ -66,7 +66,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %losses = $ranks(losses,$2)
     var %nextlosses = $calc($gettok($ranks(losses,$calc(%losses -1)),2,58) - $.readini(Losses.ini,Losses,$2))
 
-    var %output = $logo($2) $s1(Money) $+ : $s2(%money) ( $+ %nextmoney from rank up) $s1(Wins) $+ : $s2(%wins) ( $+ %nextwins from rank up) $s1(Losses) $+ : $s2(%losses)  ( $+ %nextlosses from rank up)
+    var %output = $logo($2) $s1(Money) $+ : $s2($ord(%money)) $iif(%money == 1,(\o/),( $+ %nextmoney for rank up)) $s1(Wins) $+ : $s2($ord(%wins)) $iif(%wins == 1,(\o/),( $+ %nextwins for rank up)) $s1(Losses) $+ : $s2($ord(%losses)) $iif(%losses == 1,(\o/),( $+ %nextlosses for rank up))
   }
   if (%output == $null) {
     notice $nick Syntax: !rank <name>/<1 - 10000>
