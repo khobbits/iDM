@@ -1067,3 +1067,7 @@
 18/7 14:10:32 Badmanklash parted channel #yjj during a dm oldcash 1314704343 newcash 1288410257
 18/7 14:36:49 [{Brandon}] got !enddm'd on #penisland oldcash 131203526 newcash 130547509
 18/7 14:41:14 colby_a_123 got !enddm'd on #Pure_hatred oldcash 668675280 newcash 665331904
+18/7 15:19:25 Squirrel2011 got !enddm'd on #penisland oldcash 282437610 newcash 281025422
+18/7 15:28:43 SoulsOfTheVain- got !enddm'd on #vanity oldcash 18753050 newcash 18659285
+18/7 16:26:27 finalfanta15 got !enddm'd on #Solitude oldcash 300563 newcash 299061
+18/7 16:27:41 Robbert got !enddm'd on #broccoli oldcash 3569503 newcash 3551656

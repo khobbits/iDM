@@ -1242,3 +1242,17 @@
 18/7 14:58:49 he_did_it50 bought from the store (ags) ~he_did_it@D55F7273.FCAD902A.FDCD0D74.IP
 18/7 15:04:54 [BEAR] bought from the store (void range) ~BEAR@Swift-65B812BE.phnx.qwest.net
 18/7 15:10:25 rangers_lo0t bought from the store (void range) ~rangers_l@Swift-A49061C3.dhcp.thbd.la.charter.com
+18/7 15:11:17 guthan_erik bought from the store (armadyl godsword) ~guthan_er@Swift-B6946E56.hsd1.az.comcast.net
+18/7 15:15:54 Badmanklash bought from the store (ACCUMULATOR) ~ssh15a1f7@Swift-A40E303.hsd1.nj.comcast.net
+18/7 15:41:35 claesjasper bought from the store (bandos godsword) ~claesjasp@35FB3B0C.5B3DFBF.15057B69.IP
+18/7 15:52:01 Sonic bought from the store (ags) ~Sonic@Swift-B1C9DA08.lsanca.fios.verizon.net
+18/7 16:02:28 Lwapimm_lol bought from the store (mudkip) ssh15e3f0@Swift-D49D87FB.sc.res.rr.com
+18/7 16:06:17 jozper bought from the store (ags) ~Supergirl@Swift-C478E66E.bredband.comhem.se
+18/7 16:11:53 PuntaBnice bought from the store (armadyl godsword) ~PuntaBnic@Swift-9B19F06.client.mchsi.com
+18/7 16:12:56 Jonhyman bought from the store (ags) ~Jonhyman@Swift-A9C3AE2F.epm.net.co
+18/7 16:26:16 Bane50 bought from the store (accumulator) ~Bane50@Swift-D44D9F00.umts.vodacom.co.za
+18/7 16:31:41 Bane50 bought from the store (ring of wealth) ~Bane50@Swift-D44D9F00.umts.vodacom.co.za
+18/7 16:31:46 Bane50 bought from the store (dragon claws) ~Bane50@Swift-D44D9F00.umts.vodacom.co.za
+18/7 16:34:34 diva6888 bought from the store (void range) ~diva6888@Swift-AC2467EC.hsd1.mi.comcast.net
+18/7 16:42:21 liv3_2_k0 bought from the store (armadyl godsword) ~liv3_2_k0@23F675A.7DDC75A.A12472FB.IP
+18/7 16:44:12 niwrad5 bought from the store (wealth) ~niwrad5@Swift-15EE3F39.access.telenet.be
