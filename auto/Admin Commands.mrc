@@ -430,5 +430,5 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if (!$.readini(status.ini,currentdm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   unset %dming [ $+ [ $2 ] ]
   remini status.ini currentdm $2
-  if ($me == iDM) notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
+  notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
 }
