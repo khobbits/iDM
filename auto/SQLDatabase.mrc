@@ -126,10 +126,13 @@ alias remdb {
   var %table = $lower($1)
   var %key1 = $sqlite_escape_string($2)
   var %key2 = $sqlite_escape_string($3-)
-  var %sql = DELETE FROM $sqlite_qt(%table) WHERE c1 = $sqlite_qt(%key1)
-  if (%key2 != $null) {
-    %sql = %sql AND c2 = $sqlite_qt(%key2)
-  }
+  var %sql = DELETE FROM $sqlite_qt(%table)
+  if (%key1 != $null) {
+    %sql = %sql WHERE c1 = $sqlite_qt(%key1)
+    if (%key2 != $null) {
+      %sql = %sql AND c2 = $sqlite_qt(%key2)
+    }
+  }  
   if (!$sqlite_exec(%db, %sql)) {
     echo 4 -s Error executing query: %sqlite_errstr - Query %sql
   }
