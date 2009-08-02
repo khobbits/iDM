@@ -172,10 +172,10 @@ alias max {
   }
   elseif ($1 == ma) {
     ;Mage
-    ;Normal Voidmage_or_MagesBook Both
+    ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
     var %dmg = $maxdmg(ma, $2, 3)
     if (%dmg == $null) { return }
-    return %dmg $calc(%dmg +5) $calc(%dmg +10)
+    return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
   }
   elseif ($1 == m) {
     ;Melee
@@ -276,7 +276,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
     halt
   }
   if ($max(r,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(r,$2),1,32)) $iif($totalhit(r,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range or Accumulator $s2($gettok($max(r,$2),2,32)) $iif($totalhit(r,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void range and Accumulator $s2($gettok($max(r,$2),3,32)) $iif($totalhit(r,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
-  elseif ($max(ma,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(ma,$2),1,32)) $iif($totalhit(ma,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage or Mage's book $s2($gettok($max(ma,$2),2,32)) $iif($totalhit(ma,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage and Mage's book $s2($gettok($max(ma,$2),3,32)) $iif($totalhit(ma,$2,3),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
+  elseif ($max(ma,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$1($v1 $+ $chr(37)),$chr(41))) $+ : $s2($gettok($max(ma,$2),1,32)) $iif($totalhit(ma,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Void mage or Mage's book or God Cape $s2($gettok($max(ma,$2),2,32)) $iif($totalhit(ma,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Two bonuses $s2($gettok($max(ma,$2),3,32)) $iif($totalhit(ma,$2,3),$+($chr(40),$s2($v1),$chr(41))) $c124 Three bonuses $s2($gettok($max(ma,$2),4,32)) $iif($totalhit(ma,$2,4),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
   elseif ($max(m,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $s2($gettok($max(m,$2),1,32)) $iif($totalhit(m,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves $s2($gettok($max(m,$2),2,32)) $iif($totalhit(m,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Fire cape $s2($gettok($max(m,$2),3,32)) $iif($totalhit(m,$2,3),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves and Fire cape $s2($gettok($max(m,$2),4,32)) $iif($totalhit(m,$2,4),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
   else notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
 }

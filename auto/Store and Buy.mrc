@@ -7,6 +7,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
     $s1(Fire Cape) (+5 to melee attacks) ( $+ $s2($buyprice(fire cape)) $+ ) - $&
     $s1(Barrows Gloves) (+3 to melee attacks) ( $+ $+($s2($buyprice(barrows gloves)),$chr(44),$chr(32),$s2(2K+ DMs),$chr(44),$chr(32),$s2(1K+ Wins)) $+ ) - $&
     $s1(Mage's Book) (+5 to mage attacks) ( $+ $s2($buyprice(mage book)) $+ ) - $&
+    $s1(God Cape) (+5 to mage attacks) ( $+ $s2($buyprice(godcape)) $+ ) - $&
     $s1(Accumulator) (+5 to range attacks) ( $+ $s2($buyprice(accumulator)) $+ )
   $iif($left($1,1) == @,msg #,notice $nick) $logo(STORE) $&
     $s1(Armadyl Godsword) ( $+ $s2($buyprice(ags)) $+ ) - $&
@@ -154,6 +155,11 @@ alias storematch {
     var %sname = accumulator
     var %fname = Accumulator
     var %price = 500000000
+  }
+  elseif ($2 == god) || ($2 == godcape) || ($2- == god cape) {
+    var %sname = godcape
+    var %fname = God Cape
+    var %price = 600000000
   }
   else {
     return 0

@@ -134,9 +134,7 @@ alias damage {
   if ($poisoner($3)) {
     var %pois.chance $r(1,$v1)
     if (%pois.chance == 1) || ($.readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
-      if (%hitdmg >= 1) {
-        set $+(%,pois,$player($2,$4),$4) 6
-      }
+      set $+(%,pois,$player($2,$4),$4) 6
     }
   }
   if ($($+(%,pois,$player($2,$4),$4),2) >= 1) && (%hp2 >= 1) {
@@ -374,7 +372,7 @@ alias hit {
   var %atk $calc($iif($.readini(Equipment.ini,Firecape,$2),5,0) + $iif($.readini(Equipment.ini,bgloves,$2),3,0))
   var %def $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
   var %ratk $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
-  var %matk $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0))
+  var %matk $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0) + $iif($.readini(Equipment.ini,godcape,$2),5,0))
   goto $1
   :whip
   return $hitdmg(m,whip,%acc,1,%atk,%def)
