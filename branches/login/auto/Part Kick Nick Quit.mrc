@@ -54,12 +54,12 @@ on *:PART:#: {
     msg # $logo(DM) The DM has been canceled, because one of the players parted.
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(part,$nick,$chan,$1-) == 1) {
-        ;var %oldmoney = $.readini(money.ini,money,$nick)
+        var %oldmoney = $.readini(money.ini,money,$nick)
         if (%oldmoney > 100) {
-          ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-          ;notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
-          ;write penalty.txt $timestamp $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
-          ;writeini money.ini money $nick %newmoney
+          var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
+          notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
+          write penalty.txt $timestamp $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
+          writeini money.ini money $nick %newmoney
         }
       }
     }
@@ -76,11 +76,11 @@ on *:QUIT: {
       msg $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
       if (%turn [ $+ [ $chan(%a) ] ]) {
         if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
-          ;var %oldmoney = $.readini(money.ini,money,$nick)
+          var %oldmoney = $.readini(money.ini,money,$nick)
           if (%oldmoney > 100) {
-            ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-            ;write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney newcash %newmoney
-            ;writeini money.ini money $nick %newmoney
+            var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
+            write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney newcash %newmoney
+            writeini money.ini money $nick %newmoney
           }
         }
       }
@@ -118,12 +118,12 @@ on *:KICK:#: {
     msg # $logo(DM) The DM has been ended because one of the players was kicked!
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(kick,$knick,$nick,$chan,$1-) == 1) {
-        ;var %oldmoney = $.readini(money.ini,money,$knick)
+        var %oldmoney = $.readini(money.ini,money,$knick)
         if (%oldmoney > 100) {
-          ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
-          ;notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
-          ;write penalty.txt  $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
-          ;writeini money.ini money $knick %newmoney
+          var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
+          notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
+          write penalty.txt  $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
+          writeini money.ini money $knick %newmoney
         }
       }
     }

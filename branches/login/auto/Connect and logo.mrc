@@ -50,3 +50,28 @@ alias bind {
 alias iplistlol {
   return 66.90.87.84:66.90.87.85:66.90.87.86:66.90.87.87:66.90.87.88:66.90.85.27:66.90.85.26
 }
+
+alias appendd {
+  var %var = $+(%,$1)
+  if ($eval(%var,2)) {
+    set $eval(%var) $eval(%var,2) $+ $2 $+ $3-
+  }
+  else {
+    set $eval(%var) $3-
+  }
+}
+
+alias appendc {
+  var %var = $+(%,$1)
+  if ($eval(%var,2)) {
+    set $eval(%var) $eval(%var,2) $chr(124) $2-
+  }
+  else {
+    set $eval(%var) $2-
+  }
+}
+
+alias append {
+  var %var = $+(%,$1)
+  set $eval(%var) $eval(%var,2) $+ $2-
+}
