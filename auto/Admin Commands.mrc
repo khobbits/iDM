@@ -88,7 +88,7 @@ on $*:TEXT:/^[!.]except .*/Si:#iDm.staff: {
   notice $nick $s2($2) has successfully been added to my exception list.
 }
 
-On $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
+OFF $*:TEXT:/^[!.]Warn .*/Si:#iDM.Staff: {
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$regex($2,/\#(.*)/)) {
     if ($me == iDM) notice $nick $logo(ERROR) You must enter a channel. Example: $s2(!warn #Belong)
@@ -304,7 +304,7 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
     }
     elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
       if ($.readini(sitems.ini,support,$2)) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-      writeini sitems.ini support $2 true
+      writeini sitems.ini support $2 $nick
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
   }
@@ -426,9 +426,27 @@ on *:TEXT:!whois*:#: {
 }
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
-  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
+  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
   if (!$.readini(status.ini,currentdm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
   unset %dming [ $+ [ $2 ] ]
   remini status.ini currentdm $2
   notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
+}
+
+On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support: {
+  if ($me != iDM) { halt }
+  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
+  $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($.readini(Money.ini,Money,$2),$price($v1),0)) W/L: $s2($iif($.readini(Wins.ini,Wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($.readini(Losses.ini,Losses,$2),$bytes($v1,db),0)) Registered?: $iif($.readini(Passes.ini,Passes,$2),9YES,4NO) Logged-In?: $iif($.readini(login.ini,login,$2),9YES,4NO)
+}
+
+On *:JOIN:#iDM.Support: {
+  if ($me == iDM) {
+    var %nick.ban $+($nick,!*@*)
+    if ($.readini(ignore.ini,ignore,$wildsite)) { 
+      msg +#iDM.Support $logo(Ignore) User: $s1($nick) is currently ignored by the ignore $s1($wildsite) Ignored by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-8,32))
+    }
+    elseif ($.readini(ignore.ini,ignore,%nick.ban)) {
+      msg +#iDM.Support $logo(Ignore) User: $s1($nick) is currently ignored by the ignore $s1(%nick.ban) Ignored by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-8,32))
+    }
+  }
 }

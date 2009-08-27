@@ -33,7 +33,7 @@ on $*:TEXT:/^[!@.]joinclan/Si:*: {
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !joinclan clan to join. | halt }
-  if (%invite [ $+ [ $nick ] ] != $2) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
+  if (%invite [ $+ [ $nick ] ] != $2 && $2 != Team-B) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
   addclanmember $2 $nick
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]

@@ -16,7 +16,7 @@ on *:TEXT:!setpass*:#: {
   notice $nick $2 $+ 's password has been changed to: $s2($3)
 }
 
-on *:TEXT:!resetpass*:#idm.support: {
+on *:TEXT:!resetpass:#idm.support: {
   checkreg $nick resetuserpass $chan $nick
 }
 

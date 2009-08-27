@@ -14,6 +14,19 @@ on $*:TEXT:/^[!.](on|off) .*/Si:#: {
     else disable $remove($2-,$chr(32)) $nick #
   }
 }
+
+On *:JOIN:#: {
+  if ($.ini(OnOff.ini,$chan,0)) {
+    var %count $.ini(OnOff.ini,$chan,0), %a 1, %disabled
+    while (%a <= %count) { 
+      var %disabled %disabled $.ini(OnOff.ini,$chan,%a)
+      inc %a
+    }
+    var %final $replace(%disabled,$chr(32),$chr(44) $chr(32))
+    notice $nick $logo(DISABLED) These attacks are currently disabled: $regsubex(%final,/^(.*)\x2C/,\1 and)
+  }
+}
+
 alias displayoff {
   if (!$.ini(OnOff.ini,$2,0)) {
     notice $1 $logo(DISABLED) All of the attacks for # are on. | halt 

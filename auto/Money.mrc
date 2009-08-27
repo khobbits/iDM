@@ -48,7 +48,7 @@ alias clan {
 alias sitems {
   if ($.readini(sitems.ini,belong,$1)) { var %e %e Bêlong:Blade }
   if ($.readini(sitems.ini,allegra,$1)) { var %e %e Allergy:Pills }
-  if ($.readini(sitems.ini,beau,$1)) { var %e %e Beaumerang }
+  if ($.readini(sitems.ini,beau,$1)) { var %e %e Bêaumerang }
   if ($.readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($.readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
   if ($.readini(sitems.ini,support,$1)) { var %e %e The:Supporter }

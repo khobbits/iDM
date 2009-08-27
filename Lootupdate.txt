@@ -1,5 +1,72 @@
-Grapes:223
+Grapes:231
 Bucket:12
-Apple Mush:59
-Wimpy Feather:37
+Apple Mush:66
+Wimpy Feather:50
 Needle:1
+Thread:3
+1/2 Plain Pizza:125
+1/3 Evil Turnip:14
+Hair:143
+Gnome Scarf:1200000
+Pat of Butter:433
+Zamorak Cloak:1300000
+Zamorak d'hide:1200000
+Dragon Platebody:10500000
+Specpot:1
+Guthan's Helm:2900000
+Guthan's Chainskirt:326000
+Guthan's Platebody:298100
+Guthan's Spear:824000
+Torag's Helm:782100
+Torag's Platelegs:640200
+Torag's Platebody:332700
+Torag's Hammers:95700
+Ahrim's Hood:88300
+Ahrim's Staff:80900
+Ahrim's Skirt:1900000
+Ahrim's Robetop:978700
+Verac's Helm:3200000
+Verac's Plateskirt:702600
+Verac's Brassard:393500
+Verac's Flail:227100
+Dharok's Helm:4300000
+Dharok's Platelegs:595500
+Dharok's Platebody:304800
+Dharok's Axe:251300
+Dragon Hatchet:2100000
+Dragon Dagger:29800
+Dragon Mace:30300
+Dragon Med Helm:120600
+Dragon Platelegs:182000
+Dragon Plateskirt:143000
+Dragon Boots:391800
+Abyssal Whip:2700000
+Toktz-ket-xil:176600
+Obsidian Cape:237500
+Master Wand:1200000
+Dark Bow:1400000
+Ranger Boots:8800000
+Black D'hide Body:8047
+Archers Ring:674000
+Berserker Ring:3000000
+Warrior Ring:287600
+Seers Ring:118400
+Lobster:2697
+Shark:1293
+Monkfish:420
+Vesta's Chainbody:721300
+Robin Hood Hat:2800000
+Morrigan's Javelin:8865
+Vesta's Spear:510600
+Vesta's Longsword:1700000
+Statius's Full Helm:262700
+Statius's Platebody:571600
+Statius's Platelegs:557700
+Statius's Warhammer:1200000
+Ancient staff:66800
+Anti-dragon shield:393
+Apprentice wand:5042
+Archer helm:54100
+Armadyl chestplate:15200000
+Armadyl helmet:4600000
+Armadyl plateskirt:15300000
