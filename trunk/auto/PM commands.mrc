@@ -33,7 +33,7 @@ on *:TEXT:id*:?: {
     notice $nick That password is incorrect. | halt 
   }
   if ($.readini(login.ini,login,$nick)) { notice $nick You're already logged in. | halt }
-  writeini login.ini Login $nick true
+  writeini login.ini Login $nick $ctime
   notice $nick Password accepted, you are now logged in.
 }
 

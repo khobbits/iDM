@@ -4,6 +4,14 @@ on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, !remdm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
 }
 
+ON $*:TEXT:/^[!.]Bot-ON$/Si:#iDM.staff: {
+  if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
+    if ($me === iDM[OFF]) {
+      nick iDM
+    }
+  }
+}
+
 on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
@@ -32,21 +40,13 @@ on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   remini ignore.ini Ignore $2
 }
 
-on $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
+OFF $*:TEXT:/^[!.]rexcept .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$.readini(admins.ini,support,$address($nick,3)) && !$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
   if (!$2) { notice $Nick Please specify a username/host to remove except. | halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   notice $nick $s2($2-) has been removed to the except list.
   remini exceptions.ini Exceptions $2
-}
-
-OFF $*:TEXT:/^[!.]ClearExcepts$/Si:#idm.staff: {
-  tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (!$.readini(Admins.ini,Admins,$address($nick,3))) { halt }
-  if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  db.exec DELETE * FROM exceptions
-  notice $nick Exceptions list has been cleared.
 }
 
 on $*:TEXT:/^[!.]cignore .*/Si:#: {
@@ -69,7 +69,7 @@ on $*:TEXT:/^[!.]cbl .*/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]cexcept .*/Si:#: {
+OFF $*:TEXT:/^[!.]cexcept .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($.readini(admins.ini,admins,$address($nick,3))) || ($.readini(admins.ini,support,$address($nick,3))) {
     if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -79,7 +79,7 @@ on $*:TEXT:/^[!.]cexcept .*/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]except .*/Si:#iDm.staff: {
+OFF $*:TEXT:/^[!.]except .*/Si:#iDm.staff: {
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
@@ -433,13 +433,17 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
 }
 
-On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support: {
+On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support,#iDM: {
   if ($me != iDM) { halt }
-  if ((!$.readini(admins.ini,Support,$address($nick,3))) && (!$.readini(Admins.ini,Admins,$address($nick,3)))) { halt }
-  $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($.readini(Money.ini,Money,$2),$price($v1),0)) W/L: $s2($iif($.readini(Wins.ini,Wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($.readini(Losses.ini,Losses,$2),$bytes($v1,db),0)) Registered?: $iif($.readini(Passes.ini,Passes,$2),9YES,4NO) Logged-In?: $iif($.readini(login.ini,login,$2),9YES,4NO)
+  if ($.readini(admins.ini,Support,$address($nick,3))) { 
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($.readini(Money.ini,Money,$2),$price($v1),0)) W/L: $s2($iif($.readini(Wins.ini,Wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($.readini(Losses.ini,Losses,$2),$bytes($v1,db),0)) Registered?: $iif($.readini(Passes.ini,Passes,$2),9YES,4NO) Logged-In?: $iif($.readini(login.ini,login,$2),9YES,4NO)
+  }
+  elseif ($.readini(Admins.ini,Admins,$address($nick,3))) {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($.readini(Money.ini,Money,$2),$price($v1),0)) W/L: $s2($iif($.readini(Wins.ini,Wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($.readini(Losses.ini,Losses,$2),$bytes($v1,db),0)) Registered?: $iif($.readini(Passes.ini,Passes,$2),9YES,4NO) $iif($.readini(Passes.ini,Passes,$2), Password: $s2($v1)) Logged-In?: $iif($.readini(login.ini,login,$2),9YES,4NO)
+  }
 }
 
-On *:JOIN:#iDM.Support: {
+OFF *:JOIN:#iDM.Support: {
   if ($me == iDM) {
     var %nick.ban $+($nick,!*@*)
     if ($.readini(ignore.ini,ignore,$wildsite)) { 

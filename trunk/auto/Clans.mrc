@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.]delmem/Si:*: {
+on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -13,7 +13,7 @@ on $*:TEXT:/^[!@.]delmem/Si:*: {
   $iif($address($2,2),notice $2,ms send $2) You have been kicked from your iDM clan by $nick $+ .
   delclanmember $2
 }
-on $*:TEXT:/^[!@.]addmem/Si:*: { 
+on $*:TEXT:/^[!@.]addmem .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -27,7 +27,7 @@ on $*:TEXT:/^[!@.]addmem/Si:*: {
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept. 
 }
-on $*:TEXT:/^[!@.]joinclan/Si:*: { 
+on $*:TEXT:/^[!@.]joinclan .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
@@ -38,7 +38,7 @@ on $*:TEXT:/^[!@.]joinclan/Si:*: {
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]
 }
-on $*:TEXT:/^[!@.]startclan/Si:*: { 
+on $*:TEXT:/^[!@.]startclan .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
@@ -48,7 +48,7 @@ on $*:TEXT:/^[!@.]startclan/Si:*: {
   createclan $remove($2,$chr(36),$chr(37)) $nick
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
 }
-on $*:TEXT:/^[!@.]leave/Si:*: { 
+on $*:TEXT:/^[!@.]leave$/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -58,7 +58,7 @@ on $*:TEXT:/^[!@.]leave/Si:*: {
   notice $nick $logo(CLAN) You've left your clan $s2(%clanname) $+ .
   delclanmember $nick
 }
-on $*:TEXT:/^[!@.]share/Si:*: { 
+on $*:TEXT:/^[!@.]share (on|off)/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) | halt }
@@ -97,7 +97,7 @@ alias claninfo {
 }
 
 alias clanstats {
-  return $s1(Wins) $+ : $iif($.readini(clantracker.ini,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($.readini(clantracker.ini,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($.readini(clantracker.ini,money,$1),$s2($price($v1)),$s2($price(0))) (Total clans $s2($.ini(clantracker.ini,wins,0)) $+ )
+  return $s1(Wins) $+ : $iif($.readini(clantracker.ini,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($.readini(clantracker.ini,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($.readini(clantracker.ini,money,$1),$s2($price($v1)),$s2($price(0))) (Total clans $s2($bytes($.ini(clantracker.ini,wins,0),bd)) $+ )
 }
 
 ; ============ 'Clan' Table Layout ============

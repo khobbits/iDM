@@ -13,7 +13,7 @@ on *:start: {
 
 
 on *:connect: {
-  if ($me == iDM[Hub]) { nick iDM | mnick iDM }
+  if ($me == iDM[OFF]) { nick iDM | mnick iDM }
   join #idm.staff
   if (%botnum != $null) {
     timer 1 10 msg #idm.staff Autoconnected on load.  Botnum: %botnum

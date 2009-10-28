@@ -20,11 +20,9 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
     if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address(%p1 [ $+ [ $chan ] ],2)) > 3) {
-      if (!$.readini(exceptions.ini,exceptions,$address($nick,2))) {
-        msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake or needs exception please drop by #iDM.Support.
-        inc -u5 %dm.spam [ $+ [ $nick ] ]
-        halt
-      }
+      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #iDM.Support.
+      inc -u5 %dm.spam [ $+ [ $nick ] ]
+      halt
     }
     .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini status.ini currentdm $nick true
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4

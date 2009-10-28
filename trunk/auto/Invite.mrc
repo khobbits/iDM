@@ -145,10 +145,10 @@ alias idmstaff {
   if ($1 == invite) { msg $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) }
 }
 alias entrymsg {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to make me leave. Forums 12http://forum.idm-bot.com/ Rules 12http://r.idm-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: New store item - 'God Cape' 1.2b
+  return News: Don't want iDM in your channel? Request a blacklist by visiting #iDM.Support
 }
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)

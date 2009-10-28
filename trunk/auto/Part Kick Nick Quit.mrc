@@ -138,7 +138,7 @@ alias enddmcatch {
   goto $1
 
   :part
-  var %action = parted $3 for $4-
+  var %action = parted $3 with reason " $+ $iif($4-,$4-,N/A) $+ "
   goto pass
 
   :quit
@@ -165,6 +165,7 @@ alias enddmcatch {
   #####
 
   :pass
+  msg #idm.staff $logo(ENDDM) $2 %action *
   return 1
 
   :fail
