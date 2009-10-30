@@ -265,7 +265,7 @@ on *:START: {
 }
 
 alias dbinit {
-  set %db $sqlite_open(database/idm.db)
+  set %db $sqlite_open($mircdirdatabase/idm.db)
   if (!%db) {
     echo 4 -s Error: %sqlite_errstr
     return
