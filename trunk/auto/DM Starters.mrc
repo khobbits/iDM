@@ -24,7 +24,9 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
       inc -u5 %dm.spam [ $+ [ $nick ] ]
       halt
     }
-    .timer $+ # off | set %dming [ $+ [ $nick ] ] on | writeini status.ini currentdm $nick true
+    .timer $+ # off 
+    set %dming [ $+ [ $nick ] ] on
+    writeini status.ini currentdm $nick true
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
@@ -189,8 +191,15 @@ alias hpbar {
 }
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!%p2 [ $+ [ $chan ] ]) { halt }
-  $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
+  if (%p2 [ $+ [ $chan ] ]) {
+    $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
+  }
+  elseif (%p1 [ $+ [ $chan ] ]) {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) %p1 [ $+ [ $chan ] ] is waiting for someone to DM in $chan $+ .
+  }
+  else {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) There is no DM in $chan $+ .
+  }
 }
 alias status {
   return $logo(STATUS) Turn: $iif(%turn [ $+ [ $1 ] ] == 1,$s1(%p1 [ $+ [ $1 ] ]) $+ 's,$s1(%p2 [ $+ [ $1 ] ]) $+ 's) HP: $s1(%p1 [ $+ [ $1 ] ]) $s2(%hp1 [ $+ [ $1 ] ]) $iif(%pois1 [ $+ [ $1 ] ] >= 1,$+($chr(40),Pois $s2($v1),$chr(41))) $s1(%p2 [ $+ [ $1 ] ]) $s2(%hp2 [ $+ [ $1 ] ]) $iif(%pois2 [ $+ [ $1 ] ] >= 1,$+($chr(40),Pois $s2($v1),$chr(41))) Special Bar: $s1(%p1 [ $+ [ $1 ] ]) $s2($iif(%sp1 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp1 [ $+ [ $chan ] ],32))) $+ $s2($chr(37)) $s1(%p2 [ $+ [ $1 ] ]) $s2($iif(%sp2 [ $+ [ $chan ] ] < 1,0,$gettok(25 50 75 100,%sp2 [ $+ [ $chan ] ],32))) $+ $s2($chr(37))
