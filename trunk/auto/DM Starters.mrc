@@ -86,27 +86,27 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
 
   }
   elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
+    var %othernick = %p1 [ $+ [ $chan ] ]
     if (%enddm [ $+ [ $chan ] ] == 0) {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice %p1 [ $+ [ $chan ] ] You have 30 seconds to make a move or !enddm. If you don't reply you will lose 0.5% of your money.
-    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 40 seconds if no move is made.
+    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($.readini(money.ini,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] 1
-    timer 1 20 delaycancelw $chan %p1 [ $+ [ $chan ] ]
-    timer 1 40 delaycancel $chan %p1 [ $+ [ $chan ] ]
+    timer 1 20 delaycancelw $chan %othernick
+    timer 1 40 delaycancel $chan %othernick
 
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
+    var %othernick = %p2 [ $+ [ $chan ] ]
     if (%enddm [ $+ [ $chan ] ] == 0) {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice %p2 [ $+ [ $chan ] ] You have 30 seconds to make a move or !enddm. If you don't reply you will lose 0.5% of your money.
-    notice $nick %p2 [ $+ [ $chan ] ] has been warned, the dm will end in 40 seconds if no move is made.
+    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($.readini(money.ini,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] 1
-    timer 1 20 delaycancelw $chan %p2 [ $+ [ $chan ] ]
-    timer 1 40 delaycancel $chan %p2 [ $+ [ $chan ] ]
+    timer 1 20 delaycancelw $chan %othernick
+    timer 1 40 delaycancel $chan %othernick
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
     if (%enddm [ $+ [ $chan ] ] == 1) {

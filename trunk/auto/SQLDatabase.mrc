@@ -66,7 +66,7 @@ alias db.select {
     return %result
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
 }
@@ -80,7 +80,7 @@ alias db.query {
     return %request
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
 }
@@ -115,7 +115,7 @@ alias db.exec {
   dbcheck
   var %sql = $1-
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
   if (%debugq == $me) echo 12 -s Query %sql executed
@@ -134,7 +134,7 @@ alias remdb {
     }
   }  
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
   }
   if (%debugq == $me) echo 5 -s Query %sql executed
 }
@@ -146,7 +146,7 @@ alias writedb {
   var %key3 = $sqlite_escape_string($4-)
   var %sql = REPLACE INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
   }
   if (%debugq == $me) echo 3 -s Query %sql executed
 }
@@ -162,12 +162,12 @@ alias updatedb {
     var %sql = UPDATE $sqlite_qt(%table) SET c3 = c3 $4- WHERE c1 = $sqlite_qt(%key1) AND c2 = $sqlite_qt(%key2)
   }
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
   }
   if ($sqlite_changes(%db) < 1) && ($abs($4-) isnum) {
     var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $abs($4-) )
     if (!$sqlite_exec(%db, %sql)) {
-      echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+      mysqlderror Error executing query: %sqlite_errstr - Query %sql
     }
   }
   if (%debugq == $me) echo 14 -s Query %sql executed
@@ -180,7 +180,7 @@ alias insertdb {
   var %key3 = $sqlite_escape_string($4-)
   var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
   }
 }
 
@@ -200,7 +200,7 @@ alias readdb {
     return %result
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
 }
@@ -246,15 +246,20 @@ alias listdb {
     return %result
   }
   else {
-    echo 4 -s Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %sqlite_errstr - Query %sql
     return $null
   }
+}
+
+alias mysqlderror {
+  echo 4 -s $1-
+  sbnc tcl putmainlog {3BotError4 $1- }
 }
 
 alias createtable {
   var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ' $+ $lower($1) $+ ' (c1, c2, c3, PRIMARY KEY (c1, c2))
   if (!$sqlite_exec(%db, %sql)) {
-    echo 4 -s Error: %sqlite_errstr - Query %sql
+    mysqlderror Error: %sqlite_errstr - Query %sql
     halt 
   }
 }
@@ -267,7 +272,7 @@ on *:START: {
 alias dbinit {
   set %db $sqlite_open($mircdirdatabase/idm.db)
   if (!%db) {
-    echo 4 -s Error: %sqlite_errstr
+    mysqlderror Error: %sqlite_errstr
     return
   } 
   else {
