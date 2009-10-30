@@ -73,16 +73,16 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (%stake [ $+ [ $chan ] ]) {
     if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
-      cancel #
-      msg # $logo(DM) The DM has been canceled by an admin.
+      cancel $chan
+      msg $chan $logo(DM) The DM has been canceled by an admin.
       halt
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
   if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
-    cancel #
-    msg # $logo(DM) The DM has been canceled by an admin.
+    cancel $chan
+    msg $chan $logo(DM) The DM has been canceled by an admin.
 
   }
   elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
@@ -91,9 +91,10 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       halt
     }
     notice %p1 [ $+ [ $chan ] ] You have 30 seconds to make a move or !enddm. If you don't reply you will lose 0.5% of your money.
-    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 30 seconds if no move is made.
+    notice $nick %p1 [ $+ [ $chan ] ] has been warned, the dm will end in 40 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
-    timer 1 30 delaycancel $chan %p1 [ $+ [ $chan ] ]
+    timer 1 20 delaycancelw $chan %p1 [ $+ [ $chan ] ]
+    timer 1 40 delaycancel $chan %p1 [ $+ [ $chan ] ]
 
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 2)) {
@@ -102,9 +103,10 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       halt
     }
     notice %p2 [ $+ [ $chan ] ] You have 30 seconds to make a move or !enddm. If you don't reply you will lose 0.5% of your money.
-    notice $nick %p2 [ $+ [ $chan ] ] has been warned, the dm will end in 30 seconds if no move is made.
+    notice $nick %p2 [ $+ [ $chan ] ] has been warned, the dm will end in 40 seconds if no move is made.
     set %enddm [ $+ [ $chan ] ] 1
-    timer 1 30 delaycancel $chan %p2 [ $+ [ $chan ] ]
+    timer 1 20 delaycancelw $chan %p2 [ $+ [ $chan ] ]
+    timer 1 40 delaycancel $chan %p2 [ $+ [ $chan ] ]
   }
   elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
     if (%enddm [ $+ [ $chan ] ] == 1) {
@@ -134,6 +136,13 @@ alias delaycancel {
     }
   }
 }
+
+alias delaycancelw {
+  if (%enddm [ $+ [ $1 ] ] == 1) {
+    msg $1 $logo(DM) The DM will end in 20s if $2 does not make a move.
+  }
+}
+
 off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: {
   if (# == #iDM.Support) { halt }
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
