@@ -97,7 +97,7 @@ alias ranks {
       var %sql = SELECT * FROM $db.tquote($1) WHERE c1 = $db.quote($1) AND c2 NOT LIKE '~banned~%' ORDER BY c3 +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
       if ($db.query_row(%query,row) == 1) {
-        return $hget(row,2) $+ : $+ $hget(row,3)
+        return $hget(row,c2) $+ : $+ $hget(row,c3)
       }
     }
   }
@@ -111,7 +111,7 @@ alias ranks {
 
     var %query = $db.query(%sql)
     if ($db.query_row(%query,row) == 1) {
-      return $hget(row,1)
+      return $hget(row,rank)
     }   
   }
   return $null
