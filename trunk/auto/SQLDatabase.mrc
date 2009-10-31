@@ -47,26 +47,30 @@ alias dbformat {
 }
 
 alias db.safe {
-  return $sqlite_qt($sqlite_escape_string($1-))
+  return $mysql_qt($mysql_real_escape_string(%db,$1-))
 }
 
 alias db.quote {
-  return $sqlite_qt($1-)
+  return $mysql_qt($1-)
+}
+
+alias db.tquote {
+  return ` $+ $1- $+ `
 }
 
 alias db.select {
   dbcheck
   var %sql = $1
   var %col = $2
-  var %request = $sqlite_query(%db, %sql)
+  var %request = $mysql_query(%db, %sql)
   if (%request) {
-    var %result = $sqlite_result(%request, %col)
-    sqlite_free %request
+    var %result = $mysql_result(%request, %col)
+    mysql_free %request
     if (%debugq == $me) echo 12 -s Query %sql returned %result
     return %result
   }
   else {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
     return $null
   }
 }
@@ -74,13 +78,13 @@ alias db.select {
 alias db.query {
   dbcheck
   var %sql = $1
-  var %request = $sqlite_query(%db, %sql)
+  var %request = $mysql_query(%db, %sql)
   if (%request) {
     if (%debugq == $me) echo 12 -s Query %sql returned token %request
     return %request
   }
   else {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
     return $null
   }
 }
@@ -88,7 +92,7 @@ alias db.query {
 alias db.query_row_data {
   var %request = $1
   var %col = $2
-  var %result = $sqlite_fetch_field( %request, %col )
+  var %result = $mysql_fetch_field( %request, %col )
   if (%debugq == $me) echo 12 -s Fetched column %col - Result %result
   return %result
 }
@@ -96,26 +100,26 @@ alias db.query_row_data {
 alias db.query_row {
   var %request = $1
   var %htable = $2
-  var %result = $sqlite_fetch_row( %request, %htable )
+  var %result = $mysql_fetch_row( %request, %htable )
   return %result
 }
 
 alias db.query_num_rows {
   var %request = $1
-  var %result = $sqlite_num_rows(%request)
+  var %result = $mysql_num_rows(%request)
   return %result
 }
 
 alias db.query_end {
   var %request = $1
-  sqlite_free %request
+  mysql_free %request
 }
 
 alias db.exec {
   dbcheck
   var %sql = $1-
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
     return $null
   }
   if (%debugq == $me) echo 12 -s Query %sql executed
@@ -124,50 +128,50 @@ alias db.exec {
 
 alias remdb {
   var %table = $lower($1)
-  var %key1 = $sqlite_escape_string($2)
-  var %key2 = $sqlite_escape_string($3-)
-  var %sql = DELETE FROM $sqlite_qt(%table)
+  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %key2 = $mysql_real_escape_string(%db,$3-)
+  var %sql = DELETE FROM $db.tquote(%table)
   if (%key1 != $null) {
-    %sql = %sql WHERE c1 = $sqlite_qt(%key1)
+    %sql = %sql WHERE c1 = $mysql_qt(%key1)
     if (%key2 != $null) {
-      %sql = %sql AND c2 = $sqlite_qt(%key2)
+      %sql = %sql AND c2 = $mysql_qt(%key2)
     }
   }  
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
   }
   if (%debugq == $me) echo 5 -s Query %sql executed
 }
 
 alias writedb {
   var %table = $lower($1)
-  var %key1 = $sqlite_escape_string($2)
-  var %key2 = $sqlite_escape_string($3)
-  var %key3 = $sqlite_escape_string($4-)
-  var %sql = REPLACE INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %key2 = $mysql_real_escape_string(%db,$3)
+  var %key3 = $mysql_real_escape_string(%db,$4-)
+  var %sql = REPLACE INTO $db.tquote(%table) (c1, c2, c3) VALUES ( $mysql_qt(%key1) , $mysql_qt(%key2) , $mysql_qt(%key3) )
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
   }
   if (%debugq == $me) echo 3 -s Query %sql executed
 }
 
 alias updatedb {
   var %table = $lower($1)
-  var %key1 = $sqlite_escape_string($2)
-  var %key2 = $sqlite_escape_string($3)
+  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %key2 = $mysql_real_escape_string(%db,$3)
   if (%key2 == $null) {
-    var %sql = UPDATE $sqlite_qt(%table) SET c3 = c3 $3 WHERE c1 = $sqlite_qt(%key1) 
+    var %sql = UPDATE $db.tquote(%table) SET c3 = c3 $3 WHERE c1 = $mysql_qt(%key1) 
   }
   else {
-    var %sql = UPDATE $sqlite_qt(%table) SET c3 = c3 $4- WHERE c1 = $sqlite_qt(%key1) AND c2 = $sqlite_qt(%key2)
+    var %sql = UPDATE $db.tquote(%table) SET c3 = c3 $4- WHERE c1 = $mysql_qt(%key1) AND c2 = $mysql_qt(%key2)
   }
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
   }
-  if ($sqlite_changes(%db) < 1) && ($abs($4-) isnum) {
-    var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $abs($4-) )
-    if (!$sqlite_exec(%db, %sql)) {
-      mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  if ($mysql_affected_rows(%db) < 1) && ($abs($4-) isnum) {
+    var %sql = INSERT INTO $db.tquote(%table) (c1, c2, c3) VALUES ( $mysql_qt(%key1) , $mysql_qt(%key2) , $abs($4-) )
+    if (!$mysql_exec(%db, %sql)) {
+      mysqlderror Error executing query: %mysql_errstr - Query %sql
     }
   }
   if (%debugq == $me) echo 14 -s Query %sql executed
@@ -175,32 +179,32 @@ alias updatedb {
 
 alias insertdb {
   var %table = $lower($1)
-  var %key1 = $sqlite_escape_string($2)
-  var %key2 = $sqlite_escape_string($3)
-  var %key3 = $sqlite_escape_string($4-)
-  var %sql = INSERT INTO $sqlite_qt(%table) VALUES ( $sqlite_qt(%key1) , $sqlite_qt(%key2) , $sqlite_qt(%key3) )
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %key2 = $mysql_real_escape_string(%db,$3)
+  var %key3 = $mysql_real_escape_string(%db,$4-)
+  var %sql = INSERT INTO $db.tquote(%table) (c1, c2, c3) VALUES ( $mysql_qt(%key1) , $mysql_qt(%key2) , $mysql_qt(%key3) )
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
   }
 }
 
 alias readdb {
   var %table = $lower($1)
-  var %key1 = $sqlite_escape_string($2)
-  var %key2 = $sqlite_escape_string($3)
-  var %key3 = $sqlite_escape_string($4)
+  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %key2 = $mysql_real_escape_string(%db,$3)
+  var %key3 = $mysql_real_escape_string(%db,$4)
 
-  var %sql = SELECT * FROM $sqlite_qt(%table) WHERE c1 = $sqlite_qt(%key1) AND c2 = $sqlite_qt(%key2)
-  if (%key3 != $null) { %sql = %sql AND c3 = $sqlite_qt(%key3) }
-  var %request = $sqlite_query(%db, %sql)
+  var %sql = SELECT * FROM $db.tquote(%table) WHERE c1 = $mysql_qt(%key1) AND c2 = $mysql_qt(%key2)
+  if (%key3 != $null) { %sql = %sql AND c3 = $mysql_qt(%key3) }
+  var %request = $mysql_query(%db, %sql)
   if (%request) {
-    var %result = $sqlite_fetch_field(%request, c3)
-    sqlite_free %request
+    var %result = $mysql_fetch_field(%request, c3)
+    mysql_free %request
     if (%debugq == $me) echo 7 -s Query %sql returned %result
     return %result
   }
   else {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
     return $null
   }
 }
@@ -208,24 +212,24 @@ alias readdb {
 alias listdb {
   var %table = $lower($1)
   if ($$2 == 0) {
-    var %sql = SELECT DISTINCT c1 FROM $sqlite_qt(%table)
+    var %sql = SELECT DISTINCT c1 FROM $db.tquote(%table)
     var %numrow = 1
   }
   elseif ($2 isnum && $3 == $null) {
-    var %sql = SELECT DISTINCT c1 FROM $sqlite_qt(%table)
+    var %sql = SELECT DISTINCT c1 FROM $db.tquote(%table)
     var %limit = $calc($2 -1) $+ ,1
     var %column = c1
   }
   else {    
-    var %sql = SELECT * FROM $sqlite_qt(%table)
-    if ($2 !isnum) { var %key1 = = $sqlite_qt($sqlite_escape_string($2)) }
-    else { var %key1 = = (SELECT DISTINCT c1 FROM $sqlite_qt(%table) LIMIT $calc($2 -1) $+ ,1) }
+    var %sql = SELECT * FROM $db.tquote(%table)
+    if ($2 !isnum) { var %key1 = = $mysql_qt($mysql_real_escape_string(%db,$2)) }
+    else { var %key1 = = (SELECT DISTINCT c1 FROM $db.tquote(%table) LIMIT $calc($2 -1) $+ ,1) }
     var %column = c2
     if ($3 == 0) { var %numrow = 1 }
     elseif ($3 isnum) { var %limit = $calc($3 -1) $+ ,1 }
     else { 
-      if ($sqlite_escape_string($3)) {
-        var %key2 = = $sqlite_qt($sqlite_escape_string($3)) 
+      if ($mysql_real_escape_string(%db,$3)) {
+        var %key2 = = $mysql_qt($mysql_real_escape_string(%db,$3)) 
       }
     }
   }
@@ -234,19 +238,19 @@ alias listdb {
     if (%key2 != $null) { %sql = %sql AND c2 %key2 }
   }
   else {
-    if (%key2 != $null) { %sql = %sql WHERE c2 = $sqlite_qt(%key2) }
+    if (%key2 != $null) { %sql = %sql WHERE c2 = $mysql_qt(%key2) }
   }
   if (%limit != $null) { %sql = %sql LIMIT %limit }
-  var %request = $sqlite_query(%db, %sql)
+  var %request = $mysql_query(%db, %sql)
   if (%request) {
-    if (%numrow == 1) { var %result = $sqlite_num_rows(%request) }
-    else { var %result = $sqlite_fetch_field(%request, %column) }
-    sqlite_free %request
+    if (%numrow == 1) { var %result = $mysql_num_rows(%request) }
+    else { var %result = $mysql_fetch_field(%request, %column) }
+    mysql_free %request
     if (%debugq == $me) echo 6 -s Query %sql returned %result
     return %result
   }
   else {
-    mysqlderror Error executing query: %sqlite_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - Query %sql
     return $null
   }
 }
@@ -257,25 +261,35 @@ alias mysqlderror {
 }
 
 alias createtable {
-  var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ' $+ $lower($1) $+ ' (c1, c2, c3, PRIMARY KEY (c1, c2))
-  if (!$sqlite_exec(%db, %sql)) {
-    mysqlderror Error: %sqlite_errstr - Query %sql
+  var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ` $+ $lower($1) $+ ` (c1, c2, c3, PRIMARY KEY (c1, c2))
+  if (!$mysql_exec(%db, %sql)) {
+    mysqlderror Error: %mysql_errstr - Query %sql
     halt 
   }
 }
 
 on *:START: {
-  load -rs " $+ $mircdirsqllite/msqlite.mrc"
+  load -rs " $+ $mircdirmysql/mmysql.mrc"
   dbinit
 }
 
 alias dbinit {
-  set %db $sqlite_open($mircdirdatabase/idm.db)
+  var %host = baka.khobbits.co.uk
+  var %user = idm
+  var %pass = Sp4rh4wk`Gh0$t`
+  var %database = idm
+
+  set %db $mysql_connect(%host, %user, %pass)
   if (!%db) {
-    mysqlderror Error: %sqlite_errstr
+    mysqlderror Error: %mysql_errstr
     return
   } 
   else {
+    if (!$mysql_select_db(%db, %database)) {
+      echo 4 -a Failed selecting database %database
+      mysql_close %db
+      return
+    }
     echo 4 -s SQLDB LOADED
   }
 }

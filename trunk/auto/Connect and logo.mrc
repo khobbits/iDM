@@ -4,7 +4,7 @@ alias s2 { return $+($chr(3),07,$1-,) }
 
 on *:CONNECT: {
   mode $me +pB
-  sqlite_close %db
+  mysql_close %db
   unsetall
   remini status.ini currentdm 
   remini login.ini login
@@ -31,7 +31,7 @@ alias secondchan {
 }
 
 on *:DISCONNECT: {
-  sqlite_close %db
+  mysql_close %db
   unsetall
   remini status.ini currentdm
   remini login.ini login

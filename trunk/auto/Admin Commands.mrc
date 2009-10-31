@@ -243,22 +243,22 @@ alias renamenick {
   if ($3) { var %target = msg $3 $logo(RENAME) }
   else { var %target = echo -s RENAME $1 to $2 - }
   tokenize 32 $lower($1) $lower($2)
-  db.exec UPDATE OR REPLACE 'sitems' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in sitems.ini
-  db.exec UPDATE OR REPLACE 'passes' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in passes.ini
-  db.exec UPDATE OR REPLACE 'money' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in money.ini
-  db.exec UPDATE OR REPLACE 'wins' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in wins.ini
-  db.exec UPDATE OR REPLACE 'losses' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in losses.ini
-  db.exec UPDATE OR REPLACE 'equipment' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) items of equipment
-  db.exec UPDATE OR REPLACE 'clan' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in clans.ini
-  db.exec UPDATE OR REPLACE 'pvp' SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $sqlite_changes(%db) rows in pvp.ini
+  db.exec UPDATE OR REPLACE `sitems` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in sitems.ini
+  db.exec UPDATE OR REPLACE `passes` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in passes.ini
+  db.exec UPDATE OR REPLACE `money` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in money.ini
+  db.exec UPDATE OR REPLACE `wins` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in wins.ini
+  db.exec UPDATE OR REPLACE `losses` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in losses.ini
+  db.exec UPDATE OR REPLACE `equipment` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) items of equipment
+  db.exec UPDATE OR REPLACE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in clans.ini
+  db.exec UPDATE OR REPLACE `pvp` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in pvp.ini
 }
 
 

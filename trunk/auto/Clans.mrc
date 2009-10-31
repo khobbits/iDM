@@ -86,7 +86,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 
 alias claninfo {
   var $ci,%tc = 0
-  var %sql = SELECT * FROM 'clan' WHERE c1 = $db.safe($lower($1))
+  var %sql = SELECT * FROM `clan` WHERE c1 = $db.safe($lower($1))
   var %result = $db.query(%sql)
   while ($db.query_row_data(%result,c2)) {
     var %ci = %ci $v1
@@ -131,7 +131,7 @@ alias createclan {
 alias deleteclan {
   ; $1 = Clanname
   if ($1) {
-    var %sql = DELETE FROM 'clan' WHERE c1 = $db.safe($lower($1))
+    var %sql = DELETE FROM clan WHERE c1 = $db.safe($lower($1))
     db.exec %sql
   }
 }
@@ -147,7 +147,7 @@ alias addclanmember {
 alias delclanmember {
   ; $1 = Membername
   if ($1) {
-    var %sql = DELETE FROM 'clan' WHERE c2 = $db.safe($lower($1))
+    var %sql = DELETE FROM clan WHERE c2 = $db.safe($lower($1))
     db.exec %sql
   }
 }
@@ -155,7 +155,7 @@ alias delclanmember {
 alias getclanname {
   ; $1 = Membername
   if ($1) {
-    var %sql = SELECT * FROM 'clan' WHERE c2 = $db.safe($lower($1))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($lower($1))
     return $db.select(%sql, c1)
   }
 }
@@ -172,14 +172,14 @@ alias isclanowner {
   ; $1 = Membername
   ; $2 = [optional] Clanname
   if ($2) {
-    var %sql = SELECT * FROM 'clan' WHERE c2 = $db.safe($lower($1)) AND c1 = $db.safe($lower($2))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($lower($1)) AND c1 = $db.safe($lower($2))
     if ($db.select(%sql, c3) == owner) {
       return 1
     }
     return 0
   }
   elseif ($1) {
-    var %sql = SELECT * FROM 'clan' WHERE c2 = $db.safe($lower($1))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($lower($1))
     if ($db.select(%sql, c3) == owner) {
       return 1
     }
