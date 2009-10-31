@@ -22,3 +22,8 @@
 30/10 21:38:58 VmikeV got !enddm'd on #iDM oldcash 432035018 newcash 429874843
 30/10 21:39:00 `Dante got !enddm'd on #tank oldcash 4188407578 newcash 4167465541
 30/10 22:34:20 romario397 got !enddm'd on #clan-som oldcash 677039664 newcash 673654466
+30/10 23:10:17 romario397 got !enddm'd on #clan-som oldcash 678486042 newcash 675093612
+31/10 00:01:21 Void_Range got !enddm'd on #atrocity oldcash 24481982 newcash 24359573
+31/10 00:06:34 Patnoy1 got !enddm'd on #kcr oldcash 332747375 newcash 331083639
+31/10 00:24:33 Patnoy1 got !enddm'd on #kcr oldcash 342372775 newcash 340660912
+31/10 00:33:15 `Drew got !enddm'd on #atrocity oldcash 774906698 newcash 771032165

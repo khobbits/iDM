@@ -369,10 +369,20 @@ alias hit {
   else {
     var %acc $r(1,100)
   }
-  var %atk $calc($iif($.readini(Equipment.ini,Firecape,$2),5,0) + $iif($.readini(Equipment.ini,bgloves,$2),3,0))
+
+  var %sql SELECT c2
+  var %sql %sql ,SUM(IF(c1 = 'firecape', c3, 0)) AS `firecape`, SUM(IF(c1 = 'bgloves', c3, 0)) AS `bgloves`
+  var %sql %sql ,SUM(IF(c1 = 'elshield', c3, 0)) AS `elshield`, SUM(IF(c1 = 'void', c3, 0)) AS `void`, SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
+  var %sql %sql ,SUM(IF(c1 = 'void-mage', c3, 0)) AS `void-mage`, SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
+  var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2)
+  var %result = $db.query(%sql)
+  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  db.query_end %result
+
+  var %atk $calc($iif($hget(equip,firecape),5,0) + $iif($hget(equip,bgloves),3,0))
   var %def $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
-  var %ratk $calc($iif($.readini(Equipment.ini,void,$2),5,0) + $iif($.readini(Equipment.ini,accumulator,$2),5,0))
-  var %matk $calc($iif($.readini(Equipment.ini,void-mage,$2),5,0) + $iif($.readini(Equipment.ini,mbook,$2),5,0) + $iif($.readini(Equipment.ini,godcape,$2),5,0))
+  var %ratk $calc($iif($hget(equip,void),5,0) + $iif($hget(equip,accumulator),5,0))
+  var %matk $calc($iif($hget(equip,void-mage),5,0) + $iif($hget(equip,mbook),5,0) + $iif($hget(equip,godcape),5,0))
   goto $1
   :whip
   return $hitdmg(m,whip,%acc,1,%atk,%def)
@@ -381,7 +391,7 @@ alias hit {
   :ags
   return $hitdmg(m,ags,%acc,1,%atk,%def)
   :cbow
-  if (%acc isnum 98-100) && ($.readini(Equipment.ini,void,$2) || $.readini(Equipment.ini,accumulator,$2)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+  if (%acc isnum 98-100) && ($hget(equip,void) || $hget(equip,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
   return $hitdmg(r,cbow,%acc,1,%ratk,%def)
   :dbow
   return $hitdmg(r,dbow,%acc,2,%ratk,%def)

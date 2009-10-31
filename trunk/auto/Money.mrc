@@ -23,6 +23,23 @@ alias money {
 }
 
 alias equipment {
+
+  ;var %sql SELECT c2
+  ;var %sql %sql ,SUM(IF(c1 = 'void', c3, 0)) AS `void`
+  ;var %sql %sql ,SUM(IF(c1 = 'void-mage', c3, 0)) AS `void-mage`
+
+  ;var %sql %sql ,SUM(IF(c1 = 'bgloves', c3, 0)) AS `bgloves`
+  ;var %sql %sql ,SUM(IF(c1 = 'firecape', c3, 0)) AS `firecape` 
+  ;var %sql %sql ,SUM(IF(c1 = 'elshield', c3, 0)) AS `elshield`
+
+  ;var %sql %sql ,SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`
+  ;var %sql %sql ,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
+  ;var %sql %sql ,SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
+  ;var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2)
+  ;var %result = $db.query(%sql)
+  ;if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  ;db.query_end %result
+
   if ($.readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($.readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($.readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
