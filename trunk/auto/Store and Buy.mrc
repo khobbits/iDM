@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$.readini(money.ini,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
@@ -43,7 +43,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
   }
   if ($.readini(Equipment.ini,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
   if ($.readini(money.ini,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
-  updateini Money.ini Money $nick - $+ %price
+  updateini money.ini money $nick - $+ %price
   writeini Equipment.ini %sname $nick 1
   write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($.readini(Money.ini,money,$nick))) left.
@@ -53,7 +53,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
 
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)
@@ -65,7 +65,7 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
     halt
   }
   if (!$.readini(Equipment.ini,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
-  updateini Money.ini Money $nick + $+ %price
+  updateini money.ini money $nick + $+ %price
   updateini Equipment.ini %sname $nick -1
   if ($.readini(equipment.ini,%sname,$nick) < 1) {
     remini Equipment.ini %sname $nick

@@ -1,6 +1,6 @@
 on *:TEXT:reg*:?: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($.readini(Passes.ini,Passes,$nick)) { notice $nick You're already registered. To login, ( $+ /msg $me ident password $+ ) | halt }
+  if ($.readini(Passes.ini,passes,$nick)) { notice $nick You're already registered. To login, ( $+ /msg $me ident password $+ ) | halt }
   if (!$2) { notice $nick To register.. ( $+ /msg $me reg pass $+ ) (Don't use your RuneScape pass) | halt }
   if ($len($2) < 4) { notice $nick Please choose a password of over 4 characters. | halt }
   if ($2 == pass) { notice $nick You can't use this as your password, try something more secure. | halt }
@@ -11,11 +11,11 @@ on *:TEXT:reg*:?: {
 
 on *:TEXT:changepass*:?: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (!$.readini(Passes.ini,Passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) (Don't use your RuneScape password) | halt }
+  if (!$.readini(Passes.ini,passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) (Don't use your RuneScape password) | halt }
   if (!$3) { notice $nick To change your password.. ( $+ /msg $me changepass oldpass pass $+ ) (Don't use your RuneScape password) | halt }
   if ($len($3) < 4) { notice $nick Please choose a password of over 4 characters. | halt }
   if ($3 == pass) { notice $nick You can't use this as your password, try something more secure. | halt }
-  if ($2 != $.readini(Passes.ini,Passes,$nick)) { notice $nick Your old password was incorrect. | halt }
+  if ($2 != $.readini(Passes.ini,passes,$nick)) { notice $nick Your old password was incorrect. | halt }
   checkregpm $nick changeuserpass $nick $2 $3
 }
 
@@ -28,8 +28,8 @@ alias changeuserpass {
 }
 
 on *:TEXT:id*:?: {
-  if (!$.readini(Passes.ini,Passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) (Don't use your RuneScape password) | halt }
-  if ($2 != $.readini(Passes.ini,Passes,$nick)) {
+  if (!$.readini(Passes.ini,passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) (Don't use your RuneScape password) | halt }
+  if ($2 != $.readini(Passes.ini,passes,$nick)) {
     notice $nick That password is incorrect. | halt 
   }
   if ($.readini(login.ini,login,$nick)) { notice $nick You're already logged in. | halt }
@@ -38,7 +38,7 @@ on *:TEXT:id*:?: {
 }
 
 on *:TEXT:logout*:?: {
-  if (!$.readini(Passes.ini,Passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) | halt }
+  if (!$.readini(Passes.ini,passes,$nick)) { notice $nick You have to register first. To register, ( $+ /msg $me reg password $+ ) | halt }
   if (!$.readini(login.ini,login,$nick)) { notice $nick You're not logged in.. To login, ( $+ /msg $me ident password $+ ) | halt }
   remini login.ini Login $nick
   unset %login. [ $+ [ $nick ] ]

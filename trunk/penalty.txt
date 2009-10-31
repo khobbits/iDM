@@ -27,3 +27,8 @@
 31/10 00:06:34 Patnoy1 got !enddm'd on #kcr oldcash 332747375 newcash 331083639
 31/10 00:24:33 Patnoy1 got !enddm'd on #kcr oldcash 342372775 newcash 340660912
 31/10 00:33:15 `Drew got !enddm'd on #atrocity oldcash 774906698 newcash 771032165
+31/10 01:48:16 xbxlx0x0xdxz got !enddm'd on #geee oldcash 853158215 newcash 848892424
+31/10 06:08:21 mark19100 got !enddm'd on #uvdm oldcash 158098080 newcash 157307590
+31/10 06:44:57 Bradley` got !enddm'd on #uvdm oldcash 271679199 newcash 270320804
+31/10 07:02:49 [L-Warner] got !enddm'd on #bludbrothers oldcash 12213417208 newcash 12152350122
+31/10 10:04:44 papii_robert got !enddm'd on #legendarios oldcash 117753398 newcash 117164632

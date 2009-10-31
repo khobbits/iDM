@@ -77,7 +77,7 @@ on *:JOIN:#:{
       return
     }
     if (# != #iDM && # != #iDM.Staff) || ($me == iDM) { 
-      if ($.readini(Admins.ini,Admins,$address($nick,3))) { 
+      if ($.readini(Admins.ini,admins,$address($nick,3))) { 
         msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       } 
       elseif ($.readini(admins.ini,support,$address($nick,3))) { 

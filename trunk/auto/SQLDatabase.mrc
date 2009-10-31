@@ -47,7 +47,7 @@ alias dbformat {
 }
 
 alias db.safe {
-  return $mysql_qt($mysql_real_escape_string(%db,$1-))
+  return $mysql_qt($mysql_real_escape_string(%db,$lower($1-)))
 }
 
 alias db.quote {
@@ -55,7 +55,7 @@ alias db.quote {
 }
 
 alias db.tquote {
-  return ` $+ $1- $+ `
+  return ` $+ $lower($1-) $+ `
 }
 
 alias db.select {
@@ -127,8 +127,8 @@ alias db.exec {
 }
 
 alias remdb {
-  var %table = $lower($1)
-  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %table = $1
+  var %key1 = $mysql_real_escape_string(%db,$lower($2))
   var %key2 = $mysql_real_escape_string(%db,$3-)
   var %sql = DELETE FROM $db.tquote(%table)
   if (%key1 != $null) {
@@ -144,8 +144,8 @@ alias remdb {
 }
 
 alias writedb {
-  var %table = $lower($1)
-  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %table = $1
+  var %key1 = $mysql_real_escape_string(%db,$lower($2))
   var %key2 = $mysql_real_escape_string(%db,$3)
   var %key3 = $mysql_real_escape_string(%db,$4-)
   var %sql = REPLACE INTO $db.tquote(%table) (c1, c2, c3) VALUES ( $mysql_qt(%key1) , $mysql_qt(%key2) , $mysql_qt(%key3) )
@@ -156,8 +156,8 @@ alias writedb {
 }
 
 alias updatedb {
-  var %table = $lower($1)
-  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %table = $1
+  var %key1 = $mysql_real_escape_string(%db,$lower($2))
   var %key2 = $mysql_real_escape_string(%db,$3)
   if (%key2 == $null) {
     var %sql = UPDATE $db.tquote(%table) SET c3 = c3 $3 WHERE c1 = $mysql_qt(%key1) 
@@ -178,8 +178,8 @@ alias updatedb {
 }
 
 alias insertdb {
-  var %table = $lower($1)
-  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %table = $1
+  var %key1 = $mysql_real_escape_string(%db,$lower($2))
   var %key2 = $mysql_real_escape_string(%db,$3)
   var %key3 = $mysql_real_escape_string(%db,$4-)
   var %sql = INSERT INTO $db.tquote(%table) (c1, c2, c3) VALUES ( $mysql_qt(%key1) , $mysql_qt(%key2) , $mysql_qt(%key3) )
@@ -189,8 +189,8 @@ alias insertdb {
 }
 
 alias readdb {
-  var %table = $lower($1)
-  var %key1 = $mysql_real_escape_string(%db,$2)
+  var %table = $1
+  var %key1 = $mysql_real_escape_string(%db,$lower($2))
   var %key2 = $mysql_real_escape_string(%db,$3)
   var %key3 = $mysql_real_escape_string(%db,$4)
 
@@ -222,7 +222,7 @@ alias listdb {
   }
   else {    
     var %sql = SELECT * FROM $db.tquote(%table)
-    if ($2 !isnum) { var %key1 = = $mysql_qt($mysql_real_escape_string(%db,$2)) }
+    if ($2 !isnum) { var %key1 = = $mysql_qt($mysql_real_escape_string(%db,$lower($2))) }
     else { var %key1 = = (SELECT DISTINCT c1 FROM $db.tquote(%table) LIMIT $calc($2 -1) $+ ,1) }
     var %column = c2
     if ($3 == 0) { var %numrow = 1 }

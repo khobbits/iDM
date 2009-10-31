@@ -11,7 +11,7 @@ on $*:TEXT:/^[!@.]money/Si:#: {
 }
 
 alias money {
-  var %money = $.readini(Money.ini,Money,$1)
+  var %money = $.readini(Money.ini,money,$1)
   var %rank = $rank(money,$1)
   var %wins = $.readini(Wins.ini,Wins,$1)
   var %losses = $.readini(Losses.ini,Losses,$1)
@@ -35,7 +35,7 @@ alias equipment {
   ;var %sql %sql ,SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`
   ;var %sql %sql ,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
   ;var %sql %sql ,SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
-  ;var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2)
+  ;var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2))
   ;var %result = $db.query(%sql)
   ;if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
   ;db.query_end %result

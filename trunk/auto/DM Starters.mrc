@@ -41,7 +41,7 @@ alias winloss {
 }
 
 alias cloneStats {
-  return $price($iif($.readini(Money.ini,Money,$1),$v1,0))) $+ $s2(/) $+ $iif($.readini(Wins.ini,Wins,$1),$v1 $+ W,0W) $+ $s2(/) $+ $iif($.readini(Losses.ini,Losses,$1),$v1 $+ L,0L))
+  return $price($iif($.readini(Money.ini,money,$1),$v1,0))) $+ $s2(/) $+ $iif($.readini(Wins.ini,Wins,$1),$v1 $+ W,0W) $+ $s2(/) $+ $iif($.readini(Losses.ini,Losses,$1),$v1 $+ L,0L))
 }
 
 
@@ -71,7 +71,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) {
-    if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+    if ($.readini(Admins.ini,admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel $chan
       msg $chan $logo(DM) The DM has been canceled by an admin.
@@ -79,7 +79,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
-  if ($.readini(Admins.ini,Admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+  if ($.readini(Admins.ini,admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel $chan
     msg $chan $logo(DM) The DM has been canceled by an admin.

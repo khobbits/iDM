@@ -45,20 +45,20 @@ alias maxstake {
 
 on *:TEXT:!tour*:#iDM.Tournaments: {
   if ($istok(Tournament tourney tourny,$right($1,-1),32)) {
-    if (!$.readini(Tournament,Started,started)) {
+    if (!$.readini(Tournament,started,started)) {
       if (!$.readini(admins.ini,admins,$address($nick,3))) {
         notice $nick $logo(ERROR) You can't start a tournament.
         halt
       }
       elseif ($.readini(admins.ini,admins,$address($nick,3))) {
-        writeini Tournament Started started true
+        writeini Tournament started started true
         msg # $logo(TOURNEY) A tournament has begun, type !join to join in.
       }
     }
   }
 }
 on *:TEXT:!join:#iDM.Tournaments: {
-  if (!$.readini(Tournament,Started,started)) {
+  if (!$.readini(Tournament,started,started)) {
     notice $nick $logo(ERROR) There is no tournament.
     halt
   }

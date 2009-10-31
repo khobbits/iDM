@@ -3,7 +3,7 @@ on $*:TEXT:/^[!.]/Si:#: {
   if ($right($1,-1) == specpot) {
     if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) || (($.readini(gwd.ini,#,$nick)) && (%turn [ $+ [ $chan ] ] == 1)) {
       if (!$.readini(login.ini,login,$nick)) {
-        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
+        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
         halt
       }
       if (!$.readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
@@ -23,7 +23,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($right($1,-1) == cslap && !$.readini(Admins.ini,Admins,$address($nick,3))) {
+      if ($right($1,-1) == cslap && !$.readini(Admins.ini,admins,$address($nick,3))) {
         notice $nick $logo(ERROR) You can't use this "weapon"
         halt
       }
@@ -41,7 +41,7 @@ on $*:TEXT:/^[!.]/Si:#: {
           halt
         }
         if (!$.readini(login.ini,login,$nick)) {
-          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,Passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password)
+          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password)
           halt
         }
       }
@@ -374,7 +374,7 @@ alias hit {
   var %sql %sql ,SUM(IF(c1 = 'firecape', c3, 0)) AS `firecape`, SUM(IF(c1 = 'bgloves', c3, 0)) AS `bgloves`
   var %sql %sql ,SUM(IF(c1 = 'elshield', c3, 0)) AS `elshield`, SUM(IF(c1 = 'void', c3, 0)) AS `void`, SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
   var %sql %sql ,SUM(IF(c1 = 'void-mage', c3, 0)) AS `void-mage`, SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
-  var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2)
+  var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2))
   var %result = $db.query(%sql)
   if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
   db.query_end %result
