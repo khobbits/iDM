@@ -244,7 +244,7 @@ alias damage {
 
   var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($2)
   var %result = $db.query(%sql)
-  if (!$db.query_row(%result,equipstaff)) { echo -s Error fetching equipment - damage $1- }
+  if ($db.query_row(%result,equipstaff) === $null) { echo -s Error fetching equipment - damage $1- }
   db.query_end %result
 
   if ($hget(equipstaff,belong)) && ($r(1,100) < 3) && (%hp2 >= 1) {

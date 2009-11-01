@@ -17,6 +17,6 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
   var %combined $calc(%cprice1 + %cprice2 + %cprice3)
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ %clue1 $+ , $+ %clue2 $+ , $+ %clue3 $+ $s1($chr(93)) 
   db.set user money $nick + %combined
-  db.set equip_item clue 0
+  db.set equip_item clue $nick 0
   unset %clue* %cprice*
 }
