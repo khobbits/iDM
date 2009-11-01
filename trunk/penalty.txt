@@ -49,3 +49,4 @@
 1/11 14:25:48 twister011 got !enddm'd on #D_M oldcash 1624956641 newcash 1616831858
 1/11 14:32:08 [L-Warner] got !enddm'd on #bludbrothers oldcash 12532431868 newcash 12469769709
 1/11 14:32:57 mike_tennis0 got !enddm'd on #lostsouls oldcash 306638461 newcash 305105269
+1/11 15:19:17 slayerrocks0 got !enddm'd on #tds oldcash 5434022066 newcash 5406851956
