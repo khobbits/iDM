@@ -41,7 +41,7 @@ alias toplist {
     }
     else {
       %output = %output $chr(124) %i $+ . $s1($hget(row,user)) $s2($bytes($hget(row,$1),db))
-    }    
+    }
   }
   db.query_end %result
   return %output
@@ -50,13 +50,13 @@ alias toplist {
 on $*:TEXT:/^[!@.]dmrank/Si:#: {
   tokenize 32 $1- $nick
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
-  var %display = $iif(@* iswm $1,msg #,notice $nick) 
+  var %display = $iif(@* iswm $1,msg #,notice $nick)
   if ($2 isnum) {
     var %money = $ranks(money,$2)
     var %wins = $ranks(wins,$2)
     var %losses = $ranks(losses,$2)
     var %output = $logo(RANK) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
-  } 
+  }
   else {
     var %money = $ranks(money,$2)
     var %nextmoney = $price($calc($gettok($ranks(money,$calc(%money -1)),2,58) - $db.get(user,money,$2)))
@@ -106,14 +106,14 @@ alias ranks {
     if ($db.select(%sql,$1) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&
-      INNER JOIN (SELECT * FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 +0) < (r2. $+ $1 +0) $&
+      INNER JOIN (SELECT money FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)
     if ($db.query_row(%query,rrow) == 1) {
       db.query_end %query
       return $hget(rrow,rank)
-    }   
+    }
   }
   return $null
 }
