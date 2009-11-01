@@ -86,7 +86,11 @@ alias db.query_end {
 alias db.set {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
-  if ($4) {
+  if (($5 isnum) && (($4 == +) || ($4 == -))) {
+    var %sql = INSERT INTO $db.tquote($1) ( user , $2 ) VALUES (  $db.safe($3) , $db.safe($5-) ) ON DUPLICATE KEY UPDATE $2 = $2 $4 $db.safe($5-)
+    return $db.exec(%sql)
+  }
+  elseif ($4) {
     var %sql = INSERT INTO $db.tquote($1) ( user , $2 ) VALUES (  $db.safe($3) , $db.safe($4-) ) ON DUPLICATE KEY UPDATE $2 = $db.safe($4-)
     return $db.exec(%sql)
   }

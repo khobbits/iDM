@@ -42,39 +42,3 @@ on $*:TEXT:/^[!@.]stake\b/Si:#: {
 alias maxstake {
   return $iif($ceil($calc($1 *.05)) > 1000000000,$v2,$v1)
 }
-
-on *:TEXT:!tour*:#iDM.Tournaments: {
-  if ($istok(Tournament tourney tourny,$right($1,-1),32)) {
-    if (!$.readini(Tournament,started,started)) {
-      if (!$.readini(admins.ini,admins,$address($nick,3))) {
-        notice $nick $logo(ERROR) You can't start a tournament.
-        halt
-      }
-      elseif ($.readini(admins.ini,admins,$address($nick,3))) {
-        writeini Tournament started started true
-        msg # $logo(TOURNEY) A tournament has begun, type !join to join in.
-      }
-    }
-  }
-}
-on *:TEXT:!join:#iDM.Tournaments: {
-  if (!$.readini(Tournament,started,started)) {
-    notice $nick $logo(ERROR) There is no tournament.
-    halt
-  }
-  if ($.readini(Tournament,players,$nick)) {
-    notice $nick $logo(ERROR) You're already in the tournament.
-    halt
-  }
-  if ($.readini(money.ini,money,$nick) < 10000000) {
-    notice $nick $logo(ERROR) You need at least $s1($price(10000000)) to join a tournament.
-    halt
-  }
-  if ($.ini(tournament.ini,players,0) > 16) {
-    notice $nick $logo(ERROR) There are already 16 players.
-    halt
-  }
-  writeini tournament.ini players $nick on
-  notice $nick $logo(TOURNEY) You've been entered in the tournament.
-  halt
-}
