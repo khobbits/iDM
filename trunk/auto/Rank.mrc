@@ -97,7 +97,7 @@ alias ranks {
       var %query = $db.query(%sql)
       if ($db.query_row(%query,rrow) == 1) {
         db.query_end %query
-        return $hget(rrow,user) $+ : $+ $hget(row,$1)
+        return $hget(rrow,user) $+ : $+ $hget(rrow,$1)
       }
     }
   }
@@ -106,7 +106,7 @@ alias ranks {
     if ($db.select(%sql,$1) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&
-      INNER JOIN (SELECT money FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
+      INNER JOIN (SELECT $1 FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)
