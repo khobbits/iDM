@@ -82,7 +82,7 @@ alias db.query_end {
   mysql_free %request
 }
 
-; This is the convience function used to write single values to the db
+; This is the convience function used to write single values to the db or update an existing value
 alias db.set {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
