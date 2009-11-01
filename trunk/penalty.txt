@@ -50,3 +50,6 @@
 1/11 14:32:08 [L-Warner] got !enddm'd on #bludbrothers oldcash 12532431868 newcash 12469769709
 1/11 14:32:57 mike_tennis0 got !enddm'd on #lostsouls oldcash 306638461 newcash 305105269
 1/11 15:19:17 slayerrocks0 got !enddm'd on #tds oldcash 5434022066 newcash 5406851956
+1/11 15:29:34 oceancoco got !enddm'd on #iDM oldcash 614592236 newcash 611519275
+1/11 15:46:32 captain_ got !enddm'd on #tank oldcash 88744164 newcash 88300444
+1/11 15:50:33 Slamma123 got !enddm'd on #Dm.newbies oldcash 3222218772 newcash 3206107679

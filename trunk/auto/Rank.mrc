@@ -31,7 +31,7 @@ alias toplist {
   ; $2 = number to show
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
-  var %sql = SELECT user, $1 FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
+  var %sql = SELECT user, $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
 
   var %result = $db.query(%sql)
   while ($db.query_row(%result,row)) {
@@ -93,7 +93,7 @@ alias ranks {
   ; $2 = position or username
   if ($2 isnum) {
     if ($2 isnum 1-50000) {
-      var %sql = SELECT user, $1 FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
+      var %sql = SELECT user, $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
       if ($db.query_row(%query,rrow) == 1) {
         db.query_end %query
@@ -102,11 +102,11 @@ alias ranks {
     }
   }
   else {
-    var %sql = SELECT user, $1 FROM user WHERE user = $db.safe($2) LIMIT 0,1
+    var %sql = SELECT user, $db.tquote($1) FROM user WHERE user = $db.safe($2) LIMIT 0,1
     if ($db.select(%sql,$1) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&
-      INNER JOIN (SELECT $1 FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
+      INNER JOIN (SELECT $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)

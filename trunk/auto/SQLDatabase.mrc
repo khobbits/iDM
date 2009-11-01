@@ -18,7 +18,7 @@ alias db.tquote {
 alias db.get {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
-  var %sql = SELECT user, $2 FROM $db.tquote($1) WHERE user = $db.safe($3)
+  var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
   return $db.select(%sql,$2)
 }
 
