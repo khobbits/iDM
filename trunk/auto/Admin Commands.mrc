@@ -231,6 +231,8 @@ alias renamenick {
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  msg #idm.staff #fix - need sql
+  return
     notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) $&
       Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0)) $&
       The Supporter: $s2($.ini(sitems.ini,support,0))
@@ -407,7 +409,7 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     notice $nick $logo(Show DM) $s1($2) is $iif(%dming [ $+ [ $2 ] ],3currently,not) DMing on $me at the moment according to var.
-    if ($me == iDM) { 
+    if ($me == iDM) {
       notice $nick $logo(Show DM) $s1($2) is $iif($.readini(status.ini,currentdm,$2),3currently,not) DMing at the moment according to ini.
     }
   }

@@ -3,7 +3,6 @@ on *:TEXT:!pass*:#: {
   if (# == #iDM || # == #iDM.staff || # == #idm.support) && ($me != iDM) { halt }
   if (!$2) { notice $Nick Please specify a username | halt }
   if (!$db.get(user,pass,$2)) { notice $nick $2 $+ 's password was not found. | halt }
-  if ($.readini(Admins.ini,admins,$address($2,3))) { notice $nick You don't need to know this usernames password. | halt }
   notice $nick $2 $+ 's password is: $s2($db.get(user,pass,$2))
 }
 
@@ -53,7 +52,7 @@ on *:notice:*:?: {
 }
 
 alias resetuserpass {
-  if (!$db.get(user,pass,$2)) { 
+  if (!$db.get(user,pass,$2)) {
     msg #idm.support User $2 $+ 's password was not found, this nick is not registered with iDM.
   }
   else {

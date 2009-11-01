@@ -3,8 +3,8 @@ on *:INVITE:#: {
   if (%invig. [ $+ [ # ] ]) { halt }
   if (%loottimer) { msg $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
-  if ((!%inv.spam [ $+ [ $nick ] ]) && ($.readini(Blacklist.ini,Chans,#))) {
-    notice $nick Channel has been blacklisted. (Reason: $v1 $iif($.readini(blacklist.ini,Who,#),By: $v1) $+ )
+  if ((!%inv.spam [ $+ [ $nick ] ]) && ($.readini(blacklist.ini,chans,#))) {
+    notice $nick Channel has been blacklisted. (Reason: $v1 $iif($.readini(blacklist.ini,who,#),By: $v1) $+ )
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
@@ -13,7 +13,7 @@ on *:INVITE:#: {
     var %a 0
     sbnc joinbot $chan $nick
   }
-  else { 
+  else {
     ;ctcp $replace($gettok($botsonline,2-,32),$chr(32),$chr(44)) quickbot check # $nick
     ctcp #idm.staff quickbot check # $nick
     set %quick. [ $+ [ # ] ] on
@@ -55,37 +55,37 @@ CTCP *:*join*:?: {
 }
 alias modesp {
   if (!%raw322 [ $+ [ $1 ] ]) || ($numtok(%raw322 [ $+ [ $1 ] ],32) == 2) { Halt }
-  join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on 
+  join $1 | set %raw322 [ $+ [ $1 ] ] %raw322 [ $+ [ $1 ] ] on on
 }
 
 on *:JOIN:#:{
-  if ($nick == $me) { 
+  if ($nick == $me) {
     if (%raw322 [ $+ [ # ] ]) && ($numtok(%raw322 [ $+ [ # ] ],32) == 2) { unset %raw322 [ $+ [ # ] ] }
     if (%forcedj. [ $+ [ # ] ]) {
-      unset %forcedj. [ $+ [ # ] ] 
+      unset %forcedj. [ $+ [ # ] ]
     }
     else {
-      if (# != #iDM && # != #iDM.Staff) { 
+      if (# != #iDM && # != #iDM.Staff) {
         $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
         .timer 1 1 scanbots $chan
       }
     }
-  } 
+  }
   else {
-    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) { 
+    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) {
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
-    if (# != #iDM && # != #iDM.Staff) || ($me == iDM) { 
+    if (# != #iDM && # != #iDM.Staff) || ($me == iDM) {
       if ($db.get(admins,position,$address($nick,3)) = admins) {
         msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
-      } 
+      }
       elseif ($db.get(admins,position,$address($nick,3))) {
         msg # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
-      elseif ($ranks(money,$nick) <= 12) { 
+      elseif ($ranks(money,$nick) <= 12) {
         msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
-      }      
+      }
     }
   }
 }
@@ -119,14 +119,14 @@ alias position {
 
 raw 322:*:{
   if ($numtok(%raw322 [ $+ [ $2 ] ],32) == 1) {
-    if ($3 < 4) { 
-      msg %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 4 or more is needed to have iDM join. 
+    if ($3 < 4) {
+      msg %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 4 or more is needed to have iDM join.
       unset %raw322 [ $+ [ $2 ] ]
     }
     else {
       $+(.timerinvalidnick,$2) off
       set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
-      join $2 
+      join $2
       idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) | $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
     }
   }

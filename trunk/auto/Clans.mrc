@@ -1,3 +1,8 @@
+;#fix try and remove all $.ini
+;#fix alias the security/errors on these commands (or maybe try and regex them together?)
+
+;#fix clantracker.ini needs converted to use columns like the other tables
+
 on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -9,11 +14,11 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   if ($db.get(user,money,$2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   if (%clanname != $getclanname($2)) { notice $nick $logo(ERROR) $s1($2) isn't in your clan. | halt }
-  notice $nick $logo(CLANS) $s1($2) has been kicked from your clan. 
+  notice $nick $logo(CLANS) $s1($2) has been kicked from your clan.
   $iif($address($2,2),notice $2,ms send $2) You have been kicked from your iDM clan by $nick $+ .
   delclanmember $2
 }
-on $*:TEXT:/^[!@.]addmem .*/Si:*: { 
+on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -25,9 +30,9 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
-  $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept. 
+  $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
 }
-on $*:TEXT:/^[!@.]joinclan .*/Si:*: { 
+on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -38,7 +43,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]
 }
-on $*:TEXT:/^[!@.]startclan .*/Si:*: { 
+on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -48,7 +53,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   createclan $remove($2,$chr(36),$chr(37)) $nick
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
 }
-on $*:TEXT:/^[!@.]leave$/Si:*: { 
+on $*:TEXT:/^[!@.]leave$/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -58,7 +63,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
   notice $nick $logo(CLAN) You've left your clan $s2(%clanname) $+ .
   delclanmember $nick
 }
-on $*:TEXT:/^[!@.]share (on|off)/Si:*: { 
+on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
@@ -72,7 +77,7 @@ on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
     remini clantracker.ini share %clanname
   }
 }
-on $*:TEXT:/^[!@.]dmclan/Si:#: { 
+on $*:TEXT:/^[!@.]dmclan/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$2) { var %nick = $nick }
   else { var %nick = $2 }

@@ -78,8 +78,7 @@ alias damage {
 
   if ($4 == #iDM.Staff) { echo #iDM.Staff - %hp2 [ $+ [ #idm.staff ] ] - $1- }
   if ($ispvp($3)) {
-    if ($db.get(equip_pvp,$3,$1) < 1) { remini PvP.ini $1 $3 }
-    elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
+    db.set equip_pvp $3 $1 - 1
   }
   if ($3 != dh) {
     var %hit $hit($3,$1,$2,$4)

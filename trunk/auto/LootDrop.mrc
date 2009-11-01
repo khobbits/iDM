@@ -24,6 +24,7 @@ alias dead {
   set %price1 $gettok($read(loot.txt,%drop1),2,58)
   set %price2 $gettok($read(loot.txt,%drop2),2,58)
   set %price3 $gettok($read(loot.txt,%drop3),2,58)
+  ;#fix need to fix the drop ipdate ini
   if (%item1 == Vesta's longsword || %item2 == Vesta's longsword || %item3 == Vesta's longsword) { updateini PvP.ini VLong $3 +5 }
   if (%item1 == Vesta's spear || %item2 == Vesta's spear || %item3 == Vesta's spear) { updateini PvP.ini VSpear $3 +5 }
   if (%item1 == Statius's Warhammer || %item2 == Statius's Warhammer || %item3 == Statius's Warhammer) { updateini PvP.ini statius $3 +5 }

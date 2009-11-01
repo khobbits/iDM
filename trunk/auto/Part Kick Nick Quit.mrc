@@ -9,18 +9,18 @@ on *:TEXT:!idle*:#iDM.Staff: {
         }
       }
       inc %a
-    } 
-    if (%c) notice $nick $logo(IDLE) I have parted: %c 
+    }
+    if (%c) notice $nick $logo(IDLE) I have parted: %c
     else {
       notice $nick $LOGO(IDLE) I have parted no chans.
     }
   }
 }
 
-on $*:TEXT:/^[!@.]part/Si:#: { 
+on $*:TEXT:/^[!@.]part/Si:#: {
   if (# == #iDM) || (# == #iDM.Staff) { halt }
   if ($2 == $me) {
-    if ($nick isop # || $nick ishop #) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+    if ($nick isop # || $nick ishop #) || ($db.get(admins,position,$address($nick,3))) {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on
@@ -31,7 +31,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
 }
 
 on *:PART:#: {
-  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) { 
+  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) {
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
@@ -127,9 +127,9 @@ on *:KICK:#: {
         }
       }
     }
-    cancel # 
-    .timer $+ # off 
-    halt 
+    cancel #
+    .timer $+ # off
+    halt
   }
   if ($knick == $me) && (. !isin $nick) { cancel # | .timer $+ # off | msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
 }
@@ -145,7 +145,7 @@ alias enddmcatch {
   var %action = quit $network & $3 ( $+ $4- $+ )
   if ($4 == Quit:) {
     goto pass
-  } 
+  }
   else {
     goto qfail
   }
