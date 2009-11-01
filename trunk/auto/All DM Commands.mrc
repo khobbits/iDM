@@ -1,12 +1,12 @@
 on $*:TEXT:/^[!.]/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($right($1,-1) == specpot) {
-    if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) || (($.readini(gwd.ini,#,$nick)) && (%turn [ $+ [ $chan ] ] == 1)) {
-      if (!$.readini(login.ini,login,$nick)) {
-        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
+    if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
+      if ($db.get(user,login,$nick) === 0) {
+        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
         halt
       }
-      if (!$.readini(Equipment.ini,specpot,$nick)) { notice $nick You don't have any specpots. | halt }
+      if ($db.get(equip_item,specpot,$nick) == 0) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
       updateini equipment.ini specpot $nick -1
@@ -18,16 +18,12 @@ on $*:TEXT:/^[!.]/Si:#: {
     }
   }
   if ($attack($right($1,-1))) {
-    if ($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2) || (($.readini(gwd.ini,#,$nick)) && (%turn [ $+ [ $chan ] ] == 1)) {
+    if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
       if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2)) {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($right($1,-1) == cslap && !$.readini(Admins.ini,admins,$address($nick,3))) {
-        notice $nick $logo(ERROR) You can't use this "weapon"
-        halt
-      }
-      if ($.readini(OnOff.ini,#,$right($1,-1))) {
+      if ($db.get(onoff,$right($1,-1),#)) {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
@@ -36,25 +32,22 @@ on $*:TEXT:/^[!.]/Si:#: {
         halt
       }
       if ($.ini(pvp.ini,$right($1,-1))) {
-        if (!$.readini(pvp.ini,$right($1,-1),$nick)) {
+        if ($db.get(equip_pvp,$right($1,-1),$nick)) {
           notice $nick You don't have this weapon.
           halt
         }
-        if (!$.readini(login.ini,login,$nick)) {
-          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password)
+        if ($db.get(user,login,$nick) === 0) {
+          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
           halt
         }
       }
       if ($.ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {
-        if (!$.readini(equipment.ini,$replace($right($1,-1),surf,mudkip),$nick)) {
+        if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) === 0) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
       }
       set -u25 %enddm [ $+ [ $chan ] ] 0
-      if ($.readini(gwd.ini,#,$nick)) && (%turn [ $+ [ $chan ] ] == 1) {
-        damage $nick %gwd [ $+ [ $chan ] ] $right($1,-1) #
-      }
       damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
     }
   }
@@ -85,18 +78,15 @@ alias damage {
 
   if ($4 == #iDM.Staff) { echo #iDM.Staff - %hp2 [ $+ [ #idm.staff ] ] - $1- }
   if ($.ini(pvp.ini,$3)) {
-    if ($.readini(PvP.ini,$3,$1) < 1) { remini PvP.ini $1 $3 }
+    if ($db.get(equip_pvp,$3,$1) < 1) { remini PvP.ini $1 $3 }
     elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
   }
-  if ($3 != dh && $3 != cslap) {
+  if ($3 != dh) {
     var %hit $hit($3,$1,$2,$4)
   }
-  elseif ($3 == dh && $3 != cslap) {
+  elseif ($3 == dh) {
     if (%hp1 < 10) { var %hit $hit(d_h9,$1,$2,$4) }
     else var %hit $hit(d_h10,$1,$2,$4)
-  }
-  elseif ($3 == cslap) {
-    var %hit 99
   }
 
   var %i = 1
@@ -133,7 +123,7 @@ alias damage {
   }
   if ($poisoner($3)) {
     var %pois.chance $r(1,$v1)
-    if (%pois.chance == 1) || ($.readini(sitems.ini,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
+    if (%pois.chance == 1) || ($db.get(equip_staff,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
       set $+(%,pois,$player($2,$4),$4) 6
     }
   }
@@ -252,40 +242,34 @@ alias damage {
     dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
     notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
   }
-  if ($.readini(sitems.ini,belong,$1)) && ($r(1,100) < 3) && (%hp2 >= 1) {
+  if ($db.get(equip_staff,belong,$1)) && ($r(1,100) < 3) && (%hp2 >= 1) {
     var %extra $iif(%hp2 < 12,$($v1,2),12)
     dec %hp2 %extra
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($.readini(sitems.ini,allegra,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) {
+  if ($db.get(equip_staff,allegra,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) {
     var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
     inc %hp2 %extraup
     msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($.readini(sitems.ini,kh,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
+  if ($db.get(equip_staff,kh,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
     var %extraup $calc($replace(%hit,$chr(32),$chr(43)))
     inc %hp2 %extraup
     msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
   }
-  if ($.readini(sitems.ini,support,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
+  if ($db.get(equip_staff,support,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) && (%extraup == $null) {
     var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
     var %extraup $floor($calc(%temp.hit / 2))
     inc %hp2 %extraup
     msg $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
   if (%hp2 < 1) {
-    if ($.readini(sitems.ini,beau,$2)) && ($r(1,100) < 6) {
+    if ($$db.get(equip_staff,beau,$2)) && ($r(1,100) < 6) {
       set %hp2 1
       msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. HP $+($chr(91),$s2($iif(%hp2 < 1,0,$v1)),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
     }
     elseif (%dmtest == 1) { halt }
-    elseif ($istok($bosses,$2,32)) {
-      gwdloot $4 $1 $2
-    }
-    elseif ($.readini(gwd.ini,$4,$2)) {
-      gwdko $4 $2
-    }
     else {
       dead $4 $2 $1
       halt
@@ -294,20 +278,6 @@ alias damage {
   set $+(%,hp,$player($1,$4),$4) %hp1
   set $+(%,hp,$player($2,$4),$4) %hp2
   set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
-}
-alias gwdloot {
-  updateini wins.ini $2 +1
-  var %loot A Godsword..
-  msg $1 $logo(GWD) $s1($2) has defeated $s1($replace($3,$chr(58),$chr(32))) and recieved $+(03[,07 $+ %loot,,$chr(44),07Big bones,,03]) $+ .
-  cancel $1
-}
-alias bosses {
-  return Commander:Zilyana Kree'arra General:Graardor K'ril:Tsutsaroth
-}
-alias gwdko {
-  remini gwd.ini $1 $2
-  msg $1 $logo(GWD) $s1($2) has died.
-  cancel $1
 }
 alias player {
   if ($1 == %p1 [ $+ [ $2 ] ]) { return 1 }

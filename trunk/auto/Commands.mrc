@@ -22,7 +22,7 @@ on $*:TEXT:/^[!@.]suggest/Si:#: {
 off $*:TEXT:/^[!@.]set/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($nick isop #) || ($.readini(admins.ini,admins,$address($nick,3)) || $.readini(admins.ini,support,$address($nick,3))) {
+  if ($nick isop # || $db.get(admins,c1,$address($nick,3))) {
     if ($istok($setcommands,$2,32)) && ($3 == on) {
       if ($.readini(set.ini,#,$2)) {
         notice $nick $logo(ERROR) $qt($2) is already on.

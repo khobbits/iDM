@@ -35,15 +35,10 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
 
 alias winloss {
   if ($1) {
-    return $s2($chr(91)) $+ Wins $s1($iif($.readini(Wins.ini,Wins,$1),$bytes($v1,bd),0)) Losses $s1($iif($.readini(Losses.ini,Losses,$1),$bytes($v1,bd),0)) $+ $s2($chr(93))
+    return $s2($chr(91)) $+ Wins $s1($iif($db.get(user,wins,$1),$bytes($v1,bd),0)) Losses $s1($iif($db.get(user,losses,$1),$bytes($v1,bd),0)) $+ $s2($chr(93))
   }
   return
 }
-
-alias cloneStats {
-  return $price($iif($.readini(Money.ini,money,$1),$v1,0))) $+ $s2(/) $+ $iif($.readini(Wins.ini,Wins,$1),$v1 $+ W,0W) $+ $s2(/) $+ $iif($.readini(Losses.ini,Losses,$1),$v1 $+ L,0L))
-}
-
 
 alias cancel {
   if ($1) && ($chr(35) isin $1) {
@@ -58,13 +53,10 @@ alias cancel {
     unset %frozen [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset $+(%*,$1)
     .timer $+ $1 off
-    remini gwd.ini $1
-    $+(.timer,gwd,$1) off
   }
 }
 alias enddm {
   if (%p2 [ $+ [ $2 ] ]) { halt }
-  if ($.ini(gwd.ini,$1,0) > 1) { halt }
   msg $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
   cancel $1
 }
@@ -143,43 +135,6 @@ alias delaycancelw {
   }
 }
 
-off $*:TEXT:/^[!@.]dm(sara|arma|bandos|zammy)/Si:#iDM.Staff: {
-  if (# == #iDM.Support) { halt }
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
-  if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
-  if (%wait. [ $+ [ $chan ] ]) { halt }
-  if (%dm.spam [ $+ [ $nick ] ]) { halt }
-  if ($.readini(gwd.ini,$chan,$nick)) { notice $nick $logo(ERROR) You're already at Godwars. | halt }
-  if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | halt }
-  if ($.ini(gwd.ini,$chan,0)) { notice $nick $logo(ERROR) Somebody is already at Godwars. | halt }
-  if (!$.readini(gwd.ini,$chan,$nick)) { set %gwd [ $+ [ $chan ] ] $remove($1,!,.,@,dm) | writeini gwd.ini # $nick true | msg # $logo(GWD) You're going on a trip to $s2(%gwd [ $+ [ $chan ] ]) $+ . $s1($nick) can go by typing !go. }
-  set %dming [ $+ [ $nick ] ] gwd
-  set %p1 [ $+ [ $chan ] ] $nick
-  set %p2 [ $+ [ $chan ] ] %gwd [ $+ [ $chan ] ]
-}
-on $*:TEXT:/^[!@.]go/Si:#iDM.Staff: {
-  if (# == #iDM.Support) { halt }
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
-  if ($.ini(gwd.ini,#,1) != $nick) { halt }
-  if (%turn [ $+ [ # ] ]) { halt }
-  set %turn [ $+ [ # ] ] 1
-  set %hp1 [ $+ [ # ] ] 99
-  set %hp2 [ $+ [ # ] ] 400
-  $+(.timer,gwd,#) 0 5 gwd #
-  msg # $logo(GWD) Get ready!
-}
-alias gwd {
-  tokenize 32 $1 %gwd [ $+ [ $1 ] ]
-  damage $2 $.ini(gwd.ini,$1,$r(1,$.ini(gwd.ini,$1,0))) GWD $1
-  set %turn [ $+ [ $1 ] ] 2
-  .timer 1 3 set %turn [ $+ [ $1 ] ] 1
-}
-alias npcs {
-  return gwd
-}
 alias hpbar {
   if ($istok($npcs,$2,32)) {
     if (-* iswm $1) {

@@ -1,12 +1,12 @@
 on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   var %clanname = $getclanname($nick)
   if (!%clanname) { notice $nick You need to make a clan before you can kick any members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !delmem member. | halt }
   if ($2 == $nick) { notice $nick $logo(ERROR) You can't kick yourself silly! Type: !leave to part your clan / cancel it. | halt }
-  if (!$.readini(money.ini,money,$2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.get(user,money,$2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   if (%clanname != $getclanname($2)) { notice $nick $logo(ERROR) $s1($2) isn't in your clan. | halt }
   notice $nick $logo(CLANS) $s1($2) has been kicked from your clan. 
@@ -16,11 +16,11 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
 on $*:TEXT:/^[!@.]addmem .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   var %clanname = $getclanname($nick)
   if (!%clanname) { notice $nick You need to make a clan before you can start adding members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !addclan new member. | halt }
-  if (!$.readini(money.ini,money,$2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.get(user,money,$2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $v1 $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
@@ -30,7 +30,7 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
 on $*:TEXT:/^[!@.]joinclan .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !joinclan clan to join. | halt }
   if (%invite [ $+ [ $nick ] ] != $2 && $2 != Team-B) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
@@ -41,7 +41,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
 on $*:TEXT:/^[!@.]startclan .*/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ )  (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
   if ($.ini(Clan.ini,$remove($2,$chr(36),$chr(37)),0)) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
@@ -51,7 +51,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
 on $*:TEXT:/^[!@.]leave$/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   var %clanname = $getclanname($nick)
   if (!%clanname) { notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 1) { notice $nick $logo(CLAN) Your clan has been deleted. | deleteclan %clanname | halt }
@@ -61,7 +61,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
 on $*:TEXT:/^[!@.]share (on|off)/Si:*: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) | halt }
+  if ($db.get(user,login,$nick) === 0) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   var %clanname = $getclanname($nick)
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
