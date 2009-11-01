@@ -231,11 +231,15 @@ alias renamenick {
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-  msg #idm.staff #fix - need sql
-  return
-    notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) $&
-      Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0)) $&
-      The Supporter: $s2($.ini(sitems.ini,support,0))
+
+    var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
+    var %result = $db.query(%sql)
+    if (!$db.query_row(%result,equip)) { echo -s Error fetching Staff items totals. }
+    db.query_end %result
+
+    notice $nick $logo(Special Items) Belong Blade: $s2($hget(equip,belong)) Allergy Pills: $s2($hget(equip,allegra)) $&
+      Beaumerang: $s2($hget(equip,beau)) One Eyed Trouser Snake: $s2($hget(equip,snake)) KHonfound Ring: $s2($hget(equip,kh)) $&
+      The Supporter: $s2($hget(equip,support))
   }
 }
 

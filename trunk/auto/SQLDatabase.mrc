@@ -18,9 +18,8 @@ alias db.tquote {
 alias db.get {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
-  var %sql = SELECT * FROM $db.tquote($1) WHERE user = $db.safe($3)
-  var %col = $2
-  return $db.select(%sql,%col)
+  var %sql = SELECT user, $2 FROM $db.tquote($1) WHERE user = $db.safe($3)
+  return $db.select(%sql,$2)
 }
 
 ; This function retrieves a single cell from a database and returns the value
@@ -96,6 +95,19 @@ alias db.set {
   }
   else {
     mysqlderror Syntax Error: /db.set <table> <column> <user> <value> - $db.safe($1-)
+    return 0
+  }
+}
+
+alias db.clear {
+  dbcheck
+  tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
+  if ($2 !== $null) {
+    var %sql UPDATE $db.tquote($1) SET $2 = $iif($3,$3,0)
+    return $db.exec(%sql)
+  }
+  else {
+    mysqlderror Syntax Error: /db.clear <table> <column> [value] - $db.safe($1-)
     return 0
   }
 }

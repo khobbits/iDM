@@ -31,17 +31,16 @@ alias toplist {
   ; $2 = number to show
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
-  var %sql = SELECT * FROM $db.tquote($1) WHERE c1 = $db.safe($1) AND c2 NOT LIKE '~banned~%' ORDER BY c3 +0 DESC LIMIT 0, $+ $2
+  var %sql = SELECT user, $1 FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
+
   var %result = $db.query(%sql)
   while ($db.query_row(%result,row)) {
     inc %i
-    ;%output = %output $chr(124) $s1(%i $+ .) $hget(row,c2) $s2($price($hget(row,c3)))
     if ($3 == 1) {
-      %output = %output $chr(124) %i $+ . $s1($hget(row,c2)) $s2($price($hget(row,c3)))
-
+      %output = %output $chr(124) %i $+ . $s1($hget(row,user)) $s2($price($hget(row,$1)))
     }
     else {
-      %output = %output $chr(124) %i $+ . $s1($hget(row,c2)) $s2($bytes($hget(row,c3),db))
+      %output = %output $chr(124) %i $+ . $s1($hget(row,user)) $s2($bytes($hget(row,$1),db))
     }    
   }
   db.query_end %result
@@ -94,7 +93,7 @@ alias ranks {
   ; $2 = position or username
   if ($2 isnum) {
     if ($2 isnum 1-50000) {
-      var %sql = SELECT * FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
+      var %sql = SELECT user, $1 FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
       if ($db.query_row(%query,row) == 1) {
         return $hget(row,user) $+ : $+ $hget(row,$1)
@@ -102,7 +101,7 @@ alias ranks {
     }
   }
   else {
-    var %sql = SELECT * FROM user WHERE user = $db.safe($2) LIMIT 0,1
+    var %sql = SELECT user, $1 FROM user WHERE user = $db.safe($2) LIMIT 0,1
     if ($db.select(%sql,$1) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&

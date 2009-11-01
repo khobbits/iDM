@@ -24,22 +24,21 @@ alias dead {
   set %price1 $gettok($read(loot.txt,%drop1),2,58)
   set %price2 $gettok($read(loot.txt,%drop2),2,58)
   set %price3 $gettok($read(loot.txt,%drop3),2,58)
-  ;#fix need to fix the drop ipdate ini
-  if (%item1 == Vesta's longsword || %item2 == Vesta's longsword || %item3 == Vesta's longsword) { updateini PvP.ini VLong $3 +5 }
-  if (%item1 == Vesta's spear || %item2 == Vesta's spear || %item3 == Vesta's spear) { updateini PvP.ini VSpear $3 +5 }
-  if (%item1 == Statius's Warhammer || %item2 == Statius's Warhammer || %item3 == Statius's Warhammer) { updateini PvP.ini statius $3 +5 }
-  if (%item1 == Morrigan's Javelin || %item2 == Morrigan's Javelin || %item3 == Morrigan's Javelin) { updateini PvP.ini MJavelin $3 +5 }
-  if (specpot isin %item1) { updateini equipment.ini specpot $3 +1 }
-  if (specpot isin %item2) { updateini equipment.ini specpot $3 +1 }
-  if (specpot isin %item3) { updateini equipment.ini specpot $3 +1 }
+  if (%item1 == Vesta's longsword || %item2 == Vesta's longsword || %item3 == Vesta's longsword) { db.set equip_pvp vlong $3 + 5 }
+  if (%item1 == Vesta's spear || %item2 == Vesta's spear || %item3 == Vesta's spear) { db.set equip_pvp vspear $3 + 5 }
+  if (%item1 == Statius's Warhammer || %item2 == Statius's Warhammer || %item3 == Statius's Warhammer) { db.set equip_pvp  statius $3 + 5 }
+  if (%item1 == Morrigan's Javelin || %item2 == Morrigan's Javelin || %item3 == Morrigan's Javelin) { db.set equip_pvp  mjavelin $3 + 5 }
+  if (specpot isin %item1) { db.set equip_item specpot $3 + 1 }
+  if (specpot isin %item2) { db.set equip_item specpot $3 + 1 }
+  if (specpot isin %item3) { db.set equip_item specpot $3 + 1 }
   if (%rare == 1) {
     var %raredrop $r(1,$lines(rares.txt))
     set %rareitem $gettok($read(rares.txt,%raredrop),1,58)
     set %rareprice $gettok($read(rares.txt,%raredrop),2,58)
   }
-  if (godsword isin %rareitem) { unset %rareprice | updateini equipment.ini $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 +1 }
-  if (claws isin %rareitem) { unset %rareprice | updateini equipment.ini dclaws $3 +1 }
-  if (mudkip isin %rareitem) { unset %rareprice | updateini equipment.ini Mudkip $3 +1 }
+  if (godsword isin %rareitem) { unset %rareprice | db.set equip_item $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 + 1 }
+  if (claws isin %rareitem) { unset %rareprice | db.set equip_item dclaws $3 + 1 }
+  if (mudkip isin %rareitem) { unset %rareprice | db.set equip_item mudkip $3 + 1 }
   if (Clue isin %rareitem) {
     if ($db.get(equip_item,clue,$3)) { unset %rareitem }
     else {
@@ -48,8 +47,8 @@ alias dead {
       db.set equip_item clue $3 %clue
     }
   }
-  if (mage's isin %rareitem) { unset %rareprice | updateini equipment.ini mbook $3 +1 }
-  if (accumulator isin %rareitem) { unset %rareprice | updateini equipment.ini accumulator $3 +1 }
+  if (mage's isin %rareitem) { unset %rareprice | db.set equip_armour mbook $3 + 1 }
+  if (accumulator isin %rareitem) { unset %rareprice | db.set equip_armour accumulator $3 + 1 }
 
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
   var %winnerclan = $getclanname($3)

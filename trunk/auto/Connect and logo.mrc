@@ -7,7 +7,7 @@ on *:CONNECT: {
   mysql_close %db
   unsetall
   remini status.ini currentdm
-;#fix  remini login.ini login
+  db.clear users login
   timer 1 10 msg #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 
@@ -34,5 +34,5 @@ on *:DISCONNECT: {
   mysql_close %db
   unsetall
   remini status.ini currentdm
-  ;#fix remini login.ini login
+  db.clear users login
 }
