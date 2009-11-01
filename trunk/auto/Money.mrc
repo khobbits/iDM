@@ -11,51 +11,39 @@ on $*:TEXT:/^[!@.]money/Si:#: {
 }
 
 alias money {
-  var %money = $.readini(Money.ini,money,$1)
+  var %money = $db.get(user,money,$1)
   var %rank = $rank(money,$1)
-  var %wins = $.readini(Wins.ini,Wins,$1)
-  var %losses = $.readini(Losses.ini,Losses,$1)
+  var %wins = $db.get(user,wins,$1)
+  var %losses = $db.get(user,losses,$1)
   var %ratio = $+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37))
   if ($1 == Otto) { 
     var %money 999999999999, %rank 1st, %wins 0, %losses 0, %ratio 100%    
   }
-  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($.readini(equipment.ini,specpot,$1),$s1(Spec Pots) $+ : $v1) 
+  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($db.get(equip_item,specpot,$1),$s1(Spec Pots) $+ : $v1) 
 }
 
 alias equipment {
+  var %sql SELECT * FROM `equipment` WHERE user = $db.safe($1))
+  var %result = $db.query(%sql)
+  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  db.query_end %result
 
-  ;var %sql SELECT c2
-  ;var %sql %sql ,SUM(IF(c1 = 'void', c3, 0)) AS `void`
-  ;var %sql %sql ,SUM(IF(c1 = 'void-mage', c3, 0)) AS `void-mage`
-
-  ;var %sql %sql ,SUM(IF(c1 = 'bgloves', c3, 0)) AS `bgloves`
-  ;var %sql %sql ,SUM(IF(c1 = 'firecape', c3, 0)) AS `firecape` 
-  ;var %sql %sql ,SUM(IF(c1 = 'elshield', c3, 0)) AS `elshield`
-
-  ;var %sql %sql ,SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`
-  ;var %sql %sql ,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
-  ;var %sql %sql ,SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
-  ;var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2))
-  ;var %result = $db.query(%sql)
-  ;if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
-  ;db.query_end %result
-
-  if ($.readini(Equipment.ini,Void,$1)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,void-mage,$1)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,Wealth,$1)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,bgloves,$1)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,Firecape,$1)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,elshield,$1)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,ags,$1)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,bgs,$1)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,sgs,$1)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,zgs,$1)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,dclaws,$1)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,mudkip,$1)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,mbook,$1)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,godcape,$1)) { var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,accumulator,$1)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($.readini(Equipment.ini,Clue,$1)) { var %e %e Clue:Scroll }
+  if ($hget(equip,void)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,void-mage)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,bgloves)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,firecape)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,elshield)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,ags)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,bgs)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,sgs)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,zgs)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,dclaws)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,mudkip)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,mbook)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,godcape)) { var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,accumulator)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equip,clue)) { var %e %e Clue:Scroll }
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias clan {
@@ -63,18 +51,28 @@ alias clan {
 }
 
 alias sitems {
-  if ($.readini(sitems.ini,belong,$1)) { var %e %e Bêlong:Blade }
-  if ($.readini(sitems.ini,allegra,$1)) { var %e %e Allergy:Pills }
-  if ($.readini(sitems.ini,beau,$1)) { var %e %e Bêaumerang }
-  if ($.readini(sitems.ini,snake,$1)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
-  if ($.readini(sitems.ini,kh,$1)) { var %e %e KHonfound:Ring }
-  if ($.readini(sitems.ini,support,$1)) { var %e %e The:Supporter }
+  var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($1))
+  var %result = $db.query(%sql)
+  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  db.query_end %result
+
+  if ($hget(equip,belong)) { var %e %e Bêlong:Blade }
+  if ($hget(equip,allegra)) { var %e %e Allergy:Pills }
+  if ($hget(equip,beau)) { var %e %e Bêaumerang }
+  if ($hget(equip,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
+  if ($hget(equip,kh)) { var %e %e KHonfound:Ring }
+  if ($hget(equip,support)) { var %e %e The:Supporter }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {
-  if ($.readini(PvP.ini,vspear,$1)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
-  if ($.readini(PvP.ini,vlong,$1)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
-  if ($.readini(PvP.ini,statius,$1)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
-  if ($.readini(PvP.ini,MJavelin,$1)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
+  var %sql SELECT * FROM `equip_pvp` WHERE user = $db.safe($1))
+  var %result = $db.query(%sql)
+  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  db.query_end %result
+
+  if ($hget(equip,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equip,vlong)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equip,statius)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equip,MJavelin)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }

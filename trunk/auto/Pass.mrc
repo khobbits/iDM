@@ -1,18 +1,17 @@
 on *:TEXT:!pass*:#: {
-  if (!$.readini(Admins.ini,admins,$address($nick,3))) { halt }
+  if (!$db.get(admins,position,$address($nick,3)) == admins) { halt }
   if (# == #iDM || # == #iDM.staff || # == #idm.support) && ($me != iDM) { halt }
   if (!$2) { notice $Nick Please specify a username | halt }
-  if (!$.readini(Passes.ini,passes,$2)) { notice $nick $2 $+ 's password was not found. | halt }
+  if (!$db.get(user,pass,$2)) { notice $nick $2 $+ 's password was not found. | halt }
   if ($.readini(Admins.ini,admins,$address($2,3))) { notice $nick You don't need to know this usernames password. | halt }
-  notice $nick $2 $+ 's password is: $s2($.readini(Passes.ini,passes,$2))
+  notice $nick $2 $+ 's password is: $s2($db.get(user,pass,$2))
 }
 
 on *:TEXT:!setpass*:#: {
-  if (!$.readini(Admins.ini,admins,$address($nick,3))) { halt }
+  if (!$db.get(admins,position,$address($nick,3)) == admins) { halt }
   if (# == #iDM || # == #iDM.staff) && ($me != iDM) { halt }
   if (!$2) || (!$3) { notice $nick Please specify a user or new password. }
-  remini Passes.ini Passes $2
-  writeini Passes.ini Passes $2 $remove($strip($3),$chr(36),$chr(37))
+  db.set user pass $2 $remove($strip($3),$chr(36),$chr(37))
   notice $nick $2 $+ 's password has been changed to: $s2($3)
 }
 
@@ -54,13 +53,12 @@ on *:notice:*:?: {
 }
 
 alias resetuserpass {
-  if (!$.readini(Passes.ini,passes,$2)) { 
+  if (!$db.get(user,pass,$2)) { 
     msg #idm.support User $2 $+ 's password was not found, this nick is not registered with iDM.
   }
   else {
-    remini Passes.ini Passes $2
-    writeini Passes.ini Passes $2 $remove($strip($randuserpass),$chr(36),$chr(37))
-    notice $2 Your idm password is " $+ $s2($.readini(Passes.ini,passes,$2)) $+ ".  To change it /msg idm changepass $.readini(Passes.ini,passes,$2) Pass
+    db.set user pass $2 $remove($strip($randuserpass),$chr(36),$chr(37))
+    notice $2 Your idm password is " $+ $s2($db.get(user,pass,$2)) $+ ".  To change it /msg idm changepass $db.get(user,pass,$2) Pass
     msg #idm.support Noticed $2 a new random iDM password.
   }
 }

@@ -1,5 +1,5 @@
 on *:TEXT:!idle*:#iDM.Staff: {
-  if ($.readini(admins.ini,admins,$address($nick,3))) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     var %a = 1,%c
     while (%a <= $chan(0)) {
       if ($nick($chan(%a),$me).idle > 1800) {
@@ -39,13 +39,13 @@ on *:PART:#: {
     remini OnOff.ini #
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    writeini money.ini money %p1 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p1 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
+    db.set user money %p1 [ $+ [ $chan  ] ] $calc($db.get(user,money,%p1 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    writeini money.ini money %p2 [ $+ [ $chan  ] ] $calc($.readini(money.ini,money,%p2 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
+    db.set user money %p2 [ $+ [ $chan  ] ] $calc($db.get(user,money,%p2 [ $+ [ $chan ] ]) - $ceil($calc($+(%,stake,#) / 2) ))
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
@@ -54,12 +54,12 @@ on *:PART:#: {
     msg # $logo(DM) The DM has been canceled, because one of the players parted.
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(part,$nick,$chan,$1-) == 1) {
-        ;var %oldmoney = $.readini(money.ini,money,$nick)
+        ;var %oldmoney = $db.get(user,money,$nick)
         if (%oldmoney > 100) {
           ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
           ;notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
           ;write penalty.txt $timestamp $nick parted channel $chan during a dm oldcash %oldmoney newcash %newmoney
-          ;writeini money.ini money $nick %newmoney
+          ;db.set user money $nick %newmoney
         }
       }
     }
@@ -69,18 +69,18 @@ on *:PART:#: {
 }
 
 on *:QUIT: {
-  if ($.readini(login.ini,login,$nick)) { remini login.ini login $nick }
+  db.set user login $nick 0
   var %a 1
   while (%a <= $chan(0)) {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       msg $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
       if (%turn [ $+ [ $chan(%a) ] ]) {
         if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
-          ;var %oldmoney = $.readini(money.ini,money,$nick)
+          ;var %oldmoney = $db.get(user,money,$nick)
           if (%oldmoney > 100) {
             ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
             ;write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney newcash %newmoney
-            ;writeini money.ini money $nick %newmoney
+            ;db.set user money $nick %newmoney
           }
         }
       }
@@ -99,14 +99,14 @@ on *:NICK: {
       remini status.ini currentdm $nick
       writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
-      remini login.ini login $nick
+      db.set user login $nick 0
       set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       remini status.ini currentdm $nick
       writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
-      remini login.ini login $nick
+      db.set user login $nick 0
       set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     inc %a
@@ -118,12 +118,12 @@ on *:KICK:#: {
     msg # $logo(DM) The DM has been ended because one of the players was kicked!
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(kick,$knick,$nick,$chan,$1-) == 1) {
-        ;var %oldmoney = $.readini(money.ini,money,$knick)
+        ;var %oldmoney = $db.get(user,money,$knick)
         if (%oldmoney > 100) {
           ;var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.02)))
           ;notice $nick You left the channel during a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash
           ;write penalty.txt  $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney newcash %newmoney
-          ;writeini money.ini money $knick %newmoney
+          ;db.set user money $knick %newmoney
         }
       }
     }

@@ -90,12 +90,12 @@ alias db.set {
     var %sql = INSERT INTO $db.tquote($1) ( user , $2 ) VALUES (  $db.safe($3) , $db.safe($5-) ) ON DUPLICATE KEY UPDATE $2 = $2 $4 $db.safe($5-)
     return $db.exec(%sql)
   }
-  elseif ($4) {
+  elseif ($4 !== $null) {
     var %sql = INSERT INTO $db.tquote($1) ( user , $2 ) VALUES (  $db.safe($3) , $db.safe($4-) ) ON DUPLICATE KEY UPDATE $2 = $db.safe($4-)
     return $db.exec(%sql)
   }
   else {
-    mysqlderror Syntax Error: /db.set <table> <column> <user> <value>
+    mysqlderror Syntax Error: /db.set <table> <column> <user> <value> - $db.safe($1-)
     return 0
   }
 }

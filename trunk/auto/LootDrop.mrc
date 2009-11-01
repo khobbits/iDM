@@ -1,23 +1,23 @@
 alias dead {
   if (%stake [ $+ [ $1 ] ]) {
-    updateini money.ini money $3 + %stake [ $+ [ $1 ] ]
-    updateini money.ini money $2 - %stake [ $+ [ $1 ] ]
+    db.set user money $3 + %stake [ $+ [ $1 ] ]
+    db.set user money $2 - %stake [ $+ [ $1 ] ]
     .timer 1 1 msg $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price(%stake [ $+ [ $chan ] ])) $+ .
     unset %stake* [ $+ [ $1 ] ]
     cancel $1
     set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
     updateini Totalwins.ini Totalwins Totalwins +1
-    updateini Wins.ini Wins $3 +1
-    updateini Losses.ini Losses $2 +1
+    db.set user wins $3 + 1
+    db.set user losses $2 + 1
     halt
   }
   cancel $1
   set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
   updateini Totalwins.ini Totalwins Totalwins +1
-  updateini Wins.ini Wins $3 +1
-  updateini Losses.ini Losses $2 +1
+  db.set user wins $3 + 1
+  db.set user losses $2 + 1
   var %drop1 $r(1,$lines(loot.txt)),%drop2 $r(1,$lines(loot.txt)),%drop3 $r(1,$lines(loot.txt))
-  var %rare $r(1,$iif($.readini(Equipment.ini,wealth,$3),15,30))
+  var %rare $r(1,$iif($db.get(equip_item,wealth,$3),15,30))
   set %item1 $gettok($read(loot.txt,%drop1),1,58)
   set %item2 $gettok($read(loot.txt,%drop2),1,58)
   set %item3 $gettok($read(loot.txt,%drop3),1,58)
@@ -40,11 +40,11 @@ alias dead {
   if (claws isin %rareitem) { unset %rareprice | updateini equipment.ini dclaws $3 +1 }
   if (mudkip isin %rareitem) { unset %rareprice | updateini equipment.ini Mudkip $3 +1 }
   if (Clue isin %rareitem) {
-    if ($.readini(equipment.ini,clue,$3)) { unset %rareitem }
+    if ($db.get(equip_item,clue,$3)) { unset %rareitem }
     else {
       set %clue $r(1,$lines(clue.txt))
       unset %rareprice
-      writeini equipment.ini clue $3 %clue
+      db.set equip_item clue $3 %clue
     }
   }
   if (mage's isin %rareitem) { unset %rareprice | updateini equipment.ini mbook $3 +1 }
@@ -59,13 +59,13 @@ alias dead {
     var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
     var %sql.winnerclan = $db.safe(%winnerclan))
-    var %sql = UPDATE money,clan SET money.c3 = money.c3 + $+ %sharedrop WHERE clan.c1 = %sql.winnerclan AND clan.c2 = money.c2
+    var %sql = UPDATE user,clan SET money = money + %sharedrop WHERE user.user = clan.c2 and clan.c1 = %sql.winnerclan
     db.exec %sql
     .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
     unset %sharedrop
   }
   else {
-    updateini money.ini money $3 + $+ %combined
+    db.set user money $3 + %combined
     .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
   }
   unset %item*

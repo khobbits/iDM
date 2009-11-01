@@ -19,32 +19,44 @@ on $*:TEXT:/^[!@.]suggest/Si:#: {
   notice $nick $LOGO(SUGGESTIONS FORUM) To suggest new content please goto: http://forum.idm-bot.com/viewforum.php?f=6
 }
 
-off $*:TEXT:/^[!@.]set/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($nick isop # || $db.get(admins,c1,$address($nick,3))) {
-    if ($istok($setcommands,$2,32)) && ($3 == on) {
-      if ($.readini(set.ini,#,$2)) {
-        notice $nick $logo(ERROR) $qt($2) is already on.
-        halt
-      }
-      else {
-        notice $nick $logo(ERROR) $qt($2) has been enabled.
-        writeini set.ini # $2 on
-      }
-    }
-    if ($istok($setcommands,$2,32)) && ($3 == off) {
-      if (!$.readini(set.ini,#,$2)) {
-        notice $nick $logo(ERROR) $qt($2) is already off.
-        halt
-      }
-      else {
-        notice $nick $logo(ERROR) $qt($2) has been disabled.
-        remini set.ini # $2
-      }
-    }
+alias ispvp {
+  if ($1 == mjavelin) {
+    return 1
+  }
+  elseif ($1 == statius) {
+    return 1
+  }
+  elseif ($1 == vlong) {
+    return 1
+  }
+  elseif ($1 == vspear) {
+    return 1
+  }
+  else {
+    return 0
   }
 }
-alias setcommands {
-  return automoney
+
+alias isweapon {
+  if ($1 == ags) {
+    return 1
+  }
+  elseif ($1 == bgs) {
+    return 1
+  }
+  elseif ($1 == mudkip) {
+    return 1
+  }
+  elseif ($1 == sgs) {
+    return 1
+  }
+  elseif ($1 == zgs) {
+    return 1
+  }
+  elseif ($1 == dclaws) {
+    return 1
+  }
+  else {
+    return 0
+  }
 }

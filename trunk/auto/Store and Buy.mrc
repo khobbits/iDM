@@ -23,10 +23,10 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
-  if (!$.readini(money.ini,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
+  if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
 
   if ($storematch($2-) != 0) {
     var %price = $calc($gettok($v1,1,32)*2)
@@ -37,23 +37,23 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick Type !store for a list of items that can currently be bought.
     halt
   }
-  if (%sname == bgloves) && (($.readini(wins.ini,wins,$nick) < 1000) || ($calc($.readini(wins.ini,wins,$nick) + $.readini(losses.ini,losses,$nick)) < 2000)) {
+  if (%sname == bgloves) && (($db.get(user,wins,$nick) < 1000) || ($calc($db.get(user,wins,$nick) + $db.get(user,losses,$nick)) < 2000)) {
     notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves.
     halt
   }
-  if ($.readini(Equipment.ini,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
-  if ($.readini(money.ini,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
-  updateini money.ini money $nick - $+ %price
-  writeini Equipment.ini %sname $nick 1
+  if ($db.get(equipment,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
+  if ($db.get(user,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
+  db.set user money $nick - %price
+  db.set equipment %sname $nick 1
   write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
-  notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($.readini(Money.ini,money,$nick))) left.
+  notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($db.get(user,money,$nick))) left.
 
 }
 
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$.readini(login.ini,login,$nick)) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($.readini(Passes.ini,passes,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
 
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)
@@ -64,13 +64,10 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
     notice $nick You don't have this item to sell. For information about items that can be bought/sold at the store, type: !store
     halt
   }
-  if (!$.readini(Equipment.ini,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
-  updateini money.ini money $nick + $+ %price
-  updateini Equipment.ini %sname $nick -1
-  if ($.readini(equipment.ini,%sname,$nick) < 1) {
-    remini Equipment.ini %sname $nick
-  }
-  notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($.readini(Money.ini,money,$nick))) $+ .
+  if (!$db.get(equipment,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
+  db.set user money $nick + %price
+  db.set equipment %sname $nick - 1
+  notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($db.get(user,money,$nick))) $+ .
   return
 }
 

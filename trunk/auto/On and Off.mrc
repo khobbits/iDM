@@ -36,7 +36,7 @@ alias displayoff {
   notice $1 $logo(DISABLED) These attacks are currently disabled: $replace(%o,$chr(32),$chr(44))
 }
 alias enable {
-  if ($2 !isop $3) && (!$.readini(admins.ini,admins,$address($2,3))) { halt }
+  if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   if ($1 == -h) {
     remini OnOff.ini $3 guth
@@ -60,7 +60,7 @@ alias enable {
   notice $2 $logo(ENABLE $3) $iif(%b,$s1(Enabled) $+ : $replace(%b,$chr(32),$chr(44))) $iif(%c,$s1(Errors) $+ : $replace(%c,$chr(32),$chr(44)) (These are either already on, or not an attack))
 }
 alias disable {
-  if ($2 !isop $3) && (!$.readini(admins.ini,admins,$address($2,3))) { halt }
+  if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   if ($1 == -h) {
     writeini OnOff.ini $3 guth true

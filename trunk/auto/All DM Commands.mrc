@@ -2,14 +2,14 @@ on $*:TEXT:/^[!.]/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($right($1,-1) == specpot) {
     if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
-      if ($db.get(user,login,$nick) === 0) {
+      if ($db.get(user,login,$nick) !> 1) {
         notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
         halt
       }
       if ($db.get(equip_item,specpot,$nick) == 0) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
-      updateini equipment.ini specpot $nick -1
+      db.set equip_item specpot $nick - 1
       msg # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
       unset %laststyle [ $+ [ # ] ]
       unset $+(%,frozen,$nick)
@@ -23,7 +23,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($db.get(onoff,$right($1,-1),#)) {
+      if ($.readini(onoff,$right($1,-1),#)) {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
@@ -31,17 +31,17 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick You're frozen and can't use melee.
         halt
       }
-      if ($.ini(pvp.ini,$right($1,-1))) {
+      if ($ispvp($right($1,-1))) {
         if ($db.get(equip_pvp,$right($1,-1),$nick)) {
           notice $nick You don't have this weapon.
           halt
         }
-        if ($db.get(user,login,$nick) === 0) {
+        if ($db.get(user,login,$nick) !> 1) {
           notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
           halt
         }
       }
-      if ($.ini(equipment.ini,$replace($right($1,-1),surf,mudkip))) {
+      if ($isweapon($replace($right($1,-1),surf,mudkip))) {
         if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) === 0) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
@@ -77,7 +77,7 @@ alias damage {
   var %hp2 $($+(%,hp,$player($2,$4),$4),2)
 
   if ($4 == #iDM.Staff) { echo #iDM.Staff - %hp2 [ $+ [ #idm.staff ] ] - $1- }
-  if ($.ini(pvp.ini,$3)) {
+  if ($ispvp($3)) {
     if ($db.get(equip_pvp,$3,$1) < 1) { remini PvP.ini $1 $3 }
     elseif ($v1 >= 1) { updateini PvP.ini $3 $1 -1 }
   }
@@ -340,17 +340,13 @@ alias hit {
     var %acc $r(1,100)
   }
 
-  var %sql SELECT c2
-  var %sql %sql ,SUM(IF(c1 = 'firecape', c3, 0)) AS `firecape`, SUM(IF(c1 = 'bgloves', c3, 0)) AS `bgloves`
-  var %sql %sql ,SUM(IF(c1 = 'elshield', c3, 0)) AS `elshield`, SUM(IF(c1 = 'void', c3, 0)) AS `void`, SUM(IF(c1 = 'accumulator', c3, 0)) AS `accumulator`
-  var %sql %sql ,SUM(IF(c1 = 'void-mage', c3, 0)) AS `void-mage`, SUM(IF(c1 = 'mbook', c3, 0)) AS `mbook`,SUM(IF(c1 = 'godcape', c3, 0)) AS `godcape`
-  var %sql %sql FROM `equipment` WHERE c2 = $db.safe($2))
+  var %sql SELECT * FROM `equip_armour` WHERE user = $db.safe($2))
   var %result = $db.query(%sql)
   if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
   db.query_end %result
 
   var %atk $calc($iif($hget(equip,firecape),5,0) + $iif($hget(equip,bgloves),3,0))
-  var %def $iif($.readini(Equipment.ini,elshield,$3),$calc($r(85,99) / 100),1)
+  var %def $iif($db.get(equip_armour,elshield,$3),$calc($r(85,99) / 100),1)
   var %ratk $calc($iif($hget(equip,void),5,0) + $iif($hget(equip,accumulator),5,0))
   var %matk $calc($iif($hget(equip,void-mage),5,0) + $iif($hget(equip,mbook),5,0) + $iif($hget(equip,godcape),5,0))
   goto $1

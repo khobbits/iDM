@@ -63,7 +63,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) {
-    if ($.readini(Admins.ini,admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+    if ($db.get(admins,position,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel $chan
       msg $chan $logo(DM) The DM has been canceled by an admin.
@@ -71,7 +71,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
-  if ($.readini(Admins.ini,admins,$address($nick,3))) || ($.readini(Admins.ini,Support,$address($nick,3))) {
+  if ($db.get(admins,position,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel $chan
     msg $chan $logo(DM) The DM has been canceled by an admin.
@@ -83,7 +83,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($.readini(money.ini,money,%othernick) * 0.005)))
+    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancelw $chan %othernick
     timer 1 40 delaycancel $chan %othernick
@@ -95,7 +95,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
       halt
     }
-    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($.readini(money.ini,money,%othernick) * 0.005)))
+    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] 1
     timer 1 20 delaycancelw $chan %othernick
     timer 1 40 delaycancel $chan %othernick
@@ -119,12 +119,12 @@ alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] == 1) {
     cancel $1
     msg $1 $logo(DM) The DM has ended due to timeout.
-    var %oldmoney = $.readini(money.ini,money,$2)
+    var %oldmoney = $db.get(user,money,$2)
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
       notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
       write penalty.txt $timestamp $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
-      writeini money.ini money $2 %newmoney
+      db.set user money $2 %newmoney
     }
   }
 }

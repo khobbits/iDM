@@ -77,10 +77,10 @@ on *:JOIN:#:{
       return
     }
     if (# != #iDM && # != #iDM.Staff) || ($me == iDM) { 
-      if ($.readini(Admins.ini,admins,$address($nick,3))) { 
+      if ($db.get(admins,position,$address($nick,3)) = admins) {
         msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       } 
-      elseif ($.readini(admins.ini,support,$address($nick,3))) { 
+      elseif ($db.get(admins,position,$address($nick,3))) {
         msg # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
       elseif ($ranks(money,$nick) <= 12) { 
@@ -110,7 +110,7 @@ alias scanbots {
 }
 
 alias position {
-  if ($.readini(Positions.ini,Positions,$address($nick,3))) {
+  if ($db.get(admins,title,$address($nick,3))) {
     return $v1
     halt
   }

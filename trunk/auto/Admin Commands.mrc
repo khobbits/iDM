@@ -19,7 +19,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
-    writeini admins.ini support $address($2,3) true
+    db.set admins support $address($2,3) true
   }
 }
 
@@ -208,6 +208,8 @@ alias renamenick {
   if ($3) { var %target = msg $3 $logo(RENAME) }
   else { var %target = echo -s RENAME $1 to $2 - }
   tokenize 32 $lower($1) $lower($2)
+  %target This command needs updated for mysql!
+  return
   db.exec UPDATE OR REPLACE `sitems` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
   %target Updated $mysql_affected_rows(%db) rows in sitems.ini
   db.exec UPDATE OR REPLACE `passes` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
@@ -243,32 +245,32 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
     else {
       if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
         if ($db.get(equip_staff,belong,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini belong $2 true
+        db.set equip_staff belong $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == Allegra || $nick == Strychnine) {
         if ($db.get(equip_staff,allegra,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini allegra $2 true
+        db.set equip_staff allegra $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == Beau) {
         if ($db.get(equip_staff,beau,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini beau $2 true
+        db.set equip_staff beau $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
         if ($db.get(equip_staff,snake,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini snake $2 true
+        db.set equip_staff snake $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == KHobbits) {
         if ($db.get(equip_staff,kh,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini kh $2 true
+        db.set equip_staff kh $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
         if ($db.get(equip_staff,support,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        writeini sitems.ini support $2 $nick
+        db.set equip_staff support $2 $nick
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
     }
@@ -283,32 +285,32 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
     else {
       if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
         if ($db.get(equip_staff,belong,$2) === 0 || !$db.get(equip_staff,belong,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini belong $2
+        db.set equip_staff belong $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == Allegra || $nick == Strychnine) {
         if ($db.get(equip_staff,allegra,$2) === 0 || !$db.get(equip_staff,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini allegra $2
+        db.set equip_staff allegra $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == Beau) {
         if ($db.get(equip_staff,beaumerang,$2) === 0 || !$db.get(equip_staff,beaumerang,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini beau $2
+        db.set equip_staff beau $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
         if ($db.get(equip_staff,snake,$2) === 0 || !$db.get(equip_staff,snake,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini snake $2
+        db.set equip_staff snake $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == KHobbits) {
         if ($db.get(equip_staff,kh,$2) === 0 || !$db.get(equip_staff,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini kh $2
+        db.set equip_staff kh $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
         if ($db.get(equip_staff,support,$2) === 0 || !$db.get(equip_staff,support,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        remini sitems.ini support $2
+        db.set equip_staff support $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
     }
@@ -327,20 +329,20 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
       var %table = equipment
       var %item = $gettok($v1,2,32)
     }
-    elseif ($.ini(pvp.ini,$3)) {
-      var %table = pvp
+    elseif ($ispvp($3)) {
+      var %table = equip_pvp
       var %item = $3
     }
     elseif ($3 == money) {
-      var %table = money
+      var %table = user
       var %item = money
     }
     elseif ($3 == wins) {
-      var %table = wins
+      var %table = user
       var %item = wins
     }
     elseif ($3 == losses) {
-      var %table = losses
+      var %table = user
       var %item = losses
     }
     else {
@@ -348,13 +350,12 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
       return
     }
     if (%sign == =) {
-      writeini %table %item $2 $4
+      db.set %table %item $2 $4
     }
     else {
-      var %adjust = %sign $+ $4
-      updateini %table %item $2 %adjust
+      db.set %table %item $2 %sign $4
     }
-    msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $.readini(%table, %item, $2)
+    msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
     return
     :error
     notice $nick Syntax !define/increase/decrease <account> <item> <amount>
