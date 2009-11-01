@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
       !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
       !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
@@ -16,7 +16,7 @@ ON $*:TEXT:/^[!.]Bot-ON$/Si:#iDM.staff: {
 
 on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
     db.set admins support $address($2,3) true
@@ -25,7 +25,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
     ignore $2
     notice $nick $s2($2) has been added to the ignore list. Please notify the user of this.
@@ -35,7 +35,7 @@ on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice $Nick Please specify a username/host to remove ignore. | halt }
     ignore -r $2-
     notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
@@ -45,7 +45,7 @@ on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]cignore .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice $nick $logo(ERROR) Type !cignore address. | halt }
     if ($.readini(ignore.ini,ignore,$2)) { notice $nick $logo(IGNORE INFO) $s2($2) was blacklisted by $s1($gettok($v1,2,32)) $+ $chr(44) $s1($gettok($v1,4-8,32)) for $s1($iif($gettok($.readini(ignore.ini,ignore,$2),10-,32),$v1,No reason)) $+ . }
     else { notice $nick $logo(IGNORE INFO) $s2($2) is not ignored. }
@@ -54,7 +54,7 @@ on $*:TEXT:/^[!.]cignore .*/Si:#: {
 
 on $*:TEXT:/^[!.]cbl .*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) || ($left($2,1) != $chr(35)) { notice $nick $logo(ERROR) Syntax: !cbl #chan | halt }
     if (!$.readini(blacklist.ini,chans,$2)) { notice $nick $logo(BLACKLIST INFO) $s2($2) is not blacklisted. | halt }
     notice $nick $logo(BLACKLIST INFO) $s2($2) has been blacklisted by $s1($iif($.readini(blacklist.ini,who,$2),$v1,Unknown)) for: $.readini(blacklist.ini,chans,$2)
@@ -72,14 +72,14 @@ on $*:TEXT:/^[!.]part .*/Si:#: {
 
 on $*:TEXT:/^[!.]bl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
     bl $2 $nick $chan $3-
   }
 }
 
 on $*:TEXT:/^[!.]ubl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
     ubl $2 $nick $chan $3-
   }
 }
@@ -230,7 +230,7 @@ alias renamenick {
 
 
 On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $logo(Special Items) Belong Blade: $s2($.ini(sitems.ini,belong,0)) Allergy Pills: $s2($.ini(sitems.ini,allegra,0)) $&
       Beaumerang: $s2($.ini(sitems.ini,beau,0)) One Eyed Trouser Snake: $s2($.ini(sitems.ini,snake,0)) KHonfound Ring: $s2($.ini(sitems.ini,kh,0)) $&
       The Supporter: $s2($.ini(sitems.ini,support,0))
@@ -238,7 +238,7 @@ On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
 }
 
 On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) {
       notice You need to include a name you want to give your item too.
     }
@@ -278,7 +278,7 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
 }
 
 On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) {
       notice You need to include a name you want to give your item too.
     }
@@ -318,7 +318,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
 }
 
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
     if (!$4) { goto error }
     if ($1 == !increase) { var %sign + }
     elseif ($1 == !decrease) { var %sign - }
@@ -326,7 +326,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
     else { goto error }
     if ($4 !isnum) { goto error }
     if ($storematch($3) != 0) {
-      var %table = equipment
+      var %table = $gettok($v1,3,32)
       var %item = $gettok($v1,2,32)
     }
     elseif ($ispvp($3)) {
@@ -407,14 +407,14 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     notice $nick $logo(Show DM) $s1($2) is $iif(%dming [ $+ [ $2 ] ],3currently,not) DMing on $me at the moment according to var.
-    if ($me === iDM) { 
+    if ($me == iDM) { 
       notice $nick $logo(Show DM) $s1($2) is $iif($.readini(status.ini,currentdm,$2),3currently,not) DMing at the moment according to ini.
     }
   }
 }
 
 On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support,#iDM: {
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me === iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Registered?: $iif($db.get(user,pass,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
   }
 }

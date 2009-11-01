@@ -31,7 +31,8 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
   if ($storematch($2-) != 0) {
     var %price = $calc($gettok($v1,1,32)*2)
     var %sname = $gettok($v1,2,32)
-    var %fname = $gettok($v1,3-,32)
+    var %table = $gettok($v1,3,32)
+    var %fname = $gettok($v1,4-,32)
   }
   else {
     notice $nick Type !store for a list of items that can currently be bought.
@@ -41,10 +42,10 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves.
     halt
   }
-  if ($db.get(equipment,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
+  if ($db.get(%table,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
   if ($db.get(user,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   db.set user money $nick - %price
-  db.set equipment %sname $nick 1
+  db.set %table %sname $nick 1
   write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($db.get(user,money,$nick))) left.
 
@@ -58,15 +59,16 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)
     var %sname = $gettok($v1,2,32)
-    var %fname = $gettok($v1,3-,32)
+    var %table = $gettok($v1,3,32)
+    var %fname = $gettok($v1,4-,32)
   }
   else {
     notice $nick You don't have this item to sell. For information about items that can be bought/sold at the store, type: !store
     halt
   }
-  if (!$db.get(equipment,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
+  if (!$db.get(%table,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
   db.set user money $nick + %price
-  db.set equipment %sname $nick - 1
+  db.set %table %sname $nick - 1
   notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($db.get(user,money,$nick))) $+ .
   return
 }
@@ -87,79 +89,94 @@ alias storematch {
     var %sname = void
     var %fname = Full Void Knight Ranged
     var %price = 250000000
+    var %table = equip_armour
   }
   elseif ($regex($2-,/^void(\s|-)?mage$/Si)) {
     var %sname = void-mage
     var %fname = Full Void Knight Mage
     var %price = 400000000
+    var %table = equip_armour
   }
   elseif ($regex($2,/^ely(sian)?(\s|-)?(s(pirit)?)?(\s|-)?(s(hield)?)?/Si)) {
     var %sname = elshield
     var %fname = Elysian spirit shield
     var %price = 4000000000
+    var %table = equip_armour
   }
   elseif ($regex($2-,/^bar+ows?(\s|-)?(glo(ves))?/Si)) {
     var %sname = bgloves
     var %fname = Barrow Gloves
     var %price = 1500000000
+    var %table = equip_armour
   }
   elseif ($2 == dclaws) || ($2- == Dragon Claws) {
     var %sname = dclaws
     var %fname = Dragon Claws
     var %price = 1250000000
+    var %table = equip_item
   }
   elseif ($2 == mudkip) {
     var %sname = mudkip
     var %fname = Mudkip Pouch
     var %price = 100000000
+    var %table = equip_item
   }
   elseif ($2 == ring) || ($2 == wealth) {
     var %sname = wealth
     var %fname = Ring of Wealth
     var %price = 1500000000
+    var %table = equip_item
   }
   elseif ($2 == fire) || ($2 == cape) || ($2 == firecape) {
     var %sname = firecape
     var %fname = Fire Cape
     var %price = 2000000000
+    var %table = equip_armour
   }
   elseif ($2 == ags) || ($2 == armadyl) || ($2 == arma) || ($2 == arm) {
     var %sname = ags
     var %fname = Armadyl godsword
     var %price = 200000000
+    var %table = equip_item
   }
   elseif ($2 == bgs) || ($2 == bandos) || ($2 == bando) {
     var %sname = bgs
     var %fname = Bandos godsword
     var %price = 250000000
+    var %table = equip_item
   }
   elseif ($2 == sgs) || ($2 == Sara) || ($2 == saradomin) {
     var %sname = sgs
     var %fname = Saradomin godsword
     var %price = 300000000
+    var %table = equip_item
   }
   elseif ($2 == zgs) || ($2 == Zammy) || ($2 == zamorak) {
     var %sname = zgs
     var %fname = Zamorak godsword
     var %price = 200000000
+    var %table = equip_item
   }
   elseif ($2 == mbook) || ($2 == mage's) || ($2 == mages) || ($2- == mage book) {
     var %sname = mbook
     var %fname = Mage's Book
     var %price = 500000000
+    var %table = equip_armour
   }
   elseif ($2 == accumulator) || ($2 == accum) || ($2 == backpack) {
     var %sname = accumulator
     var %fname = Accumulator
     var %price = 500000000
+    var %table = equip_armour
   }
   elseif ($2 == god) || ($2 == godcape) || ($2- == god cape) {
     var %sname = godcape
     var %fname = God Cape
     var %price = 600000000
+    var %table = equip_armour
   }
   else {
     return 0
   }
-  return %price %sname %fname
+  return %price %sname %table %fname
 }
