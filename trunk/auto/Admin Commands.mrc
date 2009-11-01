@@ -234,7 +234,7 @@ On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
 
     var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
-    if (!$db.query_row(%result,equip)) { echo -s Error fetching Staff items totals. }
+    if ($db.query_row(%result,equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
     db.query_end %result
 
     notice $nick $logo(Special Items) Belong Blade: $s2($hget(equip,belong)) Allergy Pills: $s2($hget(equip,allegra)) $&

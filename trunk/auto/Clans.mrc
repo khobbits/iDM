@@ -1,8 +1,6 @@
 ;#fix try and remove all $.ini
 ;#fix alias the security/errors on these commands (or maybe try and regex them together?)
 
-;#fix clantracker.ini needs converted to use columns like the other tables
-
 on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
@@ -71,10 +69,10 @@ on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
   if ($2 == on) { notice $nick $logo(CLAN) The drop share option for your clan has been enabled.
-    writeini clantracker.ini share %clanname 1
+    db.set clantracker share %clanname 1
   }
   if ($2 == off) { notice $nick $logo(CLAN) The drop share option for your clan has been disabled.
-    remini clantracker.ini share %clanname
+    db.set clantracker share %clanname 0
   }
 }
 on $*:TEXT:/^[!@.]dmclan/Si:#: {
@@ -98,11 +96,11 @@ alias claninfo {
     inc %tc
   }
   db.query_end %result
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($.readini(clantracker.ini,share,$1),$s1(on),$s2(off)) $+ )
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {
-  return $s1(Wins) $+ : $iif($.readini(clantracker.ini,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($.readini(clantracker.ini,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($.readini(clantracker.ini,money,$1),$s2($price($v1)),$s2($price(0))) (Total clans $s2($bytes($.ini(clantracker.ini,wins,0),bd)) $+ )
+  return $s1(Wins) $+ : $iif($db.get(clantracker,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($db.get(clantracker,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0))) $+ )
 }
 
 ; ============ 'Clan' Table Layout ============
@@ -114,16 +112,14 @@ alias clanstats {
 ; |  <clanname>  |  <nick>      |  member      |
 ; +--------------+--------------+--------------+
 ;
-; ========= 'Clantracker' Table Layout =========
-; +--------------+--------------+--------------+
-; |      c1      |      c2      |      c3      |
-; +--------------+--------------+--------------+
-; |  wins        |  <clanname>  |  <num>       |
-; |  losses      |  <clanname>  |  <num>       |
-; |  money       |  <clanname>  |  <num>       |
-; |  share       |  <clanname>  |  1           |
-; +--------------+--------------+--------------+
-
+; ======================== 'Clantracker' Table Layout ========================
+; +--------------+--------------+--------------+---------------+--------------+ 
+; |  user        |   wins       |   losses     |   money       |   share      |
+; +--------------+--------------+--------------+---------------+--------------+
+; | <clanname>   |  <num>       |  <num>       |  <num>        |  1           |
+; | <clanname>   |  <num>       |  <num>       |  <num>        |  0           |
+; | <clanname>   |  <num>       |  <num>       |  <num>        |  1           |
+; +--------------+--------------+--------------+---------------+--------------+
 
 alias createclan {
   ; $1 = Clanname
@@ -136,7 +132,7 @@ alias createclan {
 alias deleteclan {
   ; $1 = Clanname
   if ($1) {
-    var %sql = DELETE FROM clan WHERE c1 = $db.safe($1))
+    var %sql = DELETE FROM clan WHERE c1 = $db.safe($1)
     db.exec %sql
   }
 }
@@ -152,7 +148,7 @@ alias addclanmember {
 alias delclanmember {
   ; $1 = Membername
   if ($1) {
-    var %sql = DELETE FROM clan WHERE c2 = $db.safe($1))
+    var %sql = DELETE FROM clan WHERE c2 = $db.safe($1)
     db.exec %sql
   }
 }
@@ -160,7 +156,7 @@ alias delclanmember {
 alias getclanname {
   ; $1 = Membername
   if ($1) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)
     return $db.select(%sql, c1)
   }
 }
@@ -177,14 +173,14 @@ alias isclanowner {
   ; $1 = Membername
   ; $2 = [optional] Clanname
   if ($2) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)) AND c1 = $db.safe($2))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1) AND c1 = $db.safe($2)
     if ($db.select(%sql, c3) == owner) {
       return 1
     }
     return 0
   }
   elseif ($1) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1))
+    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)
     if ($db.select(%sql, c3) == owner) {
       return 1
     }

@@ -23,9 +23,9 @@ alias money {
 }
 
 alias equipment {
-  var %sql SELECT * FROM `equipment` WHERE user = $db.safe($1))
+  var %sql SELECT * FROM `equipment` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - equipment %sql }
   db.query_end %result
 
   if ($hget(equip,void)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
@@ -51,9 +51,9 @@ alias clan {
 }
 
 alias sitems {
-  var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($1))
+  var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - sitems %sql }
   db.query_end %result
 
   if ($hget(equip,belong)) { var %e %e Bêlong:Blade }
@@ -65,9 +65,9 @@ alias sitems {
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {
-  var %sql SELECT * FROM `equip_pvp` WHERE user = $db.safe($1))
+  var %sql SELECT * FROM `equip_pvp` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if (!$db.query_row(%result,equip)) { echo -s Error fetching equipment }
+  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - pvp %sql }
   db.query_end %result
 
   if ($hget(equip,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
