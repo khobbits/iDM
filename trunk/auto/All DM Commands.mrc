@@ -252,7 +252,7 @@ alias damage {
     dec %hp2 %extra
     msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))
   }
-  if ($hget(equipstaff,allegra,$2)) && ($r(1,100) < 3) && (%hp2 >= 1) {
+  if ($hget(equipstaff,allegra)) && ($r(1,100) < 3) && (%hp2 >= 1) {
     var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
     inc %hp2 %extraup
     msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. HP $+($chr(91),$s2(%hp2),$chr(93)) $hpbar(%hp2,$iif($($+(%,gwd,$4),2),gwd,hp))

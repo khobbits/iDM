@@ -129,3 +129,5 @@
 1/11 13:41:00 Jmoney560 bought from the store (void mage) ~Jmoney560@Swift-C668C4C5.dhcp.embarqhsd.net
 1/11 13:49:48 croman83 bought from the store (mudkip) ~croman83@Swift-75AA72F9.neo.res.rr.com
 1/11 14:17:14 Quirke01 bought from the store (ags) ~daniel_qu@EDEDEFF.DFD6C677.7184E363.IP
+1/11 14:41:31 DarkZarosia bought from the store (BGS) ~DarkZaros@Swift-12B5CAD3.knology.net
+1/11 14:44:12 call_me_noob bought from the store (void mage) ~call_me_n@Swift-72AC002A.hsd1.ma.comcast.net
