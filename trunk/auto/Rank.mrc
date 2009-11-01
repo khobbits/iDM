@@ -95,8 +95,9 @@ alias ranks {
     if ($2 isnum 1-50000) {
       var %sql = SELECT user, $1 FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
-      if ($db.query_row(%query,row) == 1) {
-        return $hget(row,user) $+ : $+ $hget(row,$1)
+      if ($db.query_row(%query,rrow) == 1) {
+        db.query_end %query
+        return $hget(rrow,user) $+ : $+ $hget(row,$1)
       }
     }
   }
@@ -109,8 +110,9 @@ alias ranks {
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)
-    if ($db.query_row(%query,row) == 1) {
-      return $hget(row,rank)
+    if ($db.query_row(%query,rrow) == 1) {
+      db.query_end %query
+      return $hget(rrow,rank)
     }   
   }
   return $null

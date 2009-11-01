@@ -66,6 +66,7 @@ alias db.query_row_data {
 alias db.query_row {
   var %request = $1
   var %htable = $2
+  .hfree %htable
   var %result = $mysql_fetch_row( %request, %htable )
   return %result
 }

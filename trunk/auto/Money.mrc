@@ -53,26 +53,26 @@ alias clan {
 alias sitems {
   var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - sitems %sql }
+  if ($db.query_row(%result,equips) === $null) { echo -s Error fetching equipment - sitems %sql }
   db.query_end %result
 
-  if ($hget(equip,belong)) { var %e %e Bêlong:Blade }
-  if ($hget(equip,allegra)) { var %e %e Allergy:Pills }
-  if ($hget(equip,beau)) { var %e %e Bêaumerang }
-  if ($hget(equip,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
-  if ($hget(equip,kh)) { var %e %e KHonfound:Ring }
-  if ($hget(equip,support)) { var %e %e The:Supporter }
+  if ($hget(equips,belong)) { var %e %e Bêlong:Blade }
+  if ($hget(equips,allegra)) { var %e %e Allergy:Pills }
+  if ($hget(equips,beau)) { var %e %e Bêaumerang }
+  if ($hget(equips,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
+  if ($hget(equips,kh)) { var %e %e KHonfound:Ring }
+  if ($hget(equips,support)) { var %e %e The:Supporter }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias pvp {
   var %sql SELECT * FROM `equip_pvp` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - pvp %sql }
+  if ($db.query_row(%result,equipp) === $null) { echo -s Error fetching equipment - pvp %sql }
   db.query_end %result
 
-  if ($hget(equip,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
-  if ($hget(equip,vlong)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
-  if ($hget(equip,statius)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
-  if ($hget(equip,MJavelin)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equipp,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equipp,vlong)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equipp,statius)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
+  if ($hget(equipp,MJavelin)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }

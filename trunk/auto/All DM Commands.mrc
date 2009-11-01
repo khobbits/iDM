@@ -347,13 +347,13 @@ alias hit {
 
   var %sql SELECT * FROM `equip_armour` WHERE user = $db.safe($2)
   var %result = $db.query(%sql)
-  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - hit %sql }
+  if ($db.query_row(%result,equiphit) === $null) { echo -s Error fetching equipment - hit %sql }
   db.query_end %result
 
-  var %atk $calc($iif($hget(equip,firecape),5,0) + $iif($hget(equip,bgloves),3,0))
+  var %atk $calc($iif($hget(equiphit,firecape),5,0) + $iif($hget(equiphit,bgloves),3,0))
   var %def $iif($db.get(equip_armour,elshield),$calc($r(85,99) / 100),1)
-  var %ratk $calc($iif($hget(equip,void),5,0) + $iif($hget(equip,accumulator),5,0))
-  var %matk $calc($iif($hget(equip,void-mage),5,0) + $iif($hget(equip,mbook),5,0) + $iif($hget(equip,godcape),5,0))
+  var %ratk $calc($iif($hget(equiphit,void),5,0) + $iif($hget(equiphit,accumulator),5,0))
+  var %matk $calc($iif($hget(equiphit,void-mage),5,0) + $iif($hget(equiphit,mbook),5,0) + $iif($hget(equiphit,godcape),5,0))
 
   goto $1
   :whip
@@ -363,7 +363,7 @@ alias hit {
   :ags
   return $hitdmg(m,ags,%acc,1,%atk,%def)
   :cbow
-  if (%acc isnum 98-100) && ($hget(equip,void) || $hget(equip,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+  if (%acc isnum 98-100) && ($hget(equiphit,void) || $hget(equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
   return $hitdmg(r,cbow,%acc,1,%ratk,%def)
   :dbow
   return $hitdmg(r,dbow,%acc,2,%ratk,%def)
