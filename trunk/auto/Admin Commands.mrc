@@ -186,11 +186,11 @@ on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
-    if ($renamenick($2,~banned~ $+ $2,$nick)) {
-      notice $nick Renamed account $2 to ~banned~ $+ $2 and removed this account from the top scores.
+    if ($suspendnick($2,1,$nick)) {
+      notice $nick Removed account $2 from the top scores.
     }
     else {
-      notice $nick Renaming account $2 failed as  ~banned~ $+ $2 already exists
+      notice $nick Couldn't find account $2
     }
   }
 }
@@ -199,13 +199,12 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
-    if($renamenick(~banned~ $+ $2,$2,$nick)) {
-      notice $nick Restored account $2 from ~banned~ $+ $2 and restored this account to the top scores.
+    if($renamenick($2,0,$nick)) {
+      notice $nick Restored account $2 to its original status.
     }
     else {
-      notice $nick Renaming account $2 failed as $2 already exists
+      notice $nick Couldn't find account $2
     }
-
   }
 }
 
@@ -217,7 +216,7 @@ on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
       notice $nick Renamed account $2 to $3
     }
     else {
-      notice $nick Renaming account $2 failed as $3 already exists
+      notice $nick Renaming account $2 failed as $3 already exists (if this is an error you could try using !delete on one of the accounts)
     }
   }
 }
@@ -255,6 +254,12 @@ alias renamenick {
   return 1
 }
 
+alias suspendnick {
+  tokenize 32 $lower($1)
+  db.exec UPDATE `user` SET banned = $db.safe($2) WHERE user = $db.safe($1)
+  if ($mysql_affected_rows(%db) === -1) { return 0 }
+  return 1
+}
 
 alias deletenick {
   if ($len($1) < 1) { return }

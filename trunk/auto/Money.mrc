@@ -1,12 +1,12 @@
 on $*:TEXT:/^[!@.]money/Si:#: { 
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $money($nick) $equipment($nick) $clan($nick)
-    if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $equipment($nick) $clan($nick)
+    if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $money($2) $equipment($2) $clan($2)
-    if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($nick) $money($2) $equipment($2) $clan($2)
+    if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
 

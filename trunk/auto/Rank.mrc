@@ -31,7 +31,7 @@ alias toplist {
   ; $2 = number to show
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
-  var %sql = SELECT user, $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
+  var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = 0 AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
 
   var %result = $db.query(%sql)
   while ($db.query_row(%result,row)) {
@@ -55,7 +55,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %money = $ranks(money,$2)
     var %wins = $ranks(wins,$2)
     var %losses = $ranks(losses,$2)
-    var %output = $logo(RANK) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
+    var %output = $logo(RANK) $+ $isbanned($2) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
   }
   else {
     var %money = $ranks(money,$2)
@@ -65,7 +65,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %losses = $ranks(losses,$2)
     var %nextlosses = $calc($gettok($ranks(losses,$calc(%losses -1)),2,58) - $db.get(user,losses,$2))
 
-    var %output = $logo($2) $s1(Money) $+ : $s2($ord(%money)) $iif(%money == 1,(\o/),( $+ %nextmoney for rank up)) $s1(Wins) $+ : $s2($ord(%wins)) $iif(%wins == 1,(\o/),( $+ %nextwins for rank up)) $s1(Losses) $+ : $s2($ord(%losses)) $iif(%losses == 1,(\o/),( $+ %nextlosses for rank up))
+    var %output = $logo($2) $+ $isbanned($2) $s1(Money) $+ : $s2($ord(%money)) $iif(%money == 1,(\o/),( $+ %nextmoney for rank up)) $s1(Wins) $+ : $s2($ord(%wins)) $iif(%wins == 1,(\o/),( $+ %nextwins for rank up)) $s1(Losses) $+ : $s2($ord(%losses)) $iif(%losses == 1,(\o/),( $+ %nextlosses for rank up))
   }
   if (%output == $null) {
     notice $nick Syntax: !rank <name>/<1 - 10000>
@@ -73,6 +73,11 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
   else {
     %display %output
   }
+}
+
+alias isbanned {
+  if ($db.get(user,banned,$1) == 1) return 4 [Account Banned]
+  return
 }
 
 alias rank {
@@ -93,7 +98,7 @@ alias ranks {
   ; $2 = position or username
   if ($2 isnum) {
     if ($2 isnum 1-50000) {
-      var %sql = SELECT user, $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
+      var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
       var %query = $db.query(%sql)
       if ($db.query_row(%query,rrow) == 1) {
         db.query_end %query
@@ -106,7 +111,7 @@ alias ranks {
     if ($db.select(%sql,$1) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&
-      INNER JOIN (SELECT $db.tquote($1) FROM user WHERE user NOT LIKE '~banned~%') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
+      INNER JOIN (SELECT $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)
