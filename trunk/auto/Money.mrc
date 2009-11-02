@@ -23,27 +23,34 @@ alias money {
 }
 
 alias equipment {
-  var %sql SELECT * FROM `equipment` WHERE user = $db.safe($1)
+  var %sql SELECT * FROM `equip_item` WHERE user = $db.safe($1)
   var %result = $db.query(%sql)
-  if ($db.query_row(%result,equip) === $null) { echo -s Error fetching equipment - equipment %sql }
+  if ($db.query_row(%result,equipit) === $null) { echo -s Error fetching equipment - equipment %sql }
   db.query_end %result
 
-  if ($hget(equip,void)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,void-mage)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,bgloves)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,firecape)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,elshield)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,ags)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,bgs)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,sgs)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,zgs)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,dclaws)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,mudkip)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,mbook)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,godcape)) { var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,accumulator)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equip,clue)) { var %e %e Clue:Scroll }
+  var %sql SELECT * FROM `equip_armour` WHERE user = $db.safe($1)
+  var %result = $db.query(%sql)
+  if ($db.query_row(%result,equipar) === $null) { echo -s Error fetching equipment - equipment %sql }
+  db.query_end %result
+
+  if ($hget(equipit,ags)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,bgs)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,sgs)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,zgs)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,dclaws)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,mudkip)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+
+  if ($hget(equipar,accumulator)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,void)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,void-mage)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,mbook)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,godcape)) { var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,bgloves)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,firecape)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipar,elshield)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+
+  if ($hget(equipit,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,clue)) { var %e %e Clue:Scroll }
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
 alias clan {
