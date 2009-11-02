@@ -96,14 +96,12 @@ alias ranks {
   tokenize 32 $lower($1 $2)
   ; $1 = table
   ; $2 = position or username
-  if ($2 isnum) {
-    if ($2 isnum 1-50000) {
-      var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
-      var %query = $db.query(%sql)
-      if ($db.query_row(%query,rrow) == 1) {
-        db.query_end %query
-        return $hget(rrow,user) $+ : $+ $hget(rrow,$1)
-      }
+  if ($2 isnum 1-100000) {
+    var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
+    var %query = $db.query(%sql)
+    if ($db.query_row(%query,rrow) == 1) {
+      db.query_end %query
+      return $hget(rrow,user) $+ : $+ $hget(rrow,$1)
     }
   }
   else {
