@@ -237,7 +237,6 @@ on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
 alias renamenick {
   if ($3) { var %target = msg $3 $logo(RENAME) }
   else { var %target = echo -s RENAME $1 to $2 - }
-  tokenize 32 $lower($1) $lower($2)
   db.exec UPDATE `user` SET user = $db.safe($2) WHERE user = $db.safe($1)
   if ($mysql_affected_rows(%db) === -1) { return 0 }
   %target Updated $mysql_affected_rows(%db) rows in user
@@ -255,7 +254,6 @@ alias renamenick {
 }
 
 alias suspendnick {
-  tokenize 32 $lower($1)
   db.exec UPDATE `user` SET banned = $db.safe($2) WHERE user = $db.safe($1)
   if ($mysql_affected_rows(%db) === -1) { return 0 }
   return 1
@@ -265,7 +263,6 @@ alias deletenick {
   if ($len($1) < 1) { return }
   if ($2) { var %target = msg $2 $logo(DELETE) }
   else { var %target = echo -s DELETE $1 - }
-  tokenize 32 $lower($1) $lower($2)
   db.exec DELETE FROM `user` WHERE user = $db.safe($1)
   if ($mysql_affected_rows(%db) === -1) { return 0 }
   %target Deleted $mysql_affected_rows(%db) rows in user
