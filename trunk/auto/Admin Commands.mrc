@@ -25,20 +25,20 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]Ignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3))) {
     if (!$2) { notice $Nick Please specify a username/host to ignore. | halt }
     ignore $2
-    notice $nick $s2($2) has been added to the ignore list. Please notify the user of this.
+    if ($me == iDM) notice $nick $s2($2) has been added to the ignore list. Please notify the user of this.
     writeini ignore.ini Ignore $2 ~> $nick ~> $fulldate ~> $iif($3,$3-,No reason.)
   }
 }
 
 on $*:TEXT:/^[!.]rignore .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3))) {
     if (!$2) { notice $Nick Please specify a username/host to remove ignore. | halt }
     ignore -r $2-
-    notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
+    if ($me == iDM) notice $nick $s2($2-) has been removed to the ignore list. Please notify the user of this.
     remini ignore.ini Ignore $2
   }
 }
@@ -72,32 +72,32 @@ on $*:TEXT:/^[!.]part .*/Si:#: {
 
 on $*:TEXT:/^[!.]bl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins) {
     bl $2 $nick $chan $3-
   }
 }
 
 on $*:TEXT:/^[!.]ubl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3)) === admins) {
     ubl $2 $nick $chan $3-
   }
 }
 
 alias bl {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($.readini(Blacklist.ini,Chans,$1)) {
+  if ($.readini(blacklist.ini,chans,$1)) {
     if ($me == iDM) {
       notice $2 Channel $1 is already blacklisted.
     }
     $iif($me ison $1,part $1 Channel has been blacklisted by $2 $iif($4,$+($chr(91),$4-,$chr(93))))
     halt
   }
-  if (!$.readini(Blacklist.ini,Chans,$1)) {
+  if (!$.readini(blacklist.ini,chans,$1)) {
     if ($me == iDM) {
       notice $nick Channel $1 has been blacklisted. $iif($4,$+($chr(91),$4-,$chr(93)))
-      writeini Blacklist.ini Chans $1 $iif($4,$4-,No reason.)
-      writeini Blacklist.ini Who $1 $2
+      writeini blacklist.ini chans $1 $iif($4,$4-,No reason.)
+      writeini blacklist.ini who $1 $2
     }
     $iif($me ison $1,part $1 Channel has been blacklisted. $iif($4,$+($chr(91),$4-,$chr(93))))
     halt
@@ -105,20 +105,21 @@ alias bl {
 }
 
 alias ubl {
-  if (!$.readini(Blacklist.ini,Chans,$1)) {
+  if (!$.readini(blacklist.ini,chans,$1)) {
     if ($me == iDM) {
       notice $2 Channel $1 isn't blacklisted.
     }
     halt
   }
-  if ($.readini(Blacklist.ini,Chans,$1)) {
+  if ($.readini(blacklist.ini,chans,$1)) {
     if ($me == iDM) {
       notice $nick Channel $1 has been unblacklisted.
-      remini Blacklist.ini Chans $1
-      remini Blacklist.ini Who $1
+      remini blacklist.ini chans $1
+      remini blacklist.ini who $1
     }
   }
 }
+
 on $*:TEXT:/^[!.]chans$/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
@@ -184,7 +185,7 @@ alias forcejoin {
 on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
-    renamenick $2 ~banned~ $+ $2
+    renamenick $2 ~banned~ $+ $2 $nick
     notice $nick Renamed account $2 to ~banned~ $+ $2 and removed this account from the top scores.
   }
 }
@@ -192,7 +193,7 @@ on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
 on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
-    renamenick ~banned~ $+ $2 $2
+    renamenick ~banned~ $+ $2 $2 $nick
     notice $nick Restored account $2 from ~banned~ $+ $2 and restored this account to the top scores.
   }
 }
@@ -200,7 +201,8 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
 on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
-    renamenick $2 $3
+    renamenick $2 $3 $nick
+    notice $nick Renamed account $2 to $3
   }
 }
 
@@ -208,24 +210,19 @@ alias renamenick {
   if ($3) { var %target = msg $3 $logo(RENAME) }
   else { var %target = echo -s RENAME $1 to $2 - }
   tokenize 32 $lower($1) $lower($2)
-  %target This command needs updated for mysql!
-  return
-  db.exec UPDATE OR REPLACE `sitems` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in sitems.ini
-  db.exec UPDATE OR REPLACE `passes` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in passes.ini
-  db.exec UPDATE OR REPLACE `money` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in money.ini
-  db.exec UPDATE OR REPLACE `wins` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in wins.ini
-  db.exec UPDATE OR REPLACE `losses` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in losses.ini
-  db.exec UPDATE OR REPLACE `equipment` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equipment
-  db.exec UPDATE OR REPLACE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  db.exec UPDATE `user` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) rows in user
+  db.exec UPDATE `equip_item` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) items of equip_item
+  db.exec UPDATE `equip_pvp` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) items of equip_item
+  db.exec UPDATE `equip_armour` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) items of equip_item
+  db.exec UPDATE `equip_staff` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  %target Updated $mysql_affected_rows(%db) items of equip_staff
+  db.exec UPDATE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
   %target Updated $mysql_affected_rows(%db) rows in clans.ini
-  db.exec UPDATE OR REPLACE `pvp` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in pvp.ini
+
 }
 
 

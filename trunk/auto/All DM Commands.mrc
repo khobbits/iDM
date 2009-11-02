@@ -32,7 +32,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         halt
       }
       if ($ispvp($right($1,-1))) {
-        if ($db.get(equip_pvp,$right($1,-1),$nick) < 1) {
+        if ($db.get(equip_pvp,$right($1,-1),$nick) !> 0) {
           notice $nick You don't have this weapon.
           halt
         }
@@ -42,7 +42,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         }
       }
       if ($isweapon($replace($right($1,-1),surf,mudkip))) {
-        if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) === 0) {
+        if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) !> 0) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
