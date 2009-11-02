@@ -183,6 +183,7 @@ alias forcejoin {
 }
 
 on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
+  if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
     renamenick $2 ~banned~ $+ $2 $nick
@@ -191,6 +192,7 @@ on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
 }
 
 on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
+  if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
     renamenick ~banned~ $+ $2 $2 $nick
@@ -199,6 +201,7 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
 }
 
 on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
+  if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
     renamenick $2 $3 $nick
