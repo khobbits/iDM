@@ -186,8 +186,12 @@ on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
-    renamenick $2 ~banned~ $+ $2 $nick
-    notice $nick Renamed account $2 to ~banned~ $+ $2 and removed this account from the top scores.
+    if ($renamenick($2,~banned~ $+ $2,$nick)) {
+      notice $nick Renamed account $2 to ~banned~ $+ $2 and removed this account from the top scores.
+    }
+    else {
+      notice $nick Renaming account $2 failed as  ~banned~ $+ $2 already exists
+    }
   }
 }
 
@@ -195,8 +199,13 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
-    renamenick ~banned~ $+ $2 $2 $nick
-    notice $nick Restored account $2 from ~banned~ $+ $2 and restored this account to the top scores.
+    if($renamenick(~banned~ $+ $2,$2,$nick)) {
+      notice $nick Restored account $2 from ~banned~ $+ $2 and restored this account to the top scores.
+    }
+    else {
+      notice $nick Renaming account $2 failed as $2 already exists
+    }
+
   }
 }
 
@@ -204,8 +213,25 @@ on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
-    renamenick $2 $3 $nick
-    notice $nick Renamed account $2 to $3
+    if ($renamenick($2,$3,$nick)) {
+      notice $nick Renamed account $2 to $3
+    }
+    else {
+      notice $nick Renaming account $2 failed as $3 already exists
+    }
+  }
+}
+
+on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
+  if ($me != iDM) { return }
+  if ($db.get(admins,position,$address($nick,3)) === admins) {
+    if ($3 != CONFIRM) { notice $nick To use the delete command, type !delete nick CONFIRM | halt }
+    if ($deletenick($2,$nick)) {
+      notice $nick Deleted account $2
+    }
+    else {
+      notice $nick Couldn't find account $2
+    }
   }
 }
 
@@ -214,18 +240,41 @@ alias renamenick {
   else { var %target = echo -s RENAME $1 to $2 - }
   tokenize 32 $lower($1) $lower($2)
   db.exec UPDATE `user` SET user = $db.safe($2) WHERE user = $db.safe($1)
+  if ($mysql_affected_rows(%db) === -1) { return 0 }
   %target Updated $mysql_affected_rows(%db) rows in user
   db.exec UPDATE `equip_item` SET user = $db.safe($2) WHERE user = $db.safe($1)
   %target Updated $mysql_affected_rows(%db) items of equip_item
   db.exec UPDATE `equip_pvp` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_item
+  %target Updated $mysql_affected_rows(%db) items of equip_pvp
   db.exec UPDATE `equip_armour` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_item
+  %target Updated $mysql_affected_rows(%db) items of equip_armour
   db.exec UPDATE `equip_staff` SET user = $db.safe($2) WHERE user = $db.safe($1)
   %target Updated $mysql_affected_rows(%db) items of equip_staff
   db.exec UPDATE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
   %target Updated $mysql_affected_rows(%db) rows in clans.ini
+  return 1
+}
 
+
+alias deletenick {
+  if ($len($1) < 1) { return }
+  if ($2) { var %target = msg $2 $logo(DELETE) }
+  else { var %target = echo -s DELETE $1 - }
+  tokenize 32 $lower($1) $lower($2)
+  db.exec DELETE FROM `user` WHERE user = $db.safe($1)
+  if ($mysql_affected_rows(%db) === -1) { return 0 }
+  %target Deleted $mysql_affected_rows(%db) rows in user
+  db.exec DELETE FROM `equip_item` WHERE user = $db.safe($1)
+  %target Deleted $mysql_affected_rows(%db) items of equip_item
+  db.exec DELETE FROM `equip_pvp` WHERE user = $db.safe($1)
+  %target Deleted $mysql_affected_rows(%db) items of equip_pvp
+  db.exec DELETE FROM `equip_armour` WHERE user = $db.safe($1)
+  %target Deleted $mysql_affected_rows(%db) items of equip_armour
+  db.exec DELETE FROM `equip_staff` WHERE user = $db.safe($1)
+  %target Deleted $mysql_affected_rows(%db) items of equip_staff
+  db.exec DELETE FROM `clan` WHERE c2 = $db.safe($1)
+  %target Deleted $mysql_affected_rows(%db) rows in clans.ini
+  return 1
 }
 
 

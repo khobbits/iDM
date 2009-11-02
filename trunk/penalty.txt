@@ -95,3 +95,6 @@
 2/11 13:57:40 bret_miller got !enddm'd on #freedm oldcash 379380641 newcash 377483738
 2/11 14:13:16 No_Name610 got !enddm'd on #mhu oldcash 1060025597 newcash 1054725470
 2/11 14:26:23 rang3_br0th got !enddm'd on #tank oldcash 2197413491 newcash 2186426424
+2/11 15:24:23 n0waaka got !enddm'd on #mhu oldcash 25245361 newcash 25119135
+2/11 15:32:18 P_K_Shadow2 got !enddm'd on #psycho_souls oldcash 76021846 newcash 75641737
+2/11 15:34:00 [Renne] got !enddm'd on #mhu oldcash 46316950 newcash 46085366
