@@ -199,7 +199,7 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
-    if($renamenick($2,0,$nick)) {
+    if ($suspendnick($2,0,$nick)) {
       notice $nick Restored account $2 to its original status.
     }
     else {
