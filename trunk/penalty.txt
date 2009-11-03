@@ -154,3 +154,5 @@
 3/11 16:43:34 zink310sk8r got !enddm'd on #iDM oldcash 5141784880 newcash 5116075956
 3/11 16:50:44 gregexor got !enddm'd on #L_U oldcash 2227193547 newcash 2216057580
 3/11 18:17:37 `_Nik_` got !enddm'd on #freedm oldcash 2357538314 newcash 2345750623
+3/11 18:33:11 Maul_Ko_Lol got !enddm'd on #ancestry oldcash 553846767 newcash 551077534
+3/11 18:33:42 demonguychris5 got !enddm'd on #Platteh oldcash 135648118 newcash 134969878

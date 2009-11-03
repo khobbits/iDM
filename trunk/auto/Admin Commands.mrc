@@ -2,7 +2,7 @@ on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
       !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
-      !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore/except) host, !cbl chan, !warn chan !viewitems)
+      !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore) host, !cbl chan, !warn chan !viewitems)
   }
 }
 
@@ -224,7 +224,8 @@ on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
 on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) === admins) {
-    if ($3 != CONFIRM) { notice $nick To use the delete command, type !delete nick CONFIRM | halt }
+    if (!$2) { notice $nick To use the delete command, type !delete nick | halt }
+    if ($3 != $md5($2)) { notice $nick To confirm deletion type !delete $2 $md5($2) | halt }
     if ($deletenick($2,$nick)) {
       notice $nick Deleted account $2
     }
@@ -235,21 +236,21 @@ on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
 }
 
 alias renamenick {
-  if ($3) { var %target = msg $3 $logo(RENAME) }
+  if ($3) { var %target = notice $3 $logo(RENAME) }
   else { var %target = echo -s RENAME $1 to $2 - }
   db.exec UPDATE `user` SET user = $db.safe($2) WHERE user = $db.safe($1)
   if ($mysql_affected_rows(%db) === -1) { return 0 }
-  %target Updated $mysql_affected_rows(%db) rows in user
+  var %target = %target Updated Rows: $mysql_affected_rows(%db) user;
   db.exec UPDATE `equip_item` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_item
+  var %target = %target $mysql_affected_rows(%db) equip_item;
   db.exec UPDATE `equip_pvp` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_pvp
+  var %target = %target $mysql_affected_rows(%db) equip_pvp;
   db.exec UPDATE `equip_armour` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_armour
+  var %target = %target $mysql_affected_rows(%db) equip_armour;
   db.exec UPDATE `equip_staff` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) items of equip_staff
+  var %target = %target $mysql_affected_rows(%db) equip_staff;
   db.exec UPDATE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
-  %target Updated $mysql_affected_rows(%db) rows in clans.ini
+  %target $mysql_affected_rows(%db) clans.
   return 1
 }
 
@@ -261,21 +262,21 @@ alias suspendnick {
 
 alias deletenick {
   if ($len($1) < 1) { return }
-  if ($2) { var %target = msg $2 $logo(DELETE) }
+  if ($2) { var %target = notice $2 $logo(DELETE) }
   else { var %target = echo -s DELETE $1 - }
   db.exec DELETE FROM `user` WHERE user = $db.safe($1)
   if ($mysql_affected_rows(%db) === -1) { return 0 }
-  %target Deleted $mysql_affected_rows(%db) rows in user
+  var %target = %target Deleted Rows: $mysql_affected_rows(%db) user;
   db.exec DELETE FROM `equip_item` WHERE user = $db.safe($1)
-  %target Deleted $mysql_affected_rows(%db) items of equip_item
+  var %target = %target $mysql_affected_rows(%db) equip_item;
   db.exec DELETE FROM `equip_pvp` WHERE user = $db.safe($1)
-  %target Deleted $mysql_affected_rows(%db) items of equip_pvp
+  var %target = %target $mysql_affected_rows(%db) equip_pvp;
   db.exec DELETE FROM `equip_armour` WHERE user = $db.safe($1)
-  %target Deleted $mysql_affected_rows(%db) items of equip_armour
+  var %target = %target $mysql_affected_rows(%db) equip_armour;
   db.exec DELETE FROM `equip_staff` WHERE user = $db.safe($1)
-  %target Deleted $mysql_affected_rows(%db) items of equip_staff
+  var %target = %target $mysql_affected_rows(%db) equip_staff;
   db.exec DELETE FROM `clan` WHERE c2 = $db.safe($1)
-  %target Deleted $mysql_affected_rows(%db) rows in clans.ini
+  %target $mysql_affected_rows(%db) clans.
   return 1
 }
 
