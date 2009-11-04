@@ -94,7 +94,13 @@ on *:NICK: {
   if (!%dming [ $+ [ $nick ] ]) { halt }
   var %a = 1
   while (%a <= $chan(0)) {
-    if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) { msg $chan(%a) $logo(STAKE) The stake has been canceled because a player changed their nick. | cancel $chan(%a) | .timer $+ $chan(%a) off | halt }
+    if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) {
+      db.set user money $nick - $ceil($calc($+(%,stake,$chan(%a)) / 2))
+      msg $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,$chan(%a)) / 2) ))) $+ .
+      cancel $chan(%a)
+      .timer $+ $chan(%a) off 
+      halt 
+    }
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
       remini status.ini currentdm $nick
       writeini status.ini currentdm $newnick true

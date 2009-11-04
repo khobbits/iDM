@@ -8,7 +8,7 @@ on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
 
 ON $*:TEXT:/^[!.]Bot-ON$/Si:#iDM.staff: {
   if ($db.get(admins,position,$address($nick,3))) {
-    if ($me === iDM[OFF]) {
+    if ($me == iDM[OFF]) {
       nick iDM
     }
   }
@@ -16,7 +16,7 @@ ON $*:TEXT:/^[!.]Bot-ON$/Si:#iDM.staff: {
 
 on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
     db.set admins support $address($2,3) true
@@ -62,7 +62,7 @@ on $*:TEXT:/^[!.]cbl .*/Si:#: {
 }
 
 on $*:TEXT:/^[!.]part .*/Si:#: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($left($2,1) == $chr(35)) && ($me ison $2) {
       part $2 Part requested by $position($nick) $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93)))
       notice $nick I have parted $2
@@ -72,14 +72,14 @@ on $*:TEXT:/^[!.]part .*/Si:#: {
 
 on $*:TEXT:/^[!.]bl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     bl $2 $nick $chan $3-
   }
 }
 
 on $*:TEXT:/^[!.]ubl .*/Si:#iDM.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     ubl $2 $nick $chan $3-
   }
 }
@@ -121,7 +121,7 @@ alias ubl {
 }
 
 on $*:TEXT:/^[!.]chans$/Si:*: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
 }
@@ -147,7 +147,7 @@ alias chans {
   $iif($isid,return,echo -a) %b
 }
 on $*:TEXT:/^[!.]active$/Si:*: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - $actives
   }
 }
@@ -168,7 +168,7 @@ alias actives {
 }
 
 on $*:TEXT:/^[!.]join .*/Si:*: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
     if ($2 == $me) {
@@ -184,7 +184,7 @@ alias forcejoin {
 
 on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the suspend command, type !suspend nick. | halt }
     if ($suspendnick($2,1,$nick)) {
       notice $nick Removed account $2 from the top scores.
@@ -197,7 +197,7 @@ on $*:TEXT:/^[!.]suspend.*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !unsuspend nick. | halt }
     if ($suspendnick($2,0,$nick)) {
       notice $nick Restored account $2 to its original status.
@@ -210,7 +210,7 @@ on $*:TEXT:/^[!.]unsuspend.*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
     if ($renamenick($2,$3,$nick)) {
       notice $nick Renamed account $2 to $3
@@ -223,7 +223,7 @@ on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
 
 on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the delete command, type !delete nick | halt }
     if ($3 != $md5($2)) { notice $nick To confirm deletion type !delete $2 $md5($2) | halt }
     if ($deletenick($2,$nick)) {
@@ -302,32 +302,32 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
     }
     else {
       if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-        if ($db.get(equip_staff,belong,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,belong,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff belong $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == Allegra || $nick == Strychnine) {
-        if ($db.get(equip_staff,allegra,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,allegra,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff allegra $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == Beau) {
-        if ($db.get(equip_staff,beau,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,beau,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff beau $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
-        if ($db.get(equip_staff,snake,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,snake,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff snake $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == KHobbits) {
-        if ($db.get(equip_staff,kh,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,kh,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff kh $2 1
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
       elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
-        if ($db.get(equip_staff,support,$2) === 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+        if ($db.get(equip_staff,support,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
         db.set equip_staff support $2 $nick
         notice $nick $logo(Give-Item) Gave your item to $s2($2)
       }
@@ -342,32 +342,32 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
     }
     else {
       if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-        if ($db.get(equip_staff,belong,$2) === 0 || !$db.get(equip_staff,belong,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,belong,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff belong $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == Allegra || $nick == Strychnine) {
-        if ($db.get(equip_staff,allegra,$2) === 0 || !$db.get(equip_staff,allegra,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,allegra,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff allegra $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == Beau) {
-        if ($db.get(equip_staff,beaumerang,$2) === 0 || !$db.get(equip_staff,beaumerang,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,beaumerang,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff beau $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
-        if ($db.get(equip_staff,snake,$2) === 0 || !$db.get(equip_staff,snake,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,snake,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff snake $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == KHobbits) {
-        if ($db.get(equip_staff,kh,$2) === 0 || !$db.get(equip_staff,kh,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,kh,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff kh $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
       elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
-        if ($db.get(equip_staff,support,$2) === 0 || !$db.get(equip_staff,support,$2)) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+        if ($db.get(equip_staff,support,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
         db.set equip_staff support $2 0
         notice $nick $logo(Take-Item) Took your item from $s2($2)
       }
@@ -376,7 +376,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
 }
 
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$4) { goto error }
     if ($1 == !increase) { var %sign + }
     elseif ($1 == !decrease) { var %sign - }
@@ -421,7 +421,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
 }
 
 on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($cid != $scon(1)) { halt }
     set %rand $rand(5000,30000)
     privmsg $chan $s1(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
@@ -430,7 +430,7 @@ on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
 }
 
 on *:TEXT:!amsg*:#iDM.staff: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick Syntax: !amsg 03message | halt }
     if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
     if ($me == iDM) { amsg $logo(AMSG) $2- 07[03 $+ $nick $+ 07] | halt }
@@ -445,7 +445,7 @@ on *:TEXT:!amsg*:#iDM.staff: {
 }
 
 on *:TEXT:!whois*:#: {
-  if ($db.get(admins,position,$address($nick,3)) === admins) {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { Notice $nick Please specify a channel | halt }
     if (%p1 [ $+ [ $2 ] ]) && (%p2 [ $+ [ $2 ] ]) && ($Me ison $2) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address(%p1 [ $+ [ $2 ] ],2)) and Player2: $s1($address(%p2 [ $+ [ $2 ] ],2)) $+ . }
     else { halt }
@@ -472,7 +472,7 @@ on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
 }
 
 On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support,#iDM: {
-  if ($db.get(admins,position,$address($nick,3)) === admins && $me == iDM) {
+  if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Registered?: $iif($db.get(user,pass,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
   }
 }

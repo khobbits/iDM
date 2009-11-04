@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) < 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
   if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
@@ -42,7 +42,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves.
     halt
   }
-  if ($db.get(%table,%sname,$nick)) { notice $nick You already have an %fname $+ . | halt }
+  if ($db.get(%table,%sname,$nick) < 1) { notice $nick You already have an %fname $+ . | halt }
   if ($db.get(user,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   db.set user money $nick - %price
   db.set %table %sname $nick 1
@@ -54,7 +54,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if ($db.get(user,login,$nick) !> 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($db.get(user,login,$nick) < 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
 
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)

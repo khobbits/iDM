@@ -19,7 +19,7 @@ alias db.get {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
-  return $db.select(%sql,$2)
+  return $iif($db.select(%sql,$2) === $null,0,$v1)
 }
 
 ; This function retrieves a single cell from a database and returns the value
