@@ -42,10 +42,10 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick You need atleast $s2($bytes(1000,bd)) wins and have played over $s2($bytes(2000,bd)) DMs to purchase Barrow Gloves.
     halt
   }
-  if ($db.get(%table,%sname,$nick) < 1) { notice $nick You already have an %fname $+ . | halt }
+  if ($db.get(%table,%sname,$nick) > 0) { notice $nick You already have an %fname $+ . | halt }
   if ($db.get(user,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   db.set user money $nick - %price
-  db.set %table %sname $nick 1
+  db.set %table %sname $nick + 1
   write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($db.get(user,money,$nick))) left.
 
