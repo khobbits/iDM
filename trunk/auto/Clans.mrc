@@ -5,7 +5,7 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   var %clanname = $getclanname($nick)
@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   var %clanname = $getclanname($nick)
@@ -40,7 +40,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
@@ -54,7 +54,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
@@ -67,7 +67,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   var %clanname = $getclanname($nick)
@@ -80,7 +80,7 @@ on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   var %clanname = $getclanname($nick)
@@ -118,7 +118,7 @@ alias claninfo {
 }
 
 alias clanstats {
-  return $s1(Wins) $+ : $iif($db.get(clantracker,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($db.get(clantracker,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0))) $+ )
+  return $s1(Wins) $+ : $iif($db.get(clantracker,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($db.get(clantracker,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
 }
 
 ; ============ 'Clan' Table Layout ============

@@ -394,6 +394,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
     elseif ($3 == money) {
       var %table = user
       var %item = money
+      echo -a money %item
     }
     elseif ($3 == wins) {
       var %table = user
@@ -408,10 +409,10 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
       return
     }
     if (%sign == =) {
-      db.set %table %item $2 $4
+      echo -a db.set %table %item $2 $4
     }
     else {
-      db.set %table %item $2 %sign $4
+      echo -a db.set %table %item $2 %sign $4
     }
     msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
     return
@@ -423,7 +424,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
 on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($cid != $scon(1)) { halt }
-    set %rand $rand(5000,30000)
+    set %rand $rand(5000,120000)
     privmsg $chan $s1(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
     timer -m 1 %rand rehash
   }

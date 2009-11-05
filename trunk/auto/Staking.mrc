@@ -10,7 +10,7 @@ on $*:TEXT:/^[!@.]stake\b/Si:#: {
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-  if (!$islogged($nick,3)) { notice $nick You must be logged in to use the stake command. (/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) | halt }
+  if (!$islogged($nick,3)) { notice $nick You must be logged in to use the stake command. (To check your auth type: /msg $me id) | halt }
   var %money = $db.get(user,money,$nick)
   if (!%p1 [ $+ [ $chan ] ]) {
     if (!$2) { notice $nick Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }

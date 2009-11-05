@@ -9,7 +9,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if ($isbanned($nick)) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
   if (!$islogged($nick,3)) {
-    notice $nick You have to login before you can use this command.
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }

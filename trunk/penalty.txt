@@ -200,3 +200,27 @@
 4/11 13:49:28 P_K_Shadow2 got !enddm'd on #mp oldcash 921486582 newcash 916879150
 4/11 13:59:44 oo_rng_rul3s got !enddm'd on #tank oldcash 16704844936 newcash 16621320712
 4/11 14:29:27 Wulf00first_ got !enddm'd on #L_U oldcash 976163760 newcash 971282942
+4/11 15:00:30 woutertje_93 got !enddm'd on #Mhu oldcash 1327500318 newcash 1320862817
+4/11 15:33:58 Puma got !enddm'd on #L_U oldcash 1840515399 newcash 1831312823
+4/11 15:45:15 joshua_ got !enddm'd on #Crimson-Project oldcash 197317000 newcash 196330415
+4/11 16:10:59 Gemblem got !enddm'd on #gemblem oldcash 1150549614 newcash 1144796866
+4/11 16:12:15 [CPR]Troy|1R4Q got !enddm'd on #Crimson-Project oldcash 213868878 newcash 212799534
+4/11 16:34:58 atheoran got !enddm'd on #Mhu oldcash 151856520 newcash 151097238
+4/11 16:42:36 marttello got !enddm'd on #Dm.newbies oldcash 755341616 newcash 751564908
+4/11 16:57:46 [Renne] got !enddm'd on #Mhu oldcash 1149787088 newcash 1144038153
+4/11 17:10:52 toby_ got !enddm'd on #freedm oldcash 1462514342 newcash 1455201771
+4/11 17:40:52 [CPR]lil_Am0n|Luke got !enddm'd on #Crimson-Project oldcash 217709625 newcash 216621077
+4/11 18:08:29 `Anth got !enddm'd on #iDM.Elites oldcash 13711381950 newcash 13642825041
+4/11 18:19:44 ChickenNugget got !enddm'd on #bhmasters oldcash 817311064 newcash 813224509
+4/11 18:19:48 RngJudgement got !enddm'd on #19821992 oldcash 79524854 newcash 79127230
+4/11 18:19:55 joshua12227 got !enddm'd on #dmerking oldcash 4301237087 newcash 4279730902
+4/11 18:23:06 missytake got !enddm'd on #missytake oldcash 1414362221 newcash 1407290410
+4/11 18:24:14 joshua12227 got !enddm'd on #dmerking oldcash 4279730902 newcash 4258332248
+4/11 18:26:30 papii_robert got !enddm'd on #legendarios oldcash 313365092 newcash 311798267
+4/11 18:57:48 Tubby got !enddm'd on #Dm.newbies oldcash 104725696 newcash 104202068
+4/11 19:05:50 Dmhc got !enddm'd on #d2jsp oldcash 247671691 newcash 246433333
+4/11 19:24:26 Runearquero got !enddm'd on #dmerking oldcash 1810950201 newcash 1801895450
+4/11 19:30:58 Dommy_ got !enddm'd on #Dm.newbies oldcash 2122389843 newcash 2111777894
+4/11 19:58:04 iRun got !enddm'd on #World_27 oldcash 765728201 newcash 761899560
+4/11 20:24:49 rangepurez33 got !enddm'd on #BAnk-loot oldcash 466664462 newcash 464331140
+4/11 21:27:01 c00kymonster parted channel #Care_Bears during a dm oldcash 277868208 penalty 5557365

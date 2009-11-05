@@ -1,9 +1,9 @@
 on *:TEXT:id*:?: msgauth $nick
 on *:TEXT:auth*:?: msgauth $nick
-on *:TEXT:logout*:?: unauth $nick
+on *:TEXT:logout*:?: msgunauth $nick
 
 alias msgauth {
- auth $nick notice $nick Authentication accepted, you are now logged in.
+  auth $nick notice $nick Authentication accepted, you are now logged in.
 }
 
 alias msgunauth {
@@ -16,11 +16,11 @@ alias unauth {
 }
 
 alias auth {
-  var %nsattempt = %idm.nsattempt . [ $+ [ $2 ] ]
+  var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
   var %qthreshold $calc($ctime - (5))
   if (%nsattempt > %qthreshold) { halt }
-  set %idm.nsattempt . [ $+ [ $2 ] ] $ctime
-  checkreg $1 auth_success $1 $2-
+  set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
+  auth_checkreg $1 auth_success $1 $2-
 }
 
 alias auth_success {
@@ -28,9 +28,9 @@ alias auth_success {
   $2-
 }
 
-alias auth_checkreg{
+alias auth_checkreg {
   set %idm.nscheck. [ $+ [ $1 ] ] $2-
-  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv before using this command.  To login type /msg $me id
+  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv.  Identify and try to auth with iDM again using /msg $me id.
   ns status $1
 }
 
@@ -61,12 +61,12 @@ alias islogged {
     return 1
   }
 
-  var %nsattempt = %idm.nsattempt . [ $+ [ $2 ] ]
+  var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
   var %threshold $calc($ctime - (60*5))
   var %qthreshold $calc($ctime - (5))
   if (%nsattempt > %qthreshold) { halt }
   if (%nsattempt > %threshold) { return 0 }
-  set %idm.nsattempt . [ $+ [ $2 ] ] $ctime
+  set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
 
 
   if (!$2) { return 0 }
@@ -75,24 +75,24 @@ alias islogged {
     set %idm.nsfail. [ $+ [ $1 ] ] noop
     ns status $1
   }
- auth_checkreg $1 auth_success $1 notice $nick Authentication attempt succeeded, you should now be logged in.
- if ($2 == 3) { halt }
- return 0
+  auth_checkreg $1 auth_success $1 notice $nick Authentication attempt succeeded, you should now be logged in.
+  if ($2 == 3) { halt }
+  return 0
 }
 
 alias logcheck {
-; $1 = nickname
-; $2 = command to call on success
-; [optional] create a $2.fail to catch a failed auth
+  ; $1 = nickname
+  ; $2 = command to call on success
+  ; [optional] create a $2.fail to catch a failed auth
   if ($islogged($1,0) == 1) {
     $2-
     return
   }
 
- var %nsattempt = %idm.nsattempt . [ $+ [ $1 ] ]
- var %threshold $calc($ctime - (60*5))
- var %qthreshold $calc($ctime - (5))
- if (%nsattempt > %qthreshold) { halt }
+  var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
+  var %threshold $calc($ctime - (60*5))
+  var %qthreshold $calc($ctime - (5))
+  if (%nsattempt > %qthreshold) { halt }
 
   set %idm.nscheck. [ $+ [ $1 ] ] $2 $nick $address $chan $3-
   if ($isalias($2 $+ .fail)) {
@@ -106,9 +106,8 @@ alias logcheck {
     %idm.nsfail. [ $+ [ $1 ] ]
     return
   }
-  set %idm.nsattempt . [ $+ [ $1 ] ] $ctime
+  set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
 
   ns status $1
   return
 }
-
