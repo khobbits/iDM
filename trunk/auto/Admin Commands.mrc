@@ -394,7 +394,6 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
     elseif ($3 == money) {
       var %table = user
       var %item = money
-      echo -a money %item
     }
     elseif ($3 == wins) {
       var %table = user
@@ -409,10 +408,10 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
       return
     }
     if (%sign == =) {
-      echo -a db.set %table %item $2 $4
+      db.set %table %item $2 $4
     }
     else {
-      echo -a db.set %table %item $2 %sign $4
+      db.set %table %item $2 %sign $4
     }
     msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
     return
