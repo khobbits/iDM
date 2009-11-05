@@ -2,10 +2,6 @@ on $*:TEXT:/^[!.]/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($right($1,-1) == specpot) {
     if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
-      if ($db.get(user,login,$nick) < 1) {
-        notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
-        halt
-      }
       if ($db.get(equip_item,specpot,$nick) < 1) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
@@ -34,10 +30,6 @@ on $*:TEXT:/^[!.]/Si:#: {
       if ($ispvp($right($1,-1))) {
         if ($db.get(equip_pvp,$right($1,-1),$nick) < 1) {
           notice $nick You don't have this weapon.
-          halt
-        }
-        if ($db.get(user,login,$nick) < 1) {
-          notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),ident,reg) pass) $+ ) (Don't use your RuneScape password)
           halt
         }
       }

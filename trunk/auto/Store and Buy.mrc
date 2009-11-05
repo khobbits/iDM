@@ -23,7 +23,10 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if ($db.get(user,login,$nick) < 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if (!$islogged($nick,3)) {
+    notice $nick You have to login before you can use this command.
+    halt
+  }
   if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
@@ -53,8 +56,11 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
 
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if ($db.get(user,login,$nick) < 1) { notice $nick You have to login before you can use this command. ( $+ $s2(/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) $+ ) (Don't use your RuneScape password) | halt }
+  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt
+  if (!$islogged($nick,3)) {
+    notice $nick You have to login before you can use this command.
+    halt
+  }
 
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)

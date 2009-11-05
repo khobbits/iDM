@@ -10,7 +10,7 @@ on $*:TEXT:/^[!@.]stake\b/Si:#: {
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-  if ($db.get(user,login,$nick) < 1) { notice $nick You must be logged in to use the stake command. (/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) | halt }
+  if (!$islogged($nick,3)) { notice $nick You must be logged in to use the stake command. (/msg $me $iif($db.get(user,pass,$nick),id,reg) pass) | halt }
   var %money = $db.get(user,money,$nick)
   if (!%p1 [ $+ [ $chan ] ]) {
     if (!$2) { notice $nick Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
@@ -33,9 +33,9 @@ on $*:TEXT:/^[!@.]stake\b/Si:#: {
     if (!%p2 [ $+ [ $chan ] ]) && ($2 < %stake [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) { notice $nick A wager of $s2($price(%stake [ $+ [ $chan ] ])) has already been risked by %p1 [ $+ [ $chan ] ] $+ . To accept, type !stake. | halt }
     if (!%p2 [ $+ [ $chan ] ]) && (($iif(%money,$v1,0) < %stake [ $+ [ $chan ] ]) || ($maxstake(%money) < %stake [ $+ [ $chan ] ])) { notice $nick You either don't have enough money to stake, or your staking limit ( $+ $s1($price($maxstake(%money))) $+ ) is too low. | halt }
     .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | set %dming [ $+ [ $nick ] ] on | writeini status.ini currentdm $nick true
-    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 
+    set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99
     set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
-    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move. 
+    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
   }
 }
 

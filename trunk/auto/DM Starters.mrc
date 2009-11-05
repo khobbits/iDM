@@ -8,6 +8,10 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if ($isbanned($nick)) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
+  if (!$islogged($nick,3)) {
+    notice $nick You have to login before you can use this command.
+    halt
+  }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
@@ -25,7 +29,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
       inc -u5 %dm.spam [ $+ [ $nick ] ]
       halt
     }
-    .timer $+ # off 
+    .timer $+ # off
     set %dming [ $+ [ $nick ] ] on
     writeini status.ini currentdm $nick true
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
