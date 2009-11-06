@@ -321,3 +321,20 @@
 6/11 10:08:07 w0ble_o0wner parted channel #iDM during a dm oldcash 147242870 penalty 2944858
 6/11 10:12:09 {mark} parted channel #iDM during a dm oldcash 8916926798 penalty 178338536
 6/11 11:31:02 B_3_T_R_4_Y got !enddm'd on #Dm.newbies oldcash 1050417663 newcash 1045165575
+6/11 12:14:18 Lemaster got !enddm'd on #Dm.newbies oldcash 1682147759 newcash 1673737021
+6/11 12:17:56 aw_pur0 parted channel #aces_of_wars during a dm oldcash 300552999 penalty 6011060
+6/11 12:18:08 Runearquero got !enddm'd on #ha-ha oldcash 2036201874 newcash 2026020865
+6/11 12:43:03 Runearquero got !enddm'd on #ha-ha oldcash 2778072410 newcash 2764182048
+6/11 13:15:12 Telefonorm got !enddm'd on #nesser oldcash 2100591677 newcash 2090088719
+6/11 13:21:12 onewecallgod got !enddm'd on #iDM.Elites oldcash 36149435904 newcash 35968688725
+6/11 13:42:27 `Dante got !enddm'd on #tank oldcash 8946051541 newcash 8901321284
+6/11 13:56:31 w0ble_o0wner got !enddm'd on #iDM oldcash 229316447 newcash 228169865
+6/11 14:04:07 Waterpower51 parted channel #WeDm during a dm oldcash 11206829719 penalty 224136595
+6/11 14:08:59 werr4560 got !enddm'd on #werr4560 oldcash 4389659208 newcash 4367710912
+6/11 14:11:56 P_K_Shadow got !enddm'd on #Dm.newbies oldcash 2181294494 newcash 2170388022
+6/11 14:21:15 emoweirdo3 got !enddm'd on #Dm.newbies oldcash 680144803 newcash 676744079
+6/11 14:43:15 johncena parted channel #iBOOM during a dm oldcash 4810945497 penalty 96218910
+6/11 14:57:45 strguri parted channel #alching during a dm oldcash 1364453608 penalty 27289073
+6/11 15:01:51 werr4560 got !enddm'd on #werr4560 oldcash 4699845942 newcash 4676346713
+6/11 15:07:54 norsk parted channel #iBOOM during a dm oldcash 22497682 penalty 449954
+6/11 15:30:00 po_ke_n_die got !enddm'd on #iDM oldcash 5158422859 newcash 5132630745

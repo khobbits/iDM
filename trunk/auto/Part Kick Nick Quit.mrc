@@ -66,10 +66,13 @@ on *:PART:#: {
     cancel #
     .timer $+ # off
   }
+  if ($1-3 == Left all channels) || ($1-2 == Part All)  || ($1 == Partall) {
+    unauth $nick
+  }
 }
 
 on *:QUIT: {
-  db.set user login $nick 0
+  unauth $nick
   var %a 1
   while (%a <= $chan(0)) {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
@@ -91,6 +94,8 @@ on *:QUIT: {
   }
 }
 on *:NICK: {
+  unauth $nick
+  unauth $newnick
   if (!%dming [ $+ [ $nick ] ]) { halt }
   var %a = 1
   while (%a <= $chan(0)) {
@@ -105,14 +110,12 @@ on *:NICK: {
       remini status.ini currentdm $nick
       writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
-      db.set user login $nick 0
       set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       remini status.ini currentdm $nick
       writeini status.ini currentdm $newnick true
       unset %dming [ $+ [ $nick ] ]
-      db.set user login $nick 0
       set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     inc %a

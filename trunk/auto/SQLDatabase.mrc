@@ -40,6 +40,22 @@ alias db.select {
   }
 }
 
+alias db.hget {
+  tokenize 32 $replace($lower($1-3),$chr(32) $+ $chr(32),$chr(32)) $replace($lower($4-),$chr(32), ` $+ $chr(44) $+ `)
+  var %htable = $1
+  var %table = $2
+  var %user = $3
+
+  var %columns = $iif($4,`user` $+ $chr(44) $+ ` $+ $4 $+ `,*)
+
+  dbcheck
+  var %sql SELECT %columns FROM $db.tquote(%table) WHERE user = $db.safe(%user)
+  var %result = $db.query(%sql)
+  if ($db.query_row(%result,%htable) === $null) { return $null }
+  db.query_end %result
+  return 1
+}
+
 ; These functions are used to get more complicated results from the db
 alias db.query {
   dbcheck

@@ -8,7 +8,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if ($isbanned($nick)) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }

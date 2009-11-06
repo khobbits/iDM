@@ -4,7 +4,7 @@
 on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -22,7 +22,7 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
 on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -39,7 +39,7 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
 on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -53,7 +53,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
 on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -66,7 +66,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
 on $*:TEXT:/^[!@.]leave$/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -79,7 +79,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
 on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }

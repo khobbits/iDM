@@ -1,9 +1,9 @@
-on *:TEXT:id*:?: msgauth $nick $2-
-on *:TEXT:auth*:?: msgauth $nick $2-
-on *:TEXT:logout*:?: msgunauth $nick
+on *:TEXT:id*:?: msgauth $nick $address $2-
+on *:TEXT:auth*:?: msgauth $nick $address $2-
+on *:TEXT:logout*:?: msgunauth $nick $address $2-
 
 alias msgauth {
-  if ($2) {
+  if ($3) {
     if ($1 ison #idm.support) {
       if ($db.get(user,pass,$1) == $2) {
         msg +#idm.support User $1 identified to idm with his old password.
@@ -12,16 +12,17 @@ alias msgauth {
         msg +#idm.support User $1 4failed to identify to idm with his old password.
       }
     }
-    auth $1 notice $1 Authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
+    auth $1 $2 notice $1 Authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
   }
   else {
-    auth $1 notice $1 Authentication accepted, you are now logged in.
+    auth $1 $2 notice $1 Authentication accepted, you are now logged in.
   }
 }
 
 alias msgunauth {
   unauth $1
   notice $1 You are now logged out.
+  unset %idm.nsattempt. [ $+ [ $1 ] ]
 }
 
 alias unauth {
@@ -29,20 +30,31 @@ alias unauth {
 }
 
 alias auth {
+  db.hget islogged user $1 login address
+  var %login $hget(islogged,login)
+  var %address $hget(islogged,address)
+  var %threshold $calc($ctime - (60*240))
+  if ((%address == $2) && (%login > %threshold)) {
+    db.set user login $1 $ctime
+    $3-
+    return
+  }
+
   var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
   var %qthreshold $calc($ctime - (5))
   if (%nsattempt > %qthreshold) { halt }
   set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
-  auth_checkreg $1 auth_success $1 $2-
+  auth_checkreg $1 $2 auth_success $1 $2 $3-
 }
 
 alias auth_success {
   db.set user login $1 $ctime
-  $2-
+  db.set user address $1 $2
+  $3-
 }
 
 alias auth_checkreg {
-  set %idm.nscheck. [ $+ [ $1 ] ] $2-
+  set %idm.nscheck. [ $+ [ $1 ] ] $3-
   set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv.  Identify and try to auth with iDM again using /msg $me id.
   ns status $1
 }
@@ -64,41 +76,47 @@ on *:notice:*:?: {
 
 alias islogged {
   ; $1 = nickname
-  ; $2 = [optional] if user is not logged, should auth be attempted
+  ; $2 = address
+  ; $3 = [optional] if user is not logged, should auth be attempted
   ;      0/null = no attempt; 1 = silent login attempt; 2 = login attempt; 3 = halt + login attempt;
 
-  var %login $db.get(user,login,$1)
-  var %threshold $calc($ctime - (60*30))
-  if (%login > %threshold) {
+  db.hget islogged user $1 login address
+
+  var %login $hget(islogged,login)
+  var %address $hget(islogged,address)
+
+  var %threshold $calc($ctime - (60*240))
+  if ((%address == $2) && (%login > %threshold)) {
     db.set user login $1 $ctime
     return 1
   }
 
   var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
-  var %threshold $calc($ctime - (60*5))
+  var %threshold $calc($ctime - (60*10))
   var %qthreshold $calc($ctime - (5))
   if (%nsattempt > %qthreshold) { halt }
   if (%nsattempt > %threshold) { return 0 }
   set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
 
-
-  if (!$2) { return 0 }
-  if ($2 == 1) {
+  if (!$3) { return 0 }
+  if ($3 == 1) {
     set %idm.nscheck. [ $+ [ $1 ] ] noop
     set %idm.nsfail. [ $+ [ $1 ] ] noop
     ns status $1
   }
-  auth_checkreg $1 auth_success $1 notice $nick Authentication attempt succeeded, you should now be logged in.
-  if ($2 == 3) { halt }
+  auth_checkreg $1 $2 auth_success $1 $2 notice $1 Authentication attempt succeeded, you should now be logged in.
+  if ($3 == 3) { halt }
   return 0
 }
 
 alias logcheck {
   ; $1 = nickname
-  ; $2 = command to call on success
+  ; $2 = address
+  ; $3 = channel
+  ; $4- = command to call on success
   ; [optional] create a $2.fail to catch a failed auth
-  if ($islogged($1,0) == 1) {
-    $2-
+  if ($islogged($1,$2,0) == 1) {
+    $3-
     return
   }
 
@@ -107,9 +125,9 @@ alias logcheck {
   var %qthreshold $calc($ctime - (5))
   if (%nsattempt > %qthreshold) { halt }
 
-  set %idm.nscheck. [ $+ [ $1 ] ] $2 $nick $address $chan $3-
+  set %idm.nscheck. [ $+ [ $1 ] ] $4 $1 $2 $3 $5-
   if ($isalias($2 $+ .fail)) {
-    set %idm.nsfail. [ $+ [ $1 ] ] $2 $+ .fail $nick $address $chan $3-
+    set %idm.nsfail. [ $+ [ $1 ] ] $4 $+ .fail $1 $2 $3 $5-
   }
   else {
     set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv before using this command.  To login type /msg $me id

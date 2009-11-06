@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -57,7 +57,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
-  if (!$islogged($nick,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
