@@ -1,9 +1,22 @@
-on *:TEXT:id*:?: msgauth $nick
-on *:TEXT:auth*:?: msgauth $nick
+on *:TEXT:id*:?: msgauth $nick $2-
+on *:TEXT:auth*:?: msgauth $nick $2-
 on *:TEXT:logout*:?: msgunauth $nick
 
 alias msgauth {
-  auth $nick notice $nick Authentication accepted, you are now logged in.
+  if ($2) {
+    if ($1 ison #idm.support) {
+      if ($db.get(user,pass,$1) == $2) {
+        msg +#idm.support User $1 identified to idm with his old password.
+      }
+      else {
+        msg +#idm.support User $1 4failed to identify to idm with his old password.
+      }
+    }
+    auth $1 notice $1 Authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
+  }
+  else {
+    auth $1 notice $1 Authentication accepted, you are now logged in.
+  }
 }
 
 alias msgunauth {
