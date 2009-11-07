@@ -8,7 +8,7 @@ on *:INVITE:#: {
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
-  notice $nick $logo(INVITE) Searching for an open bot, join #iDM.Support for help.
+  notice $nick $logo(INVITE) Searching for an open bot, join #idm.Support for help.
   if ($port == 12000) {
     var %a 0
     sbnc joinbot $chan $nick
@@ -65,7 +65,7 @@ on *:JOIN:#:{
       unset %forcedj. [ $+ [ # ] ]
     }
     else {
-      if (# != #iDM && # != #iDM.Staff) {
+      if (# != #idm && # != #idm.Staff) {
         $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
         .timer 1 1 scanbots $chan
       }
@@ -76,7 +76,7 @@ on *:JOIN:#:{
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
-    if (# != #iDM && # != #iDM.Staff) || ($me == iDM) {
+    if (# != #idm && # != #idm.Staff) || ($me == iDM) {
       if ($db.get(admins,position,$address($nick,3)) = admins) {
         msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       }
@@ -98,7 +98,7 @@ alias limit5 {
 }
 
 alias scanbots {
-  if (# == #iDM || # == #iDM.Staff) { halt }
+  if (# == #idm || # == #idm.Staff) { halt }
   var %a 1
   while (%a <= $nick($1,0)) {
     if ($istok($botnames,$nick($1,%a),46)) && ($nick($1,%a) != $me) {
@@ -148,7 +148,7 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: Don't want iDM in your channel? Request a blacklist by visiting #iDM.Support
+  return News: Don't want iDM in your channel? Request a blacklist by visiting #idm.Support
 }
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)

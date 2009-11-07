@@ -27,7 +27,7 @@ alias allupdate {
   return $false
 }
 alias secondchan {
-  return #iDM.Staff
+  return #idm.Staff
 }
 
 on *:DISCONNECT: {

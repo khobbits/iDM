@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
+on $*:TEXT:/^[!.]Admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
       !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
@@ -6,7 +6,7 @@ on $*:TEXT:/^[!.]Admin$/Si:#iDM.staff: {
   }
 }
 
-ON $*:TEXT:/^[!.]Bot-ON$/Si:#iDM.staff: {
+ON $*:TEXT:/^[!.]Bot-ON$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3))) {
     if ($me == iDM[OFF]) {
       nick iDM
@@ -70,14 +70,14 @@ on $*:TEXT:/^[!.]part .*/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]bl .*/Si:#iDM.Staff: {
+on $*:TEXT:/^[!.]bl .*/Si:#idm.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     bl $2 $nick $chan $3-
   }
 }
 
-on $*:TEXT:/^[!.]ubl .*/Si:#iDM.Staff: {
+on $*:TEXT:/^[!.]ubl .*/Si:#idm.Staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     ubl $2 $nick $chan $3-
@@ -155,7 +155,7 @@ on $*:TEXT:/^[!.]active$/Si:*: {
 alias actives {
   var %a 1
   while (%a <= $chan(0)) {
-    if (%dmon [ $+ [ $chan(%a) ] ]) && (($chan(%a) == #iDM) || ($chan(%a) == #iDM.Staff)) && ($me != iDM) { inc %a }
+    if (%dmon [ $+ [ $chan(%a) ] ]) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
     if (%dmon [ $+ [ $chan(%a) ] ]) { var %b. [ $+ [ $me ] ] %b. [ $+ [ $me ] ] $chan(%a) }
     inc %a
   }
@@ -281,7 +281,7 @@ alias deletenick {
 }
 
 
-On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
 
     var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
@@ -295,7 +295,7 @@ On $*:TEXT:/^[!@.]ViewItems$/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) {
       notice You need to include a name you want to give your item too.
@@ -335,7 +335,7 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) {
       notice You need to include a name you want to give your item too.
@@ -375,7 +375,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#iDM.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$4) { goto error }
     if ($1 == !increase) { var %sign + }
@@ -420,7 +420,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#iDM.Staff: {
   }
 }
 
-on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
+on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($cid != $scon(1)) { halt }
     set %rand $rand(5000,120000)
@@ -429,14 +429,14 @@ on $*:TEXT:/^[!.]rehash$/Si:#iDM.staff: {
   }
 }
 
-on *:TEXT:!amsg*:#iDM.staff: {
+on *:TEXT:!amsg*:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick Syntax: !amsg 03message | halt }
     if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
     if ($me == iDM) { amsg $logo(AMSG) $2- 07[03 $+ $nick $+ 07] | halt }
     var %x = 1
     while ($chan(%x)) {
-      if ($chan(%x) != #iDM && $chan(%x) != #iDM.Staff) {
+      if ($chan(%x) != #idm && $chan(%x) != #idm.Staff) {
         msg $chan(%x) $logo(AMSG) $2- 07[03 $+ $nick $+ 07]
       }
       inc %x
@@ -471,7 +471,7 @@ on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
   }
 }
 
-On $*:TEXT:/^[!@.]Info .*/Si:#iDM.Staff,#iDM.Support,#iDM: {
+On $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support,#idm: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Registered?: $iif($db.get(user,pass,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
   }

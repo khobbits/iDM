@@ -269,7 +269,7 @@ alias c124 {
 }
 
 on $*:TEXT:/^[!@.]max/Si:#: {
-  if (# == #iDM) || (# == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) { $iif($left($1,1) == @,msg #,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
   if (!$attack($2)) {
     notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
@@ -282,7 +282,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
 }
 
 on $*:TEXT:/^[!@.]hitchance/Si:#: {
-  if (# == #iDM) || (# == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
   if (!$3) { $iif($left($1,1) == @,msg #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
   if (!$attack($2)) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
   if ($max(r,$2)) var %t = r

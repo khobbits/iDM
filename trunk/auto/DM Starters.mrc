@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.]dm\b/Si:#: {
-  if (# == #iDM.Support) { halt }
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm.Support) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%dming [ $+ [ $nick ] ] == on) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
@@ -25,7 +25,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
     if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address(%p1 [ $+ [ $chan ] ],2)) > 3) {
-      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #iDM.Support.
+      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
       inc -u5 %dm.spam [ $+ [ $nick ] ]
       halt
     }
@@ -66,7 +66,7 @@ alias enddm {
   cancel $1
 }
 on $*:TEXT:/^[!@.]enddm/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%stake [ $+ [ $chan ] ]) {
     if ($db.get(admins,position,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
@@ -159,7 +159,7 @@ alias hpbar {
   return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /5))),$str($+(04,$chr(44),04,.),$floor($calc((99- $1 ) /5)))) $+ 
 }
 on $*:TEXT:/^[!@.]status/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%p2 [ $+ [ $chan ] ]) {
     $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
   }

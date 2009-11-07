@@ -1,9 +1,9 @@
-on *:TEXT:!idle*:#iDM.Staff: {
+on *:TEXT:!idle*:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     var %a = 1,%c
     while (%a <= $chan(0)) {
       if ($nick($chan(%a),$me).idle > 1800) {
-        if ($chan(%a) != #iDM && $chan(%a) != #iDM.staff && $chan(%a) != #iStake && $chan(%a) != #iDM.Support) {
+        if ($chan(%a) != #idm && $chan(%a) != #idm.staff && $chan(%a) != #iStake && $chan(%a) != #idm.Support) {
           part $chan(%a) This bot has been idling over 30 mins. Parting channel.
           var %c %c $chan(%a)
         }
@@ -18,13 +18,13 @@ on *:TEXT:!idle*:#iDM.Staff: {
 }
 
 on $*:TEXT:/^[!@.]part/Si:#: {
-  if (# == #iDM) || (# == #iDM.Staff) { halt }
+  if (# == #idm) || (# == #idm.Staff) { halt }
   if ($2 == $me) {
     if ($nick isop # || $nick ishop #) || ($db.get(admins,position,$address($nick,3))) {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on
-      msg #iDM.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
+      msg #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
       cancel #
     }
   }

@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.]stake\b/Si:#: {
-  if (# == #iDM.Support) { halt }
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm.Support) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%dming [ $+ [ $nick ] ] == on) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }

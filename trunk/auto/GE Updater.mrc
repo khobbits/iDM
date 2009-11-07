@@ -1,6 +1,6 @@
 on *:text:!lootupdate*:#idm.staff:{
   if ($db.get(admins,position,$address($nick,3)) == admins) {
-    if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+    if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
     if (%lootupdating) && ($2 != -r) { notice $nick $logo(ERROR) Loot is already being updated.. (Loot $iif(%l,%l,$lines(loot.txt)) $+ / $+ $lines(loot.txt) - Rares $iif(%r,%r,0) $+ / $+ $lines(rares.txt) $+ ) | halt }
     if ($read(lootupdate.txt)) { remove lootupdate.txt }
     if ($read(rareupdate.txt)) { remove rareupdate.txt }
@@ -37,7 +37,7 @@ alias rareupdate {
     unset %lootupdating
     remove rares.txt
     rename rareupdate.txt rares.txt
-    msg #iDM.Staff $logo(GE UPDATE) Loot update finished ( $+ $duration($calc($ctime - %t)) $+ ).
+    msg #idm.Staff $logo(GE UPDATE) Loot update finished ( $+ $duration($calc($ctime - %t)) $+ ).
     unset %t
   }
 }

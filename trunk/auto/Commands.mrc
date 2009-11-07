@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   $iif($left($1,1) == @,msg #,notice $nick) $logo(COMMANDS) $&
     $s2(Account) $chr(91) $+ $s1(!money) $+ , $s1(!top/wtop/ltop N) $+ , $s1(!dmrank nick/N) $+ $chr(93) $&
     $s2(Clan) $chr(91) $+ $s1(!startclan name) $+ , $s1(!addmem/delmem nick) $+ , $s1(!joinclan name) $+ , $s1(!dmclan nick) $+ , $s1(!leave) $+ , $s1(!share on/off) $+ $chr(93) $&
@@ -13,7 +13,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
 }
 
 on $*:TEXT:/^[!@.]suggest/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%sugg.spam [ $+ [ $nick ] ]) { halt }
   inc -u10 %sugg.spam [ $+ [ $nick ] ]
   notice $nick $LOGO(SUGGESTIONS FORUM) To suggest new content please goto: http://forum.idm-bot.com/viewforum.php?f=6

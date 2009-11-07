@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!@.]money/Si:#: { 
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $equipment($nick) $clan($nick)
     if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
