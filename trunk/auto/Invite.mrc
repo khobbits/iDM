@@ -72,7 +72,7 @@ on *:JOIN:#:{
     }
   }
   else {
-    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) {
+    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,#,32)) {
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
@@ -91,7 +91,7 @@ on *:JOIN:#:{
 }
 
 alias limit5 {
-  if ($istok(#idm #idm.staff #idm.support #tank #istake,$1,32)) { halt }
+  if ($istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
   if ($nick($1,0) < 5) { msg $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msg $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]

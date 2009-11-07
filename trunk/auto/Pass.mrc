@@ -5,7 +5,7 @@ on *:TEXT:logout*:?: msgunauth $nick $address $2-
 alias msgauth {
   if ($3) {
     if ($1 ison #idm.support) {
-      if ($db.get(user,pass,$1) == $2) {
+      if ($db.get(user,pass,$1) == $3) {
         msg +#idm.support User $1 identified to idm with his old password.
       }
       else {

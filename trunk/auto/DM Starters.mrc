@@ -89,7 +89,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       halt
     }
     notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
-    set %enddm [ $+ [ $chan ] ] 1
+    set %enddm [ $+ [ $chan ] ] %othernick
     timer 1 20 delaycancelw $chan %othernick
     timer 1 40 delaycancel $chan %othernick
 
@@ -101,7 +101,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       halt
     }
     notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
-    set %enddm [ $+ [ $chan ] ] 1
+    set %enddm [ $+ [ $chan ] ] %othernick
     timer 1 20 delaycancelw $chan %othernick
     timer 1 40 delaycancel $chan %othernick
   }
@@ -121,7 +121,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
 }
 
 alias delaycancel {
-  if (%enddm [ $+ [ $1 ] ] == 1) {
+  if (%enddm [ $+ [ $1 ] ] == $2) {
     cancel $1
     msg $1 $logo(DM) The DM has ended due to timeout.
     var %oldmoney = $db.get(user,money,$2)

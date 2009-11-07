@@ -338,3 +338,26 @@
 6/11 15:01:51 werr4560 got !enddm'd on #werr4560 oldcash 4699845942 newcash 4676346713
 6/11 15:07:54 norsk parted channel #iBOOM during a dm oldcash 22497682 penalty 449954
 6/11 15:30:00 po_ke_n_die got !enddm'd on #iDM oldcash 5158422859 newcash 5132630745
+6/11 16:21:20 nintyniner90 got !enddm'd on #tank oldcash 606799457 newcash 603765460
+6/11 16:41:07 {mark} got !enddm'd on #istake oldcash 8918601573 newcash 8874008566
+6/11 17:10:04 Riddlerforce got !enddm'd on #d2jsp oldcash 190625762 newcash 189672634
+6/11 17:37:54 Dudman got !enddm'd on #tank oldcash 4454206715 newcash 4431935682
+6/11 17:38:40 mike_tennis0 got !enddm'd on #lostsouls oldcash 989889975 newcash 984940526
+6/11 17:54:31 Dudman got !enddm'd on #iDM.Elites oldcash 4435307125 newcash 4413130590
+6/11 18:06:06 ChickenNugget parted channel #tds during a dm oldcash 985628413 penalty 19712569
+6/11 18:10:07 TearbeaR parted channel #iDM.Newbies during a dm oldcash 998104729 penalty 19962095
+6/11 18:55:04 {mark} got !enddm'd on #iDM.Elites oldcash 8969499935 newcash 8924652436
+6/11 19:09:23 [EOP]Ari|Visage got !enddm'd on #alching oldcash 274456028 newcash 273083748
+6/11 19:14:10 [MM]Shane got !enddm'd on #dm.arena oldcash 1870722745 newcash 1861369132
+6/11 19:33:25 Nand0 got !enddm'd on #no_life_unit oldcash 36923154 newcash 36738539
+6/11 19:42:28 zink310sk8r got !enddm'd on #pure_hatred oldcash 6647831038 newcash 6614591883
+6/11 19:54:47 Choas247 got !enddm'd on #Dm.newbies oldcash 2561420293 newcash 2548613192
+6/11 19:59:52 Tarfiti got !enddm'd on #noobz oldcash 2176271039 newcash 2165389684
+6/11 20:02:17 Ace_Mak got !enddm'd on #world97 oldcash 2225393775 newcash 2214266807
+6/11 20:27:46 l0l_24_7_52 parted channel #dmerking during a dm oldcash 846853473 penalty 16937070
+6/11 20:47:56 Matttmannnn2 parted channel #Dm.newbies during a dm oldcash 553778735 penalty 11075575
+6/11 20:58:35 kyzza3 parted channel #yahoo during a dm oldcash 1838804365 penalty 36776088
+6/11 21:25:49 Eco_worrior5 got !enddm'd on #divineterror oldcash 2842350232 newcash 2828138481
+6/11 21:30:09 ins4ne got !enddm'd on #tank oldcash 5275752246 newcash 5249373485
+6/11 21:32:37 {mark} got !enddm'd on #iDM.Elites oldcash 9119843992 newcash 9074244773
+6/11 21:38:53 {mark} got !enddm'd on #iDM.Elites oldcash 9125046561 newcash 9079421329
