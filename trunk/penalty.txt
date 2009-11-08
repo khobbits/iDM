@@ -571,3 +571,7 @@
 8/11 16:56:03 Acemyster parted channel #spiritz during a dm oldcash 699174497 penalty 13983490
 8/11 17:27:35 w0ble_o0wner got !enddm'd on #Dm.newbies oldcash 1317325671 newcash 1310739043
 8/11 17:27:39 mageman162 got !enddm'd on #I_D_clan oldcash 364384503 newcash 362562581
+8/11 17:31:47 w0ble_o0wner got !enddm'd on #Dm.newbies oldcash 1310739043 newcash 1304185348
+8/11 17:33:00 `Drew got !enddm'd on #atrocity oldcash 437367017 newcash 435180182
+8/11 17:36:06 Astrapios got !enddm'd on #TRR-Games oldcash 69495382 newcash 69147906
+8/11 17:38:37 dragonacher9 parted channel #spiritz during a dm oldcash 277139071 penalty 5542782

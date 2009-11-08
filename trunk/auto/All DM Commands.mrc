@@ -29,7 +29,7 @@ on $*:TEXT:/^[!.]/Si:#: {
           notice $nick You don't have this weapon.
           halt
         }
-        db.set equip_pvp $3 $1 - 1
+        db.set equip_pvp $nick $1 - 1
       }
       if ($isweapon($replace($right($1,-1),surf,mudkip))) {
         if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) < 1) {
