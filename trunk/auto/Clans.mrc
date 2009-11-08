@@ -19,6 +19,7 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   $iif($address($2,2),notice $2,ms send $2) You have been kicked from your iDM clan by $nick $+ .
   delclanmember $2
 }
+
 on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -36,6 +37,7 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
 }
+
 on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -50,6 +52,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]
 }
+
 on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -63,6 +66,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   createclan $remove($2,$chr(36),$chr(37)) $nick
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
 }
+
 on $*:TEXT:/^[!@.]leave$/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -76,6 +80,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
   notice $nick $logo(CLAN) You've left your clan $s2(%clanname) $+ .
   delclanmember $nick
 }
+
 on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -93,6 +98,7 @@ on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
     db.set clantracker share %clanname 0
   }
 }
+
 on $*:TEXT:/^[!@.]dmclan/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) { var %nick = $nick }
@@ -142,9 +148,7 @@ alias clanstats {
 alias createclan {
   ; $1 = Clanname
   ; $2 = Ownername
-  if ($2) {
-    writeini clan.ini $1 $2 owner
-  }
+  if ($2) writeini clan.ini $1 $2 owner
 }
 
 alias deleteclan {
@@ -158,9 +162,7 @@ alias deleteclan {
 alias addclanmember {
   ; $1 = Clanname
   ; $2 = Membername
-  if ($2) {
-    writeini clan.ini $1 $2 member
-  }
+  if ($2) writeini clan.ini $1 $2 member
 }
 
 alias delclanmember {
@@ -192,16 +194,12 @@ alias isclanowner {
   ; $2 = [optional] Clanname
   if ($2) {
     var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1) AND c1 = $db.safe($2)
-    if ($db.select(%sql, c3) == owner) {
-      return 1
-    }
+    if ($db.select(%sql, c3) == owner) return 1
     return 0
   }
   elseif ($1) {
     var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)
-    if ($db.select(%sql, c3) == owner) {
-      return 1
-    }
+    if ($db.select(%sql, c3) == owner) return 1
     return 0
   }
 }

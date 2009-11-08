@@ -36,3 +36,4 @@ on *:DISCONNECT: {
   remini status.ini currentdm
   db.clear user login
 }
+
