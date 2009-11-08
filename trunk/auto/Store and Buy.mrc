@@ -89,6 +89,15 @@ alias buyprice {
   return %price
 }
 
+alias storename {
+  if ($storematch($1-) != 0) {
+    return $gettok($v1,4-,32)
+  }
+  else {
+    return $null
+  }
+}
+
 alias storematch {
   tokenize 32 - $1
   if ($regex($2-,/^void(\s|-)?range$/Si)) {

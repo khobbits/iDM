@@ -168,30 +168,30 @@ alias max {
     ;Normal Voidrange_or_Accumulator Both
     var %dmg = $maxdmg(r, $2, 3)
     if (%dmg == $null) { return }
-    return %dmg $calc(%dmg +5) $calc(%dmg +10)
+    else return %dmg $calc(%dmg +5) $calc(%dmg +10)
   }
   elseif ($1 == ma) {
     ;Mage
     ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
     var %dmg = $maxdmg(ma, $2, 3)
     if (%dmg == $null) { return }
-    return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
+    else return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
   }
   elseif ($1 == m) {
     ;Melee
     ;Normal Barrowgloves Firecape Both
     var %dmg = $maxdmg(m, $2, 3)
     if (%dmg == $null) { return }
-    if ($2 == surf) return %dmg %dmg %dmg %dmg
-    if ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    if ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    if ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
-    if ($2 == dclaws) return $dclawsdmg(%dmg,0) $dclawsdmg(%dmg,3) $dclawsdmg(%dmg,5) $dclawsdmg(%dmg,8)
-    if ($2 == dh) {
+    elseif ($2 == surf) return %dmg %dmg %dmg %dmg
+    elseif ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == dclaws) return $dclawsdmg(%dmg,0) $dclawsdmg(%dmg,3) $dclawsdmg(%dmg,5) $dclawsdmg(%dmg,8)
+    elseif ($2 == dh) {
       var %dmg2 = $maxdmg(m, dh9, 3)
       return $+(%dmg,/,%dmg2) $+($calc(%dmg +3),/,$calc(%dmg2 +3)) $+($calc(%dmg +5),/,$calc(%dmg2 +5)) $+($calc(%dmg +8),/,$calc(%dmg2 +8))
     }
-    return %dmg $calc(%dmg +3) $calc(%dmg +5) $calc(%dmg +8)
+    else return %dmg $calc(%dmg +3) $calc(%dmg +5) $calc(%dmg +8)
   }
 }
 
@@ -206,41 +206,73 @@ alias dclawsdmg {
 
 alias specused {
   if ($1 == dbow) return 75
-  if ($1 == mjavelin) return 25
-  if ($1 == dds) return 25
-  if ($1 == ags) return 50
-  if ($1 == bgs) return 100
-  if ($1 == sgs) return 50
-  if ($1 == zgs) return 50
-  if ($1 == gmaul) return 100
-  if ($1 == dclaws) return 50
-  if ($1 == dmace) return 50
-  if ($1 == dhally) return 75
-  if ($1 == dlong) return 25
-  if ($1 == vlong) return 50
-  if ($1 == vspear) return 50
-  if ($1 == statius) return 100
-  return $false
+  elseif ($1 == mjavelin) return 25
+  elseif ($1 == dds) return 25
+  elseif ($1 == ags) return 50
+  elseif ($1 == bgs) return 100
+  elseif ($1 == sgs) return 50
+  elseif ($1 == zgs) return 50
+  elseif ($1 == gmaul) return 100
+  elseif ($1 == dclaws) return 50
+  elseif ($1 == dmace) return 50
+  elseif ($1 == dhally) return 75
+  elseif ($1 == dlong) return 25
+  elseif ($1 == vlong) return 50
+  elseif ($1 == vspear) return 50
+  elseif ($1 == statius) return 100
+  else return $false
 }
 
 alias bonus {
   if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 50-69 $+ $chr(44) void or accumulator required
-  if ($1 == ice) return 1/3 Chance of freezing your opponent for one turn
-  if ($1 == blood) return Heals 1/3 of whatever you hit
-  if ($1 == dds) return 1/3 Chance of poisoning opponent
-  if ($1 == sgs) return Heals 1/2 of whatever you hit
-  if ($1 == zgs) return 1/2 Chance of freezing your opponent for one turn
-  if ($1 == vlong) return Ignores all defence bonuses
-  if ($1 == vspear) return Freezes your opponent for one turn
-  if ($1 == guth) return 1/3 Chance of healing whatever you hit
-  if ($1 == statius) return Ignores all defence bonuses
-  if ($1 == surf) return Highly accurate and ignores all defence bonuses
-  if ($1 == smoke) return 1/2 Chance of poisoning opponent
-  if ($1 == onyx) return Heals 1/3 of whatever you hit
+  elseif ($1 == ice) return 1/3 Chance of freezing your opponent for one turn
+  elseif ($1 == blood) return Heals 1/3 of whatever you hit
+  elseif ($1 == dds) return 1/3 Chance of poisoning opponent
+  elseif ($1 == sgs) return Heals 1/2 of whatever you hit
+  elseif ($1 == zgs) return 1/2 Chance of freezing your opponent for one turn
+  elseif ($1 == vlong) return Ignores all defence bonuses
+  elseif ($1 == vspear) return Freezes your opponent for one turn
+  elseif ($1 == guth) return 1/3 Chance of healing whatever you hit
+  elseif ($1 == statius) return Ignores all defence bonuses
+  elseif ($1 == surf) return Highly accurate and ignores all defence bonuses
+  elseif ($1 == smoke) return 1/2 Chance of poisoning opponent
+  elseif ($1 == onyx) return Heals 1/3 of whatever you hit
 }
 
 alias doeswhat {
-  return hits
+  if ($1 == cbow) var %msg shoots a dragon bolt at
+  elseif ($1 == vlong) var %msg slashes at
+  elseif ($1 == vspear)  var %msg 12freezes
+  elseif ($1 == statius) var %msg critically injures
+  elseif ($1 == mjavelin) var %msg impales
+  elseif ($1 == sgs) var %msg crushes
+  elseif ($1 == ags) var %msg spins around and slashes at
+  elseif ($1 == zgs) var %msg attempts to freeze
+  elseif ($1 == bgs) var %msg crushes
+  elseif ($1 == guth) var %msg slashes at
+  elseif ($1 == blood) var %msg casts at
+  elseif ($1 == ice) var %msg casts at
+  elseif ($1 == smoke) var %msg casts at
+  elseif ($1 == dbow) var %msg fires two dragon arrows towards
+  elseif ($1 == whip) var %msg slashes
+  elseif ($1 == dds) var %msg stabs
+  elseif ($1 == dclaws) var %msg scratches
+  elseif ($1 == surf) var %msg uses surf on
+  elseif ($1 == gmaul) var %msg whacks at
+  elseif ($1 == dh) var %msg crushes
+  elseif ($1 == dscim) var %msg slices
+  elseif ($1 == dlong) var %msg stabs
+  elseif ($1 == dmace) var %msg crushes
+  elseif ($1 == dhally) var %msg slashes
+  elseif ($1 == onyx) var %msg fires at
+  return %msg
+}
+
+alias splasher {
+  if ($1 == ice) return 1
+  elseif ($1 == blood) return 1
+  elseif ($1 == smoke) return 1
+  else return 0
 }
 
 alias attack {
@@ -271,24 +303,24 @@ alias isweapon {
 alias freezer {
   ;The number is the chance of it freezing (Ice is 1/3).
   if ($1 == ice) return 3
-  if ($1 == vspear) return 1
-  if ($1 == zgs) return 2
-  return $false
+  elseif ($1 == vspear) return 1
+  elseif ($1 == zgs) return 2
+  else return $false
 }
 alias healer {
   ;The first number is the chance of it healing (Sgs is 1/1).
   ;The second number is how much is heals (Sgs heals 1/2).
   if ($1 == guth) return 3 1
-  if ($1 == sgs) return 1 2
-  if ($1 == blood) return 1 3
-  if ($1 == onyx) return 2 3
-  return $false
+  elseif ($1 == sgs) return 1 2
+  elseif ($1 == blood) return 1 3
+  elseif ($1 == onyx) return 2 3
+  else return $false
 }
 alias poisoner {
   ;The number is the chance of it poisoning (Dds is 1/3).
   if ($1 == dds) return 3
-  if ($1 == smoke) return 2
-  return $false
+  elseif ($1 == smoke) return 2
+  else return $false
 }
 alias c124 {
   return $chr(124)

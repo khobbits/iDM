@@ -60,6 +60,23 @@ alias damage {
     var %hit $hit($3,$1,$2,$4)
   }
 
+  var %msg $logo(DM) $s1($1)
+
+  if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
+    var %msg %msg 5UNLEASHES a dragon bolt special on
+    unset %cbowspec [ $+ [ $1 ] ]
+  } else {
+    var %msg %msg $doeswhat($3)
+  }
+ var %msg %msg $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) with their $storename($2)
+
+ if ($splasher($3)) {
+  var %msg %msg hitting $s2(%hit)
+ }
+ else {
+ var %msg %msg and splashed
+ }
+
   var %i = 1
   while (%i <= $numtok(%hit,32)) {
     var %hitdmg $gettok(%hit,%i,32)
@@ -79,19 +96,22 @@ alias damage {
   unset $+(%,frozen,$1)
   if ($freezer($3)) {
     var %freeze $r(1,$v1)
-  }
-  if (%freeze == 1) {
-    if (%hitdmg >= 1) {
-      set $+(%,frozen,$2) on
-      notice $2 You have been frozen and can't use melee!
-    }
+    if ((%freeze == 1) && (%hitdmg >= 1)) {
+        set $+(%,frozen,$2) on
+        notice $2 You have been frozen and can't use melee!
+	 var %msg %msg and successfully 12FROZE them
+      }
+      else {
+      var %msg %msg but failed to freeze them
+      }
   }
 
   if ($gettok($healer($3),1,32)) {
     var %heal $r(1,$v1)
-  }
-  if (%heal == 1) {
-    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+    if (%heal == 1) {
+      $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+      var %msg %msg 09HEALING
+    }
   }
 
   if ($poisoner($3)) {
@@ -110,36 +130,6 @@ alias damage {
   elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
   elseif ($max(r,$3)) { set %laststyle [ $+ [ $4 ] ] range }
 
-  var %msg $logo(DM) $s1($1)
-
-  if ($3 == cbow) {
-    var %msg %msg $iif(%cbowspec [ $+ [ $1 ] ],5UNLEASHES a dragon bolt special on,shoots a dragon bolt at) $s1($replace($2,$chr(58),$chr(32))) with a rune c'bow, hitting $s2(%hit)
-    unset %cbowspec [ $+ [ $1 ] ]
-  }
-  elseif ($3 == vlong) var %msg %msg slashes their Vesta's longsword at $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) hitting $s2(%hit)
-  elseif ($3 == vspear)  var %msg %msg 12freezes $s1($replace($2,$chr(58),$chr(32))) using a Vesta's spear, and hits $s2(%hit)
-  elseif ($3 == statius) var %msg %msg critically injures $s1($replace($2,$chr(58),$chr(32))) with a Statius's warhammer, hitting $s2(%hit)
-  elseif ($3 == mjavelin) var %msg %msg throws a Morrigan's javelin at $s1($replace($2,$chr(58),$chr(32))) hitting $s2(%hit)
-  elseif ($3 == sgs) var %msg %msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
-  elseif ($3 == ags) var %msg %msg spins around and slashes at $s1($replace($2,$chr(58),$chr(32))) with an Armadyl godsword, speccing $s2(%hit)
-  elseif ($3 == zgs) var %msg %msg attempts to freeze $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,and successfully 12FROZE them,but failed to) $+ $chr(44) hitting $s2(%hit)
-  elseif ($3 == bgs) var %msg %msg crushes their godsword down on $s1($replace($2,$chr(58),$chr(32))) and hit $s2(%hit)
-  elseif ($3 == guth) var %msg %msg $iif(%heal == 1,09HEALS on,fails to heal on) $s1($replace($2,$chr(58),$chr(32))) $iif(%heal == 1,and hits,but hits) $s2(%hit)
-  elseif ($3 == blood) var %msg %msg casts 05blood barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),hitting $s2(%hit))
-  elseif ($3 == ice) var %msg %msg casts 12ice barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%freeze == 1,(12FROZEN)) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),surrounding them in an ice cube $+ $chr(44) hitting $s2(%hit))
-  elseif ($3 == smoke) var %msg %msg casts 14smoke barrage on $s1($replace($2,$chr(58),$chr(32))) $iif(%hit == 0, and splashed $+ $iif(!%extra,.),hitting $s2(%hit))
-  elseif ($3 == dbow) var %msg %msg fires two dragon arrows towards $s1($replace($2,$chr(58),$chr(32))) $+ , speccing  $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
-  elseif ($3 == whip) var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their abyssal whip, hitting $s2(%hit)
-  elseif ($3 == dds) var %msg %msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon dagger, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
-  elseif ($3 == dclaws) var %msg %msg scratches $s1($replace($2,$chr(58),$chr(32))) with their dragon claws, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32)) - $s2($gettok(%hit,4,32))
-  elseif ($3 == surf) var %msg %msg summons their mudkip, surfing at $s1($replace($2,$chr(58),$chr(32))) $+ , hitting $s2(%hit)
-  elseif ($3 == gmaul) var %msg %msg whacks $s1($replace($2,$chr(58),$chr(32))) with their granite maul, speccing $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32)) - $s2($gettok(%hit,3,32))
-  elseif ($3 == dh) var %msg %msg crushes $s1($replace($2,$chr(58),$chr(32))) with their great axe, and hit $s2(%hit)
-  elseif ($3 == dscim) var %msg %msg slices $s1($replace($2,$chr(58),$chr(32))) with their dragon scimitar, hitting $s2(%hit)
-  elseif ($3 == dlong) var %msg %msg stabs $s1($replace($2,$chr(58),$chr(32))) with a dragon longsword, hitting $s2(%hit)
-  elseif ($3 == dmace) var %msg %msg crushes $s1($replace($2,$chr(58),$chr(32))) with a dragon mace, hitting $s2(%hit)
-  elseif ($3 == dhally) var %msg %msg slashes $s1($replace($2,$chr(58),$chr(32))) with their dragon halberd, hitting $s2($gettok(%hit,1,32)) - $s2($gettok(%hit,2,32))
-  elseif ($3 == onyx) var %msg %msg shoots $s1($replace($2,$chr(58),$chr(32))) with an onyx bolt, $iif(%heal == 1,09HEALING and) hitting a $s2(%hit)
 
   if (%extra) {
     var %msg %msg $+ $iif(%extra, $chr(32) - 03 $+ $v1 $+  $+) $+ .
