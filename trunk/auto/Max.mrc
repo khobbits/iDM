@@ -222,6 +222,7 @@ alias specused {
   if ($1 == statius) return 100
   return $false
 }
+
 alias bonus {
   if ($1 == cbow) return 3 $+ $chr(37) chance of hitting 50-69 $+ $chr(44) void or accumulator required
   if ($1 == ice) return 1/3 Chance of freezing your opponent for one turn
@@ -237,11 +238,36 @@ alias bonus {
   if ($1 == smoke) return 1/2 Chance of poisoning opponent
   if ($1 == onyx) return Heals 1/3 of whatever you hit
 }
+
+alias doeswhat {
+  return hits
+}
+
 alias attack {
   if ($istok(cslap whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
     return $true
   }
 }
+
+alias ispvp {
+  if ($1 == mjavelin) return 1
+  elseif ($1 == statius) return 1
+  elseif ($1 == vlong) return 1
+  elseif ($1 == vspear) return 1
+  else return 0
+}
+
+alias isweapon {
+  if ($1 == ags) return 1
+  elseif ($1 == bgs) return 1
+  elseif ($1 == mudkip) return 1
+  elseif ($1 == sgs) return 1
+  elseif ($1 == zgs) return 1
+  elseif ($1 == dclaws) return 1
+  else return 0
+}
+
+
 alias freezer {
   ;The number is the chance of it freezing (Ice is 1/3).
   if ($1 == ice) return 3

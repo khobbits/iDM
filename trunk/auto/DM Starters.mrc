@@ -140,24 +140,6 @@ alias delaycancelw {
   }
 }
 
-alias hpbar {
-  if ($istok($npcs,$2,32)) {
-    if (-* iswm $1) {
-      tokenize 32 0
-    }
-    if ($1 > 400) {
-      tokenize 32 400
-    }
-    return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /20))),$str($+(04,$chr(44),04,.),$ceil($calc((400- $1 ) /20)))) $+ 
-  }
-  if (-* iswm $1) {
-    tokenize 32 0
-  }
-  if ($1 > 99) {
-    tokenize 32 99
-  }
-  return $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /5))),$str($+(04,$chr(44),04,.),$floor($calc((99- $1 ) /5)))) $+ 
-}
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%p2 [ $+ [ $chan ] ]) {
