@@ -591,3 +591,7 @@
 8/11 19:27:28 jjd19892007 got !enddm'd on #mont oldcash 845645595 newcash 841417368
 8/11 19:54:44 Imu parted channel #tank during a dm oldcash 2050423224 penalty 41008465
 8/11 20:14:10 cheetopuff77 parted channel #Dm.newbies during a dm oldcash 148442039 penalty 2968841
+8/11 20:34:30 Millsy got !enddm'd on #nignog oldcash 17452814 newcash 17365550
+8/11 20:43:54 Millsy got !enddm'd on #nignog oldcash 43238584 newcash 43022392
+8/11 20:57:56 Runearquero got !enddm'd on #ha-ha oldcash 585770112 newcash 582841262
+8/11 20:58:07 brandonn parted channel #cwhearts during a dm oldcash 194178385 penalty 3883568

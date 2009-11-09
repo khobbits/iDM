@@ -39,13 +39,13 @@ on *:PART:#: {
     remini OnOff.ini #
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    db.set user money %p1 [ $+ [ $chan  ] ] $ceil($calc($+(%,stake,#) / 2) )
+    db.set user money %p1 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2) )
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    db.set user money %p2 [ $+ [ $chan  ] ] $ceil($calc($+(%,stake,#) / 2))
+    db.set user money %p2 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2))
     msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
