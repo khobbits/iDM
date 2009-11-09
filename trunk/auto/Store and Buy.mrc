@@ -150,25 +150,25 @@ alias storematch {
   }
   elseif ($2 == ags) || ($2 == armadyl) || ($2 == arma) || ($2 == arm) {
     var %sname = ags
-    var %fname = Armadyl godsword
+    var %fname = Armadyl Godsword
     var %price = 200000000
     var %table = equip_item
   }
   elseif ($2 == bgs) || ($2 == bandos) || ($2 == bando) {
     var %sname = bgs
-    var %fname = Bandos godsword
+    var %fname = Bandos Godsword
     var %price = 250000000
     var %table = equip_item
   }
   elseif ($2 == sgs) || ($2 == Sara) || ($2 == saradomin) {
     var %sname = sgs
-    var %fname = Saradomin godsword
+    var %fname = Saradomin Godsword
     var %price = 300000000
     var %table = equip_item
   }
   elseif ($2 == zgs) || ($2 == Zammy) || ($2 == zamorak) {
     var %sname = zgs
-    var %fname = Zamorak godsword
+    var %fname = Zamorak Godsword
     var %price = 200000000
     var %table = equip_item
   }

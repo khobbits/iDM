@@ -1,7 +1,8 @@
 on $*:TEXT:/^[!.]/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  var %attcmd $right($1,-1)
   if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
-    if ($right($1,-1) == specpot) {
+    if (%attcmd == specpot) {
       if ($db.get(equip_item,specpot,$nick) < 1) { notice $nick You don't have any specpots. | halt }
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
@@ -11,34 +12,34 @@ on $*:TEXT:/^[!.]/Si:#: {
       unset $+(%,frozen,$nick)
       set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
     }
-    elseif ($attack($right($1,-1))) {
+    elseif ($attack(%attcmd)) {
       if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2)) {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($.readini(onoff,$right($1,-1),#)) {
+      if ($.readini(onoff,%attcmd,#)) {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
-      if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,$right($1,-1))) {
+      if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,%attcmd)) {
         notice $nick You're frozen and can't use melee.
         halt
       }
-      if ($ispvp($right($1,-1))) {
-        if ($db.get(equip_pvp,$right($1,-1),$nick) < 1) {
+      if ($ispvp(%attcmd)) {
+        if ($db.get(equip_pvp,%attcmd,$nick) < 1) {
           notice $nick You don't have this weapon.
           halt
         }
-        db.set equip_pvp $nick $1 - 1
+        db.set equip_pvp %attcmd $nick - 1
       }
-      if ($isweapon($replace($right($1,-1),surf,mudkip))) {
-        if ($db.get(equip_item,$replace($right($1,-1),surf,mudkip),$nick) < 1) {
+      if ($isweapon($replace(%attcmd,surf,mudkip))) {
+        if ($db.get(equip_item,$replace(%attcmd,surf,mudkip),$nick) < 1) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
       }
       set -u25 %enddm [ $+ [ $chan ] ] 0
-      damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) $right($1,-1) #
+      damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) %attcmd #
     }
   }
 }
@@ -60,57 +61,67 @@ alias damage {
     var %hit $hit($3,$1,$2,$4)
   }
 
-  var %msg $logo(DM) $s1($1)
-
-  if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
-    var %msg %msg 5UNLEASHES a dragon bolt special on
-    unset %cbowspec [ $+ [ $1 ] ]
-  } else {
-    var %msg %msg $doeswhat($3)
-  }
- var %msg %msg $s1($replace($2,$chr(58),$chr(32))) $+ $chr(44) with their $storename($2)
-
- if ($splasher($3)) {
-  var %msg %msg hitting $s2(%hit)
- }
- else {
- var %msg %msg and splashed
- }
-
   var %i = 1
+  var %hitshow 
   while (%i <= $numtok(%hit,32)) {
+    if (%i != 1) var %hitshow %hitshow -
     var %hitdmg $gettok(%hit,%i,32)
     if (%hp2 == 0) {
       var %hit $puttok(%hit,KO,%i,32)
+      var %hitshow %hitshow 4KO
     }
     elseif (%hp2 <= %hitdmg) {
       var %hit $puttok(%hit,%hp2,%i,32)
+      var %hitshow %hitshow $s2(%hp2)
       set %hp2 0
     }
     else {
       dec %hp2 %hitdmg
+      var %hitshow %hitshow $s2(%hitdmg)
     }
     inc %i
+  }
+  var %msg $logo(DM) $s1($1)
+
+  if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
+    var %msg %msg 5UNLEASHES a dragon bolt special on $s1($replace($2,$chr(58),$chr(32)))
+    unset %cbowspec [ $+ [ $1 ] ]
+  } 
+  else {
+    var %msg %msg $doeswhat($3) $s1($replace($2,$chr(58),$chr(32)))
+  }
+
+
+  if ($splasher($3)) {
+    if (%hitdmg == 0) {
+      var %msg %msg using $attackname($3) and splashed
+    }
+    else {
+      var %msg %msg using $attackname($3) hitting %hitshow
+    }
+  }
+  else {
+    var %msg %msg with their $attackname($3) hitting %hitshow
   }
 
   unset $+(%,frozen,$1)
   if ($freezer($3)) {
     var %freeze $r(1,$v1)
     if ((%freeze == 1) && (%hitdmg >= 1)) {
-        set $+(%,frozen,$2) on
-        notice $2 You have been frozen and can't use melee!
-	 var %msg %msg and successfully 12FROZE them
-      }
-      else {
+      set $+(%,frozen,$2) on
+      notice $2 You have been frozen and can't use melee!
+      var %msg %msg and successfully 12FROZE them
+    }
+    else {
       var %msg %msg but failed to freeze them
-      }
+    }
   }
 
   if ($gettok($healer($3),1,32)) {
     var %heal $r(1,$v1)
     if (%heal == 1) {
       $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
-      var %msg %msg 09HEALING
+      var %msg %msg and 09HEALING
     }
   }
 
@@ -124,28 +135,21 @@ alias damage {
     var %extra $iif(%hp2 < $($+(%,pois,$player($2,$4),$4),2),$v1,$v2)
     dec $+(%,pois,$player($2,$4),$4)
     dec %hp2 %extra
+    var %msg %msg - 03 $+ %extra $+ 
   }
+
+  if (%heal == 1) {
+    var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $hpbar(%hp1)
+  }
+  else {
+    var %msg %msg $+ . $hpbar(%hp2)
+  }
+
+  msg $4 %msg 
 
   if ($max(m,$3)) { set %laststyle [ $+ [ $4 ] ] melee }
   elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
   elseif ($max(r,$3)) { set %laststyle [ $+ [ $4 ] ] range }
-
-
-  if (%extra) {
-    var %msg %msg $+ $iif(%extra, $chr(32) - 03 $+ $v1 $+  $+) $+ .
-  }
-  else {
-    var %msg %msg $+ .
-  }
-
-  if (%heal == 1) {
-    var %msg %msg $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $hpbar(%hp1)
-  }
-  else {
-    var %msg %msg $hpbar(%hp2)
-  }
-
-  msg $4 %msg
 
   if ($specused($3)) {
     dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)

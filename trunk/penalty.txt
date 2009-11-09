@@ -575,3 +575,19 @@
 8/11 17:33:00 `Drew got !enddm'd on #atrocity oldcash 437367017 newcash 435180182
 8/11 17:36:06 Astrapios got !enddm'd on #TRR-Games oldcash 69495382 newcash 69147906
 8/11 17:38:37 dragonacher9 parted channel #spiritz during a dm oldcash 277139071 penalty 5542782
+8/11 17:56:50 lil_fred got !enddm'd on #Dm.newbies oldcash 152518853329 newcash 151756259063
+8/11 18:12:42 Yao parted channel #gzf during a dm oldcash 197082228 penalty 3941645
+8/11 18:25:23 Nikemsd got !enddm'd on #mont oldcash 1245730184 newcash 1239501534
+8/11 18:34:04 Bradrin parted channel #rach during a dm oldcash 255769056 penalty 5115382
+8/11 18:41:21 `Kelly| got !enddm'd on #ZerkMe oldcash 1018564092 newcash 1013471272
+8/11 18:44:28 Fatal got !enddm'd on #iDM oldcash 648023969 newcash 644783850
+8/11 18:48:00 zink310sk8r got !enddm'd on #tank oldcash 10680982820 newcash 10627577906
+8/11 18:58:06 kyzza3 got !enddm'd on #yahoo oldcash 2355763304 newcash 2343984488
+8/11 18:59:41 purexstr196 parted channel #Dm.newbies during a dm oldcash 62965024 penalty 1259301
+8/11 19:01:26 zink310sk8r parted channel #Dm.newbies during a dm oldcash 10633301506 penalty 212666031
+8/11 19:07:38 [MM]jose-looklook-win got !enddm'd on #Vitality oldcash 43133280 newcash 42917614
+8/11 19:07:53 Tigerg100000 got !enddm'd on #br-dm oldcash 32298452 newcash 32136960
+8/11 19:19:26 I_ArE_MiKeY got !enddm'd on #br-dm oldcash 6514296 newcash 6481725
+8/11 19:27:28 jjd19892007 got !enddm'd on #mont oldcash 845645595 newcash 841417368
+8/11 19:54:44 Imu parted channel #tank during a dm oldcash 2050423224 penalty 41008465
+8/11 20:14:10 cheetopuff77 parted channel #Dm.newbies during a dm oldcash 148442039 penalty 2968841

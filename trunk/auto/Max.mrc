@@ -242,14 +242,14 @@ alias bonus {
 alias doeswhat {
   if ($1 == cbow) var %msg shoots a dragon bolt at
   elseif ($1 == vlong) var %msg slashes at
-  elseif ($1 == vspear)  var %msg 12freezes
+  elseif ($1 == vspear)  var %msg swipes
   elseif ($1 == statius) var %msg critically injures
   elseif ($1 == mjavelin) var %msg impales
   elseif ($1 == sgs) var %msg crushes
   elseif ($1 == ags) var %msg spins around and slashes at
-  elseif ($1 == zgs) var %msg attempts to freeze
+  elseif ($1 == zgs) var %msg splits
   elseif ($1 == bgs) var %msg crushes
-  elseif ($1 == guth) var %msg slashes at
+  elseif ($1 == guth) var %msg stabs at
   elseif ($1 == blood) var %msg casts at
   elseif ($1 == ice) var %msg casts at
   elseif ($1 == smoke) var %msg casts at
@@ -262,8 +262,8 @@ alias doeswhat {
   elseif ($1 == dh) var %msg crushes
   elseif ($1 == dscim) var %msg slices
   elseif ($1 == dlong) var %msg stabs
-  elseif ($1 == dmace) var %msg crushes
-  elseif ($1 == dhally) var %msg slashes
+  elseif ($1 == dmace) var %msg smashes
+  elseif ($1 == dhally) var %msg swipes
   elseif ($1 == onyx) var %msg fires at
   return %msg
 }
@@ -276,9 +276,34 @@ alias splasher {
 }
 
 alias attack {
-  if ($istok(cslap whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
+  if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
     return $true
   }
+}
+
+alias attackname {
+  if ($storename($1)) return $v1
+  elseif ($1 == whip) return Abyssal Whip
+  elseif ($1 == dds) return Dragon Dagger
+  elseif ($1 == dh) return Dharok's Greataxe
+  elseif ($1 == gmaul) return Granite Maul
+  elseif ($1 == guth) return Guthan's Warspear
+  elseif ($1 == surf) return Mudkip
+  elseif ($1 == dmace) return Dragon Mace
+  elseif ($1 == dhally) return Dragon Halberd
+  elseif ($1 == dscim) return Dragon Scimitar
+  elseif ($1 == dlong) return Dragon Longsword
+  elseif ($1 == cbow) return Crossbow
+  elseif ($1 == dbow) return Dark Bow
+  elseif ($1 == ice) return Ice Barrage
+  elseif ($1 == blood) return Blood Barrage
+  elseif ($1 == smoke) return Smoke Barrage
+  elseif ($1 == onyx) return Onyx Bolt
+  elseif ($1 == vspear) return Vesta's Spear
+  elseif ($1 == vlong) return Vesta's Longsword
+  elseif ($1 == statius) return Statius's Warhammer
+  elseif ($1 == mjavelin) return Morrigan's Javelin
+  else return $null 
 }
 
 alias ispvp {

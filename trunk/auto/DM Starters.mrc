@@ -135,7 +135,7 @@ alias delaycancel {
 }
 
 alias delaycancelw {
-  if (%enddm [ $+ [ $1 ] ] == 1) {
+  if (%enddm [ $+ [ $1 ] ] == $2) {
     msg $1 $logo(DM) The DM will end in 20s if $2 does not make a move.
   }
 }
