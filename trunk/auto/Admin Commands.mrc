@@ -22,40 +22,40 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
 }
 
 on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff: {
-	tokenize 32 $remove($1-,$chr(36),$chr(37))
-	if ($db.get(admins,position,$address($nick,3))) {
-		if (ignore isin $1) {
-			var %table ignore
-			if (?r* iswm $1) { ignore -r $2	}
-			elseif (?c* !iswm $1) {	ignore $2 }
-		}
-		elseif (bl isin $1) {
-			var %table blist
-			if (?r* !iswm $1) && (?c* !iswm $1) {
-				if (#* !iswm $2) { notice $nick Syntax !(bl) (channel) }
-				part $2 This channel has been blacklisted
-			}
-		}
-		if ($me == iDM) {
-			if (?c* iswm $1) {
-				if (!$2) { notice $nick Syntax !c(ignore|bl) (channel|username|host) }
-				var %who $db.get(%table,who,$2)
-				var %time $db.get(%table,time,$2)
-				var %reason $db.get(%table,reason,$2)
-				notice $nick who %who time %time reason %reason
-			}
-			elseif (?r* iswm $1) {
-				db.remove %table $2
-				notice $nick $2 removed from %table
-			}
-			else {
-				if (!$3) { notice $nick Syntax !c(ignore|bl) (channel|username|host) (reason) }
-				db.set %table who $2 $nick
-				db.set %table reason $3-
-				notice $nick $2 added to %table
-			}
-		}
-	}
+        tokenize 32 $remove($1-,$chr(36),$chr(37))
+        if ($db.get(admins,position,$address($nick,3))) {
+                if (ignore isin $1) {
+                        var %table ignore
+                        if (?r* iswm $1) { ignore -r $2 }
+                        elseif (?c* !iswm $1) { ignore $2 }
+                }
+                elseif (bl isin $1) {
+                        var %table blist
+                        if (?r* !iswm $1) && (?c* !iswm $1) {
+                                if (#* !iswm $2) { notice $nick Syntax !(bl) (channel) }
+                                part $2 This channel has been blacklisted
+                        }
+                }
+                if ($me == iDM) {
+                        if (?c* iswm $1) {
+                                if (!$2) { notice $nick Syntax !c(ignore|bl) (channel|username|host) }
+                                var %who $db.get(%table,who,$2)
+                                var %time $db.get(%table,time,$2)
+                                var %reason $db.get(%table,reason,$2)
+                                notice $nick who %who time %time reason %reason
+                        }
+                        elseif (?r* iswm $1) {
+                                db.remove %table $2
+                                notice $nick $2 removed from %table
+                        }
+                        else {
+                                if (!$3) { notice $nick Syntax !c(ignore|bl) (channel|username|host) (reason) }
+                                db.set %table who $2 $nick
+                                db.set %table reason $3-
+                                notice $nick $2 added to %table
+                        }
+                }
+        }
 }
 
 on $*:TEXT:/^[!.]part .*/Si:#: {
@@ -241,9 +241,9 @@ On $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
 
       }
       else {
-	return
+        return
       }
-	notice $nick $logo(Give-Item) Gave your item to $s2($2)
+        notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
   }
 }
@@ -277,7 +277,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
         db.set equip_staff support $2 0
       }
       else {
-	return
+        return
       }
         notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
