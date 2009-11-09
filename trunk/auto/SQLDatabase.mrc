@@ -120,7 +120,7 @@ alias db.remove {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if ($2 !== $null) {
-    var %sql =	DELETE FROM $db.tquote($1) WHERE user = $db.safe($2)
+    var %sql = DELETE FROM $db.tquote($1) WHERE user = $db.safe($2)
     return $db.exec(%sql)
   }
   else {

@@ -623,3 +623,6 @@
 9/11 11:45:22 FreshalaBef parted channel #Fresh during a dm oldcash 386290169 penalty 7725804
 9/11 11:48:40 dani0996 parted channel #magemare during a dm oldcash 97100803 penalty 1942017
 9/11 11:59:47 Redhorse_07 got !enddm'd on #germandm oldcash 442099105 newcash 439888610
+9/11 12:43:41 woutertje_93 got !enddm'd on #mhu oldcash 278698199 newcash 277304709
+9/11 12:54:49 ahmada0 parted channel #Dm.newbies during a dm oldcash 2956917140 penalty 59138343
+9/11 13:04:53 Rgreenrich_ got !enddm'd on #ozank oldcash 498441550 newcash 495949343
