@@ -241,18 +241,18 @@ alias bonus {
 
 alias doeswhat {
   if ($1 == cbow) var %msg shoots a dragon bolt at
-  elseif ($1 == vlong) var %msg slashes at
-  elseif ($1 == vspear)  var %msg swipes
+  elseif ($1 == vlong) var %msg thrusts towards
+  elseif ($1 == vspear)  var %msg stuns
   elseif ($1 == statius) var %msg critically injures
   elseif ($1 == mjavelin) var %msg impales
   elseif ($1 == sgs) var %msg crushes
-  elseif ($1 == ags) var %msg spins around and slashes at
-  elseif ($1 == zgs) var %msg splits
-  elseif ($1 == bgs) var %msg crushes
+  elseif ($1 == ags) var %msg whirls around and slashes at
+  elseif ($1 == zgs) var %msg cleaves
+  elseif ($1 == bgs) var %msg dismembers
   elseif ($1 == guth) var %msg stabs at
   elseif ($1 == blood) var %msg casts at
-  elseif ($1 == ice) var %msg casts at
-  elseif ($1 == smoke) var %msg casts at
+  elseif ($1 == ice) var %msg casts above
+  elseif ($1 == smoke) var %msg casts about
   elseif ($1 == dbow) var %msg fires two dragon arrows towards
   elseif ($1 == whip) var %msg slashes
   elseif ($1 == dds) var %msg stabs
@@ -260,11 +260,11 @@ alias doeswhat {
   elseif ($1 == surf) var %msg uses surf on
   elseif ($1 == gmaul) var %msg whacks at
   elseif ($1 == dh) var %msg crushes
-  elseif ($1 == dscim) var %msg slices
-  elseif ($1 == dlong) var %msg stabs
+  elseif ($1 == dscim) var %msg severs
+  elseif ($1 == dlong) var %msg hacks
   elseif ($1 == dmace) var %msg smashes
   elseif ($1 == dhally) var %msg swipes
-  elseif ($1 == onyx) var %msg fires at
+  elseif ($1 == onyx) var %msg shoots at
   return %msg
 }
 

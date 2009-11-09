@@ -110,10 +110,10 @@ alias damage {
     if ((%freeze == 1) && (%hitdmg >= 1)) {
       set $+(%,frozen,$2) on
       notice $2 You have been frozen and can't use melee!
-      var %msg %msg and successfully 12FROZE them
+      var %msg %msg and successfully 12FREEZES them
     }
     else {
-      var %msg %msg but failed to freeze them
+      var %msg %msg and fails to freeze them
     }
   }
 
