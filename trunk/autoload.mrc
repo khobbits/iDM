@@ -10,6 +10,9 @@ alias rehash {
     echo -a Unloading Script " $+ $script(%i) $+ "
     .unload -rs " $+ $script(%i) $+ "
   }
+  timer 1 1 rehash.cont
+}
+alias rehash.cont {  
   noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
   timer 1 1 rehash.end
 }
@@ -20,5 +23,5 @@ alias rehash.load {
 }
 
 alias rehash.end {
-  privmsg #idm.staff $script(0) Scripts Loaded.
+  msg #idm.staff $script(0) Scripts Loaded.
 }

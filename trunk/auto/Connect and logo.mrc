@@ -32,8 +32,4 @@ alias secondchan {
 
 on *:DISCONNECT: {
   mysql_close %db
-  unsetall
-  remini status.ini currentdm
-  db.clear user login
 }
-

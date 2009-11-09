@@ -630,3 +630,17 @@
 9/11 14:10:49 Hug0 got !enddm'd on #Dm.newbies oldcash 479761671 newcash 477362863
 9/11 14:15:05 fraz got !enddm'd on #tank oldcash 711938003 newcash 708378313
 9/11 14:49:06 pumkinpie parted channel #Tfatality during a dm oldcash 307460048 penalty 6149201
+9/11 15:17:27 rolnik_marian parted channel #iDM during a dm oldcash 6959634487 penalty 139192690
+9/11 15:21:23 lifekiller10 got !enddm'd on #Dm.newbies oldcash 377420512 newcash 375533410
+9/11 15:25:05 P_K_Shadow got !enddm'd on #Dm.newbies oldcash 375040974 newcash 373165770
+9/11 15:33:33 G0d_L0rds parted channel #magemare during a dm oldcash 121560028 penalty 2431201
+9/11 15:46:14 P_K_Shadow got !enddm'd on #Dm.newbies oldcash 375522270 newcash 373644659
+9/11 16:02:01 Telefonorm got !enddm'd on #nesser oldcash 2362941086 newcash 2351126381
+9/11 16:11:38 fraz got !enddm'd on #tank oldcash 976252271 newcash 971371010
+9/11 16:23:31 Hyun got !enddm'd on #tank oldcash 44357656657 newcash 44135868374
+9/11 16:24:23 piro3600 got !enddm'd on #olc oldcash 656312270 newcash 653030709
+9/11 16:40:04 Fab parted channel #OUTLAWZ during a dm oldcash 50313646 penalty 1006273
+9/11 16:56:06 w0ble_o0wner got !enddm'd on #idm oldcash 3097834030 newcash 3082344860
+9/11 16:58:23 Alex_Rider07 parted channel #Rider during a dm oldcash 57011100 penalty 1140222
+9/11 17:05:04 `13_Dragon_1 got !enddm'd on #world129 oldcash 1213585756 newcash 1207517828
+9/11 17:18:25 meghan parted channel #world129 during a dm oldcash 795581722 penalty 15911635

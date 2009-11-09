@@ -51,9 +51,10 @@ on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff: {
     if ($me == iDM) {
       if (!$2) { notice $nick Syntax !(c|r)(ignore|bl) (channel|username|host) | halt }
       if (?c* iswm $1) {
-        var %who $db.get(%table,who,$2)
-        var %time $db.get(%table,time,$2)
-        var %reason $db.get(%table,reason,$2)
+        db.hget checkban %table $2 who time reason
+        var %who $hget(checkban,who)
+        var %time $hget(%checkban,time)
+        var %reason $hget(checkban,reason)
         notice $nick who %who time %time reason %reason
       }
       elseif (?r* iswm $1) {

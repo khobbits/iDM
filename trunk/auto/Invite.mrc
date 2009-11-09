@@ -3,8 +3,8 @@ on *:INVITE:#: {
   if (%invig. [ $+ [ # ] ]) { halt }
   if (%loottimer) { msg $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
-  if ((!%inv.spam [ $+ [ $nick ] ]) && ($.readini(blacklist.ini,chans,#))) {
-    notice $nick Channel has been blacklisted. (Reason: $v1 $iif($.readini(blacklist.ini,who,#),By: $v1) $+ )
+  if ((!%inv.spam [ $+ [ $nick ] ]) && ($db.get(blist,reason,#))) {
+    notice $nick Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
