@@ -1,3 +1,36 @@
+alias max {
+  if ($1 == r) {
+    ;Normal Voidrange_or_Accumulator Both
+    var %dmg = $maxdmg(r, $2, 3)
+    if (%dmg == $null) { return }
+    else return %dmg $calc(%dmg +5) $calc(%dmg +10)
+  }
+  elseif ($1 == ma) {
+    ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
+    var %dmg = $maxdmg(ma, $2, 3)
+    if (%dmg == $null) { return }
+    else return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
+  }
+  elseif ($1 == m) {
+    ;Normal Barrowgloves Firecape Both
+    var %dmg = $maxdmg(m, $2, 3)
+    if (%dmg == $null) { return }
+    elseif ($2 == surf) return %dmg %dmg %dmg %dmg
+    elseif ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == dclaws) return $dclawsdmg(%dmg,0) $dclawsdmg(%dmg,3) $dclawsdmg(%dmg,5) $dclawsdmg(%dmg,8)
+    elseif ($2 == dh) {
+      var %dmg2 = $maxdmg(m, dh9, 3)
+      return $+(%dmg,/,%dmg2) $+($calc(%dmg +3),/,$calc(%dmg2 +3)) $+($calc(%dmg +5),/,$calc(%dmg2 +5)) $+($calc(%dmg +8),/,$calc(%dmg2 +8))
+    }
+    else return %dmg $calc(%dmg +3) $calc(%dmg +5) $calc(%dmg +8)
+  }
+}
+
+alias maxdmg { return $gettok($dmg($1, $2, $3),2,44) }
+alias dclawsdmg { return $+($calc($1 + $2),-,$ceil($calc(($1 + $2) * 0.5)),-,$ceil($calc(($1 + $2) * 0.25)),-,$ceil($calc(($1 + $2) * 0.125))) }
+
 alias dmg {
   ; $1 = r/ma/m range/mage/melee
   ; $2 = attack
@@ -162,48 +195,6 @@ alias dmg {
   }
 }
 
-alias max {
-  if ($1 == r) {
-    ;Range
-    ;Normal Voidrange_or_Accumulator Both
-    var %dmg = $maxdmg(r, $2, 3)
-    if (%dmg == $null) { return }
-    else return %dmg $calc(%dmg +5) $calc(%dmg +10)
-  }
-  elseif ($1 == ma) {
-    ;Mage
-    ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
-    var %dmg = $maxdmg(ma, $2, 3)
-    if (%dmg == $null) { return }
-    else return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
-  }
-  elseif ($1 == m) {
-    ;Melee
-    ;Normal Barrowgloves Firecape Both
-    var %dmg = $maxdmg(m, $2, 3)
-    if (%dmg == $null) { return }
-    elseif ($2 == surf) return %dmg %dmg %dmg %dmg
-    elseif ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($2 == dclaws) return $dclawsdmg(%dmg,0) $dclawsdmg(%dmg,3) $dclawsdmg(%dmg,5) $dclawsdmg(%dmg,8)
-    elseif ($2 == dh) {
-      var %dmg2 = $maxdmg(m, dh9, 3)
-      return $+(%dmg,/,%dmg2) $+($calc(%dmg +3),/,$calc(%dmg2 +3)) $+($calc(%dmg +5),/,$calc(%dmg2 +5)) $+($calc(%dmg +8),/,$calc(%dmg2 +8))
-    }
-    else return %dmg $calc(%dmg +3) $calc(%dmg +5) $calc(%dmg +8)
-  }
-}
-
-alias maxdmg {
-  var %dmg = $gettok($dmg($1, $2, $3),2,44)
-  return %dmg
-}
-
-alias dclawsdmg {
-  return $+($calc($1 + $2),-,$ceil($calc(($1 + $2) * 0.5)),-,$ceil($calc(($1 + $2) * 0.25)),-,$ceil($calc(($1 + $2) * 0.125)))
-}
-
 alias specused {
   if ($1 == dbow) return 75
   elseif ($1 == mjavelin) return 25
@@ -324,7 +315,6 @@ alias isweapon {
   else return 0
 }
 
-
 alias freezer {
   ;The number is the chance of it freezing (Ice is 1/3).
   if ($1 == ice) return 3
@@ -332,6 +322,7 @@ alias freezer {
   elseif ($1 == zgs) return 2
   else return $false
 }
+
 alias healer {
   ;The first number is the chance of it healing (Sgs is 1/1).
   ;The second number is how much is heals (Sgs heals 1/2).
@@ -341,14 +332,12 @@ alias healer {
   elseif ($1 == onyx) return 2 3
   else return $false
 }
+
 alias poisoner {
   ;The number is the chance of it poisoning (Dds is 1/3).
   if ($1 == dds) return 3
   elseif ($1 == smoke) return 2
   else return $false
-}
-alias c124 {
-  return $chr(124)
 }
 
 on $*:TEXT:/^[!@.]max/Si:#: {
@@ -363,6 +352,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   elseif ($max(m,$2)) { $iif($left($1,1) == @,msg #,notice $nick) $logo(MAX) $upper($2) $+ $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41))) $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $s2($gettok($max(m,$2),1,32)) $iif($totalhit(m,$2,1),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves $s2($gettok($max(m,$2),2,32)) $iif($totalhit(m,$2,2),$+($chr(40),$s2($v1),$chr(41))) $c124 Fire cape $s2($gettok($max(m,$2),3,32)) $iif($totalhit(m,$2,3),$+($chr(40),$s2($v1),$chr(41))) $c124 Barrow gloves and Fire cape $s2($gettok($max(m,$2),4,32)) $iif($totalhit(m,$2,4),$+($chr(40),$s2($v1),$chr(41))) $iif($bonus($2),$+($chr(40),$v1,$chr(41))) }
   else notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
 }
+alias c124 { return $chr(124) }
 
 on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
@@ -381,21 +371,15 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   var %highbot = $gettok($dmg(%t, $2, 3),1,44)
   var %hightop = $gettok($dmg(%t, $2, 3),2,44)
   if ($3 <=  %lowtop) {
-    if ($3 >= %lowbot) {
-      var %lowchance = $calc(((%lowtop - $3 +1) / (%lowtop - %lowbot +1 )) * %lowchance)
-    }
+    if ($3 >= %lowbot) var %lowchance = $calc(((%lowtop - $3 +1) / (%lowtop - %lowbot +1 )) * %lowchance)
   }
   else {  var %lowchance = 0 }
   if ($3 <=  %midtop) {
-    if ($3 >= %midbot) {
-      var %midchance = $calc(((%midtop - $3 +1) / (%midtop - %midbot +1 )) * %midchance)
-    }
+    if ($3 >= %midbot) var %midchance = $calc(((%midtop - $3 +1) / (%midtop - %midbot +1 )) * %midchance)
   }
   else { var %midchance = 0 }
   if ($3 <= %hightop) {
-    if ($3 >= %highbot) {
-      var %highchance = $calc(((%hightop - $3 +1) / (%hightop - %highbot +1 )) * %highchance)
-    }
+    if ($3 >= %highbot) var %highchance = $calc(((%hightop - $3 +1) / (%hightop - %highbot +1 )) * %highchance)
   }
   else { var %highchance = 0 }
   $iif($left($1,1) == @,msg #,notice $nick) $logo(HITCHANCE) There is a $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $s1($3) or higher each hit without bonuses.  Use !max $2 to check bonuses and special infomation.

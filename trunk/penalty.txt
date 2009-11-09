@@ -626,3 +626,7 @@
 9/11 12:43:41 woutertje_93 got !enddm'd on #mhu oldcash 278698199 newcash 277304709
 9/11 12:54:49 ahmada0 parted channel #Dm.newbies during a dm oldcash 2956917140 penalty 59138343
 9/11 13:04:53 Rgreenrich_ got !enddm'd on #ozank oldcash 498441550 newcash 495949343
+9/11 14:01:43 tauri666 got !enddm'd on #mlp oldcash 217084778 newcash 215999355
+9/11 14:10:49 Hug0 got !enddm'd on #Dm.newbies oldcash 479761671 newcash 477362863
+9/11 14:15:05 fraz got !enddm'd on #tank oldcash 711938003 newcash 708378313
+9/11 14:49:06 pumkinpie parted channel #Tfatality during a dm oldcash 307460048 penalty 6149201

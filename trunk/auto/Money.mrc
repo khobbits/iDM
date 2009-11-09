@@ -1,4 +1,5 @@
-on $*:TEXT:/^[!@.]money/Si:#: { 
+on $*:TEXT:/^[!@.]money/Si:#: {
+  noop $islogged($nick,$address,1)
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $equipment($nick) $clan($nick)
