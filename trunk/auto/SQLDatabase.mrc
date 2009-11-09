@@ -116,6 +116,19 @@ alias db.set {
   }
 }
 
+alias db.remove {
+  dbcheck
+  tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
+  if ($2 !== $null) {
+    var %sql =	DELETE FROM $db.tquote($1) WHERE user = $db.safe($2)
+    return $db.exec(%sql)
+  }
+  else {
+    mysqlderror Syntax Error: /db.remove <table> <user> - $db.safe($1-)
+    return 0
+  }
+}
+
 alias db.clear {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
