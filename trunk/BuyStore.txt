@@ -1496,3 +1496,5 @@
 10/11 17:32:15 Kees bought from the store (Mudkip) ~Biertje@FF844EC2.B8595ED7.D3B50E4F.IP
 10/11 17:41:34 Blexun bought from the store (sgs) ~Blexun@Swift-85897FEB.sta.embarqhsd.net
 10/11 17:44:14 Bloxo bought from the store (mage's book) ~Bloxo@Swift-30B8E1F0.dynamic.dsl.as9105.com
+10/11 18:01:21 Ricketts bought from the store (void mage) ~Ricketts@Swift-208A2E99.bb.sky.com
+10/11 18:05:11 NicIsTehNub bought from the store (bgs) ~OMG-Nick@1591E01E.F989F4EA.7A93D0E0.IP

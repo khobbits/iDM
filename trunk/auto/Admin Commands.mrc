@@ -1,8 +1,8 @@
-on $*:TEXT:/^[!.]Admin$/Si:#idm.staff: {
+on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-    notice $nick $s1(Admin commands:) $s2(!part chan, ![u]bl chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
+    notice $nick $s1(Admin commands:) $s2(!part chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
       !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
-      !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore) host, !cbl chan, !warn chan !viewitems)
+      !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore) host, ![c/r]cbl chan, !warn chan !viewitems)
   }
 }
 
@@ -21,51 +21,54 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)|bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,position,$address($nick,3))) {
-    if (ignore isin $1) {
-      var %table ilist
-      if (?ignore iswm $1) {
-        if ((@ isin $2 && *!* !isin $2) || !$3) { 
-          if ($me == iDM) notice $nick Syntax !ignore (nick) (reason) - Use !suspend to disable an account.
-          halt 
-        }
-        ignore $2 2
-      } 
-      else {      
-        if (@ !isin $2) tokenize 32 $1 $address($2,2) ( $+ $2 $+ ) $3-
-        if (?r* iswm $1) ignore -r $2 
-      }
+  if (!$db.get(admins,position,$address($nick,3))) {
+    if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) {
+      halt
     }
-    elseif (bl isin $1) {
-      var %table blist
-      if (?ignore iswm $1) {
-        if (#* !iswm $2 || !$3) { 
-          if ($me == iDM) notice $nick Syntax !bl (channel) (reason)
-          halt 
-        }
-        part $2 This channel has been blacklisted
+  }
+  if (ignore isin $1 || ilist isin $1) {
+    var %table ilist
+    if (?i* iswm $1) {
+      if ((@ isin $2 && *!* !isin $2) || (!$3)) { 
+        if ($me == iDM) notice $nick Syntax !ignore (nick) (reason) - Use !suspend to disable an account.
+        halt 
       }
+      ignore $2 2
+    } 
+    else {      
+      if (@ !isin $2) tokenize 32 $1 $address($2,2) ( $+ $2 $+ ) $3-
+      if (?r* iswm $1) ignore -r $2 
     }
-    if ($me == iDM) {
-      if (!$2) { notice $nick Syntax !(c|r)(ignore|bl) (channel|username|host) | halt }
-      if (?c* iswm $1) {
-        db.hget checkban %table $2 who time reason
-        var %who $hget(checkban,who)
-        var %time $hget(checkban,time)
-        var %reason $hget(checkban,reason)
-        notice $nick Admin %who banned $2 at %time for %reason
+  }
+  elseif (bl isin $1) {
+    var %table blist
+    if (?bl* iswm $1) {
+      if ((#* !iswm $2) || (!$3)) { 
+        if ($me == iDM) notice $nick Syntax !bl (channel) (reason)
+        halt 
       }
-      elseif (?r* iswm $1) {
-        db.remove %table $2
-        notice $nick $2 removed from %table
-      }
-      else {
-        db.set %table who $2 $nick
-        db.set %table reason $2 $3-
-        notice $nick $2 added to %table
-      }
+      part $2 This channel has been blacklisted
+    }
+  }
+  if ($me == iDM) {
+    if (!$2) { notice $nick Syntax !(c|r)(ignore|bl) (channel|username|host) | halt }
+    if (?c* iswm $1) {
+      db.hget checkban %table $2 who time reason
+      var %who $hget(checkban,who)
+      var %time $hget(checkban,time)
+      var %reason $hget(checkban,reason)
+      notice $nick Admin %who banned $2 at %time for %reason
+    }
+    elseif (?r* iswm $1) {
+      db.remove %table $2
+      notice $nick $2 removed from %table
+    }
+    else {
+      db.set %table who $2 $nick
+      db.set %table reason $2 $3-
+      notice $nick $2 added to %table
     }
   }
 }
@@ -79,7 +82,7 @@ on $*:TEXT:/^[!.]part .*/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]chans$/Si:*: {
+on $*:TEXT:/^[!.]chans$/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
@@ -127,7 +130,7 @@ on $*:TEXT:/^[!.]join .*/Si:*: {
   }
 }
 
-on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff: {
+on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !(un)suspend nick. | halt }
@@ -206,7 +209,7 @@ alias deletenick {
   return 1
 }
 
-on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff: {
+on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
@@ -218,7 +221,7 @@ on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff: {
   }
 }
 
-on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
+on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     else {
@@ -252,7 +255,7 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
   }
 }
 
-On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     else {
@@ -372,7 +375,7 @@ on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support,#idm: {
+on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Registered?: $iif($db.get(user,pass,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
   }
