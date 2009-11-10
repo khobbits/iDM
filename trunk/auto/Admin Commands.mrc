@@ -21,7 +21,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff: {
+on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,position,$address($nick,3))) {
     if (ignore isin $1) {
@@ -34,7 +34,7 @@ on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff: {
         ignore $2 2
       } 
       else {      
-        if (@ !isin $2) tokenize 32 $1 $address($2,2)}
+        if (@ !isin $2) tokenize 32 $1 $address($2,2) ( $+ $2 $+ ) $3-
         if (?r* iswm $1) ignore -r $2 
       }
     }
@@ -53,9 +53,9 @@ on $*:TEXT:/^[!.](r|c)?(Ignore|bl) .*/Si:#idm.staff: {
       if (?c* iswm $1) {
         db.hget checkban %table $2 who time reason
         var %who $hget(checkban,who)
-        var %time $hget(%checkban,time)
+        var %time $hget(checkban,time)
         var %reason $hget(checkban,reason)
-        notice $nick who %who time %time reason %reason
+        notice $nick Admin %who banned $2 at %time for %reason
       }
       elseif (?r* iswm $1) {
         db.remove %table $2
@@ -327,7 +327,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
 on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($cid != $scon(1)) { halt }
-    set %rand $rand(5000,120000)
+    var %rand $rand(5000,120000)
     privmsg $chan $s1(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
     timer -m 1 %rand rehash
   }
@@ -358,9 +358,9 @@ on *:TEXT:!whois*:#: {
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
-    if (!$.readini(status.ini,currentdm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
+    if (!$db.get(user,indm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
     unset %dming [ $+ [ $2 ] ]
-    remini status.ini currentdm $2
+    db.set user indm $2 0
     notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
   }
 }
@@ -368,7 +368,7 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     notice $nick $logo(Show DM) $s1($2) is $iif(%dming [ $+ [ $2 ] ],3currently,not) DMing on $me at the moment according to var.
-    if ($me == iDM) { notice $nick $logo(Show DM) $s1($2) is $iif($.readini(status.ini,currentdm,$2),3currently,not) DMing at the moment according to ini. }
+    if ($me == iDM) { notice $nick $logo(Show DM) $s1($2) is $iif($db.get(user,indm,$2),3currently,not) DMing at the moment according to ini. }
   }
 }
 

@@ -28,7 +28,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     halt
   }
   if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
-  if ($.readini(status.ini,currentdm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
+  if ($db.get(user,indm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
 
   if ($storematch($2-) != 0) {

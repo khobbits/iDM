@@ -6,14 +6,12 @@ alias dead {
     unset %stake* [ $+ [ $1 ] ]
     cancel $1
     set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
-    updateini Totalwins.ini Totalwins Totalwins +1
     db.set user wins $3 + 1
     db.set user losses $2 + 1
     halt
   }
   cancel $1
   set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
-  updateini Totalwins.ini Totalwins Totalwins +1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
   var %drop1 $r(1,$lines(loot.txt)),%drop2 $r(1,$lines(loot.txt)),%drop3 $r(1,$lines(loot.txt))
@@ -59,7 +57,7 @@ alias dead {
     var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
     var %sql.winnerclan = $db.safe(%winnerclan)
-    var %sql = UPDATE user,clan SET money = money + %sharedrop WHERE user.user = clan.c2 and clan.c1 = %sql.winnerclan
+    var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
     db.exec %sql
     .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
     unset %sharedrop

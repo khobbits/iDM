@@ -17,7 +17,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
-      if ($.readini(onoff,%attcmd,#)) {
+      if ($isdisabled($chan,%attcmd)) {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
@@ -157,10 +157,7 @@ alias damage {
   }
 
   if (%stake [ $+ [ $chan ] ] == $null) {
-    var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($2)
-    var %result = $db.query(%sql)
-    if ($db.query_row(%result,equipstaff) === $null) { echo -s Error fetching equipment - damage $1- }
-    db.query_end %result
+    db.hget equipstaff equip_staff $2
 
     if ($db.get(equip_staff,belong,$1)) && ($r(1,100) < 3) && (%hp2 >= 1) {
       var %extra $iif(%hp2 < 12,$($v1,2),12)
@@ -243,10 +240,7 @@ alias hit {
   elseif ($accuracy($1,$4) == 1) { var %acc $r($r(10,25),100) }
   else { var %acc $r(1,100) }
 
-  var %sql SELECT * FROM `equip_armour` WHERE user = $db.safe($2)
-  var %result = $db.query(%sql)
-  if ($db.query_row(%result,equiphit) === $null) { echo -s Error fetching equipment - hit %sql }
-  db.query_end %result
+  db.hget equiphit equip_armour $2
 
   var %atk $calc($iif($hget(equiphit,firecape),5,0) + $iif($hget(equiphit,bgloves),3,0))
   var %def $iif($db.get(equip_armour,elshield),$calc($r(85,99) / 100),1)

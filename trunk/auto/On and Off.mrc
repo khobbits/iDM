@@ -4,79 +4,84 @@ on $*:TEXT:/^[!.](on|off) .*/Si:#: {
   if ($1 == !on || $1 == .on) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list).| halt }
-    if ($2 == -L) { displayoff $nick # | halt }
+    if ($2 == -L) { notice $nick $displayoff($chan) | halt }
     else enable $remove($2-,$chr(32)) $nick #
   }
   elseif ($1 == !off || $1 == .off) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
-    if ($2 == -L) { displayoff $nick # | halt }
+    if ($2 == -L) { notice $nick $displayoff($chan) | halt }
     else disable $remove($2-,$chr(32)) $nick #
   }
 }
 
-On *:JOIN:#: {
-  if ($.ini(OnOff.ini,$chan,0)) {
-    var %count $.ini(OnOff.ini,$chan,0), %a 1, %disabled
-    while (%a <= %count) {
-      var %disabled %disabled $.ini(OnOff.ini,$chan,%a)
-      inc %a
-    }
-    var %final $replace(%disabled,$chr(32),$chr(44) $chr(32))
-    notice $nick $logo(DISABLED) These attacks are currently disabled: $regsubex(%final,/^(.*)\x2C/,\1 and)
-  }
+on *:JOIN:#: {
+  var %output = $displayoff($chan)
+  if (%output) { notice $nick %output }
 }
 
 alias displayoff {
-  if (!$.ini(OnOff.ini,$2,0)) {
-    notice $1 $logo(DISABLED) All of the attacks for # are on. | halt
+  var %output
+  var %sql = SELECT * FROM settings WHERE user = $db.safe($1)
+  var %result = $db.query(%sql)
+  while ($db.query_row(%result,row)) {
+    if ($3 == 1) { var %output = $hget(row,setting) }
+    else { var %output = %output $+ $chr(44) $hget(row,setting)
+    }
   }
-  var %a 1
-  while ($.ini(OnOff.ini,$2,%a)) { var %o %o $v1 | inc %a }
-  notice $1 $logo(DISABLED) These attacks are currently disabled: $replace(%o,$chr(32),$chr(44))
+  db.query_end %result
+  if (%output) { return $logo(DISABLED) These attacks are currently disabled: %output }
+  return $null
 }
+
+alias isdisabled {
+  var %sql = SELECT * FROM `settings` WHERE user = $db.safe($1) AND setting = $db.safe($2)
+  return $iif($db.select(%sql,setting) === $null,0,1)
+}
+
 alias enable {
   if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
+  var %notice
   if ($1 == -h) {
-    remini OnOff.ini $3 guth
-    remini OnOff.ini $3 sgs
-    remini OnOff.ini $3 blood
-    remini OnOff.ini $3 onyx
+    db.remove settings $3 setting guth
+    db.remove settings $3 setting sgs
+    db.remove settings $3 setting blood
+    db.remove settings $3 setting onyx
     notice $2 $logo(ENABLE) Healing attacks are now on in $3 $+ .
-    halt
   }
-  if ($1 == all) {
-    remini OnOff.ini $3
+  elseif ($1 == all) {
+    db.remove settings $3
     notice $2 $logo(ENABLE) All attacks have been turned on in $3 $+ .
     halt
   }
-  var %a 1
-  while ($gettok($1,%a,58)) {
-    if ($attack($gettok($1,%a,58))) && ($.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | remini OnOff.ini $3 $gettok($1,%a,58) }
-    else { var %c %c $gettok($1,%a,58) }
-    inc %a
+  elseif ($attack($1)) {
+    db.remove settings $3 setting $1
   }
-  notice $2 $logo(ENABLE $3) $iif(%b,$s1(Enabled) $+ : $replace(%b,$chr(32),$chr(44))) $iif(%c,$s1(Errors) $+ : $replace(%c,$chr(32),$chr(44)) (These are either already on, or not an attack))
+  else {
+    var %notice Error: Could not find attack to enable.
+  }
+  notice $2 $displayoff($3) %notice
 }
+
 alias disable {
   if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
+  var %notice
   if ($1 == -h) {
-    writeini OnOff.ini $3 guth true
-    writeini OnOff.ini $3 sgs true
-    writeini OnOff.ini $3 blood true
-    writeini OnOff.ini $3 onyx true
+    db.set settings setting $3 guth
+    db.set settings setting $3 sgs
+    db.set settings setting $3 blood
+    db.set settings setting $3 onyx
     notice $2 $logo(DISABLE) Healing attacks are now off.
-    halt
   }
-  var %a 1
-  while ($gettok($1,%a,58)) {
-    if ($attack($gettok($1,%a,58))) && (!$.readini(OnOff.ini,$3,$gettok($1,%a,58))) { var %b %b $gettok($1,%a,58) | writeini OnOff.ini $3 $gettok($1,%a,58) true }
-    else { var %c %c $gettok($1,%a,58) }
-    inc %a
+  elseif ($attack($1)) {
+    db.set settings setting $3 $1
+  } 
+  else {
+    var %notice Error: Could not find attack to disable.
   }
-  notice $2 $logo(DISABLE $3) $iif(%b,$s1(Disabled) $+ : $replace(%b,$chr(32),$chr(44))) $iif(%c,$s1(Errors) $+ : $replace(%c,$chr(32),$chr(44)) (These are either already off, or not an attack))
+  notice $2 $displayoff($3) %notice
 }
 
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {

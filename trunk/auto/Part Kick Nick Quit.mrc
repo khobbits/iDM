@@ -36,7 +36,6 @@ on *:PART:#: {
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
     cancel #
-    remini OnOff.ini #
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
     db.set user money %p1 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2) )
@@ -107,14 +106,14 @@ on *:NICK: {
       halt
     }
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
-      remini status.ini currentdm $nick
-      writeini status.ini currentdm $newnick true
+      db.set user indm $nick 0
+      db.set user indm $newnick 1
       unset %dming [ $+ [ $nick ] ]
       set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }
     if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
-      remini status.ini currentdm $nick
-      writeini status.ini currentdm $newnick true
+      db.set user indm $nick 0
+      db.set user indm $newnick 1
       unset %dming [ $+ [ $nick ] ]
       set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
     }

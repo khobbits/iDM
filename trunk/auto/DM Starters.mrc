@@ -13,12 +13,12 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     halt
   }
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-  if ($.readini(status.ini,currentdm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
+  if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
     .timer $+ # 1 20 enddm #
     set %dming [ $+ [ $nick ] ] on
-    writeini status.ini currentdm $nick true
+    db.set user indm $nick 1
     set %p1 [ $+ [ $chan ] ] $nick
     set %dmon [ $+ [ $chan ] ] on
     halt
@@ -31,7 +31,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     }
     .timer $+ # off
     set %dming [ $+ [ $nick ] ] on
-    writeini status.ini currentdm $nick true
+    db.set user indm $nick 1
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
     msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
@@ -47,8 +47,8 @@ alias winloss {
 
 alias cancel {
   if ($1) && ($chr(35) isin $1) {
-    $iif(%p1 [ $+ [ $1 ] ],remini status.ini currentdm %p1 [ $+ [ $1 ] ])
-    $iif(%p2 [ $+ [ $1 ] ],remini status.ini currentdm %p2 [ $+ [ $1 ] ])
+    $iif(%p1 [ $+ [ $1 ] ],db.set user indm %p1 [ $+ [ $1 ] ]) 0
+    $iif(%p2 [ $+ [ $1 ] ],db.set user indm %p2 [ $+ [ $1 ] ]) 0
     unset %veng [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %veng [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
@@ -146,10 +146,10 @@ on $*:TEXT:/^[!@.]status/Si:#: {
     $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
   }
   elseif (%p1 [ $+ [ $chan ] ]) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) %p1 [ $+ [ $chan ] ] is waiting for someone to DM in $chan $+ .
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) %p1 [ $+ [ $chan ] ] is waiting for someone to DM in $lower($chan) $+ .
   }
   else {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) There is no DM in $chan $+ .
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) There is no DM in $lower($chan) $+ .
   }
 }
 alias status {

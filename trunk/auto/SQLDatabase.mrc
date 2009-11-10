@@ -41,6 +41,7 @@ alias db.select {
 }
 
 alias db.hget {
+  if (!$3) { mysqlderror Syntax Error: /db.hget <hashtable> <table> <user> [column list] - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-3),$chr(32) $+ $chr(32),$chr(32)) $replace($lower($4-),$chr(32), ` $+ $chr(44) $+ `)
   var %htable = $1
   var %table = $2
@@ -119,12 +120,20 @@ alias db.set {
 alias db.remove {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
-  if ($2 !== $null) {
+  if ($4 !== $null) {
+    var %sql = DELETE FROM $db.tquote($1) WHERE user = $db.safe($2) AND $db.tquote($3) = $db.safe($4)
+    return $db.exec(%sql)
+  }
+  elseif ($3 !== $null) {
+    var %sql = DELETE FROM $db.tquote($1) WHERE $db.tquote($3) = $db.safe($4)
+    return $db.exec(%sql)
+  }
+  elseif ($2 !== $null) {
     var %sql = DELETE FROM $db.tquote($1) WHERE user = $db.safe($2)
     return $db.exec(%sql)
   }
   else {
-    mysqlderror Syntax Error: /db.remove <table> <user> - $db.safe($1-)
+    mysqlderror Syntax Error: /db.remove <table> <user> [<column> <value>] - $db.safe($1-)
     return 0
   }
 }
@@ -133,7 +142,7 @@ alias db.clear {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if ($2 !== $null) {
-    var %sql UPDATE $db.tquote($1) SET $2 = $iif($3,$3,0)
+    var %sql UPDATE $db.tquote($1) SET $db.tquote($2) = 0 $iif($3,WHERE $db.tquote($2) = $db.safe($3))
     return $db.exec(%sql)
   }
   else {

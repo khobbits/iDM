@@ -1,4 +1,3 @@
-;#fix try and remove all $.ini
 ;#fix alias the security/errors on these commands (or maybe try and regex them together?)
 
 on $*:TEXT:/^[!@.]delmem .*/Si:*: {
@@ -112,14 +111,8 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 }
 
 alias claninfo {
-  var $ci,%tc = 0
-  var %sql = SELECT * FROM `clan` WHERE c1 = $db.safe($1)
-  var %result = $db.query(%sql)
-  while ($db.query_row_data(%result,c2)) {
-    var %ci = %ci $v1
-    inc %tc
-  }
-  db.query_end %result
+  var %ci $clanmembers($1)
+  var %tc $numtok(%ci,32)
   return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
 }
 
@@ -127,64 +120,53 @@ alias clanstats {
   return $s1(Wins) $+ : $iif($db.get(clantracker,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($db.get(clantracker,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
 }
 
-; ============ 'Clan' Table Layout ============
-; +--------------+--------------+--------------+
-; |      c1      |      c2      |      c3      |
-; +--------------+--------------+--------------+
-; |  <clanname>  |  <nick>      |  owner       |
-; |  <clanname>  |  <nick>      |  member      |
-; |  <clanname>  |  <nick>      |  member      |
-; +--------------+--------------+--------------+
-;
-; ======================== 'Clantracker' Table Layout ========================
-; +--------------+--------------+--------------+---------------+--------------+
-; |  user        |   wins       |   losses     |   money       |   share      |
-; +--------------+--------------+--------------+---------------+--------------+
-; | <clanname>   |  <num>       |  <num>       |  <num>        |  1           |
-; | <clanname>   |  <num>       |  <num>       |  <num>        |  0           |
-; | <clanname>   |  <num>       |  <num>       |  <num>        |  1           |
-; +--------------+--------------+--------------+---------------+--------------+
-
 alias createclan {
   ; $1 = Clanname
   ; $2 = Ownername
-  if ($2) writeini clan.ini $1 $2 owner
+  if ($2) {
+    db.set clantracker owner $1 $2
+    addclanmember $1 $2
+  }
 }
 
 alias deleteclan {
   ; $1 = Clanname
   if ($1) {
-    var %sql = DELETE FROM clan WHERE c1 = $db.safe($1)
-    db.exec %sql
+    db.remove clantracker $1
+    db.clear user clan $1
   }
 }
 
 alias addclanmember {
   ; $1 = Clanname
   ; $2 = Membername
-  if ($2) writeini clan.ini $1 $2 member
+  if ($2) db.set user clan $2 $1
 }
 
 alias delclanmember {
   ; $1 = Membername
   if ($1) {
-    var %sql = DELETE FROM clan WHERE c2 = $db.safe($1)
-    db.exec %sql
+    db.set user clan $1 0
   }
 }
 
 alias getclanname {
   ; $1 = Membername
   if ($1) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)
-    return $db.select(%sql, c1)
+    return $db.get(user,clan,$1)
   }
 }
 
 alias clanmembers {
   ; $1 = Clanname
   if ($1) {
-    var %members = $.ini(Clan.ini,$1,0)
+    var $members
+    var %sql = SELECT * FROM `user` WHERE clan = $db.safe($1)
+    var %result = $db.query(%sql)
+    while ($db.query_row_data(%result,c2)) {
+      var %members = %members $v1
+    }
+    db.query_end %result
     return %members
   }
 }
@@ -193,13 +175,11 @@ alias isclanowner {
   ; $1 = Membername
   ; $2 = [optional] Clanname
   if ($2) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1) AND c1 = $db.safe($2)
-    if ($db.select(%sql, c3) == owner) return 1
+    if ($db.get(clantracker,owner,$2) == $1) return 1
     return 0
   }
   elseif ($1) {
-    var %sql = SELECT * FROM `clan` WHERE c2 = $db.safe($1)
-    if ($db.select(%sql, c3) == owner) return 1
+    if ($db.get(clantracker,owner,$db.get(user,clan,$1)) == $1) return 1
     return 0
   }
 }

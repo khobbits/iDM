@@ -1,6 +1,6 @@
 alias rehash {
   while (2 < $script(0)) {
-    set %i 1 
+    var %i 1 
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
       inc %i
     }

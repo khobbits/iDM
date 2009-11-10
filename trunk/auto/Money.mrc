@@ -22,15 +22,8 @@ alias money {
 }
 
 alias equipment {
-  var %sql SELECT * FROM `equip_item` WHERE user = $db.safe($1)
-  var %result = $db.query(%sql)
-  if ($db.query_row(%result,equipit) === $null) { echo -s Error fetching equipment - equipment %sql }
-  db.query_end %result
-
-  var %sql SELECT * FROM `equip_armour` WHERE user = $db.safe($1)
-  var %result = $db.query(%sql)
-  if ($db.query_row(%result,equipar) === $null) { echo -s Error fetching equipment - equipment %sql }
-  db.query_end %result
+  db.hget equipit equip_item $1
+  db.hget equipar equip_armour $1  
 
   if ($hget(equipit,ags)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($hget(equipit,bgs)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
@@ -52,15 +45,13 @@ alias equipment {
   if ($hget(equipit,clue)) { var %e %e Clue:Scroll }
   return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
+
 alias clan {
   if ($getclanname($1)) { return $s1(Clan) $+ : $v1 }
 }
 
 alias sitems {
-  var %sql SELECT * FROM `equip_staff` WHERE user = $db.safe($1)
-  var %result = $db.query(%sql)
-  if ($db.query_row(%result,equips) === $null) { echo -s Error fetching equipment - sitems %sql }
-  db.query_end %result
+  db.hget equips equip_staff $1
 
   if ($hget(equips,belong)) { var %e %e Bêlong:Blade }
   if ($hget(equips,allegra)) { var %e %e Allergy:Pills }
@@ -70,11 +61,9 @@ alias sitems {
   if ($hget(equips,support)) { var %e %e The:Supporter }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
+
 alias pvp {
-  var %sql SELECT * FROM `equip_pvp` WHERE user = $db.safe($1)
-  var %result = $db.query(%sql)
-  if ($db.query_row(%result,equipp) === $null) { echo -s Error fetching equipment - pvp %sql }
-  db.query_end %result
+  db.hget equipp equip_pvp $1
 
   if ($hget(equipp,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
   if ($hget(equipp,vlong)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }

@@ -4,7 +4,8 @@ on $*:TEXT:/^[!@.]top/Si:#: {
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
   var %output $toplist(money,$2,1)
-  %display $logo(TOP Money) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
+
+  %display $logo(TOP Money) Total DM's: $s2($bytes($totalwins,bd)) %output
 }
 
 on $*:TEXT:/^[!@.]wtop/Si:#: {
@@ -13,7 +14,7 @@ on $*:TEXT:/^[!@.]wtop/Si:#: {
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
   var %output $toplist(wins,$2)
-  %display $logo(TOP Wins) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
+  %display $logo(TOP Wins) Total DM's: $s2($bytes($totalwins,bd)) %output
 }
 
 on $*:TEXT:/^[!@.]ltop/Si:#: {
@@ -22,9 +23,16 @@ on $*:TEXT:/^[!@.]ltop/Si:#: {
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
   var %output $toplist(losses,$2)
-  %display $logo(TOP Losses) Total DM's: $s2($bytes($.readini(totalwins.ini,totalwins,totalwins),bd)) %output
+  %display $logo(TOP Losses) Total DM's: $s2($bytes($totalwins,bd)) %output
 }
 
+alias totalwins {
+  var %sql SELECT sum(wins) as totalwins FROM `user`
+  var %result = $db.query(%sql)
+  if ($db.query_row(%result,totalwins) === $null) { echo -s Error fetching total wins. - %sql }
+  db.query_end %result
+  return $hget(totalwins,totalwins)
+}
 
 alias toplist {
   ; $1 = table
