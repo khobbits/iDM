@@ -116,7 +116,7 @@ alias logcheck {
   ; $4- = command to call on success
   ; [optional] create a $2.fail to catch a failed auth
   if ($islogged($1,$2,0) == 1) {
-    $3-
+    $4 $1 $2 $3 $5-
     return
   }
 

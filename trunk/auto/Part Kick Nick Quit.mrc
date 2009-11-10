@@ -130,7 +130,7 @@ on *:KICK:#: {
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney * 0.01))
           notice $nick You left the channel during a dm, you lose $s2($price(%newmoney)) cash
-          write penalty.txt  $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney penalty %newmoney
+          write penalty.txt $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney penalty %newmoney
           db.set user money $knick - %newmoney
         }
       }

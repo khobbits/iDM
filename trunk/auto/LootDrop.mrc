@@ -53,7 +53,7 @@ alias dead {
   var %looserclan = $getclanname($2)
   if (%winnerclan != %looserclan) && (%looserclan) && ($db.get(clantracker,share,%looserclan)) { trackclan LOSE %looserclan }
   if (%winnerclan != %looserclan) && (%winnerclan) && ($db.get(clantracker,share,%winnerclan)) {
-    var %nummember = $clanmembers(%winnerclan)
+    var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
     var %sql.winnerclan = $db.safe(%winnerclan)

@@ -47,8 +47,8 @@ alias winloss {
 
 alias cancel {
   if ($1) && ($chr(35) isin $1) {
-    $iif(%p1 [ $+ [ $1 ] ],db.set user indm %p1 [ $+ [ $1 ] ]) 0
-    $iif(%p2 [ $+ [ $1 ] ],db.set user indm %p2 [ $+ [ $1 ] ]) 0
+    $iif(%p1 [ $+ [ $1 ] ],db.set user indm %p1 [ $+ [ $1 ] ] 0)
+    $iif(%p2 [ $+ [ $1 ] ],db.set user indm %p2 [ $+ [ $1 ] ] 0)
     unset %veng [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %veng [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
