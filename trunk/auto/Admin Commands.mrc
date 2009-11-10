@@ -31,15 +31,18 @@ on $*:TEXT:/^[!.](r|c)?(i(gnore|list)|bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   if (ignore isin $1 || ilist isin $1) {
     var %table ilist
     if (?i* iswm $1) {
-      if ((@ isin $2 && *!* !isin $2) || (!$3)) { 
-        if ($me == iDM) notice $nick Syntax !ignore (nick) (reason) - Use !suspend to disable an account.
+      if ((@ isin $2 && *!*@ !isin $2) || (!$3) || (# isin $2)) { 
+        if ($me == iDM) notice $nick Syntax !ignore (nick/*!*@host) (reason) - Use !suspend to disable an account.
         halt 
       }
       ignore $2 2
     } 
     else {      
-      if (@ !isin $2) tokenize 32 $1 $address($2,2) ( $+ $2 $+ ) $3-
-      if (?r* iswm $1) ignore -r $2 
+      if (@ !isin $2) { 
+        if ($address($2,2)) tokenize 32 $1 $v1 ( $+ $2 $+ ) $3-
+        else { notice $nick Could not find users host | halt }
+      }
+      if (?r* iswm $1) ignore -r $2
     }
   }
   elseif (bl isin $1) {

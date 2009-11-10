@@ -701,3 +701,5 @@
 10/11 17:54:10 Bart99ek00 got !enddm'd on #godzwar oldcash 240713605 newcash 239510037
 10/11 18:02:57 ^Tej^ got !enddm'd on #iDM oldcash 26309787296 newcash 26178238360
 10/11 18:10:19 fightmenoobS got !enddm'd on #d2jsp-bot oldcash 71564172 newcash 71206352
+10/11 18:29:14 catsyum got !enddm'd on #Dm.newbies oldcash 504719002 newcash 502195407
+10/11 18:34:46 kissmyaze parted channel #br-dm during a dm oldcash 2049075959 penalty 40981520
