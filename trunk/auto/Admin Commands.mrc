@@ -49,7 +49,9 @@ on $*:TEXT:/^[!.](r|c)?(i(gnore|list)|bl(ist)?) .*/Si:#idm.staff,#idm.support: {
         if ($me == iDM) notice $nick Syntax !bl (channel) (reason)
         halt 
       }
-      part $2 This channel has been blacklisted
+      if ($chan($2).status) {
+        part $2 This channel has been blacklisted
+      }
     }
   }
   if ($me == iDM) {
@@ -59,7 +61,12 @@ on $*:TEXT:/^[!.](r|c)?(i(gnore|list)|bl(ist)?) .*/Si:#idm.staff,#idm.support: {
       var %who $hget(checkban,who)
       var %time $hget(checkban,time)
       var %reason $hget(checkban,reason)
-      notice $nick Admin %who banned $2 at %time for %reason
+      if (%reason) {
+        notice $nick $logo(BANNED) Admin $s2(%who) banned $s2($2) at $s2(%time) for $s2(%reason)
+      }
+      else {
+        notice $nick $logo(BANNED) User $s2($2) is $s2(not) banned.
+      }
     }
     elseif (?r* iswm $1) {
       db.remove %table $2

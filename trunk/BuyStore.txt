@@ -1498,3 +1498,5 @@
 10/11 17:44:14 Bloxo bought from the store (mage's book) ~Bloxo@Swift-30B8E1F0.dynamic.dsl.as9105.com
 10/11 18:01:21 Ricketts bought from the store (void mage) ~Ricketts@Swift-208A2E99.bb.sky.com
 10/11 18:05:11 NicIsTehNub bought from the store (bgs) ~OMG-Nick@1591E01E.F989F4EA.7A93D0E0.IP
+10/11 18:21:12 rpkc bought from the store (void range) ~rpkc@3639DEA3.229D4D4.A93CDCBE.IP
+10/11 18:22:53 `jd` bought from the store (firecape) ~jd@Swift-89162209.cpe.net.cable.rogers.com
