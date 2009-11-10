@@ -168,14 +168,6 @@ alias mysqlderror {
   sbnc tcl putmainlog {3BotError - $me $+ 4 $1- }
 }
 
-alias createtable {
-  var %sql = CREATE $iif($2 == temp,TEMP) TABLE IF NOT EXISTS ` $+ $lower($1) $+ ` (c1, c2, c3, PRIMARY KEY (c1, c2))
-  if (!$mysql_exec(%db, %sql)) {
-    mysqlderror Error: %mysql_errstr - Query %sql
-    halt
-  }
-}
-
 on *:START: {
   load -rs " $+ $mircdirmysql/mmysql.mrc"
   dbinit

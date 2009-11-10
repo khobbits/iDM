@@ -60,7 +60,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
     halt
   }
   if (!$2) { notice $nick $logo(ERROR) Type !startclan clan name. | halt }
-  if ($.ini(Clan.ini,$remove($2,$chr(36),$chr(37)),0)) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
+  if ($clanmembers($2)) { notice $nick $logo(ERROR) Clan name $qt($remove($2,$chr(36),$chr(37))) already taken. | halt }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
   createclan $remove($2,$chr(36),$chr(37)) $nick
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
@@ -104,7 +104,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
   else { var %nick = $2 }
   var %clan = $getclanname(%nick)
   if (%clan) {
-    $iif($left($1,1) == @,msg #,notice $nick)  $logo(CLAN) $claninfo(%clan) $clanstats(%clan)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan)
     halt
   }
   notice $nick $logo(ERROR) %nick is not in a clan. | halt
@@ -163,7 +163,7 @@ alias clanmembers {
     var $members
     var %sql = SELECT * FROM `user` WHERE clan = $db.safe($1)
     var %result = $db.query(%sql)
-    while ($db.query_row_data(%result,c2)) {
+    while ($db.query_row_data(%result,user)) {
       var %members = %members $v1
     }
     db.query_end %result
