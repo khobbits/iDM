@@ -703,3 +703,11 @@
 10/11 18:10:19 fightmenoobS got !enddm'd on #d2jsp-bot oldcash 71564172 newcash 71206352
 10/11 18:29:14 catsyum got !enddm'd on #Dm.newbies oldcash 504719002 newcash 502195407
 10/11 18:34:46 kissmyaze parted channel #br-dm during a dm oldcash 2049075959 penalty 40981520
+10/11 19:00:52 I-BEA5T-I parted channel #br-dm during a dm oldcash 80445840 penalty 1608917
+10/11 19:01:20 ashcroft8 got !enddm'd on #dm.arena oldcash 1774327530 newcash 1765455893
+10/11 19:57:06 InuYasha got !enddm'd on #wedabest oldcash 56716778 newcash 56433195
+10/11 20:08:00 High got !enddm'd on #mariah oldcash 113159134 newcash 112593339
+10/11 20:10:49 mSL got !enddm'd on #mariah oldcash 7046200 newcash 7010969
+10/11 20:17:11 Rhianna got !enddm'd on #-G oldcash 118150735 newcash 117559982
+10/11 20:19:18 Attiusca parted channel #Carpediem during a dm oldcash 171568006 penalty 3431361
+10/11 20:26:09 Abovyan parted channel #legendary during a dm oldcash 1393024165 penalty 27860484

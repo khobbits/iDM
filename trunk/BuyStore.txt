@@ -1501,3 +1501,15 @@
 10/11 18:21:12 rpkc bought from the store (void range) ~rpkc@3639DEA3.229D4D4.A93CDCBE.IP
 10/11 18:22:53 `jd` bought from the store (firecape) ~jd@Swift-89162209.cpe.net.cable.rogers.com
 10/11 18:42:17 Soycubs bought from the store (armadyl godsword) ~Soycubs@5B70E94C.C718965E.D9254207.IP
+10/11 18:50:51 `jd` bought from the store (bgs) ~jd@Swift-89162209.cpe.net.cable.rogers.com
+10/11 18:59:37 Aw_rangeos bought from the store (sgs) ~Aw_rangeo@Swift-D6185DCC.adsl.terra.cl
+10/11 19:18:54 Noob_to_deth bought from the store (void range) ~noob_to_d@Swift-2B097004.buckeyecom.net
+10/11 19:37:07 faken bought from the store (void range) ssh1623bf@Swift-224428CF.dsl.chcgil.sbcglobal.net
+10/11 19:45:24 Veronica1211 bought from the store (void range) ~Veronica1@Swift-6A2A665F.tx.res.rr.com
+10/11 19:55:19 Trozi bought from the store (sgs) ~ssh1555a9@Swift-EA65C0D0.hsd1.ca.comcast.net
+10/11 20:12:20 cheetopuff77 bought from the store (ags) ~cheetopuf@Swift-C5B277B.rmo.bellsouth.net
+10/11 20:27:18 black_dog340 bought from the store (sgs) ~black_dog@Swift-A401C304.tampabay.res.rr.com
+10/11 20:44:14 d4rks4ge94 bought from the store (ags) ~d4rks4ge9@Swift-2326E4AD.dyn.optonline.net
+10/11 20:49:42 n01z_pro bought from the store (sgs) ~n01z_pro@Swift-D6714EDD.cable.mindspring.com
+10/11 20:54:46 Ardiem bought from the store (void range) ~Ardiem@Swift-F388B7AD.dsl.toldoh.sbcglobal.net
+10/11 20:59:20 faken bought from the store (ags) ssh1623bf@Swift-224428CF.dsl.chcgil.sbcglobal.net
