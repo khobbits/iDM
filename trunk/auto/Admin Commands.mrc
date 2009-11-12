@@ -2,7 +2,7 @@ on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
       !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
-      !unsuspend nick) $s1(Support commands:) $s2(![c/r](ignore) host, ![c/r]cbl chan, !warn chan !viewitems)
+      !unsuspend nick) $s1(Support commands:) $s2(![c/r]ignore nick/host, ![c/r]cbl chan, !warn chan !viewitems)
   }
 }
 
@@ -104,7 +104,6 @@ on $*:TEXT:/^[!.]chans$/Si:#idm.staff,#idm.support: {
     notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
 }
-
 alias chans {
   var %b,%a 1
   while (%a <= $chan(0)) {
@@ -119,19 +118,15 @@ alias chans {
 
 on $*:TEXT:/^[!.]active$/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
-    notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - $actives
+    var %a 1
+    while (%a <= $chan(0)) {
+      if (%dmon [ $+ [ $chan(%a) ] ]) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
+      if (%dmon [ $+ [ $chan(%a) ] ]) { var %b %b $chan(%a) }
+      inc %a
+    }
+    if (%b) { notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - %b }
+    else { notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - I'm not hosting any DMs. }
   }
-}
-
-alias actives {
-  var %a 1
-  while (%a <= $chan(0)) {
-    if (%dmon [ $+ [ $chan(%a) ] ]) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
-    if (%dmon [ $+ [ $chan(%a) ] ]) { var %b. [ $+ [ $me ] ] %b. [ $+ [ $me ] ] $chan(%a) }
-    inc %a
-  }
-  if (%b. [ $+ [ $me ] ]) { return %b. [ $+ [ $me ] ] }
-  if (!%b. [ $+ [ $me ] ]) { return I'm not hosting any DMs. }
 }
 
 on $*:TEXT:/^[!.]join .*/Si:*: {
@@ -151,11 +146,14 @@ on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !(un)suspend nick. | halt }
     if (?un* iswm $1) {
-      if ($suspendnick($2,0,$nick)) { notice $nick Restored account $2 to its original status. }
+
+      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($nick)
+      if ($mysql_affected_rows(%db) !== -1) { notice $nick Restored account $2 to its original status. }
       else { notice $nick Couldn't find account $2 }
     }
     else {
-      if ($suspendnick($2,1,$nick)) { notice $nick Removed account $2 from the top scores. }
+      db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($nick)
+      if ($mysql_affected_rows(%db) !== -1) { notice $nick Removed account $2 from the top scores. }
       else { notice $nick Couldn't find account $2 }
     }
   }
@@ -199,12 +197,6 @@ alias renamenick {
   return 1
 }
 
-alias suspendnick {
-  db.exec UPDATE `user` SET banned = $db.safe($2) WHERE user = $db.safe($1)
-  if ($mysql_affected_rows(%db) === -1) { return 0 }
-  return 1
-}
-
 alias deletenick {
   if ($len($1) < 1) { return }
   if ($2) { var %target = notice $2 $logo(DELETE) }
@@ -229,12 +221,11 @@ alias deletenick {
 
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
-    if (!$4) { goto error }
+    if (!$4 || $4 !isnum) { goto error }
     if ($1 == !increase) { var %sign + }
     elseif ($1 == !decrease) { var %sign - }
     elseif ($1 == !define) { var %sign = }
     else { goto error }
-    if ($4 !isnum) { goto error }
     var %table = user
     if ($storematch($3) != 0) {
       var %table = $gettok($v1,3,32)
@@ -304,7 +295,6 @@ on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
     ignoreinfo $2 $2 $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
-
 alias ignoreinfo {
   var %reply $3-
   tokenize 32 $1 $2

@@ -803,3 +803,6 @@
 12/11 07:18:36 iBling parted channel #team_shame during a dm oldcash 1561396662 penalty 31227934
 12/11 07:32:54 |Lance| parted channel #tank during a dm oldcash 20890975714 penalty 417819515
 12/11 07:37:57 tommasfong parted channel #kcr during a dm oldcash 2241557891 penalty 44831158
+12/11 09:17:16 werr4560 got !enddm'd on #werr4560 oldcash 8371881175 newcash 8330021770
+12/11 10:09:33 dani0996 got !enddm'd on #magemare oldcash 337279765 newcash 335593367
+12/11 10:40:07 max_est got !enddm'd on #Dm.newbies oldcash 594149071 newcash 591178326
