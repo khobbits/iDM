@@ -1622,3 +1622,6 @@
 11/11 18:55:05 damien` bought from the store (sgs) ~damien@Swift-AFB02953.dyn.optonline.net
 11/11 18:58:45 kels bought from the store (ags) ~kels@5F760027.3777085D.512D550A.IP
 11/11 19:04:39 Kylegebert bought from the store (bgs) ~Kylegeber@Swift-4955620B.hsd1.fl.comcast.net
+11/11 19:52:45 Haxed bought from the store (mudkip) ~owningu@Swift-3E9753AD.cpe.quickclic.net
+11/11 20:23:00 Skillz bought from the store (accumulator) ~Tiasas@Swift-7016AB02.du.shawcable.net
+11/11 20:25:19 KelsFart bought from the store (armadyl godsword) ~KelsFart@Swift-908A4AA1.cc.shawcable.net

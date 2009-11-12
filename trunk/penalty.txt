@@ -769,3 +769,7 @@
 11/11 18:35:28 oceancoco got !enddm'd on #tds oldcash 2184503332 newcash 2173580816
 11/11 19:22:00 ^Tara^ got !enddm'd on #TaraNichole oldcash 381218163 newcash 379312073
 11/11 19:25:42 CandyCane got !enddm'd on #doctor oldcash 1051888942 newcash 1046629498
+11/11 19:45:09 shanyeman329 got !enddm'd on #iDM oldcash 2139933149 newcash 2129233484
+11/11 20:18:21 slim parted channel #iDM during a dm oldcash 7742424241 penalty 154848485
+11/11 20:27:01 Trevor_9666 parted channel #iDM during a dm oldcash 350276294 penalty 7005526
+11/11 20:29:13 Trevor_9666 parted channel #iDM during a dm oldcash 343270768 penalty 6865416

@@ -243,7 +243,7 @@ alias hit {
   db.hget equiphit equip_armour $2
 
   var %atk $calc($iif($hget(equiphit,firecape),5,0) + $iif($hget(equiphit,bgloves),3,0))
-  var %def $iif($db.get(equip_armour,elshield),$calc($r(85,99) / 100),1)
+  var %def $iif($db.get(equip_armour,elshield,$3),$calc($r(85,99) / 100),1)
   var %ratk $calc($iif($hget(equiphit,void),5,0) + $iif($hget(equiphit,accumulator),5,0))
   var %matk $calc($iif($hget(equiphit,void-mage),5,0) + $iif($hget(equiphit,mbook),5,0) + $iif($hget(equiphit,godcape),5,0))
 

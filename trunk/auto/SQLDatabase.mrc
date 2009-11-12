@@ -16,6 +16,7 @@ alias db.tquote {
 
 ; This is a convience function to return a single cell from a table
 alias db.get {
+  if (!$3) { mysqlderror Syntax Error: db.get <table> <column> <user> - $db.safe($1-) | halt }
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
@@ -24,6 +25,7 @@ alias db.get {
 
 ; This function retrieves a single cell from a database and returns the value
 alias db.select {
+  if (!$2) { mysqlderror Syntax Error: db.select <sql> <column> - $db.safe($1-) | halt }
   dbcheck
   var %sql = $1
   var %col = $2
@@ -166,9 +168,11 @@ alias db.exec {
 alias mysqlderror {
   echo 4 -s $1-
   sbnc tcl putmainlog {3BotError - $me $+ 4 $1- }
+  mysql_ping %db
 }
 
 on *:START: {
+  unset %db
   load -rs " $+ $mircdirmysql/mmysql.mrc"
   dbinit
 }
