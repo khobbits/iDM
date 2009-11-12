@@ -195,7 +195,7 @@ alias renamenick {
   var %target = %target $mysql_affected_rows(%db) equip_armour;
   db.exec UPDATE `equip_staff` SET user = $db.safe($2) WHERE user = $db.safe($1)
   var %target = %target $mysql_affected_rows(%db) equip_staff;
-  db.exec UPDATE `clan` SET c2 = $db.safe($2) WHERE c2 = $db.safe($1)
+  db.exec UPDATE `clantracker` SET owner = $db.safe($2) WHERE owner = $db.safe($1)
   %target $mysql_affected_rows(%db) clans.
   return 1
 }
@@ -220,9 +220,11 @@ alias deletenick {
   db.exec DELETE FROM `equip_armour` WHERE user = $db.safe($1)
   var %target = %target $mysql_affected_rows(%db) equip_armour;
   db.exec DELETE FROM `equip_staff` WHERE user = $db.safe($1)
-  var %target = %target $mysql_affected_rows(%db) equip_staff;
-  db.exec DELETE FROM `clan` WHERE c2 = $db.safe($1)
-  %target $mysql_affected_rows(%db) clans.
+  var %target = %target $mysql_affected_rows(%db) equip_staff.
+  if ($isclanowner($1)) {
+    deleteclan $getclanname($1)
+    var %target = %target Also deleted one clan.
+  }
   return 1
 }
 

@@ -773,3 +773,5 @@
 11/11 20:18:21 slim parted channel #iDM during a dm oldcash 7742424241 penalty 154848485
 11/11 20:27:01 Trevor_9666 parted channel #iDM during a dm oldcash 350276294 penalty 7005526
 11/11 20:29:13 Trevor_9666 parted channel #iDM during a dm oldcash 343270768 penalty 6865416
+11/11 20:45:45 {Toori} got !enddm'd on #Dm.newbies oldcash 2582349989 newcash 2569438240
+11/11 21:02:13 n3wt4nk parted channel #cwd during a dm oldcash 2017515349 penalty 40350307
