@@ -79,6 +79,7 @@ alias islogged {
   ; $2 = address
   ; $3 = [optional] if user is not logged, should auth be attempted
   ;      0/null = no attempt; 1 = silent login attempt; 2 = login attempt; 3 = halt + login attempt;
+  if (!$2) { mysqlderror Syntax Error: islogged <nickname> <address> [option] | halt }
 
   db.hget islogged user $1 login address
 
@@ -115,6 +116,8 @@ alias logcheck {
   ; $3 = channel
   ; $4- = command to call on success
   ; [optional] create a $2.fail to catch a failed auth
+  if (!$4) { mysqlderror Syntax Error: /logcheck <nickname> <address> <channel> <command on success>  | halt }
+
   if ($islogged($1,$2,0) == 1) {
     $4 $1 $2 $3 $5-
     return

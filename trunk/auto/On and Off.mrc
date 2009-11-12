@@ -16,8 +16,10 @@ on $*:TEXT:/^[!.](on|off) .*/Si:#: {
 }
 
 on *:JOIN:#: {
-  var %output = $displayoff($chan)
-  if (%output) { notice $nick %output }
+  if ($nick != $me) {
+    var %output = $displayoff($chan)
+    if (%output) { notice $nick %output }
+  }
 }
 
 alias displayoff {
@@ -77,7 +79,7 @@ alias disable {
   }
   elseif ($attack($1)) {
     db.set settings setting $3 $1
-  } 
+  }
   else {
     var %notice Error: Could not find attack to disable.
   }
