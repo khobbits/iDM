@@ -775,3 +775,13 @@
 11/11 20:29:13 Trevor_9666 parted channel #iDM during a dm oldcash 343270768 penalty 6865416
 11/11 20:45:45 {Toori} got !enddm'd on #Dm.newbies oldcash 2582349989 newcash 2569438240
 11/11 21:02:13 n3wt4nk parted channel #cwd during a dm oldcash 2017515349 penalty 40350307
+11/11 21:15:18 thereaper543 got !enddm'd on #atrocity oldcash 1629085449 newcash 1620940022
+11/11 21:16:25 comit125 got !enddm'd on #supG oldcash 16431999 newcash 16349840
+11/11 21:23:07 Teh_Tyl3R parted channel #hawties during a dm oldcash 91966385 penalty 1839328
+11/11 21:36:10 mSL got !enddm'd on #A.I.D.S oldcash 6941036 newcash 6906331
+11/11 21:48:19 Skillz got !enddm'd on #Dm.newbies oldcash 290100387 newcash 288649886
+11/11 21:50:07 joshua12227 parted channel #iDM during a dm oldcash 6430754468 penalty 128615090
+11/11 21:58:08 mSL got !enddm'd on #A.I.D.S oldcash 6906331 newcash 6871800
+11/11 22:14:14 i_blitz_n_K0 got !enddm'd on #Divine oldcash 306600057 newcash 305067057
+11/11 22:18:44 jess_lee got !enddm'd on #rsuncut oldcash 3195320663 newcash 3179344060
+11/11 22:32:31 [Ax]|Legend|James| parted channel #blitz during a dm oldcash 1186665801 penalty 23733317

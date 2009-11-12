@@ -179,7 +179,9 @@ alias isclanowner {
     return 0
   }
   elseif ($1) {
-    if ($db.get(clantracker,owner,$db.get(user,clan,$1)) == $1) return 1
+    if ($db.get(user,clan,$1)) {
+      if ($db.get(clantracker,owner,$v1) == $1) return 1
+    }
     return 0
   }
 }

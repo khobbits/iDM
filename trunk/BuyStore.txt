@@ -1628,3 +1628,15 @@
 11/11 20:34:41 james_my_bro bought from the store (accumulator) ~james_my_@Swift-DC56BA90.lns13.cht.bigpond.net.au
 11/11 20:39:44 davie_ bought from the store (mage's book) ~davie_@Swift-F1BA59F8.dhcp.rxbo.nc.charter.com
 11/11 21:05:43 n3wt4nk bought from the store (sgs) ~n3wt4nk@Swift-9AAF76B8.satx.res.rr.com
+11/11 21:07:38 n3wt4nk bought from the store (void range) ~n3wt4nk@Swift-9AAF76B8.satx.res.rr.com
+11/11 21:08:03 comit125 bought from the store (ags) ~comit125@Swift-29CE6574.hsd1.tn.comcast.net
+11/11 21:18:45 Imu bought from the store (dclaws) ~ssh15d159@40598CE6.E24C0ED.B3684E21.IP
+11/11 21:29:06 {Toori} bought from the store (wealth) ~tori@Swift-7AADA243.dsl.bell.ca
+11/11 21:50:44 Dool bought from the store (bgs) ~Dool@Swift-F1A3BEE2.dhcp.jcsn.tn.charter.com
+11/11 21:59:12 Jeromy bought from the store (sgs) ~Jeromy@Swift-C0E745F7.dsl.rcsntx.swbell.net
+11/11 22:06:33 Trav1313 bought from the store (void range) ~Trav1313@Swift-4E157982.twcny.res.rr.com
+11/11 22:06:39 huge_safe bought from the store (sgs) ~huge_safe@Swift-B4247359.range86-150.btcentralplus.com
+11/11 22:07:48 Trav1313 bought from the store (accumulator) ~Trav1313@Swift-4E157982.twcny.res.rr.com
+11/11 22:24:23 mattl61 bought from the store (void mage) ~mattl61@Swift-16C81578.maine.res.rr.com
+11/11 22:26:27 i_blitz_n_K0 bought from the store (ags) ~SwiftIRC6@Swift-71EEF42B.dsl.chic01.pacbell.net
+11/11 22:26:40 jess_lee bought from the store (firecape) ~jess_lee@Swift-67D0FD8F.dynamic.dsl.seg.net
