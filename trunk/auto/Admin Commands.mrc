@@ -79,7 +79,7 @@ alias banman {
   }
 }
 alias hostcallback {
-  notice $3 Warning: Could not find hostname cached, attempting hostname lookup for $1 $+ .
+  notice $3 Warning: Could not find hostname cached, attempting hostname lookup for $1 $+ , please wait.
   set %userhost. [ $+ [ $1 ] ] $2-
   userhost $1
 }
