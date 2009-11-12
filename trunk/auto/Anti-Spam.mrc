@@ -37,3 +37,19 @@ on *:INVITE:#: {
     set -u180 %invig. [ $+ [ # ] ] true
   }
 }
+
+alias ignoresync {
+  var %i 1
+  while ($ignore(%i)) {
+    var %user = $v1
+    inc %i
+    if (!$db.get(ilist,reason,%user)) { ignore -r %user }
+  }
+  var %sql = SELECT * FROM `ilist`
+  var %result = $db.query(%sql)
+  while ($db.query_row_data(%result,user)) {
+    var %user = $v1
+    if (!$ignore(%user)) { ignore %user }
+  }
+  db.query_end %result
+}

@@ -70,3 +70,50 @@ alias pvp {
   if ($hget(equipp,MJavelin)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
   return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
 }
+
+
+on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+    var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
+    var %result = $db.query(%sql)
+    if ($db.query_row(%result,equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
+    db.query_end %result
+    notice $nick $logo(Special Items) Belong Blade: $s2($hget(equip,belong)) Allergy Pills: $s2($hget(equip,allegra)) $&
+      Beaumerang: $s2($hget(equip,beau)) One Eyed Trouser Snake: $s2($hget(equip,snake)) KHonfound Ring: $s2($hget(equip,kh)) $&
+      The Supporter: $s2($hget(equip,support))
+  }
+}
+
+on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+    if (!$2) { notice You need to include a name you want to give your item too. }
+    elseif ($whichitem($nick)) {
+      if ($db.get(equip_staff,$v1,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      db.set equip_staff $v1 $2 $nick
+      notice $nick $logo(Give-Item) Gave your item to $s2($2)
+    }
+    else { return }   
+  }
+}
+
+On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+    if (!$2) { notice You need to include a name you want to give your item too. }
+    elseif ($whichitem($nick)) {
+      if ($db.get(equip_staff,$v1,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+      db.set equip_staff $v1 $2 0
+      notice $nick $logo(Take-Item) Took your item from $s2($2)
+    }
+    else { return }
+  }
+}
+
+alias whichitem {
+  if ($1 == Belongtome || $nick == Belong|AFK || $nick == Felix) { return belong }
+  if ($1 == Allegra || $nick == Strychnine) { return allegra }
+  if ($1 == Beau) { return beau }
+  if ($1 == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { return snake }
+  if ($1 == KHobbits) { return kh }
+  if ($1 == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) { return support }
+  return 0
+}

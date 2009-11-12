@@ -106,8 +106,7 @@ on $*:TEXT:/^[!.]chans$/Si:#idm.staff,#idm.support: {
 }
 
 alias chans {
-  unset %b
-  var %a 1
+  var %b,%a 1
   while (%a <= $chan(0)) {
     if ($me isop $chan(%a)) var %b %b $+(@,$chan(%a))
     if ($me ishop $chan(%a)) var %b %b $+($chr(37),$chan(%a))
@@ -228,86 +227,6 @@ alias deletenick {
   return 1
 }
 
-on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-    var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
-    var %result = $db.query(%sql)
-    if ($db.query_row(%result,equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
-    db.query_end %result
-    notice $nick $logo(Special Items) Belong Blade: $s2($hget(equip,belong)) Allergy Pills: $s2($hget(equip,allegra)) $&
-      Beaumerang: $s2($hget(equip,beau)) One Eyed Trouser Snake: $s2($hget(equip,snake)) KHonfound Ring: $s2($hget(equip,kh)) $&
-      The Supporter: $s2($hget(equip,support))
-  }
-}
-
-on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-    if (!$2) { notice You need to include a name you want to give your item too. }
-    else {
-      if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-        if ($db.get(equip_staff,belong,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff belong $2 1
-      }
-      elseif ($nick == Allegra || $nick == Strychnine) {
-        if ($db.get(equip_staff,allegra,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff allegra $2 1
-      }
-      elseif ($nick == Beau) {
-        if ($db.get(equip_staff,beau,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff beau $2 1
-      }
-      elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
-        if ($db.get(equip_staff,snake,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff snake $2 1
-      }
-      elseif ($nick == KHobbits) {
-        if ($db.get(equip_staff,kh,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff kh $2 1
-      }
-      elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
-        if ($db.get(equip_staff,support,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-        db.set equip_staff support $2 $nick
-      }
-      else { return }
-      notice $nick $logo(Give-Item) Gave your item to $s2($2)
-    }
-  }
-}
-
-On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-    if (!$2) { notice You need to include a name you want to give your item too. }
-    else {
-      if ($nick == Belongtome || $nick == Belong|AFK || $nick == Felix) {
-        if ($db.get(equip_staff,belong,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff belong $2 0
-      }
-      elseif ($nick == Allegra || $nick == Strychnine) {
-        if ($db.get(equip_staff,allegra,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff allegra $2 0
-      }
-      elseif ($nick == Beau) {
-        if ($db.get(equip_staff,beaumerang,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff beau $2 0
-      }
-      elseif ($nick == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) {
-        if ($db.get(equip_staff,snake,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff snake $2 0
-      }
-      elseif ($nick == KHobbits) {
-        if ($db.get(equip_staff,kh,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff kh $2 0
-      }
-      elseif ($nick == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) {
-        if ($db.get(equip_staff,support,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-        db.set equip_staff support $2 0
-      }
-      else { return }
-      notice $nick $logo(Take-Item) Took your item from $s2($2)
-    }
-  }
-}
-
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$4) { goto error }
@@ -316,6 +235,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
     elseif ($1 == !define) { var %sign = }
     else { goto error }
     if ($4 !isnum) { goto error }
+    var %table = user
     if ($storematch($3) != 0) {
       var %table = $gettok($v1,3,32)
       var %item = $gettok($v1,2,32)
@@ -324,17 +244,8 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
       var %table = equip_pvp
       var %item = $3
     }
-    elseif ($3 == money) {
-      var %table = user
-      var %item = money
-    }
-    elseif ($3 == wins) {
-      var %table = user
-      var %item = wins
-    }
-    elseif ($3 == losses) {
-      var %table = user
-      var %item = losses
+    elseif ($3 == money) || ($3 == wins) || ($3 == losses) {
+      var %item = $3
     }
     else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin + !store items. | halt }
     if (%sign == =) { db.set %table %item $2 $4 }
@@ -387,15 +298,27 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.`](show|say)dm/Si:#: {
-  if ($db.get(admins,position,$address($nick,3))) {
-    notice $nick $logo(Show DM) $s1($2) is $iif(%dming [ $+ [ $2 ] ],3currently,not) DMing on $me at the moment according to var.
-    if ($me == iDM) { notice $nick $logo(Show DM) $s1($2) is $iif($db.get(user,indm,$2),3currently,not) DMing at the moment according to ini. }
+on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
+  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Banned?: $iif($db.get(user,banned,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
+    ignoreinfo $2 $2 $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
 
-on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
-  if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Registered?: $iif($db.get(user,pass,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
+alias ignoreinfo {
+  var %reply $3-
+  tokenize 32 $1 $2
+  if (@ !isin $2) {
+    if ($address($2,1)) { tokenize 32 $1 $v1 }
+    else { hostcallback $1 ignoreinfo $1 ~host~ %reply | halt }
   }
+  db.hget checkban ilist $2 who time reason
+  if ($hget(checkban,reason)) { var %reply %reply $s1($2) $2(was banned) by $hget(checkban,who) for $hget(checkban,reason) - }
+  elseif ($ignore($2)) { var %reply %reply $s1($2) $s2(is banned) on the bot but not in the db - }
+  else { var %reply %reply $s1($2) is not ignored - }
+  db.hget checkban ilist $1 $+ !*@* who time reason
+  if ($hget(checkban,reason)) { var %reply %reply $s1($1 $+ !*@*) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
+  elseif ($ignore($1 $+ !*@*)) { var %reply %reply s1($1 $+ !*@*) $s2(is banned) on the bot but not in the db }
+  else { var %reply %reply $s1($1 $+ !*@*) is not ignored }
+  %reply
 }
