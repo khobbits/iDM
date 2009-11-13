@@ -46,7 +46,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: { banman $nick $chan $1- }
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: { banman $nick $chan $iif($1-,$1-,$nick) }
 alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
   if (!$db.get(admins,position,$address(%nick,3))) { if (?c* !iswm $1 || %nick isreg %chan || %nick !ison %chan) { halt } }
@@ -292,7 +292,7 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Banned?: $iif($db.get(user,banned,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
-    ignoreinfo $2 $2 $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
+    ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
 alias ignoreinfo {

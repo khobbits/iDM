@@ -806,3 +806,45 @@
 12/11 09:17:16 werr4560 got !enddm'd on #werr4560 oldcash 8371881175 newcash 8330021770
 12/11 10:09:33 dani0996 got !enddm'd on #magemare oldcash 337279765 newcash 335593367
 12/11 10:40:07 max_est got !enddm'd on #Dm.newbies oldcash 594149071 newcash 591178326
+12/11 10:59:47 xdeathgodzx got !enddm'd on #cwd oldcash 505229562 newcash 502703415
+12/11 11:07:27 ahmada0 got !enddm'd on #Dm.newbies oldcash 814998056 newcash 810923066
+12/11 11:13:08 w0ble_o0wner got !enddm'd on #iDM oldcash 237099229 newcash 235913733
+12/11 11:18:18 Homicida parted channel #mlp during a dm oldcash 9164541146 penalty 183290823
+12/11 12:10:25 Lemaster got !enddm'd on #Eveseindefdu oldcash 1777005364 newcash 1768120338
+12/11 12:52:39 bret_miller parted channel #freedm during a dm oldcash 842058883 penalty 16841178
+12/11 12:57:01 fraz got !enddm'd on #Dm.newbies oldcash 1382637754 newcash 1375724566
+12/11 12:58:37 Jermz got !enddm'd on #magemare oldcash 558954113 newcash 556159343
+12/11 12:59:28 Ruuddie parted channel #elex during a dm oldcash 1718386904 penalty 34367739
+12/11 13:00:44 bret_miller parted channel #confuzzled during a dm oldcash 890017599 penalty 17800352
+12/11 13:04:53 fraz got !enddm'd on #Dm.newbies oldcash 1375724566 newcash 1368845944
+12/11 13:28:44 D38D_PL0X got !enddm'd on #ted oldcash 1639556856 newcash 1631359072
+12/11 13:29:38 FreshalaBef parted channel #Fresh during a dm oldcash 119405737 penalty 2388115
+12/11 13:39:18 WtFimD3aD_Jonas got !enddm'd on #krygem230 oldcash 168412793 newcash 167570730
+12/11 13:43:58 WtFimD3aD_Jonas got !enddm'd on #krygem230 oldcash 168202240 newcash 167361229
+12/11 13:48:10 fraz got !enddm'd on #tank oldcash 1368958915 newcash 1362114121
+12/11 13:50:28 `Meggg parted channel #cwd during a dm oldcash 515449121 penalty 10308983
+12/11 14:51:09 Ace_Mak got !enddm'd on #tank oldcash 5887790488 newcash 5858351536
+12/11 15:18:01 lifekiller10 got !enddm'd on #tank oldcash 32267296 newcash 32105960
+12/11 15:24:44 `Meggg parted channel #cwd during a dm oldcash 60349496 penalty 1206990
+12/11 15:50:07 golld02 got !enddm'd on #GB-Lobby oldcash 330033466 newcash 328383299
+12/11 16:36:26 [IL]lil_0ne_l0k0 parted channel #buttbuddies during a dm oldcash 133753704 penalty 2675075
+12/11 16:52:06 bret_miller got !enddm'd on #freedm oldcash 374235890 newcash 372364711
+12/11 16:55:06 bret_miller got !enddm'd on #freedm oldcash 372364711 newcash 370502888
+12/11 17:06:42 snake_XD got !enddm'd on #Eveseindefdu oldcash 133482928 newcash 132815514
+12/11 17:20:37 flamewarri12 parted channel #taxi_cab during a dm oldcash 1982210082 penalty 39644202
+12/11 17:34:43 micknasty1 got !enddm'd on #freedm oldcash 988463281 newcash 983520965
+12/11 17:57:18 `13_Dragon_1 parted channel #world129 during a dm oldcash 1397492321 penalty 27949847
+12/11 18:04:23 ownjad4meplx parted channel #Fresh during a dm oldcash 181523847 penalty 3630477
+12/11 18:16:38 {mark} got !enddm'd on #roar oldcash 9732680156 newcash 9684016756
+12/11 18:36:14 Itz|Slay parted channel #doctor during a dm oldcash 1592677451 penalty 31853550
+12/11 18:39:55 Mr_Monsta got !enddm'd on #godzwar oldcash 6919467 newcash 6884870
+12/11 18:42:44 `Anth got !enddm'd on #Dm.newbies oldcash 14599947291 newcash 14526947555
+12/11 18:50:11 mSL got !enddm'd on #doctor oldcash 6871800 newcash 6837441
+12/11 18:53:31 eatt got !enddm'd on #godzwar oldcash 445336978 newcash 443110294
+12/11 18:53:38 RIPESZ parted channel #Dm.newbies during a dm oldcash 88324815 penalty 1766497
+12/11 18:55:10 baseball parted channel #tank during a dm oldcash 6136106212 penalty 122722125
+12/11 18:58:37 Aww_luv|natalie_ got !enddm'd on #5afed oldcash 1140756605 newcash 1135052822
+12/11 19:00:15 eatt got !enddm'd on #godzwar oldcash 443221437 newcash 441005330
+12/11 19:04:23 |Steven| got !enddm'd on #Gwasmower oldcash 15605608 newcash 15527580
+12/11 19:05:56 RIPESZ parted channel #barzo during a dm oldcash 88833858 penalty 1776678
+12/11 19:10:23 daddy_Zion got !enddm'd on #5afed oldcash 96858817 newcash 96374523
