@@ -49,15 +49,14 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
 on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: {
   if ($me != iDM) { halt }
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
-  sbnc tcl putmainlog $chr(123) $+ $1 $nick $chan $2- $+ $chr(125)
+  putlog perform banman $nick $chan $1 $iif($2-,$2-,$nick)
 }
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:?: { if ($nick == -sbnc) { banman $2 $3 $1 $iif($4-,$4-,$2) } }
 alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
   if (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
     else { 
-      if ($me == idm) hostcallback %nick $2 putlog $1 %nick %chan ~host~ $iif($3,$2 - $3-)
+      if ($me == idm) hostcallback %nick $2 putlog perform banman %nick %chan $1 ~host~ $iif($3,$2 - $3-)
       halt 
     }
   }
