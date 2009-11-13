@@ -46,10 +46,14 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: { banman $nick $chan $1 $iif($2-,$2-,$nick) }
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: {
+  if ($me != idm) { halt }
+  if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
+  sbnc tcl putmainlog $chr(123) $+ $1 $nick $chan $2- $+ $chr(125)
+}
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:?: { if ($nick == -sbnc) { banman $2 $3 $1 $iif($4-,$4-,$2) } }
 alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
-  if (!$db.get(admins,position,$address(%nick,3))) { if (?c* !iswm $1 || %nick isreg %chan || %nick !ison %chan) { halt } }
   if (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
     else { hostcallback $2 banman %nick %chan $1 ~host~ $iif($3,$2 - $3-) | halt }
@@ -252,8 +256,17 @@ on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($cid != $scon(1)) { halt }
     var %rand $rand(5000,120000)
-    privmsg $chan $s1(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
+    privmsg $chan $logo(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
     timer -m 1 %rand rehash
+  }
+}
+
+on $*:TEXT:/^[!.]ignoresync$/Si:#idm.staff: {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
+    if ($cid != $scon(1)) { halt }
+    var %rand $rand(5000,30000)
+    privmsg $chan $logo(IgnoreSync) Running ignore sync script in $floor($calc(%rand /1000)) seconds.
+    timer -m 1 %rand ignoresync
   }
 }
 

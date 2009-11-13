@@ -39,17 +39,14 @@ on *:INVITE:#: {
 }
 
 alias ignoresync {
-  var %i 1
-  while ($ignore(%i)) {
-    var %user = $v1
-    inc %i
-    if (!$db.get(ilist,reason,%user)) { ignore -r %user }
-  }
+  var %ti $ctime
+  .ignore -r
   var %sql = SELECT * FROM `ilist`
   var %result = $db.query(%sql)
   while ($db.query_row_data(%result,user)) {
     var %user = $v1
-    if (!$ignore(%user)) { ignore %user }
+    if (!$ignore(%user)) { .ignore %user }
   }
   db.query_end %result
+  msg $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
 }
