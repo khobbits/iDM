@@ -46,7 +46,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: { banman $nick $chan $iif($1-,$1-,$nick) }
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: { banman $nick $chan $1 $iif($2-,$2-,$nick) }
 alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
   if (!$db.get(admins,position,$address(%nick,3))) { if (?c* !iswm $1 || %nick isreg %chan || %nick !ison %chan) { halt } }
