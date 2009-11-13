@@ -47,7 +47,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
 }
 
 on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: {
-  if ($me != idm) { halt }
+  if ($me != iDM) { halt }
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   sbnc tcl putmainlog $chr(123) $+ $1 $nick $chan $2- $+ $chr(125)
 }
@@ -56,7 +56,10 @@ alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
   if (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
-    else { hostcallback $2 banman %nick %chan $1 ~host~ $iif($3,$2 - $3-) | halt }
+    else { 
+      if ($me == idm) hostcallback %nick $2 putlog $1 %nick %chan ~host~ $iif($3,$2 - $3-)
+      halt 
+    }
   }
   else { tokenize 32 $1 $2 $3- }
   if ($me == iDM) {
@@ -83,9 +86,9 @@ alias banman {
   }
 }
 alias hostcallback {
-  notice $3 Warning: Could not find hostname cached, attempting hostname lookup for $1 $+ , please wait.
-  set %userhost. [ $+ [ $1 ] ] $2-
-  userhost $1
+  if ($1 != 0) { notice $1 Warning: Could not find hostname cached, attempting hostname lookup for $2 $+ , please wait. }
+  set %userhost. [ $+ [ $2 ] ] $3-
+  userhost $2
 }
 raw 302:*: {
   if (%userhost. [ $+ [ $gettok($2,1,61) ] ]) {
@@ -313,7 +316,7 @@ alias ignoreinfo {
   tokenize 32 $1 $2
   if (@ !isin $2) {
     if ($address($2,1)) { tokenize 32 $1 $v1 }
-    else { hostcallback $1 ignoreinfo $1 ~host~ %reply | halt }
+    else { hostcallback 0 $1 ignoreinfo $1 ~host~ %reply | halt }
   }
   db.hget checkban ilist $2 who time reason
   if ($hget(checkban,reason)) { var %reply %reply $s1($2) $2(was banned) by $hget(checkban,who) for $hget(checkban,reason) - }

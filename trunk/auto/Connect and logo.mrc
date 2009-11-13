@@ -2,6 +2,10 @@ alias logo { return $+(07[,03,$$1-,07],) }
 alias s1 { return $+($chr(3),03,$1-,) }
 alias s2 { return $+($chr(3),07,$1-,) }
 
+alias putlog {
+  sbnc tcl putmainlog $chr(123) $+ $1- $+ $chr(125)
+}
+
 on *:CONNECT: {
   mode $me +pB
   mysql_close %db

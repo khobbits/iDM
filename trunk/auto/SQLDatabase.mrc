@@ -167,7 +167,7 @@ alias db.exec {
 
 alias mysqlderror {
   echo 4 -s $1-
-  sbnc tcl putmainlog {3BotError - $me $+ 4 $1- }
+  putlog 3BotError - $me $+ 4 $1- 
   mysql_ping %db
 }
 
