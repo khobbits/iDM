@@ -228,35 +228,36 @@ alias bonus {
   elseif ($1 == surf) return Highly accurate and ignores all defence bonuses
   elseif ($1 == smoke) return 1/2 Chance of poisoning opponent
   elseif ($1 == onyx) return Heals 1/3 of whatever you hit
+  elseif ($1 == dh) return !hitchance dh9
+
 }
 
 alias doeswhat {
-  if ($1 == cbow) var %msg shoots a dragon bolt at
-  elseif ($1 == vlong) var %msg thrusts towards
-  elseif ($1 == vspear)  var %msg stuns
-  elseif ($1 == statius) var %msg critically injures
-  elseif ($1 == mjavelin) var %msg impales
-  elseif ($1 == sgs) var %msg crushes
-  elseif ($1 == ags) var %msg whirls around and slashes at
-  elseif ($1 == zgs) var %msg cleaves
-  elseif ($1 == bgs) var %msg dismembers
-  elseif ($1 == guth) var %msg stabs at
-  elseif ($1 == blood) var %msg casts at
-  elseif ($1 == ice) var %msg casts above
-  elseif ($1 == smoke) var %msg casts about
-  elseif ($1 == dbow) var %msg fires two dragon arrows towards
-  elseif ($1 == whip) var %msg slashes
-  elseif ($1 == dds) var %msg stabs
-  elseif ($1 == dclaws) var %msg scratches
-  elseif ($1 == surf) var %msg uses surf on
-  elseif ($1 == gmaul) var %msg whacks at
-  elseif ($1 == dh) var %msg crushes
-  elseif ($1 == dscim) var %msg severs
-  elseif ($1 == dlong) var %msg hacks
-  elseif ($1 == dmace) var %msg smashes
-  elseif ($1 == dhally) var %msg swipes
-  elseif ($1 == onyx) var %msg shoots at
-  return %msg
+  if ($1 == cbow) return shoots a dragon bolt at
+  elseif ($1 == vlong) return thrusts towards
+  elseif ($1 == vspear) return stuns
+  elseif ($1 == statius) return critically injures
+  elseif ($1 == mjavelin) return impales
+  elseif ($1 == sgs) return crushes
+  elseif ($1 == ags) return whirls around and slashes at
+  elseif ($1 == zgs) return cleaves
+  elseif ($1 == bgs) return dismembers
+  elseif ($1 == guth) return stabs at
+  elseif ($1 == blood) return casts at
+  elseif ($1 == ice) return casts above
+  elseif ($1 == smoke) return casts about
+  elseif ($1 == dbow) return fires two dragon arrows towards
+  elseif ($1 == whip) return slashes
+  elseif ($1 == dds) return stabs
+  elseif ($1 == dclaws) return scratches
+  elseif ($1 == surf) return uses surf on
+  elseif ($1 == gmaul) return whacks at
+  elseif ($1 == dh) return crushes
+  elseif ($1 == dscim) return severs
+  elseif ($1 == dlong) return hacks
+  elseif ($1 == dmace) return smashes
+  elseif ($1 == dhally) return swipes
+  elseif ($1 == onyx) return shoots at
 }
 
 alias splasher {
@@ -357,7 +358,7 @@ alias c124 { return $chr(124) }
 on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
   if (!$3) { $iif($left($1,1) == @,msg #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
-  if (!$attack($2)) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
+  if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
   if ($max(r,$2)) var %t = r
   elseif ($max(ma,$2)) var %t = ma
   else var %t = m

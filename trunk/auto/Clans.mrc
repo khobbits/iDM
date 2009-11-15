@@ -118,7 +118,10 @@ alias claninfo {
 }
 
 alias clanstats {
-  return $s1(Wins) $+ : $iif($db.get(clantracker,wins,$1),$s2($v1),$s2(0)) $s1(Losses) $+ : $iif($db.get(clantracker,losses,$1),$s2($v1),$s2(0)) $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
+  var %wins $db.get(clantracker,wins,$1)
+  var %losses $db.get(clantracker,losses,$1)
+  var %ratio $s1(W/L Ratio) $+ :  $s2($round($calc(%wins / %losses),2)) ( $+ $s2($+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37)))) $+ )
+  return $s1(Wins) $+ : $iif(%wins,$s2($v1),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($v1),$s2(0)) %ratio $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
 }
 
 alias createclan {
