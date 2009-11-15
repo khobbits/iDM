@@ -1032,3 +1032,6 @@
 15/11 00:41:51 kill4us parted channel #D_L during a dm oldcash 224066142 penalty 4481323
 15/11 00:51:39 roan3105 got !enddm'd on #kcr oldcash 1479198475 newcash 1471802483
 15/11 00:53:54 df11 got !enddm'd on #D_l oldcash 466174477 newcash 463843605
+15/11 01:09:21 Fuzy parted channel #Dm.newbies during a dm oldcash 1852110784 penalty 37042216
+15/11 01:24:35 `Drew got !enddm'd on #atrocity oldcash 187160801 newcash 186224997
+15/11 01:28:22 titan` quit during a dm oldcash 126239855 penalty 1262399

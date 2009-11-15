@@ -1,17 +1,17 @@
-on $*:TEXT:/^[!.](on|off) .*/Si:#: {
+on $*:TEXT:/^[!.](on|off).*/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list).| halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
-    else enable $remove($2-,$chr(32)) $nick #
+    else enablec $remove($2-,$chr(32)) $nick #
   }
   elseif ($1 == !off || $1 == .off) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
-    else disable $remove($2-,$chr(32)) $nick #
+    else disablec $remove($2-,$chr(32)) $nick #
   }
 }
 
@@ -25,15 +25,15 @@ on *:JOIN:#: {
 alias displayoff {
   var %output
   var %sql = SELECT * FROM settings WHERE user = $db.safe($1)
-  var %result = $db.query(%sql)
+  var %result $db.query(%sql)
+  var %output
   while ($db.query_row(%result,row)) {
-    if ($3 == 1) { var %output = $hget(row,setting) }
-    else { var %output = %output $+ $chr(44) $hget(row,setting)
+    if (!%output) { var %output $hget(row,setting) }
+    else { var %output %output $+ $chr(44) $hget(row,setting)
     }
   }
   db.query_end %result
-  if (%output) { return $logo(DISABLED) These attacks are currently disabled: %output }
-  return $null
+  return $logo(DISABLED) These attacks are currently disabled: $iif(%output,$v1,None) $+ .
 }
 
 alias isdisabled {
@@ -41,7 +41,7 @@ alias isdisabled {
   return $iif($db.select(%sql,setting) === $null,0,1)
 }
 
-alias enable {
+alias enablec {
   if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   var %notice
@@ -50,15 +50,15 @@ alias enable {
     db.remove settings $3 setting sgs
     db.remove settings $3 setting blood
     db.remove settings $3 setting onyx
-    notice $2 $logo(ENABLE) Healing attacks are now on in $3 $+ .
+    var %notice %notice Healing attacks are now on in $3 $+ .
   }
   elseif ($1 == all) {
     db.remove settings $3
-    notice $2 $logo(ENABLE) All attacks have been turned on in $3 $+ .
-    halt
+    var %notice %notice All attacks have been turned on in $3 $+ .
   }
   elseif ($attack($1)) {
     db.remove settings $3 setting $1
+    var %notice %notice Enabled $1 in $3
   }
   else {
     var %notice Error: Could not find attack to enable.
@@ -66,7 +66,7 @@ alias enable {
   notice $2 $displayoff($3) %notice
 }
 
-alias disable {
+alias disablec {
   if ($2 !isop $3) && (!$db.get(admins,position,$address($2,3))) { halt }
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   var %notice
@@ -75,13 +75,14 @@ alias disable {
     db.set settings setting $3 sgs
     db.set settings setting $3 blood
     db.set settings setting $3 onyx
-    notice $2 $logo(DISABLE) Healing attacks are now off.
+    var %notice %notice Healing attacks are now off.
   }
   elseif ($attack($1)) {
     db.set settings setting $3 $1
+    var %notice %notice Disabled $1 in $3
   }
   else {
-    var %notice Error: Could not find attack to disable.
+    var %notice %notice Error: Could not find attack to disable.
   }
   notice $2 $displayoff($3) %notice
 }

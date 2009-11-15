@@ -2111,3 +2111,5 @@
 15/11 00:37:02 root|adam bought from the store (saradomin godsword) ~rootadam@Swift-4F3470AC.dsl.lsan03.sbcglobal.net
 15/11 00:57:28 mage99 bought from the store (void range) ~mage99@Swift-8842F3EB.mia.bellsouth.net
 15/11 01:05:42 Kerpal94 bought from the store (GOD CAPE) ~Kerpal94@Swift-BB60EFCE.cpe.net.cable.rogers.com
+15/11 01:06:32 Clay_da_Pyro bought from the store (accumulator) ~Clay_da_P@C0586445.3158F0D7.601E1CF5.IP
+15/11 01:19:01 kenshu-x bought from the store (saradomin godsword) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
