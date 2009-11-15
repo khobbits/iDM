@@ -62,7 +62,7 @@ alias db.hget {
 ; These functions are used to get more complicated results from the db
 alias db.query {
   dbcheck
-  var %sql = $1
+  var %sql = $1-
   var %request = $mysql_query(%db, %sql)
   if (%request) {
     if (%debugq == $me) echo 12 -s Query %sql returned token %request

@@ -26,10 +26,12 @@ alias msgunauth {
 }
 
 alias unauth {
+  if (!$1) { mysqlderror Syntax Error: unauth <nickname> - $1- | halt }
   db.set user login $1 0
 }
 
 alias auth {
+  if (!$3) { mysqlderror Syntax Error: auth <nickname> <address> <command> - $1- | halt }
   db.hget islogged user $1 login address
   var %login $hget(islogged,login)
   var %address $hget(islogged,address)
@@ -48,6 +50,7 @@ alias auth {
 }
 
 alias auth_success {
+  if (!$3) { mysqlderror Syntax Error: auth_success <nickname> <address> <command> - $1- | halt }
   db.set user login $1 $ctime
   db.set user address $1 $2
   $3-
@@ -79,7 +82,7 @@ alias islogged {
   ; $2 = address
   ; $3 = [optional] if user is not logged, should auth be attempted
   ;      0/null = no attempt; 1 = silent login attempt; 2 = login attempt; 3 = halt + login attempt;
-  if (!$2) { mysqlderror Syntax Error: islogged <nickname> <address> [option] | halt }
+  if (!$2) { mysqlderror Syntax Error: islogged <nickname> <address> [option] - $1- | halt }
 
   db.hget islogged user $1 login address
 

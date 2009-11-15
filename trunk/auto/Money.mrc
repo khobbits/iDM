@@ -88,8 +88,9 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
-      if ($db.get(equip_staff,$v1,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
-      db.set equip_staff $v1 $2 $nick
+      var %item $v1
+      if ($db.get(equip_staff,%item,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
+      db.set equip_staff %item $2 $iif(%item == support,$nick,1)
       notice $nick $logo(Give-Item) Gave your item to $s2($2)
     }
     else { return }   
@@ -100,8 +101,9 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
-      if ($db.get(equip_staff,$v1,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
-      db.set equip_staff $v1 $2 0
+      var %item $v1
+      if ($db.get(equip_staff,%item,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
+      db.set equip_staff %item $2 0
       notice $nick $logo(Take-Item) Took your item from $s2($2)
     }
     else { return }

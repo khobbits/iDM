@@ -152,13 +152,12 @@ on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (!$2) { notice $nick To use the unsuspend command, type !(un)suspend nick. | halt }
     if (?un* iswm $1) {
-
-      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($nick)
+      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) { notice $nick Restored account $2 to its original status. }
       else { notice $nick Couldn't find account $2 }
     }
     else {
-      db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($nick)
+      db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) { notice $nick Removed account $2 from the top scores. }
       else { notice $nick Couldn't find account $2 }
     }
