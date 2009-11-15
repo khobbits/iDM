@@ -1,8 +1,8 @@
 on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
-    notice $nick $s1(Admin commands:) $s2(!part chan, !chans, !clear, !active, !join bot chan, !(give/take)item nick, !rehash, !amsg, $&
-      !(show/rem)dm nick, ![set]pass nick password, !idle, !define/increase/decrease account item amount!rename oldnick newnick !suspend nick $&
-      !unsuspend nick) $s1(Support commands:) $s2(![c/r]ignore nick/host, ![c/r]cbl chan, !warn chan !viewitems)
+    notice $nick $s1(Admin commands:) $s2(!part chan, !addsupport nick !chans, !active, !join bot chan, !rehash, !ignoresync, !amsg, $&
+      !(show/rem)dm nick, !idle, !define/increase/decrease account item amount !rename oldnick newnick !(un)suspend nick $&
+      ) $s1(Support commands:) $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !cblist chan, !info nick)
   }
 }
 
@@ -149,7 +149,7 @@ on $*:TEXT:/^[!.]join .*/Si:*: {
 
 on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3)) == admins) {
+  if ($db.get(admins,position,$address($nick,3))) {
     if (!$2) { notice $nick To use the unsuspend command, type !(un)suspend nick. | halt }
     if (?un* iswm $1) {
       db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
@@ -227,9 +227,9 @@ alias deletenick {
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$4 || $4 !isnum) { goto error }
-    if ($1 == !increase) { var %sign + }
-    elseif ($1 == !decrease) { var %sign - }
-    elseif ($1 == !define) { var %sign = }
+    if (?increase iswm $1) { var %sign + }
+    elseif (?decrease iswm $1) { var %sign - }
+    elseif (?define iswm $1) { var %sign = }
     else { goto error }
     var %table = user
     if ($storematch($3) != 0) {
@@ -287,10 +287,12 @@ on *:TEXT:!amsg*:#idm.staff: {
 }
 
 on *:TEXT:!whois*:#: {
-  if ($db.get(admins,position,$address($nick,3)) == admins) {
-    if (!$2) { Notice $nick Please specify a channel | halt }
-    if (%p1 [ $+ [ $2 ] ]) && (%p2 [ $+ [ $2 ] ]) && ($Me ison $2) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address(%p1 [ $+ [ $2 ] ],2)) and Player2: $s1($address(%p2 [ $+ [ $2 ] ],2)) $+ . }
-    else { halt }
+  if ($db.get(admins,position,$address($nick,3))) {
+    if (!$2) { if ($me == idm ) { notice $nick Please specify a channel } | halt }
+    if ($me ison $2) {
+      if (%p1 [ $+ [ $2 ] ]) && (%p2 [ $+ [ $2 ] ]) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address(%p1 [ $+ [ $2 ] ],0)) and Player2: $s1($address(%p2 [ $+ [ $2 ] ],0)) $+ . }
+      else { notice $nick $logo(STATUS) There is no dm in $2 $+ . }
+    }
   }
 }
 
@@ -304,7 +306,8 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 }
 
 on $*:TEXT:/^[!@.]Info .*/Si:#idm.Staff,#idm.Support: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($me == iDM) {
+    if ($db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
     $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($db.get(user,money,$2),$price($v1),0)) W/L: $s2($iif($db.get(user,wins,$2),$bytes($v1,db),0)) $+ / $+ $s2($iif($db.get(user,losses,$2),$bytes($v1,db),0)) Banned?: $iif($db.get(user,banned,$2),9YES,4NO) Logged-In?: $iif($db.get(user,login,$2),9YES,4NO)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }

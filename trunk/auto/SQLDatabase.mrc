@@ -37,7 +37,7 @@ alias db.select {
     return %result
   }
   else {
-    mysqlderror Error executing query: %mysql_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
     return $null
   }
 }
@@ -69,7 +69,7 @@ alias db.query {
     return %request
   }
   else {
-    mysqlderror Error executing query: %mysql_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
     return $null
   }
 }
@@ -158,7 +158,7 @@ alias db.exec {
   dbcheck
   var %sql = $1-
   if (!$mysql_exec(%db, %sql)) {
-    mysqlderror Error executing query: %mysql_errstr - Query %sql
+    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
     return $null
   }
   if (%debugq == $me) echo 12 -s Query %sql executed

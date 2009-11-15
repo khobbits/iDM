@@ -117,9 +117,10 @@ alias damage {
     }
   }
 
+  var %heal 0
   if ($gettok($healer($3),1,32)) {
     var %heal $r(1,$v1)
-    if (%heal == 1) {
+    if (%heal == 1) && (%hitdmg != 0) {
       $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
       var %msg %msg and 09HEALING
     }
@@ -139,7 +140,7 @@ alias damage {
   }
 
   if (%heal == 1) {
-    var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $hpbar(%hp1)
+    var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1)
   }
   else {
     var %msg %msg $+ . $hpbar(%hp2)

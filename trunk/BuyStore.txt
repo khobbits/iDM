@@ -2078,3 +2078,36 @@
 14/11 20:12:30 Clay_da_Pyro bought from the store (void range) ~Clay_da_P@C0586445.3158F0D7.601E1CF5.IP
 14/11 20:16:46 Zed_the_pk bought from the store (ags) ~Zed_the_p@Swift-16643D89.dhcp.embarqhsd.net
 14/11 20:16:59 Tekly1 bought from the store (accumulator) ~Tekly1@Swift-40B3FFA9.cpe.cableone.net
+14/11 20:26:34 Geeboi bought from the store (mage's book) ~EoPXpke@Swift-A47F7CB.hsd1.il.comcast.net
+14/11 20:40:36 Garrett2421 bought from the store (armadyl godsword) ~Garrett24@Swift-D14E2C27.satx.res.rr.com
+14/11 20:40:37 croc_kayne_2 bought from the store (ags) ~ADuckOnQw@Swift-609533D.cable.ubr10.uddi.blueyonder.co.uk
+14/11 20:44:22 Teh_Tyl3R bought from the store (void mage) ~Teh_Tyl3R@Swift-31E9C874.tampabay.res.rr.com
+14/11 20:59:04 cybeeclaire bought from the store (mudkip) ~cybeeclai@Swift-F0BCCE9.range86-151.btcentralplus.com
+14/11 21:00:04 Dakillrs0ck bought from the store (sgs) ~Dakillrs0@Swift-EEB75502.dhcp.stls.mo.charter.com
+14/11 21:26:41 u_scared_k0 bought from the store (accumulator) ~u_scared_@CB3A7208.2EEDB10B.939199E6.IP
+14/11 21:34:10 Teh_ bought from the store (ags) ~Teh_@Swift-9FC5B68B.setardsl.aw
+14/11 21:34:15 mage99 bought from the store (sgs) ~mage99@Swift-8842F3EB.mia.bellsouth.net
+14/11 21:34:18 Sandwitch64 bought from the store (ags) ~Sandwitch@Swift-A2265827.mcn.bellsouth.net
+14/11 21:39:42 `Paul| bought from the store (mudkip) ~Dap-Dap@BD93B3F6.4305AF4B.ED8394BA.IP
+14/11 21:54:12 Mikey- bought from the store (sgs) ~Mikey@Swift-E435E3C3.alt.east.verizon.net
+14/11 21:56:51 Nh bought from the store (ring of wealth) ~Nick@Swift-CB7DAB92.bgk.bellsouth.net
+14/11 22:01:18 [BFK]BLAKE bought from the store (sgs) ~BLAKE@Swift-D2391EAC.tx.res.rr.com
+14/11 22:15:30 giovanig bought from the store (accumulator) ~giovanig@Swift-F0F35978.dynamic.ip.windstream.net
+14/11 22:43:16 igotowned24 bought from the store (sgs) ~ICarpeCa@Swift-32E43E33.dsl.chcgil.ameritech.net
+14/11 22:54:04 Maxi bought from the store (ags) ~stealthsf@Swift-CF520ACB.dsl.pltn13.sbcglobal.net
+14/11 23:02:56 iceman bought from the store (sgs) ~iceman@Swift-6074615.hsd1.md.comcast.net
+14/11 23:14:40 `TOR bought from the store (fire cape) ~TOR@melbourne.xbnc.us
+14/11 23:17:21 cheetopuff77 bought from the store (void mage) ~cheetopuf@Swift-EDF2BDB.rmo.bellsouth.net
+14/11 23:31:31 Nard72 bought from the store (barrows gloves) ~Nard72@Swift-5563ED0C.omah.qwest.net
+14/11 23:43:25 deathhill3 bought from the store (sgs) ~deathhill@Swift-743A41E4.range217-42.btcentralplus.com
+14/11 23:47:27 keeperbsh343 bought from the store (void mage) ~keeperbsh@Swift-C5982338.hlrn.qwest.net
+14/11 23:56:15 danger_decap bought from the store (accumulator) ~danger_de@Swift-2F2C1DE3.dyn.optonline.net
+14/11 23:56:25 fishing7645_jay bought from the store (dragon claws) ~fishing76@56227813.E763C7C1.939199E6.IP
+15/11 00:06:16 i_teh_dj bought from the store (elysian spirit shield) ~djh_101@Swift-CA003323.lns7.win.bigpond.net.au
+15/11 00:14:12 df11 bought from the store (sgs) ~Slathers@Swift-F1DEDA4C.lns20.adl6.internode.on.net
+15/11 00:21:23 cow_hinde bought from the store (accumulator) ~cow_hinde@Swift-764107A5.eburwd4.vic.optusnet.com.au
+15/11 00:23:32 Darkie bought from the store (ring of wealth) ~Darkie@Swift-E791176C.dyn.iinet.net.au
+15/11 00:36:39 Hell_Eater bought from the store (dclaws) ~Hell_Eate@Swift-F45DF47F.static.tpgi.com.au
+15/11 00:37:02 root|adam bought from the store (saradomin godsword) ~rootadam@Swift-4F3470AC.dsl.lsan03.sbcglobal.net
+15/11 00:57:28 mage99 bought from the store (void range) ~mage99@Swift-8842F3EB.mia.bellsouth.net
+15/11 01:05:42 Kerpal94 bought from the store (GOD CAPE) ~Kerpal94@Swift-BB60EFCE.cpe.net.cable.rogers.com

@@ -15,9 +15,9 @@ alias money {
   var %rank = $rank(money,$1)
   var %wins = $db.get(user,wins,$1)
   var %losses = $db.get(user,losses,$1)
-  var %ratio = $+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37))
+  var %ratio = $s1(W/L Ratio) $+ :  $s2($round($calc(%wins / %losses),2)) ( $+ $s2($+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37)))) $+ )
 
-  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) $+($chr(40),$s2(%ratio) Won,$chr(41)) $iif($db.get(equip_item,specpot,$1),$s1(Spec Pots) $+ : $v1) 
+  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) %ratio $iif($db.get(equip_item,specpot,$1),$s1(Spec Pots) $+ : $v1) 
 }
 
 alias equipment {

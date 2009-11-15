@@ -1,6 +1,6 @@
 ;#fix alias the security/errors on these commands (or maybe try and regex them together?)
 
-on $*:TEXT:/^[!@.]delmem .*/Si:*: {
+on $*:TEXT:/^[!@.]delmem(ber)?.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -19,7 +19,7 @@ on $*:TEXT:/^[!@.]delmem .*/Si:*: {
   delclanmember $2
 }
 
-on $*:TEXT:/^[!@.]addmem .*/Si:*: {
+on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -37,7 +37,7 @@ on $*:TEXT:/^[!@.]addmem .*/Si:*: {
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
 }
 
-on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
+on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -52,7 +52,7 @@ on $*:TEXT:/^[!@.]joinclan .*/Si:*: {
   unset %invite [ $+ [ $nick ] ]
 }
 
-on $*:TEXT:/^[!@.]startclan .*/Si:*: {
+on $*:TEXT:/^[!@.](start|create)clan.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -66,7 +66,7 @@ on $*:TEXT:/^[!@.]startclan .*/Si:*: {
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
 }
 
-on $*:TEXT:/^[!@.]leave$/Si:*: {
+on $*:TEXT:/^[!@.]leave(clan)?$/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -80,7 +80,7 @@ on $*:TEXT:/^[!@.]leave$/Si:*: {
   delclanmember $nick
 }
 
-on $*:TEXT:/^[!@.]share (on|off)/Si:*: {
+on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
@@ -103,11 +103,12 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
   if (!$2) { var %nick = $nick }
   else { var %nick = $2 }
   var %clan = $getclanname(%nick)
+  if ((!%clan) && ($clanmembers($2))) { var %clan = $2 }
   if (%clan) {
     $iif($left($1,1) == @,msg #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan)
     halt
   }
-  notice $nick $logo(ERROR) %nick is not in a clan. | halt
+  notice $nick $logo(ERROR) %nick is not in a clan and there is no clan named %nick $+ .
 }
 
 alias claninfo {
@@ -145,16 +146,12 @@ alias addclanmember {
 
 alias delclanmember {
   ; $1 = Membername
-  if ($1) {
-    db.set user clan $1 0
-  }
+  if ($1) db.set user clan $1 0
 }
 
 alias getclanname {
   ; $1 = Membername
-  if ($1) {
-    return $db.get(user,clan,$1)
-  }
+  if ($1) return $db.get(user,clan,$1)
 }
 
 alias clanmembers {

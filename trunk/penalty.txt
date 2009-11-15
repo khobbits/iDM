@@ -1013,3 +1013,22 @@
 14/11 19:54:59 Rest_In_Pace got !enddm'd on #eab oldcash 284173646 newcash 282752778
 14/11 19:56:40 Colby2444 got !enddm'd on #obsidian oldcash 622646965 newcash 619533731
 14/11 20:18:04 drag0n_Azen got !enddm'd on #rawr.support oldcash 6105807156 newcash 6075278121
+14/11 20:40:46 Geeboi got !enddm'd on #Divine oldcash 47598763 newcash 47360770
+14/11 20:59:00 [PD]Stricken got !enddm'd on #pink.dragonz oldcash 17203949 newcash 17117930
+14/11 21:11:14 `Meggg got !enddm'd on #nh123456677 oldcash 449618075 newcash 447369985
+14/11 21:23:38 ttotal got !enddm'd on #Dm.newbies oldcash 4939758222 newcash 4915059431
+14/11 21:57:50 marttello got !enddm'd on #tank oldcash 3822463373 newcash 3803351057
+14/11 21:59:52 [BFK]BLAKE parted channel #Carpediem during a dm oldcash 1261018068 penalty 25220362
+14/11 22:21:29 Lumber_King0 got !enddm'd on #iDM oldcash 39509144100 newcash 39311598380
+14/11 22:57:48 pwnuallday1 got !enddm'd on #tds oldcash 299911366 newcash 298411810
+14/11 22:58:38 i_blitz_n_k0 parted channel #Divine during a dm oldcash 36308958 penalty 726180
+14/11 23:04:57 pwnuallday1 got !enddm'd on #tds oldcash 321911810 newcash 320302251
+14/11 23:23:23 S_U_W_0_0_P got !enddm'd on #Maya oldcash 1935664013 newcash 1925985693
+14/11 23:57:29 Geeboi got !enddm'd on #Maya oldcash 832786429 newcash 828622497
+15/11 00:14:02 [[`Stephen`]] parted channel #D_L during a dm oldcash 1304204184 penalty 26084084
+15/11 00:33:13 Zarthorn199 quit during a dm oldcash 506281287 penalty 5062813
+15/11 00:38:54 [CR]Ownnt parted channel #Clan-D during a dm oldcash 677009697 penalty 13540194
+15/11 00:41:25 [[`Stephen`]] parted channel #D_L during a dm oldcash 1303845517 penalty 26076911
+15/11 00:41:51 kill4us parted channel #D_L during a dm oldcash 224066142 penalty 4481323
+15/11 00:51:39 roan3105 got !enddm'd on #kcr oldcash 1479198475 newcash 1471802483
+15/11 00:53:54 df11 got !enddm'd on #D_l oldcash 466174477 newcash 463843605

@@ -51,16 +51,22 @@ alias dead {
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
   var %winnerclan = $getclanname($3)
   var %looserclan = $getclanname($2)
-  if (%winnerclan != %looserclan) && (%looserclan) && ($db.get(clantracker,share,%looserclan)) { trackclan LOSE %looserclan }
-  if (%winnerclan != %looserclan) && (%winnerclan) && ($db.get(clantracker,share,%winnerclan)) {
+  if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
+  if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
     trackclan WIN %winnerclan %sharedrop
-    var %sql.winnerclan = $db.safe(%winnerclan)
-    var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
-    db.exec %sql
-    .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
-    unset %sharedrop
+    if ($db.get(clantracker,share,%winnerclan)) {
+      var %sql.winnerclan = $db.safe(%winnerclan)
+      var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
+      db.exec %sql
+      .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
+      unset %sharedrop
+    }
+    else {
+      db.set user money $3 + %combined
+      .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93)) 
+    }
   }
   else {
     db.set user money $3 + %combined
