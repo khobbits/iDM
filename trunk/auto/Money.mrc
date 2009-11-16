@@ -1,11 +1,21 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $equipment($nick) $clan($nick)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $nick
+  }
+  if ($2) {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $2
+  }
+}
+
+on $*:TEXT:/^[!@.]equip/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (!$2) {
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick)
     if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $equipment($2) $clan($2)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2)
     if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
@@ -42,11 +52,12 @@ alias equipment {
 
   if ($hget(equipit,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($hget(equipit,clue)) { var %e %e Clue:Scroll }
-  return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
+
+  return $iif(%e,$s1(Equipment) $+ : $replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)))
 }
 
 alias clan {
-  if ($getclanname($1)) { return $s1(Clan) $+ : $v1 }
+  if ($getclanname($1)) { return $s1(Clan) $+ : $s2($v1) }
 }
 
 alias sitems {
@@ -58,7 +69,8 @@ alias sitems {
   if ($hget(equips,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($hget(equips,kh)) { var %e %e KHonfound:Ring }
   if ($hget(equips,support)) { var %e %e The:Supporter }
-  return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
+
+  return $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)))
 }
 
 alias pvp {
@@ -68,7 +80,8 @@ alias pvp {
   if ($hget(equipp,vlong)) { var %e %e $+(Vesta's:Longsword,$chr(91),$s1($v1),$chr(93)) }
   if ($hget(equipp,statius)) { var %e %e $+(Statius's:Warhammer,$chr(91),$s1($v1),$chr(93)) }
   if ($hget(equipp,MJavelin)) { var %e %e $+(Morrigan's:Javelin,$chr(91),$s1($v1),$chr(93)) }
-  return $iif(%e,$replace(%e,$chr(32),$chr(44),$chr(58),$chr(32)))
+
+  return $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)))
 }
 
 
