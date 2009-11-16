@@ -66,7 +66,7 @@ on $*:TEXT:/^[!@.](start|create)clan.*/Si:*: {
   notice $nick $logo(CLAN) Your clan $qt($remove($2,$chr(36),$chr(37))) has been created. To add users to it, type !addmem newmember.
 }
 
-on $*:TEXT:/^[!@.]leave(clan)?$/Si:*: {
+on $*:TEXT:/^[!@.]leaveclan/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {

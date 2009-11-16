@@ -2188,3 +2188,44 @@
 15/11 14:16:47 Franz bought from the store (ags) ~Franz@9F558246.2C22C761.D36AE9DC.IP
 15/11 14:38:29 MDP bought from the store (accumulator) ~xMatt@2626543F.7B415825.C01B6177.IP
 15/11 14:38:41 MDP bought from the store (void range) ~xMatt@2626543F.7B415825.C01B6177.IP
+15/11 14:42:36 Lith bought from the store (bandos godsword) ~Lith@Swift-500CA6B1.iswan.net
+15/11 14:58:11 oceancoco bought from the store (dragon claws) ~oceancoco@Swift-704A07EA.socal.res.rr.com
+15/11 15:08:29 Toko bought from the store (sgs) ~Toko@Swift-DA348128.dhcp.jcsn.tn.charter.com
+15/11 15:24:08 Pubertybeard bought from the store (accumulator) ~Pubertybe@FC8CB5E2.C681318F.D9179AE.IP
+15/11 15:26:56 Omg0wnage2 bought from the store (bgs) ~Omg0wnage@Swift-D8C2679.cable.ubr08.know.blueyonder.co.uk
+15/11 15:27:02 Omg0wnage2 bought from the store (sgs) ~Omg0wnage@Swift-D8C2679.cable.ubr08.know.blueyonder.co.uk
+15/11 15:29:44 Flaker91 bought from the store (void range) ~Flaker91@Swift-9EC40D5A.cable.casema.nl
+15/11 15:30:52 m0m0 bought from the store (sgs) ~m0m0@Swift-E128EB66.dsl.bell.ca
+15/11 15:35:16 hi`o_O|Away bought from the store (sgs) ~Cody@4098414F.39C35565.C88098ED.IP
+15/11 15:41:28 Lith bought from the store (accumulator) ~Lith@Swift-500CA6B1.iswan.net
+15/11 15:42:35 uber_pl0x bought from the store (mage's book) ~uber_pl0x@Swift-CBA875E5.hsd1.il.comcast.net
+15/11 16:17:42 Fire|Jen bought from the store (void range) ~FireJen@Swift-1B108FD2.sip.jan.bellsouth.net
+15/11 16:22:21 Fire|Jen bought from the store (accumulator) ~FireJen@Swift-1B108FD2.sip.jan.bellsouth.net
+15/11 16:22:51 Twosecko bought from the store (void range) ~I-Rep-Can@Swift-804489B3.dsl.bell.ca
+15/11 16:26:58 prollmann bought from the store (bgs) ~prollmann@Swift-C2DD3CD0.cable.mindspring.com
+15/11 16:27:41 prollmann bought from the store (ags) ~prollmann@Swift-C2DD3CD0.cable.mindspring.com
+15/11 16:34:51 nintyniner90 bought from the store (ags) ~ssh162e6b@Swift-8579AC9E.hsd1.ct.comcast.net
+15/11 16:44:07 `Kevin` bought from the store (elysian shield) ~Kevin@Swift-4D581F9.cable.mindspring.com
+15/11 16:52:13 jesse_the_rich bought from the store (barrows gloves) ~jesse_the@Swift-FBDF2223.res-cmts.mtr.ptd.net
+15/11 17:08:28 ballababy31 bought from the store (barrow gloves) ~ballababy@F288BC9C.F19CE58.BC2EBE7E.IP
+15/11 17:19:16 chaos_c7 bought from the store (void range) ~chaos_c7@Swift-D1965BD8.bb.sky.com
+15/11 17:32:00 Pokin bought from the store (mudkip) ~Pokin@Swift-F2AA2F89.jetstream.xtra.co.nz
+15/11 17:32:38 Tamasi_i_ bought from the store (sgs) ~Tamasi_i_@Swift-5ADDA05F.insight.res.rr.com
+15/11 17:34:28 huge_safe bought from the store (god cape) ~huge_safe@Swift-B4247359.range86-150.btcentralplus.com
+15/11 17:44:07 laura bought from the store (ags) ~laura@Swift-CAC9AB42.netvisao.pt
+15/11 17:51:34 Yeti bought from the store (void mage) ~Yeti@Swift-B9181C2F.dsl.bcvloh.ameritech.net
+15/11 17:54:59 `Katie bought from the store (ags) ~Katie@E345248B.E61E5B13.E5D00BD8.IP
+15/11 18:08:24 Inu bought from the store (ags) ~Inu@Swift-359B110F.cg.shawcable.net
+15/11 18:22:39 chaos_c7 bought from the store (accumulator) ~chaos_c7@Swift-D1965BD8.bb.sky.com
+15/11 18:26:37 Pringles bought from the store (accumulator) ~Pity@Swift-C60B7811.gci.net
+15/11 18:39:53 joeboxer1000 bought from the store (void range) ~joeboxer1@Swift-BEC03C2C.dfw.dsl-w.verizon.net
+15/11 18:41:34 demonguychris bought from the store (bgs) ~noemail@Swift-48BB170.dyn.optonline.net
+15/11 18:42:08 bcarter bought from the store (sgs) ~bcarter@Swift-D1C4AABC.nc.res.rr.com
+15/11 18:44:32 bcarter bought from the store (dclaws) ~bcarter@Swift-D1C4AABC.nc.res.rr.com
+15/11 18:50:51 chao bought from the store (void range) ~chao@610B83B2.90ACD2E0.7CE789A3.IP
+15/11 18:58:09 [Mod]Alex bought from the store (fire cape) ~ModAlex@Swift-A797BE52.dsl.rcsntx.swbell.net
+15/11 19:03:01 Midi45 bought from the store (god cape) ~Midi45@FFF22866.D54E0436.FF540DCD.IP
+15/11 19:14:32 unserper1 bought from the store (bgs) ~unserper1@5123AC68.E7AFF0AC.7760E70E.IP
+15/11 19:14:36 unserper1 bought from the store (sgs) ~unserper1@5123AC68.E7AFF0AC.7760E70E.IP
+15/11 19:22:19 Hairygary bought from the store (mudkip) Aaron__@Swift-B5B5BE7B.medford.tufts.edu
+15/11 19:25:35 metalsonic77 bought from the store (mudkip) ~metalsoni@343177A3.ABD8CD35.DEE3CADC.IP
