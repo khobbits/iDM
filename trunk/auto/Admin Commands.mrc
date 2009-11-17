@@ -25,7 +25,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
   if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)(bl) (channel) (reason) | halt }
-  if (?bl* iswm $1) { if ($chan($2).status) { part $2 This channel has been blacklisted } }
+  if ((?bl* iswm $1) && ($3)) { if ($chan($2).status) { part $2 This channel has been blacklisted } }
   if ($me == iDM) {
     if (!$2) { notice $nick Syntax !(c|r)(bl) (channel) | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
