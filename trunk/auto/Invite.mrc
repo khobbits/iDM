@@ -148,8 +148,17 @@ alias entrymsg {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: Don't want iDM in your channel? Request a blacklist by visiting #idm.Support
+  return News: New site features + changes to !money -- !dmnews for more
 }
+
+on $*:TEXT:/^[!@.]dmnews/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  notice $nick $logo(News #1) New site features + changes to !money -> http://r.idm-bot.com/32rj
+  notice $nick $logo(News #2) Login changes -> http://r.idm-bot.com/efn2
+  notice $nick $logo(News #3) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
+}
+
+
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)
   if ($1 == iDM) { return iDM | halt }

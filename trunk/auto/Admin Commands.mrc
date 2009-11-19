@@ -1,8 +1,8 @@
 on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, !addsupport nick !chans, !active, !join bot chan, !rehash, !ignoresync, !amsg, $&
-      !(show/rem)dm nick, !idle, !define/increase/decrease account item amount !rename oldnick newnick !(un)suspend nick $&
-      ) $s1(Support commands:) $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !cblist chan, !info nick)
+      !(show/rem)dm nick, !idle, !define/increase/decrease account item amount !rename oldnick newnick $&
+      ) $s1(Support commands:) !(un)suspend nick $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !cblist chan, !info nick)
   }
 }
 
@@ -24,10 +24,10 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
 on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: { 
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
-  if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)(bl) (channel) (reason) | halt }
+  if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)bl <channel> [reason] | halt }
   if ((?bl* iswm $1) && ($3)) { if ($chan($2).status) { part $2 This channel has been blacklisted } }
   if ($me == iDM) {
-    if (!$2) { notice $nick Syntax !(c|r)(bl) (channel) | halt }
+    if (!$2) { notice $nick Syntax !(c|r)bl <channel> | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
       db.hget checkban blist $2 who time reason
       if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
@@ -38,7 +38,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
       }
     }
     else {
-      if (!$3) { notice $nick Syntax !bl (channel) (reason) | halt }
+      if (!$3) { notice $nick Syntax !bl <channel> <reason> | halt }
       db.set blist who $2 $nick
       db.set blist reason $2 $3-
       notice $nick $logo(BANNED) Channel $2 has been added to blist
@@ -53,16 +53,20 @@ on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: {
 }
 alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
-  if (@ !isin $2) {
+  if (((((@ isin $2) && (*!*@ !isin $2)) || (!$3)) && (?i* iswm $1)) || ($chr(35) isin $2)) {
+    if ($me == idm) { notice %nick $logo(BANNED) 4Syntax Error: !ignore <nick> <reason> (or !ignore *!*@<host> <reason>) - Use !suspend to disable an account. }
+    halt 
+  }
+  elseif (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
     else { 
-      if ($me == idm) hostcallback %nick $2 putlog perform banman %nick %chan $1 ~host~ $iif($3,$2 - $3-)
+      if ($me == idm) { hostcallback %nick $2 putlog perform banman %nick %chan $1 ~host~ $iif($3,$2 - $3-) }
       halt 
     }
   }
   else { tokenize 32 $1 $2 $3- }
   if ($me == iDM) {
-    if (!$2) { notice %nick Syntax !(c|r)(ignore) (username|host) (reason) | halt }
+    if (!$2) { notice %nick $logo(BANNED) 4Syntax Error: !(c|r)ignore <nickname> (or !(c|r)ignore <host>) | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
       db.hget checkban ilist $2 who time reason
       if ($hget(checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
@@ -73,7 +77,6 @@ alias banman {
       }
     }
     else {
-      if ((@ isin $2 && *!*@ !isin $2) || (!$3) || ($chr(35) isin $2)) { notice %nick Syntax !ignore (nick/*!*@host) (reason) - Use !suspend to disable an account. | halt }
       db.set ilist who $2 %nick
       db.set ilist reason $2 $3-
       notice %nick $logo(BANNED) User $2 has been added to ignore
@@ -122,7 +125,7 @@ alias chans {
   $iif($isid,return,echo -a) %b
 }
 
-on $*:TEXT:/^[!.]active$/Si:*: {
+on $*:TEXT:/^[!.@]active$/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     var %a 1
     while (%a <= $chan(0)) {
@@ -130,8 +133,8 @@ on $*:TEXT:/^[!.]active$/Si:*: {
       if (%dmon [ $+ [ $chan(%a) ] ]) { var %b %b $chan(%a) }
       inc %a
     }
-    if (%b) { notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - %b }
-    else { notice $nick $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - I'm not hosting any DMs. }
+    if (%b) { $iif($left($1,1) == @,msg #,notice $nick) $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - %b }
+    else { $iif($left($1,1) == @,msg #,notice $nick) $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - I'm not hosting any DMs. }
   }
 }
 
