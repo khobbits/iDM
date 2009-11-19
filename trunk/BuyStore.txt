@@ -2675,3 +2675,16 @@
 19/11 15:32:14 pumba bought from the store (accumulator) ~pumba@Swift-B9F505F2.tll.elisa.ee
 19/11 15:57:02 `Myk bought from the store (void range) ~Myk@Swift-FED84FAF.dyn.optonline.net
 19/11 16:00:29 Sam|Finn bought from the store (sgs) ~SamFinn@Swift-87ED5505.cable.virginmedia.com
+19/11 16:16:06 Maqe_Twist bought from the store (ags) ~Maqe_Twis@Swift-2D4360E2.asfd.broadband.ntl.com
+19/11 16:19:16 RlLEY bought from the store (mudkip) ~RlLEY@Swift-C35E7FB6.cpe.net.cable.rogers.com
+19/11 16:40:41 Jargon bought from the store (Mage's Book) ~Jargon@Swift-B8613787.lincoln.ac.uk
+19/11 16:54:34 HaX bought from the store (Void Range) ~HaX@ADD11231.1288796F.B28F010C.IP
+19/11 16:58:11 Pantrike7 bought from the store (barrows gloves) ~Pantrike7@Swift-1BACEE4E.dyn.estpak.ee
+19/11 17:08:51 King_Tazo bought from the store (Mudkip) ~King_Tazo@Swift-F2130B2D.cable.ubr08.nmal.blueyonder.co.uk
+19/11 17:15:21 nintyniner90 bought from the store (god cape) ~ssh162e6b@Swift-8579AC9E.hsd1.ct.comcast.net
+19/11 17:17:09 nintyniner90 bought from the store (bgs) ~ssh162e6b@Swift-8579AC9E.hsd1.ct.comcast.net
+19/11 17:17:12 nintyniner90 bought from the store (ags) ~ssh162e6b@Swift-8579AC9E.hsd1.ct.comcast.net
+19/11 17:18:29 black_dog340 bought from the store (ags) ~Mikeofkar@Swift-3BB1102.tampabay.res.rr.com
+19/11 17:19:00 ```skyler bought from the store (sgs) ~skyler@Swift-FCFEF112.is.this.i.dont.even.runebnc.com
+19/11 17:19:06 Maj bought from the store (bgs) ~Maj@Swift-701BC91.range86-161.btcentralplus.com
+19/11 17:20:59 nintyniner90 bought from the store (zgs) ~ssh162e6b@Swift-8579AC9E.hsd1.ct.comcast.net

@@ -139,7 +139,18 @@ on *:KICK:#: {
     .timer $+ # off
     halt
   }
-  if ($knick == $me) && (. !isin $nick) { cancel # | .timer $+ # off | msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
+  if ($knick == $me) {
+    timer 1 15 waskicked #
+    if (. !isin $nick) { msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
+    else { join # | msg #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
+  }
+}
+
+alias waskicked {
+  if ($me !ison $1) {
+    cancel #
+    .timer $+ # off
+  }
 }
 
 alias enddmcatch {

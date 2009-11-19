@@ -1310,3 +1310,7 @@
 19/11 15:04:56 Abovyan got !enddm'd on #legendary oldcash 1754084969 newcash 1745314545
 19/11 15:14:14 av3ng3rz parted channel #Dm.newbies during a dm oldcash 456971053 penalty 9139422
 19/11 15:53:03 Mikeyy got !enddm'd on #360 oldcash 8001004 newcash 7960999
+19/11 16:44:27 mSL got !enddm'd on #ttfs oldcash 107598427 newcash 107060435
+19/11 16:54:56 Merlin parted channel #ttfs during a dm oldcash 269345722 penalty 5386915
+19/11 17:01:29 I2|Dan parted channel #Brap during a dm oldcash 660190803 penalty 13203817
+19/11 17:35:40 d4rks4ge94 parted channel #blackshome during a dm oldcash 196817973 penalty 3936360
