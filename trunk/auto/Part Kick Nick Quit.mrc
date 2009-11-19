@@ -95,7 +95,6 @@ on *:QUIT: {
 on *:NICK: {
   unauth $nick
   unauth $newnick
-  if (!%dming [ $+ [ $nick ] ]) { halt }
   var %a = 1
   while (%a <= $chan(0)) {
     if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) {
@@ -108,14 +107,12 @@ on *:NICK: {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
       db.set user indm $nick 0
       db.set user indm $newnick 1
-      unset %dming [ $+ [ $nick ] ]
-      set %p1 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
+      set %p1 [ $+ [ $chan(%a) ] ] $newnick
     }
     if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
       db.set user indm $nick 0
       db.set user indm $newnick 1
-      unset %dming [ $+ [ $nick ] ]
-      set %p2 [ $+ [ $chan(%a) ] ] $newnick | set %dming [ $+ [ $newnick ] ] on
+      set %p2 [ $+ [ $chan(%a) ] ] $newnick
     }
     inc %a
   }
@@ -140,7 +137,7 @@ on *:KICK:#: {
     halt
   }
   if ($knick == $me) {
-    timer 1 15 waskicked #
+    .timer 1 15 waskicked #
     if (. !isin $nick) { msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
     else { join # | msg #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
   }
@@ -148,8 +145,8 @@ on *:KICK:#: {
 
 alias waskicked {
   if ($me !ison $1) {
-    cancel #
-    .timer $+ # off
+    cancel $1
+    .timer $+ $1 off
   }
 }
 

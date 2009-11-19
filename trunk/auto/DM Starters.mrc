@@ -1,13 +1,13 @@
 on $*:TEXT:/^[!@.]dm\b/Si:#: {
-  if (# == #idm.Support) { halt }
+  if (# == #idm.Support) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
-  if (%dming [ $+ [ $nick ] ] == on) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if ($isbanned($nick)) { halt }
   if (%p1 [ $+ [ $chan ] ]) && ($nick == %p1 [ $+ [ $chan ] ]) { halt }
+  if (%p2 [ $+ [ $chan ] ]) && ($nick == %p2 [ $+ [ $chan ] ]) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
@@ -17,7 +17,6 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
     .timer $+ # 1 20 enddm #
-    set %dming [ $+ [ $nick ] ] on
     db.set user indm $nick 1
     set %p1 [ $+ [ $chan ] ] $nick
     set %dmon [ $+ [ $chan ] ] on
@@ -30,7 +29,6 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
       halt
     }
     .timer $+ # off
-    set %dming [ $+ [ $nick ] ] on
     db.set user indm $nick 1
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
@@ -51,8 +49,6 @@ alias cancel {
     $iif(%p2 [ $+ [ $1 ] ],db.set user indm %p2 [ $+ [ $1 ] ] 0)
     unset %veng [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %veng [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
-    unset %dming [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
-    unset %dming [ $+ [ %p2 [ $+ [ $1 ] ] ] ]
     unset %stake* [ $+ [ $1 ] ]
     unset %frozen [ $+ [ %p1 [ $+ [ $1 ] ] ] ]
     unset %frozen [ $+ [ %p2 [ $+ [ $1 ] ] ] ]

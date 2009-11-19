@@ -301,8 +301,7 @@ on *:TEXT:!whois*:#: {
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
-    if (!$db.get(user,indm,$2)) && (!%dming [ $+ [ $2 ] ]) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
-    unset %dming [ $+ [ $2 ] ]
+    if (!$db.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
     db.set user indm $2 0
     notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
   }
@@ -312,7 +311,7 @@ on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   if ($me == iDM) {
     if (!$db.get(admins,position,$address($nick,3))) { if ($nick isreg $chan || $nick !ison $chan) { halt } }
     db.hget userinfo user $$2
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) Banned?: $iif($hget(userinfo,banned),9YES,4NO) Excluded?: $iif($hget(userinfo,exclude),9YES,4NO) Logged-In?: $iif($hget(userinfo,login),09 $+ $time($v1) $+ ,4NO) Last Address?: $iif($hget(userinfo,address),9 $+ $v1 $+ ,4NONE)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),9YES,4NO) Banned?: $iif($hget(userinfo,banned),9YES,4NO) Excluded?: $iif($hget(userinfo,exclude),9YES,4NO) Logged-In?: $iif($hget(userinfo,login),09 $+ $time($v1) $+ ,4NO) Last Address?: $iif($hget(userinfo,address),9 $+ $v1 $+ ,4NONE)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
