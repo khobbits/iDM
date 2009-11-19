@@ -11,11 +11,11 @@ on $*:TEXT:/^[!@.]money/Si:#: {
 on $*:TEXT:/^[!@.]equip/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick) $iif($db.get(equip_item,specpot,$nick),$s1(Spec Pots) $+ : $v1) 
     if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2) $iif($db.get(equip_item,specpot,$1),$s1(Spec Pots) $+ : $v1) 
     if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
@@ -27,7 +27,7 @@ alias money {
   var %losses = $db.get(user,losses,$1)
   var %ratio = $s1(W/L Ratio) $+ :  $s2($round($calc(%wins / %losses),2)) ( $+ $s2($+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37)))) $+ )
 
-  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) %ratio $iif($db.get(equip_item,specpot,$1),$s1(Spec Pots) $+ : $v1) 
+  return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) %ratio
 }
 
 alias equipment {
