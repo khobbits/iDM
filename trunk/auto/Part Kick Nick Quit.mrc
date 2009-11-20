@@ -139,7 +139,7 @@ on *:KICK:#: {
   if ($knick == $me) {
     .timer 1 15 waskicked #
     if (. !isin $nick) { msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
-    else { join # | msg #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
+    elseif (shroudbnc !isin $nick) { join # | msg #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
   }
 }
 

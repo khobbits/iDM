@@ -1314,3 +1314,10 @@
 19/11 16:54:56 Merlin parted channel #ttfs during a dm oldcash 269345722 penalty 5386915
 19/11 17:01:29 I2|Dan parted channel #Brap during a dm oldcash 660190803 penalty 13203817
 19/11 17:35:40 d4rks4ge94 parted channel #blackshome during a dm oldcash 196817973 penalty 3936360
+19/11 18:18:16 [CR]Ownnt got !enddm'd on #Carpediem oldcash 1410209801 newcash 1403158752
+19/11 18:18:40 bebin5 parted channel #iDM during a dm oldcash 1673677406 penalty 33473549
+19/11 18:20:30 sg_dragon2 got !enddm'd on #PeeKayn oldcash 25747211541 newcash 25618475484
+19/11 18:26:32 [TFP]Sc1m1d34th got !enddm'd on #tank oldcash 9189342216 newcash 9143395505
+19/11 18:31:46 Jamie_1349_ parted channel #iDM during a dm oldcash 14198221368 penalty 283964428
+19/11 18:46:55 Fuzy parted channel #Dm.newbies during a dm oldcash 244648950 penalty 4892979
+19/11 19:18:34 n01z_pro got !enddm'd on #Tank oldcash 183618393 newcash 182700302
