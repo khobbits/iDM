@@ -1,6 +1,5 @@
-<table width="100%"><tr><td width="80%">
+<table width="95%"><tr><td width="80%">
 <h1>Overall DM Stats</h1>
-
 <?php
 $date = date('Y/m/d');
 
@@ -11,7 +10,7 @@ $tMoney = mysql_result($result, 0, "SUM(cash)");
 $tDM = mysql_result($result, 0, "SUM(count)");
 $average = round($tMoney / $tDM);
 
-print '<h2><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
+print '<h3><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
 ?>
 
 <table width="100%" align="center">
@@ -69,7 +68,7 @@ $tMoney = mysql_result($result, 0, "SUM(cash)");
 $tDM = mysql_result($result, 0, "SUM(count)");
 $average = round($tMoney / $tDM);
 
-print '<h2><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
+print '<h3><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
 ?>
 
 <table width="100%" align="center">

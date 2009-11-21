@@ -26,7 +26,7 @@ function news_init() {
 global $phpbb_root_path, $phpEx, $user, $db, $config, $cache, $template;
 
 define('FORUM_ID', 4); // Forum ID to get data from
-define('POST_LIMIT', 8); // How many to get
+define('POST_LIMIT', 6); // How many to get
 define('PHPBB_ROOT_PATH', '/home/idm/public_forum/'); // Path to phpBB (including trailing /)
 define('PRINT_TO_SCREEN', true);
 define('IN_PHPBB', true);
@@ -95,9 +95,11 @@ foreach ($posts as $m) {
 	if ($current == "1" || $current == "2") {
 		$content .= "<div class=\"title\"><a href=\"http://forum.idm-bot.com/viewtopic.php?t=" . $m ['topic_id'] . "\">" . $m ['topic_title'] . "</a></div>\n
 				<div class=\"info\">By:" . $m ['username'] . " on " . date("M j, Y, g:i a", $m ['topic_time']) . "</div>\n
-				<div class=\"text\">" . $message . "</div>\n";
+				<div class=\"text\">" . $message . "\n
+				<div style=\"font-style:italic;\"><a href=\"http://forum.idm-bot.com/viewtopic.php?t=" . $m ['topic_id'] . "\">» (Click here to read more!)</a></div>\n
+				</div>\n";
 	} else {
-		if ($current == "3") $content .= "<div class=\"title\">Old News Posts:</div>";
+		if ($current == "3") $content .= "<div class=\"title\">Older News Posts:</div><div class=\"info\">Check the forum for a full news history</div>";
 		$content .= "<div class=\"sub-news\">» <a href=\"http://forum.idm-bot.com/viewtopic.php?t=" . $m ['topic_id'] . "\">" . $m ['topic_title'] . "</a></div>\n";
 	}
 

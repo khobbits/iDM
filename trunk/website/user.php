@@ -37,8 +37,6 @@ if ($user == '') {
 	}
 } else {
 
-	print '<h1>' . htmlentities(strtoupper($userd)) . '</h1>';
-
 	$data = array ();
 	$query = "SELECT *
 				FROM user u
@@ -124,34 +122,42 @@ function ratiodist ($wins, $losses) {
 	}
 }
 
-print '
+print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($userd)) . '</h1>
 <div>
-<h2>User Stats</h2>
 <table class="table-user-clean">
 	<tbody>
 		<tr>
-			<td>Money: ' . number_format($result ['money'], 0, '', ',') . ' gp</td>
+			<th>Clan</td>
+			<td>' . $result ['clan'] . '</td>
 		</tr>
 		<tr>
-			<td>Wins: ' . number_format($result ['wins'], 0, '', ',') . '</td>
+			<th>Logged in?</td>
+			<td>' . valuebool($result ['login'],1) . '</td>
 		</tr>
 		<tr>
-			<td>Losses: ' . number_format($result ['losses'], 0, '', ',') . '</td>
-		</tr>
-		<tr>
-			<td>Win/Loss Ratio: ' . ratiodist($result ['wins'],$result ['losses']) . '</td>
-		</tr>
-		<tr>
-			<td>Clan: ' . $result ['clan'] . '</td>
-		</tr>
-		<tr>
-			<td>Logged in: ' . valuebool($result ['login'],1) . '</td>
-		</tr>
-		<tr>
-			<td>Banned: ' . valuebool($result ['banned'],1) . '</td>
+			<th style="width: 40%;">Banned?</td>
+			<td style="width: 60%;">' . valuebool($result ['banned'],1) . '</td>
 		</tr>
 	</tbody>
 </table>
+<br />
+<table class="table-user">
+	<tbody>
+		<tr>
+			<th>Money</td>
+			<th>Wins</td>
+			<th>Losses</td>
+			<th>Win/Loss Ratio</td>
+		</tr>
+		<tr>
+			<td style="width: 30%;">' . number_format($result ['money'], 0, '', ',') . 'gp</td>
+			<td style="width: 20%;">' . number_format($result ['wins'], 0, '', ',') . '</td>
+			<td style="width: 20%;">' . number_format($result ['losses'], 0, '', ',') . '</td>
+			<td style="width: 30%;">' . ratiodist($result ['wins'],$result ['losses']) . '</td>
+		</tr>
+	</tbody>
+</table>
+
 <h2>Weapons</h2>
 <table class="table-user">
 	<tbody>
