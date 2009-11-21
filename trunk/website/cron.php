@@ -1,6 +1,7 @@
 <?php
 
 include_once 'config.php';
+init(1);
 
 if (isset($_GET ['offset']) && is_numeric($_GET ['offset'])) {
 	$offset = (int)$_GET ['offset'];

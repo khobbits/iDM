@@ -3,7 +3,7 @@ RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^u/([A-Za-z0-9-_~\[\](){}`]+)/? index.php?page=user&user=$1 [L]
+RewriteRule ^u/([A-Za-z0-9-^_~|\[\](){}`]+)/? index.php?page=user&user=$1 [L]
 RewriteRule ^u/? index.php?page=user [L]
 RewriteRule ^hiscores/? index.php?page=hiscores [L]
 RewriteRule ^drops/? index.php?page=drops [L]

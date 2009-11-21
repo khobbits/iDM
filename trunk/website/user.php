@@ -1,12 +1,11 @@
 <?PHP
 
-$user = mysql_real_escape_string($_GET ['user']);
-
-$user = str_replace(" ", "_", strtolower($user));
+$userd = str_replace(" ", "_", strtolower($_GET['user']));
+$user = mysql_real_escape_string($userd);
 
 if ($user == '') {
-	$search = mysql_real_escape_string($_POST ['search']);
-	$search = str_replace(" ", "_", strtolower($search));
+	$searchd = str_replace(" ", "_", strtolower($_POST ['search']));
+	$search = mysql_real_escape_string($searchd);
 	?>
 
 <p>Search for a user to fetch their stats.</p>
@@ -23,12 +22,12 @@ if ($user == '') {
 		$num = mysql_num_rows($result);
 
 		if ($num == 0) {
-			print '<p>Could not find a user matching "' . $search . '".  Try using a partial search.</p>';
+			print '<p>Could not find a user matching "' . htmlentities($searchd) . '".  Try using a partial search.</p>';
 		} else {
-			print '<p>Searching for "'. $search .'", click on one of the matched usernames below.</p>';
+			print '<p>Searching for "'. htmlentities($searchd) .'", click on one of the matched usernames below.</p>';
 			print '<table><tbody>';
 			while ($row = mysql_fetch_object($result)) {
-				print '<tr><td><a href="/u/' . $row->user . '/">' . $row->user . '</td></tr>';
+				print '<tr><td><a href="/u/' . urlencode($row->user) . '/">' . htmlentities($row->user) . '</td></tr>';
 			}
 			print '</tbody></table>';
 			if ($num == 25) {
@@ -38,7 +37,7 @@ if ($user == '') {
 	}
 } else {
 
-	print '<h1>' . strtoupper($user) . '</h1>';
+	print '<h1>' . htmlentities(strtoupper($userd)) . '</h1>';
 
 	$data = array ();
 	$query = "SELECT *
@@ -75,6 +74,7 @@ if ($user == '') {
 				'login' => 0,
 				'firecape' => 0,
 				'bgloves' => 0,
+				'elshield' => 0,
 				'void' => 0,
 				'void-mage' => 0,
 				'accumulator' => 0,
@@ -97,17 +97,22 @@ if ($user == '') {
 				'beau' => 0,
 				'belong' => 0,
 				'kh' => 0,
-				'snake' => 0
+				'snake' => 0,
+				'support' => '0'
 		);
 	}
 	//$num = mysql_num_rows($result);
 
-function valuebool ($value) {
+function valuebool ($value, $text = 0, $dplaces = 0) {
 	if ($value == 0) {
-		return "No";
-	} else {
+		if (($text == 0) || ($value == '') || ($value == '0')) {
+			return "No";
+		}
+	}
+	if (($value == 1) || ($text == 1)) {
 		return "Yes";
 	}
+	return number_format($value, $dplaces, '.', ',') ;
 }
 
 function ratiodist ($wins, $losses) {
@@ -119,7 +124,7 @@ function ratiodist ($wins, $losses) {
 	}
 }
 
-	print '
+print '
 <div>
 <h2>User Stats</h2>
 <table class="table-user-clean">
@@ -140,10 +145,10 @@ function ratiodist ($wins, $losses) {
 			<td>Clan: ' . $result ['clan'] . '</td>
 		</tr>
 		<tr>
-			<td>Logged in: ' . valuebool($result ['login']) . '</td>
+			<td>Logged in: ' . valuebool($result ['login'],1) . '</td>
 		</tr>
 		<tr>
-			<td>Banned: ' . valuebool($result ['banned']) . '</td>
+			<td>Banned: ' . valuebool($result ['banned'],1) . '</td>
 		</tr>
 	</tbody>
 </table>
@@ -159,50 +164,53 @@ function ratiodist ($wins, $losses) {
 			<th>Mudkip</td>
 		</tr>
 		<tr>
-			<td style="width: 20%;">' . number_format($result ['sgs'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['ags'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['bgs'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['zgs'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['dclaws'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['mudkip'], 0, '', ',') . '</td>
+			<td style="width: 20%;">' . valuebool($result ['sgs']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['ags']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['bgs']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['zgs']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['dclaws']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['mudkip']) . '</td>
 		</tr>
 	</tbody>
 </table>
-<h2>Defense</h2>
+<h2>Attack Bonuses</h2>
 <table class="table-user">
 	<tbody>
 		<tr>
-			<th>Firecape</td>
+			<th>Accumulator</td>
 			<th>Barrows Gloves</td>
+			<th>Firecape</td>
+			<th>God Cape</td>
+			<th>Mage Book</td>
 			<th>Void Range</td>
 			<th>Void Mage</td>
-			<th>Accumulator</td>
-			<th>Mage Book</td>
-			<th>God Cape</td>
 		</tr>
 		<tr>
-			<td style="width: 14%;">' . number_format($result ['firecape'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['bgloves'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['void'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['void-mage'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['accumulator'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['mbook'], 0, '', ',') . '</td>
-			<td style="width: 14%;">' . number_format($result ['godcape'], 0, '', ',') . '</td>
+
+			<td style="width: 14%;">' . valuebool($result ['accumulator']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['bgloves']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['firecape']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['godcape']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['mbook']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['void']) . '</td>
+			<td style="width: 14%;">' . valuebool($result ['void-mage']) . '</td>
 		</tr>
 	</tbody>
 </table>
-<h2>Items</h2>
+<h2>Other Items</h2>
 <table class="table-user">
 	<tbody>
 		<tr>
-			<th>Ring of Wealth</td>
 			<th>Special Pot</td>
+			<th>Ring of Wealth</td>
+			<th>Elysian Shield</td>
 			<th>Clue Scroll</td>
 		</tr>
 		<tr>
-			<td style="width: 30%;">' . number_format($result ['wealth'], 0, '', ',') . '</td>
-			<td style="width: 30%;">' . number_format($result ['specpot'], 0, '', ',') . '</td>
-			<td style="width: 30%;">' . number_format($result ['clue'], 0, '', ',') . '</td>
+			<td style="width: 25%;">' . valuebool($result ['specpot']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['wealth']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['elshield']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['clue']) . '</td>
 		</tr>
 	</tbody>
 </table>
@@ -216,10 +224,10 @@ function ratiodist ($wins, $losses) {
 			<th>Vesta\'s Spear</td>
 		</tr>
 		<tr>
-			<td style="width: 25%;">' . number_format($result ['mjavelin'], 0, '', ',') . '</td>
-			<td style="width: 25%;">' . number_format($result ['statius'], 0, '', ',') . '</td>
-			<td style="width: 25%;">' . number_format($result ['vlong'], 0, '', ',') . '</td>
-			<td style="width: 25%;">' . number_format($result ['vspear'], 0, '', ',') . '</td>
+			<td style="width: 25%;">' . valuebool($result ['mjavelin']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['statius']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['vlong']) . '</td>
+			<td style="width: 25%;">' . valuebool($result ['vspear']) . '</td>
 		</tr>
 	</tbody>
 </table>
@@ -235,12 +243,12 @@ function ratiodist ($wins, $losses) {
 			<th>The Supporter</td>
 		</tr>
 		<tr>
-			<td style="width: 20%;">' . number_format($result ['snake'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['kh'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['belong'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['allegra'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . number_format($result ['beau'], 0, '', ',') . '</td>
-			<td style="width: 16%;">' . (isset($result ['support']) ? 1 : 0) . '</td>
+			<td style="width: 20%;">' . valuebool($result ['snake']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['kh']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['belong']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['allegra']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['beau']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['support'],1) . '</td>
 		</tr>
 	</tbody>
 </table>

@@ -4,12 +4,12 @@ function adminlist($item) {
 	$query = "SELECT * FROM equip_staff WHERE $item != '0'";
 	$result = mysql_query($query);
 	$num = mysql_num_rows($result);
+	print $num . " users.<br /><br />\n";
 
-	for ($a = 1; $a < $num; $a++) {
+	for ($a = 0; $a < $num; $a++) {
 		$name = mysql_result($result, $a, 'user');
-		print '' . ucfirst($name) . '<br />';
+		print htmlspecialchars(ucfirst($name)) . "<br />\n";
 	}
-	print '';
 }
 ?>
 
@@ -39,14 +39,19 @@ it, this is more likely to gain you the 'banned' status.</p>
 <td>
 <?php
 adminlist('snake');
-?></td><td><?php
+?></td>
+<td><?php
 adminlist('kh');
-?></td><td><?php
+?></td>
+<td><?php
 adminlist('beau');
-?></td><td><?php
+?></td>
+<td><?php
 adminlist('belong');
-?></td><td><?php
+?></td>
+<td><?php
 adminlist('allegra');
-?></td><td><?php
+?></td>
+<td><?php
 adminlist('support');
 ?></td>
