@@ -10,7 +10,7 @@ function init($page) {
 
 	$pages = array (
 		"stats" => "stats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
-	    "user" => "user.php", "sitems" => "sitems.php"
+	    "user" => "user.php", "sitems" => "sitems.php", "clan" => "clan.php"
 	);
 
 	if ($page == 1) {
@@ -57,6 +57,27 @@ function displayContent($page) {
 
 function displayQuickStats() {
 	include 'qstats.php';
+}
+
+function valuebool ($value, $text = 0, $dplaces = 0) {
+	if ($value == 0) {
+		if (($text == 0) || ($value == '') || ($value == '0')) {
+			return "No";
+		}
+	}
+	if (($value == 1) || ($text == 1)) {
+		return "Yes";
+	}
+	return number_format($value, $dplaces, '.', ',') ;
+}
+
+function ratiodist ($wins, $losses) {
+	if ($losses) {
+		return number_format(($wins/$losses), 2, '.', '') . ' (' .
+		number_format((($wins/($losses+$wins))*100), 2, '.', ''). '%)';
+	} else {
+		return '1 (100%)';
+	}
 }
 
 ?>

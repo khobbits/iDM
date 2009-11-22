@@ -90,16 +90,19 @@ input {
 }
 
 tr.even td {
-	background-color:#812B2B;
+	background-color:#2A0909;
 }
 
 .table-user {
 	border-collapse:collapse;
 	width: 95%;
+	border-bottom: 1px solid;
 }
 .table-user td {
 	text-align: center;
-	border: 1px solid;
+	border: 0px;
+	border-left: 1px solid;
+	border-right: 1px solid;
 }
 
 .table-user th {

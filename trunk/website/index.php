@@ -18,11 +18,16 @@
 	<li><a href="http://forum.idm-bot.com">Forums</a></li>
 	<li><a href="http://forum.idm-bot.com/viewtopic.php?f=4&amp;t=4">Rules</a></li>
 	<li><a href="http://forum.idm-bot.com/viewtopic.php?f=7&amp;t=5">Commands</a></li>
-	<li><a href="/dmstats/">Channel Stats</a></li>
-	<li><a href="/drops/">Drop Stats</a></li>
-	<li><a href="/hiscores/">Hiscores</a></li>
 	<li><a href="/sitems/">Admin Items</a></li>
+	<li><a href="/dmstats/">Channel Stats</a></li>
+	<li><a href="/drops/">Item Drop Stats</a></li>
+	<li><a href="/hiscores/">Hiscore List</a></li>
+
+</ul>
+<div class="header">User Lookup</div>
+<ul>
 	<li><a href="/u/">User</a></li>
+	<li><a href="/c/">Clan</a></li>
 </ul>
 <div class="header">Quick Stats</div>
 <div style="padding: 5px;"><? displayQuickStats()?></div>

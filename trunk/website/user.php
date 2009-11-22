@@ -1,6 +1,6 @@
 <?PHP
 
-$userd = str_replace(" ", "_", strtolower($_GET['user']));
+$userd = str_replace(" ", "_", strtolower($_GET ['user']));
 $user = mysql_real_escape_string($userd);
 
 if ($user == '') {
@@ -24,7 +24,7 @@ if ($user == '') {
 		if ($num == 0) {
 			print '<p>Could not find a user matching "' . htmlentities($searchd) . '".  Try using a partial search.</p>';
 		} else {
-			print '<p>Searching for "'. htmlentities($searchd) .'", click on one of the matched usernames below.</p>';
+			print '<p>Searching for "' . htmlentities($searchd) . '", click on one of the matched usernames below.</p>';
 			print '<table><tbody>';
 			while ($row = mysql_fetch_object($result)) {
 				print '<tr><td><a href="/u/' . urlencode($row->user) . '/">' . htmlentities($row->user) . '</td></tr>';
@@ -64,6 +64,7 @@ if ($user == '') {
 	$result = mysql_fetch_assoc(mysql_query($query));
 	if (sizeof($result) == 0) {
 		$result = array (
+
 				'money' => 0,
 				'wins' => 0,
 				'losses' => 0,
@@ -101,42 +102,23 @@ if ($user == '') {
 	}
 	//$num = mysql_num_rows($result);
 
-function valuebool ($value, $text = 0, $dplaces = 0) {
-	if ($value == 0) {
-		if (($text == 0) || ($value == '') || ($value == '0')) {
-			return "No";
-		}
-	}
-	if (($value == 1) || ($text == 1)) {
-		return "Yes";
-	}
-	return number_format($value, $dplaces, '.', ',') ;
-}
 
-function ratiodist ($wins, $losses) {
-	if ($losses) {
-		return number_format(($wins/$losses), 2, '.', '') . ' (' .
-		number_format((($wins/($losses+$wins))*100), 2, '.', ''). '%)';
-	} else {
-		return '1 (100%)';
-	}
-}
-
-print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($userd)) . '</h1>
+	print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($userd)) . '</h1>
 <div>
 <table class="table-user-clean">
 	<tbody>
 		<tr>
 			<th>Clan</td>
-			<td>' . $result ['clan'] . '</td>
+			<td><a href="/c/' . urlencode($result ['clan']) . '/">' . htmlentities($result ['clan']) . '</td>
+
 		</tr>
 		<tr>
 			<th>Logged in?</td>
-			<td>' . valuebool($result ['login'],1) . '</td>
+			<td>' . valuebool($result ['login'], 1) . '</td>
 		</tr>
 		<tr>
 			<th style="width: 40%;">Banned?</td>
-			<td style="width: 60%;">' . valuebool($result ['banned'],1) . '</td>
+			<td style="width: 60%;">' . valuebool($result ['banned'], 1) . '</td>
 		</tr>
 	</tbody>
 </table>
@@ -153,7 +135,7 @@ print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($userd)) . '</h1
 			<td style="width: 30%;">' . number_format($result ['money'], 0, '', ',') . 'gp</td>
 			<td style="width: 20%;">' . number_format($result ['wins'], 0, '', ',') . '</td>
 			<td style="width: 20%;">' . number_format($result ['losses'], 0, '', ',') . '</td>
-			<td style="width: 30%;">' . ratiodist($result ['wins'],$result ['losses']) . '</td>
+			<td style="width: 30%;">' . ratiodist($result ['wins'], $result ['losses']) . '</td>
 		</tr>
 	</tbody>
 </table>
@@ -254,7 +236,7 @@ print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($userd)) . '</h1
 			<td style="width: 16%;">' . valuebool($result ['belong']) . '</td>
 			<td style="width: 16%;">' . valuebool($result ['allegra']) . '</td>
 			<td style="width: 16%;">' . valuebool($result ['beau']) . '</td>
-			<td style="width: 16%;">' . valuebool($result ['support'],1) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['support'], 1) . '</td>
 		</tr>
 	</tbody>
 </table>

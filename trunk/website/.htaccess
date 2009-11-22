@@ -5,6 +5,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^u/([A-Za-z0-9-^_~|\[\](){}`]+)/? index.php?page=user&user=$1 [L]
 RewriteRule ^u/? index.php?page=user [L]
+RewriteRule ^c/([^/?&\\]+)/? index.php?page=clan&clan=$1 [L]
+RewriteRule ^c/? index.php?page=clan [L]
 RewriteRule ^hiscores/? index.php?page=hiscores [L]
 RewriteRule ^drops/? index.php?page=drops [L]
 RewriteRule ^dmstats/? index.php?page=stats [L]
