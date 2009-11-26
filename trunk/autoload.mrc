@@ -1,5 +1,5 @@
 alias rehash {
-  while (2 < $script(0)) {
+  if (2 < $script(0)) {
     var %i 1
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
       inc %i
@@ -7,10 +7,13 @@ alias rehash {
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
       inc %i
     }
-    echo -a Unloading Script " $+ $script(%i) $+ "
+    echo -s Unloading Script " $+ $script(%i) $+ "
     .unload -rs " $+ $script(%i) $+ "
+    .timer -m 1 100 rehash
   }
-  timer 1 1 rehash.cont
+  else {
+    timer 1 1 rehash.cont
+  }
 }
 alias rehash.cont {
   noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
@@ -18,10 +21,28 @@ alias rehash.cont {
 }
 
 alias rehash.load {
-  load -rs " $+ $1- $+ "
-  echo -a Loading Script " $+ $1- $+ "
+  .load -rs " $+ $1- $+ "
+  echo -s Loading Script " $+ $1- $+ "
 }
 
 alias rehash.end {
   msg #idm.staff Currently $script(0) Scripts Loaded.
+  var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  inc %botnum
+  putlog perform rehash.run %botnum
 }
+
+alias rehash.run {
+  if ($cid != $scon(1)) { halt }
+  var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (%botnum == $null) { msg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
+  if ($1 == %botnum) {
+    privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
+    timer -m 1 5000 rehash
+  }
+}
+
+alias putlog {
+  sbnc tcl putmainlog $chr(123) $+ $1- $+ $chr(125)
+}
+on *:TEXT:perform *:?: { if (($nick == -sbnc) && ($address == bouncer@shroudbnc.info)) { $2- } }

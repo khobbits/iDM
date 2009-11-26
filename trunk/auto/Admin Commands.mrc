@@ -21,7 +21,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: { 
+on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
   if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)bl <channel> [reason] | halt }
@@ -55,13 +55,13 @@ alias banman {
   var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
   if (((((@ isin $2) && (*!*@ !isin $2)) || (!$3)) && (?i* iswm $1)) || ($chr(35) isin $2)) {
     if ($me == idm) { notice %nick $logo(BANNED) 4Syntax Error: !ignore <nick> <reason> (or !ignore *!*@<host> <reason>) - Use !suspend to disable an account. }
-    halt 
+    halt
   }
   elseif (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
-    else { 
+    else {
       if ($me == idm) { hostcallback %nick $2 putlog perform banman %nick %chan $1 ~host~ $iif($3,$2 - $3-) }
-      halt 
+      halt
     }
   }
   else { tokenize 32 $1 $2 $3- }
@@ -140,7 +140,7 @@ on $*:TEXT:/^[!.]join .*/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
-    if ($2 == $me) { 
+    if ($2 == $me) {
       set %forcedj. [ $+ [ $3 ] ] true
       join $3
       .timer 1 1 msg $3 $logo(JOIN) I was requested to join this channel by $position($nick) $nick $+ . $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93)
@@ -256,19 +256,13 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
 
 on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
-    if ($cid != $scon(1)) { halt }
-    var %rand $rand(5000,120000)
-    privmsg $chan $logo(Reloading Scripts) Running update script in $floor($calc(%rand /1000)) seconds.
-    timer -m 1 %rand rehash
+    rehash.run 0
   }
 }
 
 on $*:TEXT:/^[!.]ignoresync$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
-    if ($cid != $scon(1)) { halt }
-    var %rand $rand(5000,30000)
-    privmsg $chan $logo(IgnoreSync) Running ignore sync script in $floor($calc(%rand /1000)) seconds.
-    timer -m 1 %rand ignoresync
+    ignoresync.run 0
   }
 }
 
