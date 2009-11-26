@@ -255,12 +255,14 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
 }
 
 on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
+  if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     rehash.run 0
   }
 }
 
 on $*:TEXT:/^[!.]ignoresync$/Si:#idm.staff: {
+  if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     ignoresync.run 0
   }

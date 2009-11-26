@@ -28,6 +28,7 @@ alias rehash.load {
 alias rehash.end {
   msg #idm.staff Currently $script(0) Scripts Loaded.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (%botnum == 0) { var %botnum 1 }
   inc %botnum
   putlog perform rehash.run %botnum
 }

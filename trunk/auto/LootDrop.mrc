@@ -5,13 +5,13 @@ alias dead {
     .timer 1 1 msg $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price(%stake [ $+ [ $chan ] ])) $+ .
     unset %stake* [ $+ [ $1 ] ]
     cancel $1
-    set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
     db.set user wins $3 + 1
     db.set user losses $2 + 1
+    set -u10 %wait. [ $+ [ $1 ] ] on
+    .timer 1 10 msg $1 $logo(DM) Ready.
     halt
   }
   cancel $1
-  set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
   db.set user wins $3 + 1
   db.set user losses $2 + 1
   var %drop1 $r(1,$lines(loot.txt)),%drop2 $r(1,$lines(loot.txt)),%drop3 $r(1,$lines(loot.txt))
@@ -72,6 +72,7 @@ alias dead {
     db.set user money $3 + %combined
     .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
   }
+  set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
   unset %item*
   unset %price*
   unset %rare*

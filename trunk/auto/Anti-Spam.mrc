@@ -46,9 +46,13 @@ alias ignoresync {
   }
   db.query_end %result
   msg $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
+  var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (%botnum == 0) { var %botnum 1 }
+  inc %botnum
+  putlog perform ignoresync.run %botnum  
 }
 
-ignoresync.run {
+alias ignoresync.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == $null) { msg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
