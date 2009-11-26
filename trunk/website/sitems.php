@@ -13,7 +13,7 @@ function adminlist($item) {
 }
 ?>
 
-<p>To gain an admin item you need to perform a task worthy of such a
+<p>To gain an staff item you need to perform a task worthy of such a
 gift.  Each item belongs to a different staff member and each staff member has
 a different idea of what you have to do to be worthy of such a reward.</p>
 <p>For example:<br />

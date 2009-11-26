@@ -19,7 +19,12 @@ if ($user == '') {
 	if ($search != '') {
 		$query = "SELECT * FROM user WHERE user like '%$search%' ORDER BY user ASC LIMIT 25";
 		$result = mysql_query($query);
-		$num = mysql_num_rows($result);
+		if(!$result) {
+		  $num = 0;
+		}
+		else {
+  		$num = mysql_num_rows($result);
+		}
 
 		if ($num == 0) {
 			print '<p>Could not find a user matching "' . htmlentities($searchd) . '".  Try using a partial search.</p>';
@@ -61,14 +66,15 @@ if ($user == '') {
 				  WHERE user = '$user'
 				) AS s ON ( u.user = s.user )
 				WHERE u.user = '$user'";
-	$result = mysql_fetch_assoc(mysql_query($query));
-	if (sizeof($result) == 0) {
+	$result = mysql_query($query);
+	if (!$result || sizeof($result = mysql_fetch_assoc($result)) == 0) {
 		$result = array (
 
 				'money' => 0,
 				'wins' => 0,
 				'losses' => 0,
 				'clan' => 'None',
+				'profile' => '',
 				'banned' => 0,
 				'login' => 0,
 				'firecape' => 0,
@@ -240,6 +246,11 @@ if ($user == '') {
 		</tr>
 	</tbody>
 </table>
+
+<div>
+<br />
+' . $result ['profile'] . '
+</div>
 </div>
 ';
 }

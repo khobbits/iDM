@@ -1,9 +1,10 @@
 <?PHP
-print_r ($_GET);
-$cland = str_replace(" ", "_", strtolower($_GET ['clan']));
+//Fixing apache/php handling of urls with %23 - treat $GET as $_GET
+parse_str ($_SERVER['REDIRECT_QUERY_STRING'], $GET);
+$cland = str_replace(" ", "_", strtolower($GET ['clan']));
 $clan = mysql_real_escape_string($cland);
 
-if ($clan == '') {
+if (($clan == '') || ($clan == '0')) {
 	$searchd = str_replace(" ", "_", strtolower($_POST ['search']));
 	$search = mysql_real_escape_string($searchd);
 	?>
@@ -19,7 +20,12 @@ if ($clan == '') {
 	if ($search != '') {
 		$query = "SELECT * FROM clantracker WHERE user like '%$search%' ORDER BY user ASC LIMIT 25";
 		$result = mysql_query($query);
-		$num = mysql_num_rows($result);
+		if(!$result) {
+		  $num = 0;
+		}
+		else {
+  		$num = mysql_num_rows($result);
+		}
 
 		if ($num == 0) {
 			print '<p>Could not find a user matching "' . htmlentities($searchd) . '".  Try using a partial search.</p>';
@@ -39,8 +45,8 @@ if ($clan == '') {
 
 	$data = array ();
 	$query = "SELECT * FROM clantracker WHERE user = '$clan'";
-	$result = mysql_fetch_assoc(mysql_query($query));
-	if (sizeof($result) == 0) {
+	$result = mysql_query($query);
+	if (!$result || sizeof($result = mysql_fetch_assoc($result)) == 0) {
 		$result = array (
 
 			'owner' => 'None',
@@ -51,9 +57,14 @@ if ($clan == '') {
 		);
 	}
 	//$num = mysql_num_rows($result);
-	$mquery = "SELECT * FROM user WHERE clan = '$clan' ORDER BY user";
+	$mquery = "SELECT * FROM user WHERE clan = '$clan' ORDER BY money DESC LIMIT 200";
 	$mresult = mysql_query($mquery);
-	$mnum = mysql_num_rows($mresult);
+	if(!$mresult) {
+	  $mnum = 0;
+	}
+	else {
+  	$mnum = mysql_num_rows($mresult);
+	}
 
 	print '<h1 style="margin-top: 0px;">' . htmlentities(strtoupper($cland)) . '</h1>
 <div>
@@ -108,7 +119,7 @@ if ($clan == '') {
 		</tr>
 <?php
 	$i = 1;
-	while ($mrow = mysql_fetch_object($mresult)) {
+	while ($mresult && $mrow = mysql_fetch_object($mresult)) {
 		$class = ($i % 2 == 0) ? 'even' : 'odd';
 		print '
 		<tr class=' . $class . '>
