@@ -1,6 +1,7 @@
 alias rehash {
-  if (2 < $script(0)) {
-    var %i $v2
+  var %t $ctime
+  while (2 < $script(0)) {
+    var %i $v2   
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
       dec %i
     }
@@ -8,23 +9,19 @@ alias rehash {
       dec %i
     }
     unload -nrs " $+ $script(%i) $+ "
-    .timer -m 1 50 rehash
   }
-  else {
-    timer 1 1 rehash.cont
-  }
-}
-alias rehash.cont {
-  noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
-  timer 1 1 rehash.end
+  msg #idm.staff Unloaded scripts - Script took $calc($ctime - %t) seconds.
+  timer 1 1 rehash.cont
 }
 
 alias rehash.load {
   load -rs " $+ $1- $+ "
 }
 
-alias rehash.end {
-  msg #idm.staff Currently $script(0) Scripts Loaded.
+alias rehash.cont {
+  var %t $ctime
+  noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
+  msg #idm.staff Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == 0) { var %botnum 1 }
   inc %botnum

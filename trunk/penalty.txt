@@ -5,3 +5,4 @@
 26/11 16:33:29 paynetime parted channel #ofthegods during a dm oldcash 640489201 penalty 12809785
 26/11 16:38:58 X-jamie-X got !enddm'd on #mv oldcash 686106604 newcash 682676071
 26/11 16:40:11 Da_Dark_Pk parted channel #n00b during a dm oldcash 483553376 penalty 9671068
+26/11 17:04:13 Crazipunki parted channel #aces_of_wars during a dm oldcash 342540030 penalty 6850801
