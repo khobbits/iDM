@@ -1,15 +1,14 @@
 alias rehash {
   if (2 < $script(0)) {
-    var %i 1
+    var %i $v2
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
-      inc %i
+      dec %i
     }
     if (*autoload.mrc iswm $script(%i) || *autoconnect.mrc iswm $script(%i)) {
-      inc %i
+      dec %i
     }
-    echo -s Unloading Script " $+ $script(%i) $+ "
-    .unload -rs " $+ $script(%i) $+ "
-    .timer -m 1 100 rehash
+    unload -nrs " $+ $script(%i) $+ "
+    .timer -m 1 50 rehash
   }
   else {
     timer 1 1 rehash.cont
@@ -21,8 +20,7 @@ alias rehash.cont {
 }
 
 alias rehash.load {
-  .load -rs " $+ $1- $+ "
-  echo -s Loading Script " $+ $1- $+ "
+  load -rs " $+ $1- $+ "
 }
 
 alias rehash.end {

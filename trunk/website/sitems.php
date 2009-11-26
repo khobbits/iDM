@@ -1,7 +1,7 @@
 <?PHP
 
 function adminlist($item) {
-	$query = "SELECT * FROM equip_staff WHERE $item != '0'";
+	$query = "SELECT * FROM equip_staff WHERE $item != '0' ORDER BY user";
 	$result = mysql_query($query);
 	$num = mysql_num_rows($result);
 	print $num . " users.<br /><br />\n";
