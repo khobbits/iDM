@@ -153,9 +153,10 @@ alias botnews {
 
 on $*:TEXT:/^[!@.]dmnews/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  notice $nick $logo(News #1) New site features + changes to !money -> http://r.idm-bot.com/32rj
-  notice $nick $logo(News #2) Login changes -> http://r.idm-bot.com/efn2
-  notice $nick $logo(News #3) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
+  notice $nick $logo(News #1) Changes to !money -> http://r.idm-bot.com/32rj
+  notice $nick $logo(News #2) Changes to !money -> http://r.idm-bot.com/352f
+  notice $nick $logo(News #3) Login changes -> http://r.idm-bot.com/efn2
+  notice $nick $logo(News #4) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
 }
 
 

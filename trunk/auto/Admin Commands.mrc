@@ -82,10 +82,8 @@ alias banman {
       notice %nick $logo(BANNED) User $2 has been added to ignore
     }
   }
-  else {
-    if (?i* iswm $1) { ignore $2 }
-    elseif (?r* iswm $1) { ignore -r $2 }
-  }
+  if (?i* iswm $1) { ignore $2 }
+  elseif (?r* iswm $1) { ignore -r $2 }
 }
 alias hostcallback {
   if ($1 != 0) { notice $1 Warning: Could not find hostname cached, attempting hostname lookup for $2 $+ , please wait. }
