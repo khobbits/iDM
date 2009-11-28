@@ -105,7 +105,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
   var %clan = $getclanname(%nick)
   if ((!%clan) && ($clanmembers($2))) { var %clan = $2 }
   if (%clan) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Profile) $+ : $s2(http://idm-bot.com/c/ $+ %clan $+ /)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Profile) $+ : $s2(http://idm-bot.com/c/ $+ $webstrip(%clan,1))
     halt
   }
   notice $nick $logo(ERROR) %nick is not in a clan and there is no clan named %nick $+ .
@@ -128,8 +128,8 @@ alias createclan {
   ; $1 = Clanname
   ; $2 = Ownername
   if ($2) {
-    db.set clantracker owner $1 $2
-    addclanmember $1 $2
+    db.set clantracker owner $webstrip($1) $2
+    addclanmember $webstrip($1) $2
   }
 }
 

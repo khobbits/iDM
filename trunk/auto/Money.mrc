@@ -1,10 +1,10 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $nick
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1)
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $2
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1)
   }
 }
 
@@ -133,4 +133,17 @@ alias whichitem {
   if ($1 == KHobbits) { return kh }
   if ($1 == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) { return support }
   return 0
+}
+
+alias webstrip {
+  var %return = $1
+  var %return = $replace(%return,/,)
+  if ($2) {
+    var %return = $replace(%return,$chr(35),$wchr(23),$chr(63),$wchr(3F),$chr(38),$wchr())
+  }
+  return %return
+}
+
+alias wchr {
+  return $chr(37) $+ $1
 }
