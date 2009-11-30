@@ -1,22 +1,3 @@
-on *:TEXT:!idle*:#idm.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) == admins) {
-    var %a = 1,%c
-    while (%a <= $chan(0)) {
-      if ($nick($chan(%a),$me).idle > 1800) {
-        if ($chan(%a) != #idm && $chan(%a) != #idm.staff && $chan(%a) != #iStake && $chan(%a) != #idm.Support) {
-          part $chan(%a) This bot has been idling over 30 mins. Parting channel.
-          var %c %c $chan(%a)
-        }
-      }
-      inc %a
-    }
-    if (%c) notice $nick $logo(IDLE) I have parted: %c
-    else {
-      notice $nick $LOGO(IDLE) I have parted no chans.
-    }
-  }
-}
-
 on $*:TEXT:/^[!@.]part/Si:#: {
   if (# == #idm) || (# == #idm.Staff) { halt }
   if ($2 == $me) {

@@ -323,3 +323,9 @@
 30/11 11:30:35 Bainy_00 got !enddm'd on #wheelchair oldcash 1651209916 newcash 1642953867
 30/11 11:47:07 Kyukiou parted channel #Dm.newbies during a dm oldcash 98460740831 penalty 1969214817
 30/11 12:09:15 g_0_h_a_r_d got !enddm'd on #dmplawks oldcash 970767818 newcash 965913979
+30/11 12:36:42 Legendofhpz got !enddm'd on #iDM oldcash 2008751845 newcash 1998708086
+30/11 12:44:13 Siena got !enddm'd on #We.dm oldcash 292762532 newcash 291298720
+30/11 12:46:58 Siena got !enddm'd on #We.dm oldcash 291298720 newcash 289842227
+30/11 12:58:38 skill_99pure parted channel #krygem230 during a dm oldcash 5576910942 penalty 111538219
+30/11 13:01:41 Quietkey-1 got !enddm'd on #Dm.newbies oldcash 7307574236 newcash 7271036365
+30/11 13:04:47 McGod got !enddm'd on #ohaidm oldcash 1457688070 newcash 1450399630

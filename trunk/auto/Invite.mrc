@@ -89,6 +89,19 @@ on *:JOIN:#:{
     }
   }
 }
+on $*:TEXT:/^[!@.]title/Si:#: {
+  if (# != #idm && # != #idm.Staff) || ($me == iDM) {
+    if ($db.get(admins,position,$address($nick,3)) = admins) {
+      msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick is on the channel.
+    }
+    elseif ($db.get(admins,position,$address($nick,3))) {
+      msg # $logo(SUPPORT) Bot support $nick is on the channel.
+    }
+    elseif ($ranks(money,$nick) <= 12) {
+      msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+    }
+  }
+}
 
 alias limit5 {
   if ($istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
