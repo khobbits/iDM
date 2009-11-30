@@ -281,3 +281,45 @@
 29/11 20:22:42 Beastykiller got !enddm'd on #br.dm oldcash 462538786 newcash 460226093
 29/11 20:38:49 Beastykiller got !enddm'd on #br.dm oldcash 480826205 newcash 478422074
 29/11 20:48:20 batli got !enddm'd on #Noobs_Inc oldcash 400920522 newcash 398915920
+29/11 21:45:13 [TFP]Sc1m1d34th got !enddm'd on #We.dm oldcash 14990660670 newcash 14915707367
+29/11 21:49:10 Fury-Brian parted channel #wheelchair during a dm oldcash 2129616984 penalty 42592340
+29/11 21:56:59 YuC|Michael|_2Cool parted channel #Steve during a dm oldcash 1031469875 penalty 20629398
+29/11 21:57:50 Faitherooski parted channel #pr0sdm during a dm oldcash 54070849 penalty 1081417
+29/11 21:57:54 ztzert got !enddm'd on #dm.arena oldcash 5760065818 newcash 5731265489
+29/11 22:03:26 beta_zero parted channel #iDM during a dm oldcash 792358749 penalty 15847175
+29/11 22:09:59 [Ax]Kane|Pkalot parted channel #Steve during a dm oldcash 969261107 penalty 19385223
+29/11 22:33:34 Tyler|Sin parted channel #Drunken_Alliance during a dm oldcash 1284355517 penalty 25687111
+29/11 22:48:28 Kaimilani parted channel #ohaidm during a dm oldcash 1620729636 penalty 32414593
+29/11 22:48:31 We_Only-Own parted channel #We.dm during a dm oldcash 373329786 penalty 7466596
+29/11 23:07:09 [DB]Ariel parted channel #Db-Dm during a dm oldcash 135982342 penalty 2719647
+29/11 23:09:43 Hgeorge parted channel #intel667 during a dm oldcash 845679420 penalty 16913589
+29/11 23:54:50 Bseverson345 got !enddm'd on #We.dm oldcash 233458933 newcash 232291639
+29/11 23:55:23 [E-app]Hear7z got !enddm'd on #tribe oldcash 232604822 newcash 231441798
+30/11 00:07:06 earv got !enddm'd on #kcr oldcash 46023866 newcash 45793747
+30/11 00:07:29 |Dave| parted channel #Db-Dm during a dm oldcash 9163185 penalty 183264
+30/11 00:43:45 [IR]DammGood parted channel #Steve during a dm oldcash 216313575 penalty 4326272
+30/11 00:46:27 Evosquall got !enddm'd on #kcr oldcash 4059425905 newcash 4039128776
+30/11 01:01:49 Pinoii_Stylz` got !enddm'd on #iDM oldcash 26216403324 newcash 26085321308
+30/11 02:44:09 shrek_r parted channel #storms_krew during a dm oldcash 456313609 penalty 9126273
+30/11 03:06:55 Powerdog parted channel #storms_krew during a dm oldcash 1486892081 penalty 29737842
+30/11 03:07:32 eminemontop got !enddm'd on #Dm.newbies oldcash 5063976754 newcash 5038656871
+30/11 03:31:08 Kc|5tr parted channel #WWDM during a dm oldcash 429188194 penalty 8583764
+30/11 03:32:18 k_1_l_lax got !enddm'd on #team_x oldcash 294746256 newcash 293272525
+30/11 04:45:26 T`RENT parted channel #Team_X during a dm oldcash 109949703 penalty 2198995
+30/11 04:45:44 T`RENT parted channel #Team_X during a dm oldcash 107750708 penalty 2155015
+30/11 04:48:30 T`RENT parted channel #Team_X during a dm oldcash 105595693 penalty 2111914
+30/11 04:50:07 k_1_l_lax parted channel #Team_X during a dm oldcash 381169177 penalty 7623384
+30/11 04:57:20 eminemontop got !enddm'd on #We.dm oldcash 6748265177 newcash 6714523852
+30/11 05:02:07 yellowlab95 got !enddm'd on #Dm.newbies oldcash 738039171 newcash 734348976
+30/11 06:49:10 Rock_Techno got !enddm'd on #sor_dm oldcash 583582188 newcash 580664278
+30/11 07:08:03 Kaimilani parted channel #ohaidm during a dm oldcash 2223216671 penalty 44464334
+30/11 08:02:41 Blinded18 got !enddm'd on #TheMigrants oldcash 204400207 newcash 203378206
+30/11 08:16:59 eminemontop got !enddm'd on #Dm.newbies oldcash 7861557063 newcash 7822249278
+30/11 08:30:40 Blinded18 got !enddm'd on #TheMigrants oldcash 203378206 newcash 202361315
+30/11 09:34:47 Jordan^ got !enddm'd on #wheelchair oldcash 684254786 newcash 680833513
+30/11 09:50:40 Kaimilani parted channel #Dm.newbies during a dm oldcash 233715457 penalty 4674310
+30/11 10:38:12 bir_25 got !enddm'd on #Westside oldcash 152249518 newcash 151488271
+30/11 11:07:56 sherwin46 got !enddm'd on #kcr oldcash 206847504 newcash 205813267
+30/11 11:30:35 Bainy_00 got !enddm'd on #wheelchair oldcash 1651209916 newcash 1642953867
+30/11 11:47:07 Kyukiou parted channel #Dm.newbies during a dm oldcash 98460740831 penalty 1969214817
+30/11 12:09:15 g_0_h_a_r_d got !enddm'd on #dmplawks oldcash 970767818 newcash 965913979

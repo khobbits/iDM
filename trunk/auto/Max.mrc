@@ -3,6 +3,7 @@ alias max {
     ;Normal Voidrange_or_Accumulator Both
     var %dmg = $maxdmg(r, $2, 3)
     if (%dmg == $null) { return }
+    elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +10),-,$calc(%dmg +10))
     else return %dmg $calc(%dmg +5) $calc(%dmg +10)
   }
   elseif ($1 == ma) {
@@ -17,6 +18,7 @@ alias max {
     if (%dmg == $null) { return }
     elseif ($2 == surf) return %dmg %dmg %dmg %dmg
     elseif ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
+    elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     elseif ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     elseif ($2 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
     elseif ($2 == dclaws) return $dclawsdmg(%dmg,0) $dclawsdmg(%dmg,3) $dclawsdmg(%dmg,5) $dclawsdmg(%dmg,8)
