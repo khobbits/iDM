@@ -137,7 +137,7 @@ alias whichitem {
 
 alias webstrip {
   var %return = $1
-  var %return = $replace(%return,/,)
+  var %return = $strip($replace(%return,/,))
   if ($2) {
     var %return = $replace(%return,$chr(35),$wchr(23),$chr(63),$wchr(3F),$chr(38),$wchr())
   }
