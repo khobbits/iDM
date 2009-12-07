@@ -66,8 +66,13 @@ on *:JOIN:#:{
     }
     else {
       if (# != #idm && # != #idm.Staff) {
-        $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
-        .timer 1 1 scanbots $chan
+        if (u isincs $chan(#).mode) {
+          part # You currently have +u set you need to remove it before I will join
+        }
+        else {
+          $+(.timerlimit5,#) 1 1 limit5 # $deltok(%raw322 [ $+ [ # ] ],2-3,32)
+          .timer 1 1 scanbots $chan
+        }
       }
     }
   }
