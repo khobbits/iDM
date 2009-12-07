@@ -1,10 +1,10 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
   }
 }
 
