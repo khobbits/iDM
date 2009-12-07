@@ -1,1 +1,5 @@
 6/12 20:38:35 A13dWannabe parted channel #_ during a dm oldcash 385922476 penalty 7718450
+6/12 20:57:23 Justintimme1 got !enddm'd on #Ballers oldcash 1925621891 newcash 1915993782
+6/12 21:07:24 `AJ` parted channel #world148 during a dm oldcash 331577146 penalty 6631543
+6/12 21:11:21 Malikai got !enddm'd on #We.dm oldcash 2891985465 newcash 2877525538
+6/12 21:12:42 `Dante got !enddm'd on #tank oldcash 52091160187 newcash 51830704387
