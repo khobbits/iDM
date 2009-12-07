@@ -62,7 +62,7 @@ alias damage {
   }
 
   var %i = 1
-  var %hitshow 
+  var %hitshow
   while (%i <= $numtok(%hit,32)) {
     if (%i != 1) var %hitshow %hitshow -
     var %hitdmg $gettok(%hit,%i,32)
@@ -86,7 +86,7 @@ alias damage {
   if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
     var %msg %msg 5UNLEASHES a dragon bolt special on $s1($replace($2,$chr(58),$chr(32)))
     unset %cbowspec [ $+ [ $1 ] ]
-  } 
+  }
   else {
     var %msg %msg $doeswhat($3) $s1($replace($2,$chr(58),$chr(32)))
   }
@@ -146,7 +146,7 @@ alias damage {
     var %msg %msg $+ . $hpbar(%hp2)
   }
 
-  msg $4 %msg 
+  msg $4 %msg
 
   if ($max(m,$3)) { set %laststyle [ $+ [ $4 ] ] melee }
   elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
@@ -205,9 +205,12 @@ alias player {
 
 alias hpbar {
   if (-* iswm $1) { tokenize 32 0 }
-  elseif ($1 > 99) { tokenize 32 99 }
-  return HP $+($chr(91),$s2($1),$chr(93)) $+($str($+(09,$chr(44),09,.),$floor($calc( $1 /5))),$str($+(04,$chr(44),04,.),$floor($calc((99- $1 ) /5)))) $+ 
+  elseif ($1 !isnum 0-99) { tokenize 32 99 }
+  if ($1 isnum 50-54) return HP 3,3 $+ $str($chr(37),9) $+ 0151,04 $+ $right($1,1) $+ 4 $+ $str($chr(46),9)
+  if ($1 < 50) return HP 3,3 $+ $str($chr(37),$ceil($calc( $1 /5)))) $+ 4,4 $+ $str($chr(46),$calc(9 - $ceil($calc( $1 /5))))) $+ 01 $+ $right(0 $+ $1,2) $+ 4 $+ $str($chr(46),9)
+  return HP 3,3 $+ $str($chr(37),9) $+ 01 $+ $1 $+ 3 $+ $str($chr(37),$ceil($calc(( $1 /5) -11)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /5)))))
 }
+
 
 alias accuracy {
   ;1 is Attack
