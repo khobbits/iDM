@@ -54,6 +54,7 @@ alias equipment {
 
   if ($hget(equipit,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($hget(equipit,clue)) { var %e %e Clue:Scroll }
+  if ($hget(equipit,snow)) { var %e %e Snow:Globe }
 
   return $s1(Equipment) $+ : $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None)
 }
@@ -126,7 +127,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
 }
 
 alias whichitem {
-  if ($1 == Belongtome || $nick == Belong|AFK || $nick == Felix) { return belong }
+  if ($1 == Belongtome) { return belong }
   if ($1 == Allegra || $nick == Strychnine) { return allegra }
   if ($1 == Beau) { return beau }
   if ($1 == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { return snake }

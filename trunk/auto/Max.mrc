@@ -4,6 +4,7 @@ alias max {
     var %dmg = $maxdmg(r, $2, 3)
     if (%dmg == $null) { return }
     elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +10),-,$calc(%dmg +10))
+    elseif ($2 == surf) return %dmg %dmg %dmg
     else return %dmg $calc(%dmg +5) $calc(%dmg +10)
   }
   elseif ($1 == ma) {
@@ -51,9 +52,9 @@ alias dmg {
       else return 8 50
     }
     if ($2 == mjavelin) {
-      if ($3 == 1) return 0,7
-      elseif ($3 == 2) return 8,25
-      elseif ($3 == 3) return 25,40
+      if ($3 == 1) return 1,6
+      elseif ($3 == 2) return 7,8
+      elseif ($3 == 3) return 9,10
       else return 4 38
     }
     if ($2 == onyx) {
@@ -61,6 +62,12 @@ alias dmg {
       elseif ($3 == 2) return 10,30
       elseif ($3 == 3) return 25,35
       else return 5 35
+    }
+    if ($2 == snow) {
+      if ($3 == 1) return 1,10
+      elseif ($3 == 2) return 1,10
+      elseif ($3 == 3) return 1,10
+      else return 2 30
     }
   }
   elseif ($1 == ma) {
@@ -231,7 +238,7 @@ alias bonus {
   elseif ($1 == smoke) return 1/2 Chance of poisoning opponent
   elseif ($1 == onyx) return Heals 1/3 of whatever you hit
   elseif ($1 == dh) return !hitchance dh9
-
+  elseif ($1 == snow) return Freezes your opponent for one turn
 }
 
 alias doeswhat {
@@ -260,6 +267,7 @@ alias doeswhat {
   elseif ($1 == dmace) return smashes
   elseif ($1 == dhally) return swipes
   elseif ($1 == onyx) return shoots at
+  elseif ($1 == snow) return pelts
 }
 
 alias splasher {
@@ -297,6 +305,7 @@ alias attackname {
   elseif ($1 == vlong) return Vesta's Longsword
   elseif ($1 == statius) return Statius's Warhammer
   elseif ($1 == mjavelin) return Morrigan's Javelin
+  elseif ($1 == snow) return Snowballs
   else return $null 
 }
 
@@ -315,6 +324,7 @@ alias isweapon {
   elseif ($1 == sgs) return 1
   elseif ($1 == zgs) return 1
   elseif ($1 == dclaws) return 1
+  elseif ($1 == snow) return 1
   else return 0
 }
 
@@ -323,6 +333,7 @@ alias freezer {
   if ($1 == ice) return 3
   elseif ($1 == vspear) return 1
   elseif ($1 == zgs) return 2
+  elseif ($1 == snow) return 1
   else return $false
 }
 

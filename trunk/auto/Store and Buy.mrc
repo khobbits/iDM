@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.]store/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
+  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. Visit #iDM.Support if you have any questions. | halt }
   if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msg #,notice $nick) $logo(STORE) $&
     $s1(Void Range) (+5 to ranged attacks) ( $+ $s2($buyprice(void range)) $+ ) - $&

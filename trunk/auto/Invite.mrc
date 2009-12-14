@@ -82,6 +82,7 @@ on *:JOIN:#:{
       return
     }
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
+      if ($isbanned($nick)) { halt }
       if ($db.get(admins,position,$address($nick,3)) = admins) {
         msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       }

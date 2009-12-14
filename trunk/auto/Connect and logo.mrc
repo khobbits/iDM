@@ -20,7 +20,7 @@ on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
   ;True if you don't want people using the store at all while updating.
-  return $false
+  return $true
 }
 alias allupdate {
   ;True if you don't want people DMing while updating.

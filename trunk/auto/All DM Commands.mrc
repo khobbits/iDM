@@ -306,6 +306,8 @@ alias hit {
   return $hitdmg(r,mjavelin,%acc,1,%ratk,%def)
   :onyx
   return $hitdmg(r,onyx,%acc,1,%ratk,%def)
+  :snow
+  return $hitdmg(r,snow,%acc,3,0,1)
 }
 
 alias hitdmg {
