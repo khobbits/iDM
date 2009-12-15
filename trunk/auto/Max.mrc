@@ -52,9 +52,9 @@ alias dmg {
       else return 8 50
     }
     if ($2 == mjavelin) {
-      if ($3 == 1) return 1,6
-      elseif ($3 == 2) return 7,8
-      elseif ($3 == 3) return 9,10
+      if ($3 == 1) return 0,7
+      elseif ($3 == 2) return 7,30
+      elseif ($3 == 3) return 25,40
       else return 4 38
     }
     if ($2 == onyx) {
@@ -278,7 +278,7 @@ alias splasher {
 }
 
 alias attack {
-  if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx,$1,32)) {
+  if ($istok(whip dds ags bgs sgs zgs dh gmaul guth surf dclaws dmace dhally dscim dlong vlong vspear statius mjavelin cbow dbow ice blood smoke onyx snow,$1,32)) {
     return $true
   }
 }

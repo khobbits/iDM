@@ -3,7 +3,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
-    if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list).| halt }
+    if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
     else enablec $remove($2-,$chr(32)) $nick #
   }

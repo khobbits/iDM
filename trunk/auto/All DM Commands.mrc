@@ -206,9 +206,9 @@ alias player {
 alias hpbar {
   if (-* iswm $1) { tokenize 32 0 }
   elseif ($1 !isnum 0-99) { tokenize 32 99 }
-  if ($1 isnum 46-50) return HP 9,9 $+ $str($chr(58),9) $+ 01 $+ $left($1,1) $+ 0,04 $+ $right($1,1) $+ 4 $+ $str($chr(46),9) $+ 
-  if ($1 < 46) return HP 9,9 $+ $str($chr(58),$ceil($calc( $1 /5)))) $+ 4,4 $+ $str($chr(46),$calc(9 - $ceil($calc( $1 /5))))) $+ 00 $+ $right($chr(32) $+ $iif($1 == 0,KO,$v1),2) $+ 4 $+ $str($chr(46),9) $+ 
-  return HP 9,9 $+ $str($chr(58),9) $+ 01 $+ $1 $+ 9 $+ $str($chr(58),$ceil($calc(( $1 /5) -11)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /5))))) $+ 
+  if ($1 isnum 46-50) return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $left($1,1) $+ 0,04 $+ $right($1,1) $+ 4 $+ $str($chr(46),9) $+ 
+  if ($1 < 46) return HP 3,3 $+ $str($chr(58),$ceil($calc( $1 /5)))) $+ 4,4 $+ $str($chr(46),$calc(9 - $ceil($calc( $1 /5))))) $+ 00 $+ $right($chr(32) $+ $iif($1 == 0,KO,$v1),2) $+ 4 $+ $str($chr(46),9) $+ 
+  return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $1 $+ 3 $+ $str($chr(58),$ceil($calc(( $1 /5) -11)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /5))))) $+ 
 }
 
 

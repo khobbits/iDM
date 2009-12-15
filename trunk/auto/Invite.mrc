@@ -8,27 +8,7 @@ on *:INVITE:#: {
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
-  notice $nick $logo(INVITE) Searching for an open bot, join #idm.Support for help.
-  if ($port == 12000) {
-    var %a 0
-    sbnc joinbot $chan $nick
-  }
-  else {
-    ;ctcp $replace($gettok($botsonline,2-,32),$chr(32),$chr(44)) quickbot check # $nick
-    ctcp #idm.staff quickbot check # $nick
-    set %quick. [ $+ [ # ] ] on
-  }
-}
-CTCP *:quickbot*:*: {
-  if ($2 == check) && ($nick == iDM) {
-    if ($me == iDM) { halt }
-    ctcp iDM quickbot reply $3 $4
-  }
-  if ($2 == reply) && ($me == iDM) {
-    if (!%quick. [ $+ [ $3 ] ]) { halt }
-    unset %quick. [ $+ [ $3 ] ]
-    ctcp $nick join $3 $4
-  }
+  sbnc joinbot $chan $nick
 }
 
 alias botsonline {
@@ -139,14 +119,15 @@ alias position {
 raw 322:*:{
   if ($numtok(%raw322 [ $+ [ $2 ] ],32) == 1) {
     if ($3 < 4) {
-      msg %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 4 or more is needed to have iDM join.
+      notice %raw322 [ $+ [ $2 ] ] $logo(ERROR) $2 only has $3 people. 4 or more is needed to have iDM join.
       unset %raw322 [ $+ [ $2 ] ]
     }
     else {
       $+(.timerinvalidnick,$2) off
       set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
       join $2
-      idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) | $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
+      idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) 
+      $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
     }
   }
 }
@@ -172,10 +153,8 @@ alias botnews {
 
 on $*:TEXT:/^[!@.]dmnews/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  notice $nick $logo(News #1) Changes to !money -> http://r.idm-bot.com/32rj
-  notice $nick $logo(News #2) Changes to !money -> http://r.idm-bot.com/352f
-  notice $nick $logo(News #3) Login changes -> http://r.idm-bot.com/efn2
-  notice $nick $logo(News #4) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
+  notice $nick $logo(News #1) Login changes -> http://r.idm-bot.com/efn2
+  notice $nick $logo(News #2) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
 }
 
 

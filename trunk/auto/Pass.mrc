@@ -4,10 +4,10 @@ on *:TEXT:logout*:?: msgunauth $nick $address $2-
 
 alias msgauth {
   if ($3) {
-    auth $1 $2 notice $1 Authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
+    auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
   }
   else {
-    auth $1 $2 notice $1 Authentication accepted, you are now logged in.
+    auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.
   }
 }
 
@@ -50,7 +50,7 @@ alias auth_success {
 
 alias auth_checkreg {
   set %idm.nscheck. [ $+ [ $1 ] ] $3-
-  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv.  Identify and try to auth with iDM again using /msg $me id.
+  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Before you can use this feature you need to be identifed to nickserv.  Type "/msg $me id" to check your account.
   ns status $1
 }
 
@@ -100,7 +100,7 @@ alias islogged {
     set %idm.nsfail. [ $+ [ $1 ] ] noop
     ns status $1
   }
-  auth_checkreg $1 $2 auth_success $1 $2 notice $1 Authentication attempt succeeded, you should now be logged in.
+  auth_checkreg $1 $2 auth_success $1 $2 notice $1 Nickserv authentication accepted, you should now be logged in.
   if ($3 == 3) { halt }
   return 0
 }
@@ -128,7 +128,7 @@ alias logcheck {
     set %idm.nsfail. [ $+ [ $1 ] ] $4 $+ .fail $1 $2 $3 $5-
   }
   else {
-    set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Sorry but use this feature properly need to be identified with nickserv before using this command.  To login type /msg $me id
+    set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Before you can use this feature you need to be identifed to nickserv.  Type "/msg $me id" to check your account.
   }
 
   if (%nsattempt > %threshold) {

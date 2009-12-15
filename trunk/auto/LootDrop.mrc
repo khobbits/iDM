@@ -30,9 +30,16 @@ alias dead {
   if (specpot isin %item2) { db.set equip_item specpot $3 + 1 }
   if (specpot isin %item3) { db.set equip_item specpot $3 + 1 }
   if (%rare == 1) {
-    var %raredrop $r(1,$lines(rares.txt))
-    set %rareitem $gettok($read(rares.txt,%raredrop),1,58)
-    set %rareprice $gettok($read(rares.txt,%raredrop),2,58)
+    var %sglobe $r(1,2)
+    if (%sglobe == 2 && $db.get(equip_item,snow,$nick) == 0 && $date == 25/12/2009) {
+      var %rareitem Snow Globe
+      db.set equip_item snow 1
+    }
+    else {
+      var %raredrop $r(1,$lines(rares.txt))
+      set %rareitem $gettok($read(rares.txt,%raredrop),1,58)
+      set %rareprice $gettok($read(rares.txt,%raredrop),2,58)
+    }
   }
   if (godsword isin %rareitem) { unset %rareprice | db.set equip_item $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 + 1 }
   if (claws isin %rareitem) { unset %rareprice | db.set equip_item dclaws $3 + 1 }
