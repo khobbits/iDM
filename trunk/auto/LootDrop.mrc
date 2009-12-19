@@ -130,34 +130,24 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
 
 alias gendrops {
   ; $1 Ring of wealth
-
-  var %chance $rand(0,100)
+  var %start $ticks, %price 0, %drops -, %chance $rand(0,1000)
   if ($1) var %chance $calc(%chance * 1.1)
-  var %price 0
-  var %start $ticks
-  var %drops -
-  var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand()
-  if ($rand(1,5) == 5) var %sql %sql LIMIT 4
-  else var %sql %sql LIMIT 3
+
+  var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $mysql_query(%db, %sql, %chance)
 
   while ($mysql_fetch_row(%res, row)) {
     var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ -
   }
-
   mysql_free %res
   return %drops
 }
 
 alias rundrops {
   ; $1 User
-  var %wealth 0
+  var %drops $gendrops(%wealth), %disprice 0, %display, %wealth 0, %i 1
   if ($db.get(equip_item,wealth,$1) != 0) var %wealth 1
-  var %drops $gendrops(%wealth)
-  var %disprice 0
-  var %display
 
-  var %i 1
   while (%i <= $numtok(%drops,45) ) {
     var %item $gettok($gettok(%drops,%i,45),1,46)
     var %price $gettok($gettok(%drops,%i,45),2,46)
@@ -174,11 +164,9 @@ alias rundrops {
       elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
     }
-    else {
-      var %disprice $calc(%disprice + %price)
-    }
+    else { var %disprice $calc(%disprice + %price) }
     var %display %display %item $+ $chr(44)
     inc %i
   }
-  return ( $+ $left(%display,-1) $+ ) $price(%disprice)
+  return $price(%disprice) ( $+ $left(%display,-1) $+ )
 }
