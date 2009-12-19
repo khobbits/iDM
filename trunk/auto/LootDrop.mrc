@@ -130,7 +130,7 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
 
 alias gendrops {
   ; $1 Ring of wealth
-  var %start $ticks, %price 0, %drops -, %chance $rand(0,1000)
+  var %start $ticks, %price 0, %drops -, %chance $rand(10,950)
   if ($1) var %chance $calc(%chance * 1.1)
 
   var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)

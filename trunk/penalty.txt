@@ -1079,3 +1079,6 @@
 19/12 16:30:35 Bslucky parted channel #Aj during a dm oldcash 557451038 penalty 11149021
 19/12 16:40:50 `litoazn` parted channel #sexytime during a dm oldcash 27674427 penalty 553489
 19/12 16:48:26 Zawzzeell parted channel #swedishknights during a dm oldcash 1494985025 penalty 29899701
+19/12 17:14:27 Kev_Kreleger got !enddm'd on #iDM oldcash 1134027267 newcash 1128357131
+19/12 17:21:41 Godzilla814 got !enddm'd on #sevenfold oldcash 1457590112 newcash 1450302162
+19/12 17:27:15 lord_pugna got !enddm'd on #krunal930 oldcash 25775455 newcash 25646578
