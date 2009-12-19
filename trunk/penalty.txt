@@ -1071,3 +1071,11 @@
 19/12 15:44:22 [R]iccmaster parted channel #ltfunit-Gwd during a dm oldcash 1586263942 penalty 31725279
 19/12 15:50:50 Triko parted channel #Furious during a dm oldcash 734199380 penalty 14683988
 19/12 15:53:44 Oscy parted channel #longhorn during a dm oldcash 863422804 penalty 17268457
+19/12 16:12:39 [Pot]Call|Me|Xile parted channel #Dm.newbies during a dm oldcash 38445985 penalty 768920
+19/12 16:17:41 belg_str parted channel #w69 during a dm oldcash 2461725750 penalty 49234515
+19/12 16:19:07 Dark_Vipa got !enddm'd on #Vitality oldcash 7398418806 newcash 7361426712
+19/12 16:20:46 zuchwa got !enddm'd on #zalik oldcash 266299574 newcash 264968077
+19/12 16:23:31 Triko parted channel #Furious during a dm oldcash 779155860 penalty 15583118
+19/12 16:30:35 Bslucky parted channel #Aj during a dm oldcash 557451038 penalty 11149021
+19/12 16:40:50 `litoazn` parted channel #sexytime during a dm oldcash 27674427 penalty 553489
+19/12 16:48:26 Zawzzeell parted channel #swedishknights during a dm oldcash 1494985025 penalty 29899701

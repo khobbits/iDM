@@ -131,23 +131,22 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
 alias gendrops {
   ; $1 Ring of wealth
 
-    var %chance $rand(0,100)
-    if ($1) var %chance $calc(%chance * 1.1)
-    var %price 0
-    var %start $ticks
-    var %drops -
-    var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand()
-    if ($rand(1,5) == 5) var %sql %sql LIMIT 4
-    else var %sql %sql LIMIT 3
-    var %res $mysql_query(%db, %sql, %chance)
+  var %chance $rand(0,100)
+  if ($1) var %chance $calc(%chance * 1.1)
+  var %price 0
+  var %start $ticks
+  var %drops -
+  var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand()
+  if ($rand(1,5) == 5) var %sql %sql LIMIT 4
+  else var %sql %sql LIMIT 3
+  var %res $mysql_query(%db, %sql, %chance)
 
-    while ($mysql_fetch_row(%res, row)) {
-      var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ -
-    }
-
-    mysql_free %res
-    return %drops
+  while ($mysql_fetch_row(%res, row)) {
+    var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ -
   }
+
+  mysql_free %res
+  return %drops
 }
 
 alias rundrops {
@@ -162,21 +161,22 @@ alias rundrops {
   while (%i <= $numtok(%drops,45) ) {
     var %item $gettok($gettok(%drops,%i,45),1,46)
     var %price $gettok($gettok(%drops,%i,45),2,46)
-
-    if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
-    elseif (%item == Vesta's spear) { db.set equip_pvp vspear $1 + 5 }
-    elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $1 + 5 }
-    elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $1 + 5 }
-    elseif (specpot isin %item) { db.set equip_item specpot $1 + 1 }
-    elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $1 + 1 }
-    elseif (claws isin %item) { db.set equip_item dclaws $1 + 1 }
-    elseif (mudkip isin %item) { db.set equip_item mudkip $1 + 1 }
-    elseif (mage's isin %item) { db.set equip_armour mbook $1 + 1 }
-    elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
-    elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
+    if (this == enabled) {
+      if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
+      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $1 + 5 }
+      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $1 + 5 }
+      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $1 + 5 }
+      elseif (specpot isin %item) { db.set equip_item specpot $1 + 1 }
+      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $1 + 1 }
+      elseif (claws isin %item) { db.set equip_item dclaws $1 + 1 }
+      elseif (mudkip isin %item) { db.set equip_item mudkip $1 + 1 }
+      elseif (mage's isin %item) { db.set equip_armour mbook $1 + 1 }
+      elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
+      elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
+    }
     else {
-      var %display %display %item $+ ,
-      var %disprice $calc(%price + %price)
+      var %display %display %item $+ $chr(44)
+      var %disprice $calc(%disprice + %price)
     }
     inc %i
   }

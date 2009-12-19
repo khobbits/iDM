@@ -1289,3 +1289,21 @@
 19/12 15:56:09 Lisette bought from the store (void range) ~Lisette@Swift-967A3444.cable.casema.nl
 19/12 16:04:34 [Pot]Call|Me|Xile bought from the store (wealth) ~PotCall@Swift-D59E81CC.dhcp.embarqhsd.net
 19/12 16:10:09 Thy bought from the store (saradomin godsword) ~Thy@supporter.of.cullenscript.co.cc
+19/12 16:14:03 X_________5 bought from the store (ags) ~X________@Swift-8FAD8AD.cable.mindspring.com
+19/12 16:14:57 sk1ll bought from the store (void range) ~sk1ll@Swift-C6CCAA03.dyn.estpak.ee
+19/12 16:17:55 Austin|HaVoX| bought from the store (void mage) ~AustinHa@Swift-9D1A1B0F.hsd1.tn.comcast.net
+19/12 16:20:05 Ron|Bite-me-y0o bought from the store (bgs) ~RonBite-@Swift-7BD70967.chello.nl
+19/12 16:20:09 Ron|Bite-me-y0o bought from the store (sgs) ~RonBite-@Swift-7BD70967.chello.nl
+19/12 16:23:22 margo bought from the store (void range) ~margo@Swift-EA5BEA0C.dyn.estpak.ee
+19/12 16:24:22 margo bought from the store (ags) ~margo@Swift-EA5BEA0C.dyn.estpak.ee
+19/12 16:26:58 th3zi0mal bought from the store (accumulator) ~th3zi0mal@Swift-9A267160.ust.tke.pl
+19/12 16:27:02 Hecto bought from the store (void mage) ~Hecto@Swift-BDB30468.ust.tke.pl
+19/12 16:27:08 Hecto bought from the store (mage book) ~Hecto@Swift-BDB30468.ust.tke.pl
+19/12 16:27:54 [IL]iMaLiSTic bought from the store (armadyl godsword) Mibbit@Swift-3E87FEDB.ph.ph.cox.net
+19/12 16:29:53 [IL]Bl0d|Nick bought from the store (accum) ~Bl0dNick@Swift-64836C4.hsd1.mi.comcast.net
+19/12 16:34:40 earingboy_x bought from the store (accumulator) ~earingboy@Swift-CA786079.hsd1.fl.comcast.net
+19/12 16:41:44 Rafinho_10 bought from the store (accumulator) ~Cleooopat@Swift-9BE32045.bredband.comhem.se
+19/12 16:47:42 margo bought from the store (bgs) ~margo@Swift-EA5BEA0C.dyn.estpak.ee
+19/12 16:51:29 _2kool_ bought from the store (sgs) ~_2kool_@Swift-A851E1F9.hsd1.ca.comcast.net
+19/12 16:52:32 s_M_O_K_E_W_ bought from the store (ags) ~S_M_O_K_E@Swift-34E33C49.hsd1.wa.comcast.net
+19/12 16:58:51 StonedAge bought from the store (Accumulator) ~StonedAge@Swift-51825E54.dynamic.ip.windstream.net
