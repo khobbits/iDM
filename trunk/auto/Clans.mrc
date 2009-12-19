@@ -114,14 +114,15 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 alias claninfo {
   var %ci $clanmembers($1)
   var %tc $numtok(%ci,32)
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci) (Lootshare: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
+  var %cowner $db.get(clantracker,owner,$1)
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci,(Owner: $s2(%cowner) $+ )) (Lootshare: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {
   var %wins $db.get(clantracker,wins,$1)
   var %losses $db.get(clantracker,losses,$1)
   var %ratio $s1(W/L Ratio) $+ :  $s2($round($calc(%wins / %losses),2)) ( $+ $s2($+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37)))) $+ )
-  return $s1(Wins) $+ : $iif(%wins,$s2($v1),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($v1),$s2(0)) %ratio $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
+  return $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,db)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,db)),$s2(0)) %ratio $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
 }
 
 alias createclan {

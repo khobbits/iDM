@@ -30,10 +30,10 @@ alias dead {
   if (specpot isin %item2) { db.set equip_item specpot $3 + 1 }
   if (specpot isin %item3) { db.set equip_item specpot $3 + 1 }
   if (%rare == 1) {
-    var %sglobe $r(1,2)
-    if (%sglobe == 2 && $db.get(equip_item,snow,$nick) == 0 && $date == 25/12/2009) {
+    var %sglobe $r(1,3)
+    if (%sglobe == 1 && $date == 25/12/2009) {
       var %rareitem Snow Globe
-      db.set equip_item snow 1
+      db.set equip_item snow + 1
     }
     else {
       var %raredrop $r(1,$lines(rares.txt))
