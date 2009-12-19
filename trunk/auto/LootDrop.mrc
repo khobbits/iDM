@@ -175,9 +175,9 @@ alias rundrops {
       elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
     }
     else {
-      var %display %display %item $+ $chr(44)
       var %disprice $calc(%disprice + %price)
     }
+    var %display %display %item $+ $chr(44)
     inc %i
   }
   return ( $+ $left(%display,-1) $+ ) $price(%disprice)
