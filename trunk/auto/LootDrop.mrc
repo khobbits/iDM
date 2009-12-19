@@ -130,14 +130,14 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
 
 alias gendrops {
   ; $1 Ring of wealth
-  var %start $ticks, %price 0, %drops -, %chance $rand(10,950)
+  var %start $ticks, %price 0, %drops :, %chance $rand(10,950)
   if ($1) var %chance $calc(%chance * 1.1)
 
   var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $mysql_query(%db, %sql, %chance)
 
   while ($mysql_fetch_row(%res, row)) {
-    var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ -
+    var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ :
   }
   mysql_free %res
   return %drops
@@ -148,9 +148,9 @@ alias rundrops {
   var %drops $gendrops(%wealth), %disprice 0, %display, %wealth 0, %i 1
   if ($db.get(equip_item,wealth,$1) != 0) var %wealth 1
 
-  while (%i <= $numtok(%drops,45) ) {
-    var %item $gettok($gettok(%drops,%i,45),1,46)
-    var %price $gettok($gettok(%drops,%i,45),2,46)
+  while (%i <= $numtok(%drops,58) ) {
+    var %item $gettok($gettok(%drops,%i,58),1,46)
+    var %price $gettok($gettok(%drops,%i,58),2,46)
     if (this == enabled) {
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
       elseif (%item == Vesta's spear) { db.set equip_pvp vspear $1 + 5 }

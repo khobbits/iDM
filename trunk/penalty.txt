@@ -1082,3 +1082,4 @@
 19/12 17:14:27 Kev_Kreleger got !enddm'd on #iDM oldcash 1134027267 newcash 1128357131
 19/12 17:21:41 Godzilla814 got !enddm'd on #sevenfold oldcash 1457590112 newcash 1450302162
 19/12 17:27:15 lord_pugna got !enddm'd on #krunal930 oldcash 25775455 newcash 25646578
+19/12 17:31:04 Hecto parted channel #ustrzyki during a dm oldcash 431625192 penalty 8632504
