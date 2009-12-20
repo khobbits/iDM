@@ -56,7 +56,7 @@ alias dead {
   if (accumulator isin %rareitem) { unset %rareprice | db.set equip_armour accumulator $3 + 1 }
 
   set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
-  msg #idm.staff $rundrops($3)
+  msg #idm.staff $rundrops($3, $2)
   var %winnerclan = $getclanname($3)
   var %looserclan = $getclanname($2)
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
@@ -129,9 +129,17 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
 }
 
 alias gendrops {
-  ; $1 Ring of wealth
-  var %start $ticks, %price 0, %drops :, %chance $rand(10,950)
-  if ($1) var %chance $calc(%chance * 1.1)
+  ; $1 User
+  ; $2 Otheruser
+
+  var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,900)
+  if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
+  var %oldchance %chance
+
+  var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2)
+  if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 5)))
+  if (%windiff > 1) var %chance $calc(%chance * %windiff)
+  putlog Drop chance for %winner / %looser - %oldchance x %windiff = %chance
 
   var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $mysql_query(%db, %sql, %chance)
@@ -145,7 +153,8 @@ alias gendrops {
 
 alias rundrops {
   ; $1 User
-  var %drops $gendrops(%wealth), %disprice 0, %display, %wealth 0, %i 1
+  ; $2 Otheruser
+  var %drops $gendrops($1,$2), %disprice 0, %display, %wealth 0, %i 1
   if ($db.get(equip_item,wealth,$1) != 0) var %wealth 1
 
   while (%i <= $numtok(%drops,58) ) {
