@@ -329,15 +329,25 @@ alias ignoreinfo {
   tokenize 32 $1 $2
   if (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 }
-    else { hostcallback 0 $1 ignoreinfo $1 ~host~ %reply | halt }
+    else { 
+      hostcallback 0 $1 ignoreinfo $1 ~host~ %replytype 
+      timer $+ ignoreinfo $+ $1 1 10 ignoreinfo $1 Host!Not@Found %replytype
+      halt 
+    }
   }
-  db.hget checkban ilist $2 who time reason
-  if ($hget(checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
-  elseif ($ignore($2)) { var %reply 1, %reply1 $s1($2) $s2(is banned) on the bot but not in the db }
-  else { var %reply1 $s1($2) is not ignored }
+  .timer $+ ignoreinfo $+ $1 off
+  if ($2 != Host!Not@Found) {
+    db.hget checkban ilist $2 who time reason
+    if ($hget(checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
+    elseif ($ignore($2)) { var %reply 1, %reply1 $s1($2) $s2(is banned) on the bot but not in the db }
+    else { var %reply1 $s1($2) is not ignored }
+  }
+  else {
+    var %reply1 $s1($1) is not online, host not found.
+  }
   db.hget checkban ilist $1 who time reason
-  if ($hget(checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(was suspended) by $hget(checkban,who) for $hget(checkban,reason) }
-  elseif ($db.get(user,banned,$1)) { var %reply 1, %reply2 $s1($1) $s2(was suspended) but no reason was given }
+  if ($hget(checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) by $hget(checkban,who) for $hget(checkban,reason) }
+  elseif ($db.get(user,banned,$1)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) but no reason was given }
   else { var %reply2 $s1($1) is not suspended }
   if (%reply) {
     %replytype %reply1

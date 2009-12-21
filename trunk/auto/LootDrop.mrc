@@ -30,7 +30,7 @@ alias dead {
       var %sql.winnerclan = $db.safe(%winnerclan)
       var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
       db.exec %sql
-      .timer 1 1 msg $1 $logo(KO) The %nummember team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %items $+ ]
+      .timer 1 1 msg $1 $logo(KO) The %nummember team member $+ $iif(%nummember != 1,s) of $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. [ $+ %items $+ ]
       unset %sharedrop
     }
     else {
@@ -89,7 +89,7 @@ alias gendrops {
   ; $1 User
   ; $2 Otheruser
 
-  var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,980)
+  var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,950)
   if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
   var %oldchance %chance
 
