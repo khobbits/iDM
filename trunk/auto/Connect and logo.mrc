@@ -2,6 +2,8 @@ alias logo { return $+(07[,03,$$1-,07],) }
 alias s1 { return $+($chr(3),03,$1-,) }
 alias s2 { return $+($chr(3),07,$1-,) }
 
+alias tag { return $iif($len($me) != 7,Hub,$mid($me,5,2)) }
+
 on *:CONNECT: {
   mode $me +pB
   mysql_close %db
