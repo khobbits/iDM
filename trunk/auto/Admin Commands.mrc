@@ -160,9 +160,9 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
       if (?r* iswm $1) {
         db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
         if ($mysql_affected_rows(%db) !== -1) {
+          db.remove ilist $2
           notice $nick Restored account $2 to its original status.
-
-          }
+        }
         else { notice $nick Couldn't find account $2 }
       }
     }
@@ -171,10 +171,10 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
 
       db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) {
-        db.set ilist who $2 %nick
+        db.set ilist who $2 $nick
         db.set ilist reason $2 $3-
         notice $nick Removed account $2 from the top scores.
-        }
+      }
       else { notice $nick Couldn't find account $2 }
     }
   }
@@ -325,18 +325,25 @@ on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   }
 }
 alias ignoreinfo {
-  var %reply $3-
+  var %reply, %replytype $3-
   tokenize 32 $1 $2
   if (@ !isin $2) {
     if ($address($2,2)) { tokenize 32 $1 $v1 }
     else { hostcallback 0 $1 ignoreinfo $1 ~host~ %reply | halt }
   }
   db.hget checkban ilist $2 who time reason
-  if ($hget(checkban,reason)) { var %reply %reply $s1($2) $2(was banned) by $hget(checkban,who) for $hget(checkban,reason) - }
-  elseif ($ignore($2)) { var %reply %reply $s1($2) $s2(is banned) on the bot but not in the db - }
-  else { var %reply %reply $s1($2) is not ignored - }
+  if ($hget(checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
+  elseif ($ignore($2)) { var %reply 1, %reply1 $s1($2) $s2(is banned) on the bot but not in the db }
+  else { var %reply1 $s1($2) is not ignored }
   db.hget checkban ilist $1 who time reason
-  if ($hget(checkban,reason)) { var %reply %reply $s1($1 $+ !*@*) $s2(was suspended) by $hget(checkban,who) for $hget(checkban,reason) }
-  else { var %reply %reply $s1($1 $+ !*@*) is not suspended }
-  %reply
+  if ($hget(checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(was suspended) by $hget(checkban,who) for $hget(checkban,reason) }
+  elseif ($db.get(user,banned,$1)) { var %reply 1, %reply2 $s1($1) $s2(was suspended) but no reason was given }
+  else { var %reply2 $s1($1) is not suspended }
+  if (%reply) {
+    %replytype %reply1
+    %replytype %reply2
+  }
+  else {
+    %replytype %reply1 - %reply2
+  }
 }

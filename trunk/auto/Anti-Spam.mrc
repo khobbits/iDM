@@ -45,6 +45,15 @@ alias ignoresync {
     if (@ isin %user) { .ignore %user }
   }
   db.query_end %result
+
+  var %sql = SELECT * FROM `admins` where `position` = 'admins'
+  var %result = $db.query(%sql)
+  while ($db.query_row_data(%result,user)) {
+    var %user = $v1
+    if (@ isin %user) { .ignore -x %user }
+  }
+  db.query_end %result
+
   msg $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == 0) { var %botnum 1 }
