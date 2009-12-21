@@ -42,14 +42,14 @@ alias ignoresync {
   var %result = $db.query(%sql)
   while ($db.query_row_data(%result,user)) {
     var %user = $v1
-    if (!$ignore(%user)) { .ignore %user }
+    if (@ isin %user) { .ignore %user }
   }
   db.query_end %result
   msg $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == 0) { var %botnum 1 }
   inc %botnum
-  putlog perform ignoresync.run %botnum  
+  putlog perform ignoresync.run %botnum
 }
 
 alias ignoresync.run {

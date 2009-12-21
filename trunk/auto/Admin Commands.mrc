@@ -2,7 +2,7 @@ on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, !addsupport nick !chans, !active, !join bot chan, !rehash, !ignoresync, !amsg, $&
       !(show/rem)dm nick, !define/increase/decrease account item amount !rename oldnick newnick $&
-      ) $s1(Support commands:) !(un)suspend nick $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !cblist chan, !info nick)
+      ) $s1(Support commands:) !(r)suspend nick $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !csuspend nick, !cblist chan, !info nick)
   }
 }
 
@@ -148,18 +148,33 @@ on $*:TEXT:/^[!.]join .*/Si:*: {
   }
 }
 
-on $*:TEXT:/^[!.](un)?suspend.*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($me != iDM) { return }
   if ($db.get(admins,position,$address($nick,3))) {
-    if (!$2) { notice $nick To use the unsuspend command, type !(un)suspend nick. | halt }
-    if (?un* iswm $1) {
-      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
-      if ($mysql_affected_rows(%db) !== -1) { notice $nick Restored account $2 to its original status. }
-      else { notice $nick Couldn't find account $2 }
+    if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
+    if ((?c* iswm $1) || (?r* iswm $1)) {
+      db.hget checkban ilist $2 who time reason
+      if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) suspended $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
+      elseif (!$db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
+
+      if (?r* iswm $1) {
+        db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
+        if ($mysql_affected_rows(%db) !== -1) {
+          notice $nick Restored account $2 to its original status.
+
+          }
+        else { notice $nick Couldn't find account $2 }
+      }
     }
     else {
+      if (!$3) { notice $nick You need to supply a reason when suspending.  Syntax: !(un)suspend <nick> [reason]. | halt }
+
       db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
-      if ($mysql_affected_rows(%db) !== -1) { notice $nick Removed account $2 from the top scores. }
+      if ($mysql_affected_rows(%db) !== -1) {
+        db.set ilist who $2 %nick
+        db.set ilist reason $2 $3-
+        notice $nick Removed account $2 from the top scores.
+        }
       else { notice $nick Couldn't find account $2 }
     }
   }
@@ -305,7 +320,7 @@ on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   if ($me == iDM) {
     if (!$db.get(admins,position,$address($nick,3))) { if ($nick isreg $chan || $nick !ison $chan) { halt } }
     db.hget userinfo user $$2
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Banned?: $iif($hget(userinfo,banned),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login),03 $+ $gmt($v1,dd/mm HH:nn:ss) $+ ,4NO) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login),03 $+ $gmt($v1,dd/mm HH:nn:ss) $+ ,4NO) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
@@ -313,16 +328,15 @@ alias ignoreinfo {
   var %reply $3-
   tokenize 32 $1 $2
   if (@ !isin $2) {
-    if ($address($2,1)) { tokenize 32 $1 $v1 }
+    if ($address($2,2)) { tokenize 32 $1 $v1 }
     else { hostcallback 0 $1 ignoreinfo $1 ~host~ %reply | halt }
   }
   db.hget checkban ilist $2 who time reason
   if ($hget(checkban,reason)) { var %reply %reply $s1($2) $2(was banned) by $hget(checkban,who) for $hget(checkban,reason) - }
   elseif ($ignore($2)) { var %reply %reply $s1($2) $s2(is banned) on the bot but not in the db - }
   else { var %reply %reply $s1($2) is not ignored - }
-  db.hget checkban ilist $1 $+ !*@* who time reason
-  if ($hget(checkban,reason)) { var %reply %reply $s1($1 $+ !*@*) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
-  elseif ($ignore($1 $+ !*@*)) { var %reply %reply s1($1 $+ !*@*) $s2(is banned) on the bot but not in the db }
-  else { var %reply %reply $s1($1 $+ !*@*) is not ignored }
+  db.hget checkban ilist $1 who time reason
+  if ($hget(checkban,reason)) { var %reply %reply $s1($1 $+ !*@*) $s2(was suspended) by $hget(checkban,who) for $hget(checkban,reason) }
+  else { var %reply %reply $s1($1 $+ !*@*) is not suspended }
   %reply
 }
