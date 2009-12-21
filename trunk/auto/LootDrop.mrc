@@ -14,78 +14,35 @@ alias dead {
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
-  var %drop1 $r(1,$lines(loot.txt)),%drop2 $r(1,$lines(loot.txt)),%drop3 $r(1,$lines(loot.txt))
-  var %rare $r(1,$iif($db.get(equip_item,wealth,$3),15,30))
-  set %item1 $gettok($read(loot.txt,%drop1),1,58)
-  set %item2 $gettok($read(loot.txt,%drop2),1,58)
-  set %item3 $gettok($read(loot.txt,%drop3),1,58)
-  set %price1 $gettok($read(loot.txt,%drop1),2,58)
-  set %price2 $gettok($read(loot.txt,%drop2),2,58)
-  set %price3 $gettok($read(loot.txt,%drop3),2,58)
-  if (%item1 == Vesta's longsword || %item2 == Vesta's longsword || %item3 == Vesta's longsword) { db.set equip_pvp vlong $3 + 5 }
-  if (%item1 == Vesta's spear || %item2 == Vesta's spear || %item3 == Vesta's spear) { db.set equip_pvp vspear $3 + 5 }
-  if (%item1 == Statius's Warhammer || %item2 == Statius's Warhammer || %item3 == Statius's Warhammer) { db.set equip_pvp  statius $3 + 5 }
-  if (%item1 == Morrigan's Javelin || %item2 == Morrigan's Javelin || %item3 == Morrigan's Javelin) { db.set equip_pvp  mjavelin $3 + 5 }
-  if (specpot isin %item1) { db.set equip_item specpot $3 + 1 }
-  if (specpot isin %item2) { db.set equip_item specpot $3 + 1 }
-  if (specpot isin %item3) { db.set equip_item specpot $3 + 1 }
-  if (%rare == 1) {
-    var %sglobe $r(1,3)
-    if (%sglobe == 1 && $date == 25/12/2009) {
-      var %rareitem Snow Globe
-      db.set equip_item snow + 1
-    }
-    else {
-      var %raredrop $r(1,$lines(rares.txt))
-      set %rareitem $gettok($read(rares.txt,%raredrop),1,58)
-      set %rareprice $gettok($read(rares.txt,%raredrop),2,58)
-    }
-  }
-  if (godsword isin %rareitem) { unset %rareprice | db.set equip_item $replace($gettok(%rareitem,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $3 + 1 }
-  if (claws isin %rareitem) { unset %rareprice | db.set equip_item dclaws $3 + 1 }
-  if (mudkip isin %rareitem) { unset %rareprice | db.set equip_item mudkip $3 + 1 }
-  if (Clue isin %rareitem) {
-    if ($db.get(equip_item,clue,$3)) { unset %rareitem }
-    else {
-      set %clue $r(1,$lines(clue.txt))
-      unset %rareprice
-      db.set equip_item clue $3 %clue
-    }
-  }
-  if (mage's isin %rareitem) { unset %rareprice | db.set equip_armour mbook $3 + 1 }
-  if (accumulator isin %rareitem) { unset %rareprice | db.set equip_armour accumulator $3 + 1 }
 
-  set %combined $calc(%price1 + %price2 + %price3 + %rareprice)
-  msg #idm.staff $rundrops($3, $2)
+  var %drops $rundrops($3, $2)
+  var %combined $gettok(%drops,1,32)
+  var %items $gettok(%drops,2-,32)
+
   var %winnerclan = $getclanname($3)
   var %looserclan = $getclanname($2)
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
-    trackclan WIN %winnerclan %sharedrop
+    trackclan WIN %winnerclan %combined
     if ($db.get(clantracker,share,%winnerclan)) {
       var %sql.winnerclan = $db.safe(%winnerclan)
       var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
       db.exec %sql
-      .timer 1 1 msg $1 $logo(KO) The team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$chr(44) $+ %rareitem) $+ ]
+      .timer 1 1 msg $1 $logo(KO) The %nummember team members of $qt($s1(%winnerclan)) each received $s2($price(%sharedrop)) in gp. [ $+ %items $+ ]
       unset %sharedrop
     }
     else {
       db.set user money $3 + %combined
-      .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
+      .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
   else {
     db.set user money $3 + %combined
-    .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %item1 $+ , $+ %item2 $+ , $+ %item3 $+ $iif(%rare == 1,$+ $chr(44) $+ %rareitem) $+ $s1($chr(93))
+    .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
   }
   set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
-  unset %item*
-  unset %price*
-  unset %rare*
-  unset %drop*
-  unset %combined
 }
 alias price {
   tokenize 32 $remove($1-,$chr(44))
@@ -146,19 +103,22 @@ alias gendrops {
     var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ :
   }
   mysql_free %res
-  return %drops
+  return %chance %drops
 }
 
 alias rundrops {
   ; $1 User
   ; $2 Otheruser
   var %drops $gendrops($1,$2), %disprice 0, %display, %wealth 0, %i 1
+  var %chance $gettok(%drops,1,32)
+  var %drops $gettok(%drops,2-,32)
   if ($db.get(equip_item,wealth,$1) != 0) var %wealth 1
 
   while (%i <= $numtok(%drops,58) ) {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
-    if (this == enabled) {
+    if (%price == 0) {
+      var %colour 1
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
       elseif (%item == Vesta's spear) { db.set equip_pvp vspear $1 + 5 }
       elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $1 + 5 }
@@ -170,10 +130,13 @@ alias rundrops {
       elseif (mage's isin %item) { db.set equip_armour mbook $1 + 1 }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
+      else {
+        putlog DROP ERROR: Drop not found matching: %item
+      }
     }
     else { var %disprice $calc(%disprice + %price) }
-    var %display %display %item $+ $chr(44)
+    var %display %display $iif(%colour,03) $+ %item $+ $iif(%colour,) $+ $chr(44)
     inc %i
   }
-  return $price(%disprice) ( $+ $left(%display,-1) $+ )
+  return %disprice $left(%display,-1)
 }
