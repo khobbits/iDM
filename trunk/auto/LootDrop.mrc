@@ -136,16 +136,15 @@ alias rundrops {
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
-      var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1
-      db.exec %sql
-
     }
     else { var %disprice $calc(%disprice + %price) }
+    var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1
+    db.exec %sql
     var %display %display $iif(%colour,03) $+ %item $+ $iif(%colour,) $+ $chr(44)
     inc %i
   }
 
-  var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ %disprice $+ ' , ' $+ $tag $+ ' , $date(yyyy-mm-dd) , '1' ) ON DUPLICATE KEY UPDATE cash = cash + %disprice , count = count+1
+  var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ %disprice $+ ' , ' $+ $tag $+ ' , CURDATE(), '1' ) ON DUPLICATE KEY UPDATE cash = cash + %disprice , count = count+1
   db.exec %sql
 
   return %disprice $left(%display,-1)
