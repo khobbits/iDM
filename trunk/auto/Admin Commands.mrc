@@ -240,9 +240,20 @@ alias deletenick {
   return 1
 }
 
+On $*:TEXT:/^[!@.]cookie .*/Si:#: {
+  if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM && $2) {
+    tokenize 32 $1- 1
+    if ($3 isnum) {
+      db.set equip_staff cookies $2 + $3
+      var %cookies $db.get(equip_staff, cookies, $2)
+      msg $chan $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s)
+    }
+  }
+}
+
 On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
-    if (!$4 || $4 !isnum) { goto error }
+    if ($4 !isnum) { goto error }
     if (?increase iswm $1) { var %sign + }
     elseif (?decrease iswm $1) { var %sign - }
     elseif (?define iswm $1) { var %sign = }
@@ -259,7 +270,11 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
     elseif ($3 == money) || ($3 == wins) || ($3 == losses) {
       var %item = $3
     }
-    else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin + !store items. | halt }
+    elseif ($3 == cookies) {
+      var %table = equip_staff
+      var %item = $3
+    }
+    else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin/cookies + !store items. | halt }
     if (%sign == =) { db.set %table %item $2 $4 }
     else { db.set %table %item $2 %sign $4 }
     msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)

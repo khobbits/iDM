@@ -72,6 +72,7 @@ alias sitems {
   if ($hget(equips,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($hget(equips,kh)) { var %e %e KHonfound:Ring }
   if ($hget(equips,support)) { var %e %e The:Supporter }
+  if ($hget(equips,cookies)) { var %e %e Cookies( $+ $v1 $+ ) }
 
   return $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)))
 }
