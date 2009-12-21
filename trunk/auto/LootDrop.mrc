@@ -15,7 +15,7 @@ alias dead {
   db.set user wins $3 + 1
   db.set user losses $2 + 1
 
-  var %drops $rundrops($3, $2)
+  var %drops $rundrops($chan, $3, $2)
   var %combined $gettok(%drops,1,32)
   var %items $gettok(%drops,2-,32)
 
@@ -107,12 +107,13 @@ alias gendrops {
 }
 
 alias rundrops {
-  ; $1 User
-  ; $2 Otheruser
-  var %drops $gendrops($1,$2), %disprice 0, %display, %wealth 0, %i 1
+  ; $1 $chan
+  ; $2 User
+  ; $3 Otheruser
+  var %drops $gendrops($2,$3), %disprice 0, %display, %wealth 0, %i 1
   var %chance $gettok(%drops,1,32)
   var %drops $gettok(%drops,2-,32)
-  if ($db.get(equip_item,wealth,$1) != 0) var %wealth 1
+  if ($db.get(equip_item,wealth,$2) != 0) var %wealth 1
 
   while (%i <= $numtok(%drops,58) ) {
     var %item $gettok($gettok(%drops,%i,58),1,46)
@@ -120,25 +121,34 @@ alias rundrops {
     var %colour 0
     if (%price == 0) {
       var %colour 1
-      if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
-      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $1 + 5 }
-      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $1 + 5 }
-      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $1 + 5 }
-      elseif (specpot isin %item) { db.set equip_item specpot $1 + 1 }
-      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $1 + 1 }
-      elseif (claws isin %item) { db.set equip_item dclaws $1 + 1 }
-      elseif (mudkip isin %item) { db.set equip_item mudkip $1 + 1 }
-      elseif (mage's isin %item) { db.set equip_armour mbook $1 + 1 }
-      elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
-      elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
-      elseif (Elysian isin %item) { db.set equip_armour elshield $1 + 1 }
+      if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 }
+      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 }
+      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 }
+      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 }
+      elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 }
+      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 }
+      elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 }
+      elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 }
+      elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 }
+      elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
+      elseif (Clue isin %item) { db.set equip_item clue $2 $r(1,$lines(clue.txt)) }
+      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
+        var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , 1 ) ON DUPLICATE KEY UPDATE count = count+1
+        putlog %sql
+        db.exec(%sql)
+
     }
     else { var %disprice $calc(%disprice + %price) }
     var %display %display $iif(%colour,03) $+ %item $+ $iif(%colour,) $+ $chr(44)
     inc %i
   }
+
+  var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , %disprice, $tag, $date(yyyy-mm-dd), 1 ) ON DUPLICATE KEY UPDATE cash = cash + %disprice , count = count+1
+  putlog %sql
+  db.exec(%sql)
+
   return %disprice $left(%display,-1)
 }
