@@ -117,6 +117,7 @@ alias rundrops {
   while (%i <= $numtok(%drops,58) ) {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
+    var %colour 0
     if (%price == 0) {
       var %colour 1
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $1 + 5 }
@@ -130,6 +131,7 @@ alias rundrops {
       elseif (mage's isin %item) { db.set equip_armour mbook $1 + 1 }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $1 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $1 $r(1,$lines(clue.txt)) }
+      elseif (Elysian isin %item) { db.set equip_armour elshield $1 + 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }

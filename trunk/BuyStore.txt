@@ -1602,3 +1602,15 @@
 20/12 22:26:37 L33T-Geoff bought from the store (bgs) ~L33T-Geof@2690B0BA.740D3C34.1EDE42EF.IP
 20/12 22:30:11 Opie bought from the store (god cape) tehfave@8962F093.753084B1.20E7D33F.IP
 20/12 22:30:55 root|adam bought from the store (void range) ~rootadam@Swift-E95FD826.dsl.lsan03.sbcglobal.net
+20/12 22:37:56 davie_ bought from the store (god cape) ~davie_@Swift-F1BA59F8.dhcp.rxbo.nc.charter.com
+20/12 22:43:01 racanelli_br bought from the store (ags) ~yvsn@Swift-4F203D72.pvoce702.dsl.brasiltelecom.net.br
+20/12 22:43:19 Woopie bought from the store (Saradomin Godsword) ~Woopie@C8FBD273.C5125EF6.73ACF366.IP
+20/12 22:53:55 Patrulla_Fronteriza bought from the store (fire cape) ~Kengel@Swift-254CAE17.dhcp.nwtn.ct.charter.com
+20/12 23:00:39 [DP]Matt bought from the store (void range) ~FoeRagi@Swift-FCFEF112.is.this.i.dont.even.runebnc.com
+20/12 23:01:42 killer5750 bought from the store (sgs) ~killer575@Swift-B9C90FD4.cinci.res.rr.com
+20/12 23:04:28 noia_r3d bought from the store (ags) ~noia_r3d@Swift-D4E76A64.dsl.telesp.net.br
+20/12 23:07:01 davie_ bought from the store (void mage) ~davie_@Swift-F1BA59F8.dhcp.rxbo.nc.charter.com
+20/12 23:10:17 racanelli_br bought from the store (void range) ~yvsn@Swift-4F203D72.pvoce702.dsl.brasiltelecom.net.br
+20/12 23:16:08 piff109 bought from the store (bgs) ~piff109@Swift-54E3141D.cpe.cableone.net
+20/12 23:17:00 x_25_x bought from the store (sgs) ~x_25_x@Swift-BC2F4A13.cpe.net.cable.rogers.com
+20/12 23:17:48 x_25_x bought from the store (void range) ~x_25_x@Swift-BC2F4A13.cpe.net.cable.rogers.com

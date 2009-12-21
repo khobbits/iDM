@@ -1197,3 +1197,7 @@
 20/12 21:57:22 Arch` parted channel #Tassie_Legends during a dm oldcash 123460032 penalty 2469201
 20/12 22:05:58 Sklease got !enddm'd on #skillersftw oldcash 465336034 newcash 463009354
 20/12 22:20:07 ``Kitty got !enddm'd on #dark-dynasty oldcash 8889772717 newcash 8845323854
+20/12 22:50:56 Denizzz parted channel #iDM during a dm oldcash 8895094640 penalty 177901893
+20/12 22:51:34 Arch` parted channel #Tassie_Legends during a dm oldcash 124991196 penalty 2499824
+20/12 23:02:16 Valerionice got !enddm'd on #divine_kings oldcash 87116134 newcash 86680554
+20/12 23:19:32 i_g0_t_swagg got !enddm'd on #Dm.newbies oldcash 1032536411 newcash 1027373729
