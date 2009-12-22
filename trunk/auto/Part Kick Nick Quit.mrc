@@ -41,6 +41,7 @@ on *:PART:#: {
           write penalty.txt $timestamp $nick parted channel $chan during a dm oldcash %oldmoney penalty %newmoney
           db.set user money $nick - %newmoney
         }
+        db.set user losses $nick + 1
       }
     }
     cancel #
@@ -65,6 +66,7 @@ on *:QUIT: {
             write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney penalty %newmoney
             db.set user money $nick - %newmoney
           }
+          db.set user losses $nick + 1
         }
       }
       cancel $chan(%a)
@@ -111,6 +113,7 @@ on *:KICK:#: {
           write penalty.txt $timestamp $knick got kicked during a dm by $nick oldcash %oldmoney penalty %newmoney
           db.set user money $knick - %newmoney
         }
+        db.set user losses $nick + 1
       }
     }
     cancel #

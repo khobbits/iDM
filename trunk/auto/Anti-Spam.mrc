@@ -3,7 +3,7 @@ on $*:TEXT:/^[!@.]((end)?dm|stake|top|dmclue|solve|money|status|buy|sell|store|s
   if (# == #idm) && ($me != iDM) { halt }
   $iif(%cmdspam. [ $+ [ $nick ] ],inc %cmdspam. [ $+ [ $nick ] ],inc -u4 %cmdspam. [ $+ [ $nick ] ])
   if (%cmdspam. [ $+ [ $nick ] ] >= 6) {
-    msg $secondchan $logo(SPAM) $s1(Command) spam detected by $s2($nick) $+ . Added to ignore for two minutes.
+    msg $secondchan $logo(SPAM) $s1(Command) spam detected by $s2($nick) in $s2($chan) $+ . Added to ignore for two minutes.
     notice $nick $logo(SPAM) You are now added to ignore for $s2(TWO minutes) due to spam.
     ignore -u120 $nick 3
     halt
