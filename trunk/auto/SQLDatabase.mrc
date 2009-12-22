@@ -16,7 +16,7 @@ alias db.tquote {
 
 ; This is a convience function to return a single cell from a table
 alias db.get {
-  if (!$3) { mysqlderror Syntax Error: db.get <table> <column> <user> - $db.safe($1-) | halt }
+  if (!$3) { putlog Syntax Error: db.get <table> <column> <user> - $db.safe($1-) | halt }
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
@@ -25,7 +25,9 @@ alias db.get {
 
 ; This function retrieves a single cell from a database and returns the value
 alias db.select {
-  if (!$2) { mysqlderror Syntax Error: db.select <sql> <column> - $db.safe($1-) | halt }
+  if (!$2) { putlog Syntax Error: db.select <sql> <column> - $db.safe($1-) | halt }
+  var %fail 0
+  :dbselect
   dbcheck
   var %sql = $1
   var %col = $2
@@ -37,13 +39,15 @@ alias db.select {
     return %result
   }
   else {
-    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    inc %fail
+    mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbselect
     return $null
   }
 }
 
 alias db.hget {
-  if (!$3) { mysqlderror Syntax Error: /db.hget <hashtable> <table> <user> [column list] - $db.safe($1-) | halt }
+  if (!$3) { putlog Syntax Error: /db.hget <hashtable> <table> <user> [column list] - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-3),$chr(32) $+ $chr(32),$chr(32)) $replace($lower($4-),$chr(32), ` $+ $chr(44) $+ `)
   var %htable = $1
   var %table = $2
@@ -61,6 +65,9 @@ alias db.hget {
 
 ; These functions are used to get more complicated results from the db
 alias db.query {
+  if (!$1) { putlog Syntax Error: db.query <sql> $db.safe($1-) | halt }
+  var %fail 0
+  :dbquery
   dbcheck
   var %sql = $1-
   var %request = $mysql_query(%db, %sql)
@@ -69,7 +76,9 @@ alias db.query {
     return %request
   }
   else {
-    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    inc %fail
+    mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbquery
     return $null
   }
 }
@@ -114,7 +123,7 @@ alias db.set {
     return $db.exec(%sql)
   }
   else {
-    mysqlderror Syntax Error: /db.set <table> <column> <user> <value> - $db.safe($1-)
+    putlog Syntax Error: /db.set <table> <column> <user> <value> - $db.safe($1-)
     return 0
   }
 }
@@ -135,7 +144,7 @@ alias db.remove {
     return $db.exec(%sql)
   }
   else {
-    mysqlderror Syntax Error: /db.remove <table> <user> [<column> <value>] - $db.safe($1-)
+    putlog Syntax Error: /db.remove <table> <user> [<column> <value>] - $db.safe($1-)
     return 0
   }
 }
@@ -148,17 +157,22 @@ alias db.clear {
     return $db.exec(%sql)
   }
   else {
-    mysqlderror Syntax Error: /db.clear <table> <column> [value] - $db.safe($1-)
+    putlog Syntax Error: /db.clear <table> <column> [value] - $db.safe($1-)
     return 0
   }
 }
 
 ; This is the raw db exec function used to run any sql
 alias db.exec {
+  if (!$1) { putlog Syntax Error: db.exec <sql> - $db.safe($1-) | halt }
+  var %fail 0
+  :dbexec
   dbcheck
   var %sql = $1-
   if (!$mysql_exec(%db, %sql)) {
-    mysqlderror Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    inc %fail
+    mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
     return $null
   }
   if (%debugq == $me) echo 12 -s Query %sql executed
@@ -166,9 +180,9 @@ alias db.exec {
 }
 
 alias mysqlderror {
-  echo 4 -s $1-
-  putlog 3BotError - $me $+ 4 $1- 
-
+  echo 4 -s $2-
+  putlog 3BotError - $me $+ 4 $2- 
+  if ($1 == 3000) { dbinit }
   mysql_ping %db
 }
 
@@ -179,6 +193,8 @@ on *:START: {
 }
 
 alias dbinit {
+  mysql_close %db
+  unset %db
   var %host = baka.khobbits.co.uk
   var %user = idm
   var %pass = Sp4rh4wk`Gh0$t`
@@ -186,7 +202,7 @@ alias dbinit {
 
   set %db $mysql_connect(%host, %user, %pass)
   if (!%db) {
-    mysqlderror Error: %mysql_errstr
+    mysqlderror %mysql_errno Error: %mysql_errstr
     return
   }
   else {
