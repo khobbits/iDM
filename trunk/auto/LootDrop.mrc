@@ -30,7 +30,7 @@ alias dead {
       var %sql.winnerclan = $db.safe(%winnerclan)
       var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
       db.exec %sql
-      .timer 1 1 msg $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. [ $+ %items $+ ]
+      .timer 1 1 msg $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
       unset %sharedrop
     }
     else {
@@ -133,6 +133,7 @@ alias rundrops {
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $2 $r(1,$lines(clue.txt)) }
       elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
+      elseif (Snow isin %item) { db.set equip_item snow $2 + 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
