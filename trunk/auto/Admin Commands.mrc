@@ -69,7 +69,7 @@ alias banman {
     if (!$2) { notice %nick $logo(BANNED) 4Syntax Error: !(c|r)ignore <nickname> (or !(c|r)ignore <host>) | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
       db.hget checkban ilist $2 who time reason
-      if ($hget(checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
+      if ($hget(checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($hget(checkban,reason)) }
       else { notice %nick $logo(BANNED) User $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.remove ilist $2
@@ -150,33 +150,31 @@ on $*:TEXT:/^[!.]join .*/Si:*: {
 
 on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   if ($me != iDM) { return }
-  if ($db.get(admins,position,$address($nick,3))) {
-    if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
-    if ((?c* iswm $1) || (?r* iswm $1)) {
-      db.hget checkban ilist $2 who time reason
-      if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) suspended $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
-      elseif (!$db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
+  if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
+  if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
+  if ((?c* iswm $1) || (?r* iswm $1)) {
+    db.hget checkban ilist $2 who time reason
+    if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) suspended $s2($2) at $s2($hget(checkban,time)) for $s2($hget(checkban,reason)) }
+    elseif (!$db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
-      if (?r* iswm $1) {
-        db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
-        if ($mysql_affected_rows(%db) !== -1) {
-          db.remove ilist $2
-          notice $nick Restored account $2 to its original status.
-        }
-        else { notice $nick Couldn't find account $2 }
-      }
-    }
-    else {
-      if (!$3) { notice $nick You need to supply a reason when suspending.  Syntax: !(un)suspend <nick> [reason]. | halt }
-
-      db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
+    if (?r* iswm $1) {
+      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) {
-        db.set ilist who $2 $nick
-        db.set ilist reason $2 $3-
-        notice $nick Removed account $2 from the top scores.
+        db.remove ilist $2
+        notice $nick Restored account $2 to its original status.
       }
       else { notice $nick Couldn't find account $2 }
     }
+  }
+  else {
+    if (!$3) { notice $nick You need to supply a reason when suspending.  Syntax: !(r)suspend <nick> [reason]. | halt }
+    db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
+    if ($mysql_affected_rows(%db) !== -1) {
+      db.set ilist who $2 $nick
+      db.set ilist reason $2 $3-
+      notice $nick Removed account $2 from the top scores - $3- .
+    }
+    else { notice $nick Couldn't find account $2 }
   }
 }
 
@@ -274,6 +272,10 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
       var %table = equip_staff
       var %item = $3
     }
+    elseif ($3 == snow) {
+      var %table = equip_item
+      var %item = $3
+    }
     else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin/cookies + !store items. | halt }
     if (%sign == =) { db.set %table %item $2 $4 }
     else { db.set %table %item $2 %sign $4 }
@@ -322,6 +324,20 @@ on *:TEXT:!whois*:#: {
     }
   }
 }
+
+on *:TEXT:!globes*:#: {
+  if ($db.get(admins,position,$address($nick,3))) {
+    if ($me == idm) { 
+      var %i 0
+      var %sql = SELECT * FROM `equip_item` WHERE snow >= 1
+      var %result = $db.query(%sql)
+      var %i = $db.query_num_rows(%result)
+      db.query_end %result
+      msg $chan $logo(Snow Globes) %i have been dropped.
+    }
+  }
+}
+
 
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
