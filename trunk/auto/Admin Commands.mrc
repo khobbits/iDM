@@ -306,7 +306,7 @@ on *:TEXT:!amsg*:#idm.staff: {
     var %x = 1
     while ($chan(%x)) {
       if ($chan(%x) != #idm && $chan(%x) != #idm.Staff) {
-        msg $chan(%x) $logo(AMSG) $2- 07[03 $+ $nick $+ 07]
+        msgsafe $chan(%x) $logo(AMSG) $2- 07[03 $+ $nick $+ 07]
       }
       inc %x
     }

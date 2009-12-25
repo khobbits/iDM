@@ -1,22 +1,22 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
   }
 }
 
 on $*:TEXT:/^[!@.]equip/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick) $iif($db.get(equip_item,specpot,$nick),$s1(Spec Pots) $+ : $v1)
-    if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msg #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick) $iif($db.get(equip_item,specpot,$nick),$s1(Spec Pots) $+ : $v1)
+    if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
   }
   if ($2) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2) $iif($db.get(equip_item,specpot,$2),$s1(Spec Pots) $+ : $v1)
-    if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msg #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2) $iif($db.get(equip_item,specpot,$2),$s1(Spec Pots) $+ : $v1)
+    if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
 
@@ -129,11 +129,11 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
 
 alias whichitem {
   if ($1 == Belongtome) { return belong }
-  if ($1 == Allegra || $nick == Strychnine) { return allegra }
+  if ($1 == Allegra || $1 == Strychnine) { return allegra }
   if ($1 == Beau) { return beau }
-  if ($1 == [PCN]Sct_Snake || $nick == [PCN]Snake`Sleep) { return snake }
+  if ($1 == [PCN]Sct_Snake || $1 == [PCN]Snake`Sleep) { return snake }
   if ($1 == KHobbits) { return kh }
-  if ($1 == _Ace_ || $nick == Lucas| || $nick == Lucas|H1t_V3r4c || $nick == Shinn_Gundam || $nick == Ghost_Rider) { return support }
+  if ($1 == _Ace_ || $1 == Lucas| || $1 == Lucas|H1t_V3r4c || $1 == Shinn_Gundam || $1 == Aaron``) { return support }
   return 0
 }
 

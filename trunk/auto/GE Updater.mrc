@@ -9,7 +9,7 @@ on *:text:!lootupdate*:#idm.staff:{
     geupdate
     set %lootupdating on
     set %t $ctime
-    msg # $logo(GE UPDATE) Loot update started ( $+ $time(hh:nn:ss) $+ ).
+    msgsafe # $logo(GE UPDATE) Loot update started ( $+ $time(hh:nn:ss) $+ ).
   }
 }
 alias geupdate {
@@ -37,7 +37,7 @@ alias rareupdate {
     unset %lootupdating
     remove rares.txt
     rename rareupdate.txt rares.txt
-    msg #idm.Staff $logo(GE UPDATE) Loot update finished ( $+ $duration($calc($ctime - %t)) $+ ).
+    msgsafe #idm.Staff $logo(GE UPDATE) Loot update finished ( $+ $duration($calc($ctime - %t)) $+ ).
     unset %t
   }
 }

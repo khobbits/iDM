@@ -1,7 +1,7 @@
 on *:INVITE:#: {
   if ($me != iDM) { halt }
   if (%invig. [ $+ [ # ] ]) { halt }
-  if (%loottimer) { msg $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
+  if (%loottimer) { msgsafe $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
   if ((!%inv.spam [ $+ [ $nick ] ]) && ($db.get(blist,reason,#))) {
     notice $nick Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )
@@ -64,13 +64,13 @@ on *:JOIN:#:{
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
       if ($isbanned($nick)) { halt }
       if ($db.get(admins,position,$address($nick,3)) = admins) {
-        msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
+        msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       }
       elseif ($db.get(admins,position,$address($nick,3))) {
-        msg # $logo(SUPPORT) Bot support $nick has joined the channel.
+        msgsafe # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
       elseif ($ranks(money,$nick) <= 12) {
-        msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+        msgsafe # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
       }
     }
   }
@@ -78,22 +78,22 @@ on *:JOIN:#:{
 on $*:TEXT:/^[!@.]title/Si:#: {
   if (# != #idm && # != #idm.Staff) || ($me == iDM) {
     if ($db.get(admins,position,$address($nick,3)) = admins) {
-      msg # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick is on the channel.
+      msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick is on the channel.
     }
     elseif ($db.get(admins,position,$address($nick,3))) {
-      msg # $logo(SUPPORT) Bot support $nick is on the channel.
+      msgsafe # $logo(SUPPORT) Bot support $nick is on the channel.
     }
     elseif ($ranks(money,$nick) <= 12) {
-      msg # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+      msgsafe # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
     }
   }
 }
 
 alias limit5 {
   if ($istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
-  if ($nick($1,0) < 5) { msg $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
+  if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
-  msg $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]
+  msgsafe $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]
 }
 
 alias scanbots {
@@ -127,24 +127,24 @@ raw 322:*:{
       set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
       join $2
       idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) 
-      $+(.timer,$2) 1 1 msg $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
+      $+(.timer,$2) 1 1 msgsafe $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
     }
   }
 }
 
 raw 323:*:{ /window -h "Channels list" }
 raw 474:*: { if (%raw47345 [ $+ [ $2 ] ]) {
-    msg %raw47345 [ $+ [ $2 ] ] $logo(ERROR) I'm currently banned from $2 so im unable to join. | unset %raw47345 [ $+ [ $2 ] ]
+    msgsafe %raw47345 [ $+ [ $2 ] ] $logo(ERROR) I'm currently banned from $2 so im unable to join. | unset %raw47345 [ $+ [ $2 ] ]
   }
 }
 raw 475:*: { if (%raw47345 [ $+ [ $2 ] ]) {
-    msg %raw47345 [ $+ [ $2 ] ] $logo(ERROR) $2 has mode +k enabled so im unable to join. Please type: /mode $2 -k and re-invite me | unset %raw47345 [ $+ [ $2 ] ]
+    msgsafe %raw47345 [ $+ [ $2 ] ] $logo(ERROR) $2 has mode +k enabled so im unable to join. Please type: /mode $2 -k and re-invite me | unset %raw47345 [ $+ [ $2 ] ]
   }
 }
 alias idmstaff {
-  if ($1 == invite) { msg $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) }
+  if ($1 == invite) { msgsafe $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) }
 }
-alias entrymsg {
+alias entrymsgsafe {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {

@@ -2,13 +2,13 @@ alias dead {
   if (%stake [ $+ [ $1 ] ]) {
     db.set user money $3 + %stake [ $+ [ $1 ] ]
     db.set user money $2 - %stake [ $+ [ $1 ] ]
-    .timer 1 1 msg $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price(%stake [ $+ [ $chan ] ])) $+ .
+    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price(%stake [ $+ [ $chan ] ])) $+ .
     unset %stake* [ $+ [ $1 ] ]
     cancel $1
     db.set user wins $3 + 1
     db.set user losses $2 + 1
     set -u10 %wait. [ $+ [ $1 ] ] on
-    .timer 1 10 msg $1 $logo(DM) Ready.
+    .timer 1 10 msgsafe $1 $logo(DM) Ready.
     halt
   }
   cancel $1
@@ -30,19 +30,19 @@ alias dead {
       var %sql.winnerclan = $db.safe(%winnerclan)
       var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
       db.exec %sql
-      .timer 1 1 msg $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+      .timer 1 1 msgsafe $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
       unset %sharedrop
     }
     else {
       db.set user money $3 + %combined
-      .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+      .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
   else {
     db.set user money $3 + %combined
-    .timer 1 1 msg $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
   }
-  set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msg $1 $logo(DM) Ready.
+  set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msgsafe $1 $logo(DM) Ready.
 }
 alias price {
   tokenize 32 $remove($1-,$chr(44))
@@ -64,8 +64,8 @@ alias trackclan {
 
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($db.get(equip_item,clue,$nick) == 0) { $iif($left($1,1) == @,msg #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
-  $iif($left($1,1) == @,msg #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Join #idm or #idm.Support for help.
+  if ($db.get(equip_item,clue,$nick) == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Join #idm or #idm.Support for help.
 }
 on $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
@@ -133,7 +133,7 @@ alias rundrops {
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $2 $r(1,$lines(clue.txt)) }
       elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
-      elseif (Snow isin %item) { db.set equip_item snow $2 + 1 }
+      elseif (Snow isin %item) { db.set equip_item snow 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }

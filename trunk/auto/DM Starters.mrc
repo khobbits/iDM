@@ -15,7 +15,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (%stake [ $+ [ $chan ] ]) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
   if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if (%p2 [ $+ [ $chan ] ]) && (!%dm.spam [ $+ [ $nick ] ]) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-  if (!%p1 [ $+ [ $chan ] ]) { msg # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
+  if (!%p1 [ $+ [ $chan ] ]) { msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
     .timer $+ # 1 20 enddm #
     db.set user indm $nick 1
     set %p1 [ $+ [ $chan ] ] $nick
@@ -24,7 +24,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
   }
   if (%p1 [ $+ [ $chan ] ]) && (!%p2 [ $+ [ $chan ] ]) {
     if ($address(%p1 [ $+ [ $chan ] ],2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address(%p1 [ $+ [ $chan ] ],2)) > 3) {
-      msg # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
+      msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
       inc -u5 %dm.spam [ $+ [ $nick ] ]
       halt
     }
@@ -32,7 +32,7 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     db.set user indm $nick 1
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
-    msg $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
+    msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
   }
 }
 
@@ -58,7 +58,7 @@ alias cancel {
 }
 alias enddm {
   if (%p2 [ $+ [ $2 ] ]) { halt }
-  msg $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
+  msgsafe $1 $logo(DM) Nobody has accepted $s1(%p1 [ $+ [ $1 ] ]) $+ 's DM request, and the DM has ended.
   cancel $1
 }
 on $*:TEXT:/^[!@.]enddm/Si:#: {
@@ -67,7 +67,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     if ($db.get(admins,position,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel $chan
-      msg $chan $logo(DM) The DM has been canceled by an admin.
+      msgsafe $chan $logo(DM) The DM has been canceled by an admin.
       halt
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
@@ -75,7 +75,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
     cancel $chan
-    msg $chan $logo(DM) The DM has been canceled by an admin.
+    msgsafe $chan $logo(DM) The DM has been canceled by an admin.
 
   }
   elseif (($nick == %p2 [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ] == 1)) {
@@ -104,14 +104,14 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
   elseif (($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ])) {
     if (%enddm [ $+ [ $chan ] ] == 1) {
       cancel $chan
-      msg $chan $logo(DM) The DM was ended on agreement.
+      msgsafe $chan $logo(DM) The DM was ended on agreement.
     }
     elseif (%turn [ $+ [ $chan ] ]) {
       notice $nick You can only end the dm on the other players turn.
     }
     else {
       cancel $chan
-      msg $chan $logo(DM) The DM has been canceled.
+      msgsafe $chan $logo(DM) The DM has been canceled.
     }
   }
 }
@@ -119,7 +119,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
 alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] == $2) {
     cancel $1
-    msg $1 $logo(DM) The DM has ended due to timeout.
+    msgsafe $1 $logo(DM) The DM has ended due to timeout.
     var %oldmoney = $db.get(user,money,$2)
     if (%oldmoney > 100) {
       var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
@@ -132,20 +132,20 @@ alias delaycancel {
 
 alias delaycancelw {
   if (%enddm [ $+ [ $1 ] ] == $2) {
-    msg $1 $logo(DM) The DM will end in 20s if $2 does not make a move.
+    msgsafe $1 $logo(DM) The DM will end in 20s if $2 does not make a move.
   }
 }
 
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%p2 [ $+ [ $chan ] ]) {
-    $iif($left($1,1) == @,msg #,notice $nick) $status($chan)
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $status($chan)
   }
   elseif (%p1 [ $+ [ $chan ] ]) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) %p1 [ $+ [ $chan ] ] is waiting for someone to DM in $lower($chan) $+ .
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STATUS) %p1 [ $+ [ $chan ] ] is waiting for someone to DM in $lower($chan) $+ .
   }
   else {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(STATUS) There is no DM in $lower($chan) $+ .
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STATUS) There is no DM in $lower($chan) $+ .
   }
 }
 alias status {

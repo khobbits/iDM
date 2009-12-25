@@ -105,7 +105,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
   var %clan = $getclanname(%nick)
   if ((!%clan) && ($clanmembers($2))) { var %clan = $2 }
   if (%clan) {
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Profile) $+ : $s2(http://idm-bot.com/c/ $+ $webstrip(%clan,1)) 
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Profile) $+ : $s2(http://idm-bot.com/c/ $+ $webstrip(%clan,1)) 
     halt
   }
   notice $nick $logo(ERROR) %nick is not in a clan and there is no clan named %nick $+ .

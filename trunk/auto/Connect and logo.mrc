@@ -1,6 +1,16 @@
-alias logo { return $+(07[,03,$$1-,07],) }
-alias s1 { return $+($chr(3),03,$1-,) }
-alias s2 { return $+($chr(3),07,$1-,) }
+alias logo { return $+($s2,[,$s1,$$1-,$s2,],) }
+
+alias c1 return 03
+alias c2 return 04
+
+alias s1 {
+  if ($1 !== $null) return $c1
+  return $+($c1,$1-,) 
+}
+alias s2 { 
+  if ($1 !== $null) return $c2
+  return $+($c2,$1-,) 
+}
 
 alias tag { return $iif($len($me) != 7,Hub,$mid($me,5,2)) }
 
@@ -10,7 +20,7 @@ on *:CONNECT: {
   unsetall
   db.clear user login
   db.clear user indm
-  timer 1 10 msg #idm.staff Reconnected to server clearing vars, logins and currentdm list
+  timer 1 10 msgsafe #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 
 alias pingo {
@@ -34,4 +44,14 @@ alias secondchan {
 
 on *:DISCONNECT: {
   mysql_close %db
+}
+
+alias msgsafe {
+  if (c isincs $chan($1).mode) {
+    var %text $replace($2-,$s1,)
+    msg $1 $strip(%text,c)
+  }
+  else {
+    msg $1 $2-
+  }
 }

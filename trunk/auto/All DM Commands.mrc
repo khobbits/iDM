@@ -7,7 +7,7 @@ on $*:TEXT:/^[!.]/Si:#: {
       if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
       set $+(%,sp,$player($nick,#),#) 4
       db.set equip_item specpot $nick - 1
-      msg # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
+      msgsafe # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
       unset %laststyle [ $+ [ # ] ]
       unset $+(%,frozen,$nick)
       set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
@@ -146,7 +146,7 @@ alias damage {
     var %msg %msg $+ . $hpbar(%hp2)
   }
 
-  msg $4 %msg
+  msgsafe $4 %msg
 
   if ($max(m,$3)) { set %laststyle [ $+ [ $4 ] ] melee }
   elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
@@ -163,29 +163,29 @@ alias damage {
     if ($db.get(equip_staff,belong,$1)) && ($r(1,100) == 1) && (%hp2 >= 1) {
       var %extra $iif(%hp2 < 12,$($v1,2),12)
       dec %hp2 %extra
-      msg $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
+      msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
     }
     if ($hget(equipstaff,allegra)) && ($r(1,100) == 1) && (%hp2 >= 1) {
       var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
       inc %hp2 %extraup
-      msg $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2)
+      msgsafe $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2)
     }
     elseif ($hget(equipstaff,kh)) && ($r(1,100) == 1) && (%hp2 >= 1) {
       inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
-      msg $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2)
+      msgsafe $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2)
       set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
     }
     elseif ($hget(equipstaff,support)) && ($r(1,100) == 1) && (%hp2 >= 1) {
       var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
       inc %hp2 $floor($calc(%temp.hit / 2))
-      msg $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
+      msgsafe $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
     }
   }
 
   if (%hp2 < 1) {
     if ($hget(equipstaff,beau)) && ($r(1,50) == 1) && (%stake [ $+ [ $chan ] ] == $null) {
       set %hp2 1
-      msg $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2)
+      msgsafe $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2)
     }
     else {
       dead $4 $2 $1

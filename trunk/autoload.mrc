@@ -33,7 +33,7 @@ alias rehash.run {
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == $null) { msg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
-    privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
+    msg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
     timer -m 1 5000 rehash
   }
 }

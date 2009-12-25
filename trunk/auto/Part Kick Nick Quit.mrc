@@ -5,7 +5,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
       if (%part.spam [ $+ [ # ] ]) { halt }
       part # Part requested by $nick $+ .
       set -u10 %part.spam [ $+ [ # ] ] on
-      msg #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
+      msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
       cancel #
     }
   }
@@ -20,18 +20,18 @@ on *:PART:#: {
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
     db.set user money %p1 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2) )
-    msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
+    msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
     db.set user money %p2 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2))
-    msg # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
+    msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
     cancel #
     .timer $+ # off
   }
   if ($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ]) {
-    msg # $logo(DM) The DM has been canceled, because one of the players parted.
+    msgsafe # $logo(DM) The DM has been canceled, because one of the players parted.
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(part,$nick,$chan,$1-) == 1) {
         var %oldmoney = $db.get(user,money,$nick)
@@ -57,7 +57,7 @@ on *:QUIT: {
   var %a 1
   while (%a <= $chan(0)) {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
-      msg $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
+      msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
       if (%turn [ $+ [ $chan(%a) ] ]) {
         if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
           var %oldmoney = $db.get(user,money,$nick)
@@ -82,7 +82,7 @@ on *:NICK: {
   while (%a <= $chan(0)) {
     if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) {
       db.set user money $nick - $ceil($calc($+(%,stake,$chan(%a)) / 2))
-      msg $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,$chan(%a)) / 2) ))) $+ .
+      msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,$chan(%a)) / 2) ))) $+ .
       cancel $chan(%a)
       .timer $+ $chan(%a) off
       halt
@@ -103,7 +103,7 @@ on *:NICK: {
 on *:KICK:#: {
   if ($nick(#,0) < 6) && ($knick != $me) { part # Parting channel. Need 5 or more people to have iDM. }
   if ($knick == %p1 [ $+ [ $chan ] ]) || ($knick == %p2 [ $+ [ $chan ] ]) {
-    msg # $logo(DM) The DM has been ended because one of the players was kicked!
+    msgsafe # $logo(DM) The DM has been ended because one of the players was kicked!
     if (%turn [ $+ [ $chan ] ]) {
       if ($enddmcatch(kick,$knick,$nick,$chan,$1-) == 1) {
         var %oldmoney = $db.get(user,money,$knick)
@@ -122,8 +122,8 @@ on *:KICK:#: {
   }
   if ($knick == $me) {
     .timer 1 15 waskicked #
-    if (. !isin $nick) { msg #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
-    elseif (shroudbnc !isin $nick) { join # | msg #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
+    if (. !isin $nick) { msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
+    elseif (shroudbnc !isin $nick) { join # | msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
   }
 }
 
@@ -165,11 +165,11 @@ alias enddmcatch {
   #####
 
   :pass
-  msg #idm.staff $logo(ENDDM) $2 %action *
+  msgsafe #idm.staff $logo(ENDDM) $2 %action *
   return 1
 
   :fail
-  msg #idm.staff $logo(ENDDM) $2 %action
+  msgsafe #idm.staff $logo(ENDDM) $2 %action
   return 0
 
   :qfail
