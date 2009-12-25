@@ -1,14 +1,14 @@
-alias logo { return $+($s2,[,$s1,$$1-,$s2,],) }
+alias logo { return $+($s2,[,$s1,$$1-,,$s2,],) }
 
 alias c1 return 03
 alias c2 return 04
 
 alias s1 {
-  if ($1 !== $null) return $c1
+  if ($1 === $null) return $c1
   return $+($c1,$1-,) 
 }
 alias s2 { 
-  if ($1 !== $null) return $c2
+  if ($1 === $null) return $c2
   return $+($c2,$1-,) 
 }
 
@@ -47,7 +47,7 @@ on *:DISCONNECT: {
 }
 
 alias msgsafe {
-  if (c isincs $chan($1).mode) {
+  if ((c isincs $chan($1).mode) || (S isincs $chan($1).mode)) {
     var %text $replace($2-,$s1,)
     msg $1 $strip(%text,c)
   }

@@ -43,3 +43,13 @@ alias putlog {
   sbnc tcl putmainlog $chr(123) $+ $1- $+ $chr(125)
 }
 on *:TEXT:perform *:?: { if (($nick == -sbnc) && ($address == bouncer@shroudbnc.info)) { $2- } }
+
+alias numlines {
+  var %i 0
+  var %lines 0
+  while (%i < $script(0)) {
+    inc %i 
+    inc %lines $lines($script(%i))
+  }
+  echo -a %lines
+}

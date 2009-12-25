@@ -410,3 +410,6 @@
 24/12 18:48:03 rethon2_ parted channel #iDM during a dm oldcash 2124339986 penalty 42486800
 24/12 18:51:31 tyyt6 parted channel #Dm.newbies during a dm oldcash 490502704 penalty 9810055
 24/12 19:12:12 [IR]Evan parted channel #iDM during a dm oldcash 242548098 penalty 4850962
+24/12 19:24:42 Damascus got !enddm'd on #WWDM oldcash 13972406663 newcash 13902544630
+24/12 19:28:51 Arock parted channel #WWDM during a dm oldcash 6143016 penalty 122861
+24/12 20:07:17 shiftandtab got !enddm'd on #iDM oldcash 451403929 newcash 449146910
