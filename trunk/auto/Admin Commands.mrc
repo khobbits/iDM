@@ -351,7 +351,7 @@ on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   if ($me == iDM) {
     if (!$db.get(admins,position,$address($nick,3))) { if ($nick isreg $chan || $nick !ison $chan) { halt } }
     db.hget userinfo user $$2
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login),03 $+ $gmt($v1,dd/mm HH:nn:ss) $+ ,4NO) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(userinfo,login),$gmt($v1,dd/mm HH:nn:ss),NO) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }

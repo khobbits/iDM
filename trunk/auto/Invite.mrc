@@ -63,28 +63,36 @@ on *:JOIN:#:{
     }
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
       if ($isbanned($nick)) { halt }
+      var %dmrank $ranks(money,$nick)
       if ($db.get(admins,position,$address($nick,3)) = admins) {
         msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
       }
       elseif ($db.get(admins,position,$address($nick,3))) {
         msgsafe # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
-      elseif ($ranks(money,$nick) <= 12) {
-        msgsafe # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+      elseif (%dmrank <= 12) {
+        msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
       }
-    }
+      elseif (# == #idm.support) {
+        db.hget userinfo user $nick
+        msg +#idm.support $logo(Acc-Info) User: $s2($nick) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($nick,$address,0),03 $+ $gmt($v1,dd/mm) $+ ,4NO)
+        ignoreinfo $nick $nick msg +#idm.support $logo(Acc-Info)
+      }
+    } 
   }
 }
 on $*:TEXT:/^[!@.]title/Si:#: {
   if (# != #idm && # != #idm.Staff) || ($me == iDM) {
+    if ($isbanned($nick)) { halt }
+    var %dmrank $ranks(money,$nick)
     if ($db.get(admins,position,$address($nick,3)) = admins) {
       msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick is on the channel.
     }
     elseif ($db.get(admins,position,$address($nick,3))) {
       msgsafe # $logo(SUPPORT) Bot support $nick is on the channel.
     }
-    elseif ($ranks(money,$nick) <= 12) {
-      msgsafe # $logo(TOP12) iDM player $nick is ranked $ord($v1) in the top 12.
+    elseif (%dmrank <= 12) {
+      msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
     }
   }
 }
