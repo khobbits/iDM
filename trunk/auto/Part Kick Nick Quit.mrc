@@ -12,7 +12,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
 }
 
 on *:PART:#: {
-  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake,#,32)) {
+  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32)) {
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {

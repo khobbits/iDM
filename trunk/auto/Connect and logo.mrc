@@ -1,7 +1,7 @@
 alias logo { return $+($s2,[,$s1,$$1-,,$s2,],) }
 
 alias c1 return 03
-alias c2 return 04
+alias c2 return 07
 
 alias s1 {
   if ($1 === $null) return $c1
@@ -18,8 +18,11 @@ on *:CONNECT: {
   mode $me +pB
   mysql_close %db
   unsetall
+  echo -s 4Clearing logins
   db.clear user login
+  echo -s 4Clearing active dms
   db.clear user indm
+  echo -s 4Connected.
   timer 1 10 msgsafe #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 

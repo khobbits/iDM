@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!@.]dm\b/Si:#: {
   if (# == #idm.Support) && ($nick !isop $chan) { halt }
+  if (# == #idm.help) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (%dm.spam [ $+ [ $nick ] ]) { halt }
   if (%wait. [ $+ [ $chan ] ]) { halt }

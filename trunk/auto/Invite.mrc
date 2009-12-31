@@ -57,7 +57,7 @@ on *:JOIN:#:{
     }
   }
   else {
-    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,#,32)) {
+    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies,#,32)) {
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
@@ -73,14 +73,21 @@ on *:JOIN:#:{
       elseif (%dmrank <= 12) {
         msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
       }
-      elseif (# == #idm.support) {
-        db.hget userinfo user $nick
-        msg +#idm.support $logo(Acc-Info) User: $s2($nick) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($nick,$address,0),03 $+ $gmt($v1,dd/mm) $+ ,4NO)
-        ignoreinfo $nick $nick msg +#idm.support $logo(Acc-Info)
+      elseif ((# == #idm.support) || (# == #idm.help)) {
+        logcheck $nick $address $chan supportjointitle
       }
     } 
   }
 }
+
+alias supportjointitle.fail supportjointitle $1 $2 $3 4NOT IDENTIFIED
+alias supportjointitle.fail0 supportjointitle $1 $2 $3 4NOT REGISTERED
+alias supportjointitle {
+  db.hget userinfo user $1
+  msg +#idm.support $logo(Acc-Info) User: $s2($nick) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($v1,dd/mm) $+ ,4NO) $4-
+  ignoreinfo $1 $1 msg +#idm.support $logo(Acc-Info)
+}
+
 on $*:TEXT:/^[!@.]title/Si:#: {
   if (# != #idm && # != #idm.Staff) || ($me == iDM) {
     if ($isbanned($nick)) { halt }
@@ -98,7 +105,7 @@ on $*:TEXT:/^[!@.]title/Si:#: {
 }
 
 alias limit5 {
-  if ($istok(#idm #idm.staff #idm.support #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
+  if ($istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
   if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msgsafe $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]
