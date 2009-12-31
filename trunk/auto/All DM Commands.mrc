@@ -240,8 +240,8 @@ alias hit {
   ;2 is Attacker
   ;3 is Attackee
   ;4 is Chan
-  if ($accuracy($1,$4) == -1) { var %acc $r(1,$r(75,90)) }
-  elseif ($accuracy($1,$4) == 1) { var %acc $r($r(10,25),100) }
+  if ($accuracy($1,$4) == -1) { var %acc $r(1,80) }
+  elseif ($accuracy($1,$4) == 1) { var %acc $r(15,100) }
   else { var %acc $r(1,100) }
 
   db.hget equiphit equip_armour $2

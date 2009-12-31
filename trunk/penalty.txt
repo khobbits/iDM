@@ -955,3 +955,46 @@
 30/12 20:01:50 Gui555 got !enddm'd on #nhunit oldcash 200781139 newcash 199777234
 30/12 20:08:08 despised_ko got !enddm'd on #Dm.newbies oldcash 1479870376 newcash 1472471025
 30/12 20:46:04 w1ldfighter got !enddm'd on #m2rt oldcash 1365936553 newcash 1359106871
+30/12 20:58:22 Gian-- parted channel #bc-dm during a dm oldcash 607015362 penalty 12140308
+30/12 21:07:59 The_ForCe_eG got !enddm'd on #Bruce_lee oldcash 532384395 newcash 529722474
+30/12 21:50:17 [Dv]C_U_N_N_U_S|Chris got !enddm'd on #kenn oldcash 897608144 newcash 893120104
+30/12 21:55:51 Elarer got !enddm'd on #teamalpha oldcash 3027276139 newcash 3012139759
+30/12 22:08:47 Elarer got !enddm'd on #teamalpha oldcash 3065040573 newcash 3049715371
+30/12 22:12:05 MADE_IN_GANA got !enddm'd on #st2 oldcash 2866391635 newcash 2852059677
+30/12 22:25:54 MADE_IN_GANA got !enddm'd on #st2 oldcash 2875678779 newcash 2861300386
+30/12 22:26:12 Potatoj2 got !enddm'd on #xlaw oldcash 1176951941 newcash 1171067182
+30/12 22:29:54 Dommy_ got !enddm'd on #tank oldcash 1139975078 newcash 1134275203
+30/12 22:37:03 ajturtle got !enddm'd on #Aj oldcash 3426994294 newcash 3409859323
+30/12 23:00:25 pkingdeath09 got !enddm'd on #iDM oldcash 2370870946 newcash 2359016592
+30/12 23:30:52 Darkwiza657 parted channel #iDM during a dm oldcash 375834378 penalty 7516688
+31/12 00:15:47 |Kelly| parted channel #idm.newbies during a dm oldcash 2482433324 penalty 49648667
+31/12 00:54:55 PeebsYo parted channel #Intensity during a dm oldcash 423664317 penalty 8473287
+31/12 00:57:40 Macacox parted channel #teste1 during a dm oldcash 12439093 penalty 248782
+31/12 01:24:14 Celler_Cat got !enddm'd on #korea oldcash 1397928549 newcash 1390938907
+31/12 01:25:45 Dommy_ got !enddm'd on #tank oldcash 32167079 newcash 32006244
+31/12 03:02:03 iElysian got !enddm'd on #Dm.newbies oldcash 36355407310 newcash 36173630274
+31/12 03:15:05 nesvarbu_ltu parted channel #ltdm during a dm oldcash 525663424 penalty 10513269
+31/12 03:20:14 Kornflake13 got !enddm'd on #iDM oldcash 110330961 newcash 109779307
+31/12 03:35:59 Jennyy got !enddm'd on #skill-zone oldcash 631420468 newcash 628263366
+31/12 03:40:48 Rockbarros parted channel #newland during a dm oldcash 824801578 penalty 16496032
+31/12 03:55:38 Rockbarros parted channel #newland during a dm oldcash 601315551 penalty 12026312
+31/12 05:12:17 Flasharm got !enddm'd on #dmchannel oldcash 67345049 newcash 67008324
+31/12 06:39:59 `JFfy` got !enddm'd on #jffy oldcash 1447205067 newcash 1439969042
+31/12 07:07:28 hama353 got !enddm'd on #hama-fanclub oldcash 15183137621 newcash 15107221933
+31/12 07:34:33 est__range96 parted channel #terminal-ftw during a dm oldcash 221986780 penalty 4439736
+31/12 08:30:41 hama353 got !enddm'd on #hama-fanclub oldcash 15153499933 newcash 15077732434
+31/12 09:31:23 {Ryan} parted channel #omnicide during a dm oldcash 285186196 penalty 5703724
+31/12 09:32:14 Str_Lwl_99 parted channel #frends during a dm oldcash 240266659 penalty 4805334
+31/12 09:58:27 Lemaster got !enddm'd on #iDM oldcash 6452991568 newcash 6420726611
+31/12 09:58:53 gienio parted channel #dm.arena during a dm oldcash 631223148 penalty 12624463
+31/12 10:02:07 Micha parted channel #pipka_dm during a dm oldcash 69955222 penalty 1399105
+31/12 10:12:41 [Dv]Kennnn parted channel #Dm.newbies during a dm oldcash 336656205 penalty 6733125
+31/12 11:16:22 oO_TyC_Oo parted channel #tyc during a dm oldcash 25860591 penalty 517212
+31/12 12:08:31 kratosz got !enddm'd on #nhunit oldcash 135239026 newcash 134562831
+31/12 12:29:24 [FP]Ybsking got !enddm'd on #iDM oldcash 29432075142 newcash 29284914767
+31/12 12:46:48 iWar got !enddm'd on #teamalpha oldcash 17689822229 newcash 17601373118
+31/12 12:51:25 Yum1234567 parted channel #tyc during a dm oldcash 758227914 penalty 15164559
+31/12 13:03:24 r0f1 parted channel #Dm.newbies during a dm oldcash 1835290920 penalty 36705819
+31/12 13:03:58 Nez got !enddm'd on #bc-dm oldcash 96076227 newcash 95595846
+31/12 13:56:59 kaylaishot25 got !enddm'd on #crystalnuts oldcash 2642366395 newcash 2629154564
+31/12 14:12:17 ``shawn` got !enddm'd on #TitsOrGtfo oldcash 478550108 newcash 476157358
