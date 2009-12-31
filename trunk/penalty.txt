@@ -998,3 +998,4 @@
 31/12 13:03:58 Nez got !enddm'd on #bc-dm oldcash 96076227 newcash 95595846
 31/12 13:56:59 kaylaishot25 got !enddm'd on #crystalnuts oldcash 2642366395 newcash 2629154564
 31/12 14:12:17 ``shawn` got !enddm'd on #TitsOrGtfo oldcash 478550108 newcash 476157358
+31/12 14:48:34 TeHMitteH got !enddm'd on #freedm oldcash 121046442 newcash 120441210
