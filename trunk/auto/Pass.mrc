@@ -2,7 +2,6 @@
 
 on *:TEXT:id*:?: msgauth $nick $address $2-
 on *:TEXT:auth*:?: msgauth $nick $address $2-
-on *:TEXT:logout*:?: msgunauth $nick $address $2-
 
 alias msgauth {
   if ($3) {
@@ -13,18 +12,12 @@ alias msgauth {
   }
 }
 
-alias msgunauth {
-  unauth $1
-  notice $1 You are now logged out.
-  unset %idm.nsattempt. [ $+ [ $1 ] ]
-}
-
 ;## These methods deal with actually logging in and out on command
 
-alias unauth {
-  if (!$1) { putlog Syntax Error: unauth <nickname> - $1- | halt }
-  db.set user login $1 0
-}
+;alias unauth {
+;  if (!$1) { putlog Syntax Error: unauth <nickname> - $1- | halt }
+;  db.set user login $1 0
+;}
 
 alias auth {
   if (!$3) { putlog Syntax Error: auth <nickname> <address> <command> - $1- | halt }

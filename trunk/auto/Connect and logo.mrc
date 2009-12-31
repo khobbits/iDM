@@ -18,8 +18,6 @@ on *:CONNECT: {
   mode $me +pB
   mysql_close %db
   unsetall
-  echo -s 4Clearing logins
-  db.clear user login
   echo -s 4Clearing active dms
   db.clear user indm
   echo -s 4Connected.

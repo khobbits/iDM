@@ -47,13 +47,13 @@ on *:PART:#: {
     cancel #
     .timer $+ # off
   }
-  if ($1-3 == Left all channels) || ($1-2 == Part All)  || ($1 == Partall) {
-    unauth $nick
-  }
+  ;  if ($1-3 == Left all channels) || ($1-2 == Part All)  || ($1 == Partall) {
+  ;    unauth $nick
+  ;  }
 }
 
 on *:QUIT: {
-  unauth $nick
+  ;  unauth $nick
   var %a 1
   while (%a <= $chan(0)) {
     if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
@@ -76,8 +76,8 @@ on *:QUIT: {
   }
 }
 on *:NICK: {
-  unauth $nick
-  unauth $newnick
+  ;  unauth $nick
+  ;  unauth $newnick
   var %a = 1
   while (%a <= $chan(0)) {
     if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) {
