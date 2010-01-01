@@ -141,7 +141,7 @@ alias webstrip {
   var %return = $1
   var %return = $strip($replace(%return,/,))
   if ($2) {
-    var %return = $replace(%return,$chr(35),$wchr(23),$chr(63),$wchr(3F),$chr(38),$wchr(26),$chr(91),$wchr(5B),$chr(93),$wchr(5D))
+    var %return = $replace(%return,$chr(35),$wchr(23),$chr(63),$wchr(3F),$chr(38),$wchr(26),$chr(91),$wchr(5B),$chr(93),$wchr(5D),$chr(34),$wchr(22))
   }
   return %return
 }
