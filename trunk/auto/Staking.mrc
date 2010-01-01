@@ -36,7 +36,10 @@ on $*:TEXT:/^[!@.]stake\b/Si:#: {
     .timer $+ # off | set %address1 [ $+ [ $chan ] ] $address($nick,4) | db.set user indm $nick 1
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99
     set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
-    msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
+    var %winloss $winloss($nick,%p1 [ $+ [ $chan ] ],$chan)
+    var %winlossp1 $gettok(%winloss,1,45)
+    var %winlossp2 $gettok(%winloss,2,45)
+    msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's %winlossp2 stake of $s1($price(%stake [ $+ [ # ] ])) $+ . $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
   }
 }
 

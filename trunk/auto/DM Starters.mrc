@@ -33,15 +33,32 @@ on $*:TEXT:/^[!@.]dm\b/Si:#: {
     db.set user indm $nick 1
     set %turn [ $+ [ $chan ] ] $r(1,2) | set %p2 [ $+ [ $chan ] ] $nick | set %hp1 [ $+ [ $chan ] ] 99 | set %hp2 [ $+ [ $chan ] ] 99 | set %sp1 [ $+ [ $chan ] ] 4 | set %sp2 [ $+ [ $chan ] ] 4
     set -u25 %enddm [ $+ [ $chan ] ] 0
-    msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's $winloss(%p1 [ $+ [ $chan ] ]) DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
+    var %winloss $winloss($nick,%p1 [ $+ [ $chan ] ],$chan)
+    var %winlossp1 $gettok(%winloss,1,45)
+    var %winlossp2 $gettok(%winloss,2,45)
+    msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1 [ $+ [ $chan ] ]) $+ 's %winlossp2 DM. $s1($iif(%turn [ $+ [ $chan ] ] == 1,%p1 [ $+ [ $chan ] ],$nick)) gets the first move.
   }
 }
 
 alias winloss {
-  if ($1) {
-    return $s2($chr(91)) $+ Wins $s1($iif($db.get(user,wins,$1),$bytes($v1,bd),0)) Losses $s1($iif($db.get(user,losses,$1),$bytes($v1,bd),0)) $+ $s2($chr(93))
+  if ($2) {
+    var %p1win $db.get(user,wins,$1)
+    var %p2win $db.get(user,wins,$2)
+    var %p1loss $db.get(user,losses,$1)
+    var %p2loss $db.get(user,losses,$2)
+    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
+    var %p2 $s2($chr(91)) $+ Wins $s1($iif(%p2win,$bytes($v1,bd),0)) Losses $s1($iif(%p2loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
+    if ((($calc(%p1win + %p1loss) > 50) && (($calc(%p1win / %p1loss) > 4) || ($calc(%p1win / %p1loss) < 0.25))) || (($calc(%p2win + %p2loss) > 50) && (($calc(%p2win / %p2loss) > 4) || ($calc(%p2win / %p2loss) < 0.25)))) {
+      msg #idm.staff $logo(4RATIO) $3 = $1 %p1 ( $+ $calc(%p1win / %p1loss) $+ ) - $2 %p2 ( $+ $calc(%p2win / %p2loss) $+ )
+    }
+    return $+(%p1,-,%p2)
   }
-  return
+  elseif ($1) {
+    var %p1win $db.get(user,wins,$1)
+    var %p1loss $db.get(user,losses,$1)
+    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93)) 
+    return %p1
+  }
 }
 
 alias cancel {
