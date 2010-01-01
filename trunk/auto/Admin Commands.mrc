@@ -1,8 +1,8 @@
 on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!part chan, !addsupport nick !chans, !active, !join bot chan, !rehash, !ignoresync, !amsg, $&
-      !(show/rem)dm nick, !define/increase/decrease account item amount !rename oldnick newnick $&
-      ) $s1(Support commands:) !(r)suspend nick $s2(!(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan)  $s1(Helper commands:) $s2(!cignore nick/host, !csuspend nick, !cblist chan, !info nick)
+      !(show/rem)dm nick, !define/increase/decrease account item amount !rename oldnick newnick !addsupport nick !cookie nick adjust $&
+      ) $s1(Support commands:) $s2(!(r)suspend nick !(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan !globes)  $s1(Helper commands:) $s2(!cignore nick/host, !csuspend nick, !cblist chan, !info nick)
   }
 }
 
@@ -17,7 +17,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
-    db.set admins support $address($2,3) true
+    db.set admins position $address($2,3) support
   }
 }
 
@@ -351,7 +351,7 @@ on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   if ($me == iDM) {
     if (!$db.get(admins,position,$address($nick,3))) { if ($nick isreg $chan || $nick !ison $chan) { halt } }
     db.hget userinfo user $$2
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(userinfo,login),YES,NO) $gmt($v1,dd/mm HH:nn:ss) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(userinfo,login),YES,NO) $gmt($hget(userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }

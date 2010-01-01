@@ -101,3 +101,15 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
     $s2(Attacks) $chr(91) $+ $s1(!ags) $+ , $s1(!bgs) $+ , $s1(!sgs) $+ , $s1(!zgs) $+ , $s1(!whip) $+ , $s1(!guth) $+ , $s1(!dscim) $+ , $s1(!dh) $+ , $s1(!dds) $+ , $s1(!dclaws) $+ , $s1(!dmace) $+ , $s1(!dlong) $+ , $s1(!dhally) $+ , $s1(!gmaul) $+ , $s1(!cbow) $+ , $s1(!onyx) $+ , $s1(!dbow) $+ , $s1(!ice) $+ , $s1(!blood) $+ , $s1(!smoke) $+ , $s1(!surf) $+ , $s1(!specpot) $+ $chr(93) $&
     $s2(PvP Attacks) $chr(91) $+ $s1(!vspear) $+ , $s1(!statius) $+ , $s1(!vlong) $+ , $s1(!mjavelin) $+ $chr(93))
 }
+
+on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's website: $s2(http://idm-bot.com/)
+}
+
+on $*:TEXT:/^[!@.](dm)?rules$/Si:#: {
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.idm-bot.com/rules)
+}
+
+on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
+}

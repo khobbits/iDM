@@ -4,7 +4,7 @@ alias max {
     var %dmg = $maxdmg(r, $2, 3)
     if (%dmg == $null) { return }
     elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +10),-,$calc(%dmg +10))
-    elseif ($2 == snow) return %dmg %dmg %dmg
+    elseif ($2 == snow) return $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg)
     else return %dmg $calc(%dmg +5) $calc(%dmg +10)
   }
   elseif ($1 == ma) {

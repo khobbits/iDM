@@ -120,12 +120,12 @@ alias rundrops {
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
     if (%price == 0) {
-      var %colour 1
-      if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 }
-      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 }
-      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 }
-      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 }
-      elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 }
+      var %colour 07
+      if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 | var %colour 03 }
+      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
+      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 | var %colour 03 }
+      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 | var %colour 03 }
+      elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 | var %colour 03 }
       elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 }
       elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 }
       elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 }
@@ -141,7 +141,7 @@ alias rundrops {
     else { var %disprice $calc(%disprice + %price) }
     var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1
     db.exec %sql
-    var %display %display $iif(%colour,03) $+ %item $+ $iif(%colour,) $+ $chr(44)
+    var %display %display $iif(%colour, $+ %colour) $+ %item $+ $iif(%colour,) $+ $chr(44)
     inc %i
   }
 
