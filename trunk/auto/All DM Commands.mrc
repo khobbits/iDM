@@ -73,7 +73,7 @@ alias damage {
     elseif (%hp2 <= %hitdmg) {
       var %hit $puttok(%hit,%hp2,%i,32)
       var %hitshow %hitshow $s2(%hp2)
-      set %hp2 0
+      var %hp2 0
     }
     else {
       dec %hp2 %hitdmg
@@ -184,7 +184,7 @@ alias damage {
 
   if (%hp2 < 1) {
     if ($hget(equipstaff,beau)) && ($r(1,50) >= 49) && (%stake [ $+ [ $chan ] ] == $null) {
-      set %hp2 1
+      var %hp2 1
       msgsafe $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2)
     }
     else {

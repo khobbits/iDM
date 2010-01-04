@@ -62,7 +62,6 @@ on *:JOIN:#:{
       return
     }
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
-      if ($isbanned($nick)) { halt }
       var %dmrank $ranks(money,$nick)
       if ($db.get(admins,position,$address($nick,3)) = admins) {
         msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
@@ -71,6 +70,7 @@ on *:JOIN:#:{
         msgsafe # $logo(SUPPORT) Bot support $nick has joined the channel.
       }
       elseif (%dmrank <= 12) {
+        if ($isbanned($nick)) { halt }
         msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
       }
       elseif ((# == #idm.support) || (# == #idm.help)) {
