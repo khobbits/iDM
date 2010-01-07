@@ -472,3 +472,4 @@
 6/1 22:32:19 jek584 got !enddm'd on #rsmdb oldcash 4390345741 newcash 4368394013
 6/1 23:14:09 Aog_Eoye got !enddm'd on #aog oldcash 290997298 newcash 289542312
 6/1 23:14:53 [CPR]Real got !enddm'd on #Clan-CPR oldcash 36234924 newcash 36053750
+7/1 00:42:24 fire_yard1 got !enddm'd on #aus oldcash 2603198472 newcash 2590182480

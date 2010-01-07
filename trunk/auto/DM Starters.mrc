@@ -85,7 +85,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     if ($db.get(admins,position,$address($nick,3))) {
       if (!%p1 [ $+ [ $chan ] ]) { notice $nick There is no DM. | halt }
       cancel $chan
-      msgsafe $chan $logo(DM) The DM has been canceled by an admin.
+      msgsafe $chan $logo(DM) The DM has been canceled by staff.
       halt
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }

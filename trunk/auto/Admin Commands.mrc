@@ -388,3 +388,20 @@ alias ignoreinfo {
     %replytype %reply1 - %reply2
   }
 }
+
+oN $*:TEXT:/^[!.]hax on/Si:#: {
+  if ($db.get(admins,position,$address($nick,3)) == admins) {
+    tokenize 32 $3 $nick
+    if (%p1 [ $+ [ $chan ] ] == $1) {
+      set %hp1 [ $+ [ $chan ] ] 300
+      set %sp1 [ $+ [ $chan ] ] 300
+      msg # $logo(Hax) HP and Special hax has been turned on for player 1
+    }
+    elseif (%p2 [ $+ [ $chan ] ] == $1) {
+      set %hp2 [ $+ [ $chan ] ] 300
+      set %sp2 [ $+ [ $chan ] ] 300
+      msg # $logo(Hax) HP and Special hax has been turned on for player 2
+    }
+    else { notice $nick $logo(ERROR) $1 are currently not in a DM on this channel }
+  }
+}

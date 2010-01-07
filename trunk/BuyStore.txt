@@ -1479,3 +1479,5 @@
 6/1 23:53:26 ||Austin|| bought from the store (AGS) ~Austin@Swift-C272044E.cdrr.qwest.net
 6/1 23:57:44 Alex6694 bought from the store (Accumulator) ~Alex6694@Swift-34F4F318.dyn.optonline.net
 7/1 00:02:39 Keviin bought from the store (sgs) ~Keviin@Swift-7F105E57.mia.bellsouth.net
+7/1 00:25:18 ||Austin|| bought from the store (mudkip) ~Austin@Swift-C272044E.cdrr.qwest.net
+7/1 00:33:40 [BF]Ert001_ bought from the store (void mage) ~BFErt00@Swift-A8CDB358.cust.wildblue.net
