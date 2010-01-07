@@ -35,28 +35,72 @@ alias money {
 alias equipment {
   db.hget equipit equip_item $1
   db.hget equipar equip_armour $1
+  var %wealth = 0
 
-  if ($hget(equipit,ags)) { var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipit,bgs)) { var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipit,sgs)) { var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipit,zgs)) { var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipit,dclaws)) { var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipit,mudkip)) { var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,ags)) { 
+    var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(ags),1,32))
+  }
+  if ($hget(equipit,bgs)) {
+    var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(bgs),1,32))
+  }
+  if ($hget(equipit,sgs)) { 
+    var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(sgs),1,32))
+  }
+  if ($hget(equipit,zgs)) { 
+    var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(zgs),1,32))
+  }
+  if ($hget(equipit,dclaws)) { 
+    var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(dclaws),1,32))
+  }
+  if ($hget(equipit,mudkip)) {
+    var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(mudkip),1,32))
+  }
+  if ($hget(equipar,accumulator)) { 
+    var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(accumulator),1,32))
+  }
+  if ($hget(equipar,void)) { 
+    var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(void range),1,32))
+  }
+  if ($hget(equipar,void-mage)) { 
+    var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(void mage),1,32))
+  }
+  if ($hget(equipar,mbook)) {
+    var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(mage book),1,32))
+  }
+  if ($hget(equipar,godcape)) { 
+    var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(godcape),1,32))
+  }
+  if ($hget(equipar,bgloves)) {
+    var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(barrows gloves),1,32))
+  }
+  if ($hget(equipar,firecape)) { 
+    var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(firecape),1,32))
+  }
+  if ($hget(equipar,elshield)) {
+    var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(elysian),1,32))
+  }
 
-  if ($hget(equipar,accumulator)) { var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,void)) { var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,void-mage)) { var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,mbook)) { var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,godcape)) { var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,bgloves)) { var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,firecape)) { var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(equipar,elshield)) { var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-
-  if ($hget(equipit,wealth)) { var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(equipit,wealth)) { 
+    var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
+    inc %wealth $calc($v1 * $gettok($storematch(wealth),1,32))
+  }
   if ($hget(equipit,clue)) { var %e %e Clue:Scroll }
   if ($hget(equipit,snow)) { var %e %e Snow:Globe }
-
-  return $s1(Equipment) $+ : $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None)
+  return $s1(Equipment) ( $+ $price(%wealth) $+ ): $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None) 
 }
 
 alias clan {

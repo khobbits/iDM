@@ -92,6 +92,16 @@ alias buyprice {
   return %price
 }
 
+alias sellprice {
+  if ($storematch($1) != 0) {
+    var %price = $price($calc($gettok($v1,1,32)))
+  }
+  else {
+    var %price = 0
+  }
+  return %price
+}
+
 alias storename {
   if ($storematch($1-) != 0) {
     return $gettok($v1,4-,32)
