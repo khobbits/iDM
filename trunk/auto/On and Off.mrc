@@ -18,7 +18,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
 on *:JOIN:#: {
   if ($nick != $me) {
     var %output = $displayoff($chan,1)
-    if (%output) { notice $nick %output }
+    if (%output) { notice $nick Currently disabled in # $+ : %output }
   }
 }
 
@@ -61,6 +61,10 @@ alias enablec {
     db.remove settings $3 setting $1
     var %notice %notice Enabled $1 in $3
   }
+  elseif ($1 == staking) {
+    db.remove settings $3 setting $1
+    var %notice %notice Enabled $1 in $3  
+  }
   else {
     var %notice Error: Could not find attack to enable.
   }
@@ -79,6 +83,10 @@ alias disablec {
     var %notice %notice Healing attacks are now off.
   }
   elseif ($attack($1)) {
+    db.set settings setting $3 $1
+    var %notice %notice Disabled $1 in $3
+  }
+  elseif ($1 == staking) {
     db.set settings setting $3 $1
     var %notice %notice Disabled $1 in $3
   }
