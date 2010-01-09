@@ -601,3 +601,4 @@
 8/1 19:41:48 Thekillerx06 got !enddm'd on #bewbiesmcbewbers oldcash 1448901463 newcash 1441656956
 8/1 19:58:19 WeeZyJr got !enddm'd on #tank oldcash 1112847443 newcash 1107283206
 8/1 21:04:22 i_am_emo parted channel #m4ng0 during a dm oldcash 994565271 penalty 19891306
+8/1 21:48:28 n01z_pro got !enddm'd on #We.dm oldcash 5277769356 newcash 5251380510
