@@ -15,13 +15,18 @@ alias s2 {
 alias tag { return $iif($len($me) != 7,Hub,$mid($me,5,2)) }
 
 on *:CONNECT: {
+  if ($me == iDM[OFF]) { nick iDM | mnick iDM }
+  join #idm.staff
+  if (%botnum != $null) {
+    timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
+  }
   mode $me +pB
   mysql_close %db
   unsetall
   echo -s 4Clearing active dms
   db.clear user indm
   echo -s 4Connected.
-  timer 1 10 msgsafe #idm.staff Reconnected to server clearing vars, logins and currentdm list
+  timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 
 alias pingo {

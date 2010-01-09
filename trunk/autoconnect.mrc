@@ -1,5 +1,9 @@
 on *:start: {
-  if (*-Auto* iswm $cmdline) {
+  if (*-Startup* iswm $cmdline) {
+    echo -s This bot was started by systemreboot.
+    loadbot 0
+  }
+  elseif (*-Auto* iswm $cmdline) {
     set %botnum $right($matchtok($cmdline,-Auto,1,32),1)
     echo -s This bot was started by autostart. Bot %botnum
     loadbot %botnum
@@ -8,26 +12,16 @@ on *:start: {
     load -rv scripts\vars.ini
     echo -s This bot was started manually.
   }
+  ddeserver off
   ;dll scripts\medit.dll Load
 }
 
-
-on *:connect: {
-  if ($me == iDM[OFF]) { nick iDM | mnick iDM }
-  join #idm.staff
-  if (%botnum != $null) {
-    timer 1 10 msg #idm.staff Autoconnected on load.  Botnum: %botnum
-    unset %botnum
-  }
-}
-
-
 alias loadbot {
   if ($1 == 0) {
-    run "mirc.exe" -Auto2
-    run "mirc.exe" -Auto3
-    run "mirc.exe" -Auto4
-    run "mirc.exe" -Auto5
+    timer 1 15 run "mirc.exe" -Auto2
+    timer 1 30 run "mirc.exe" -Auto3
+    timer 1 45 run "mirc.exe" -Auto4
+    timer 1 60 run "mirc.exe" -Auto5
   }
   if ($1 == 1 || $1 == 0) {
     echo -a loading bot1

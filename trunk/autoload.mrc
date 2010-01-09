@@ -10,7 +10,7 @@ alias rehash {
     }
     unload -nrs " $+ $script(%i) $+ "
   }
-  msg #idm.staff Unloaded scripts - Script took $calc($ctime - %t) seconds.
+  privmsg #idm.staff Unloaded scripts - Script took $calc($ctime - %t) seconds.
   timer 1 1 rehash.cont
 }
 
@@ -21,7 +21,7 @@ alias rehash.load {
 alias rehash.cont {
   var %t $ctime
   noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
-  msg #idm.staff Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
+  privmsg #idm.staff Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (%botnum == 0) { var %botnum 1 }
   inc %botnum
@@ -31,9 +31,9 @@ alias rehash.cont {
 alias rehash.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
-  if (%botnum == $null) { msg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
+  if (%botnum == $null) { privmsg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
-    msg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
+    privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
     timer -m 1 5000 rehash
   }
 }
