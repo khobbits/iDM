@@ -10,7 +10,6 @@
 [ANAGRAM] Name the Runescape god TCLINAIRH:Icthlarin
 [ANAGRAM] Name the Runescape god RSEEN:Seren
 [ANAGRAM] Name the Runescape god RAOSZ:Zaros
-What is the maximum allowed stake?:5%!5 percent
 How much is a Saradomin Godsword if bought from the store?:600M!600000000
 Who is the original creator of iDM?:Beau!Polmeh
 How many different colored Partyhats are there?:6!six
