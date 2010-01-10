@@ -152,11 +152,6 @@ alias damage {
   elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
   elseif ($max(r,$3)) { set %laststyle [ $+ [ $4 ] ] range }
 
-  if ($specused($3)) {
-    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
-    notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
-  }
-
   if (%stake [ $+ [ $chan ] ] == $null) {
     db.hget equipstaff equip_staff $2
 
@@ -191,6 +186,11 @@ alias damage {
       dead $4 $2 $1
       halt
     }
+  }
+
+  if ($specused($3)) {
+    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
+    notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
   }
 
   set $+(%,hp,$player($1,$4),$4) %hp1

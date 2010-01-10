@@ -95,7 +95,6 @@ alias gendrops {
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 5)))
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
-
   var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $mysql_query(%db, %sql, %chance)
   while ($mysql_fetch_row(%res, row)) {
