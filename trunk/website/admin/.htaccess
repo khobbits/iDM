@@ -1,0 +1,4 @@
+AuthUserFile "/home/idm/public_html/admin/htusers"
+AuthType Basic
+AuthName "Adminthing"
+require valid-user

@@ -27,9 +27,9 @@ alias displayoff {
   var %sql = SELECT * FROM settings WHERE user = $db.safe($1)
   var %result $db.query(%sql)
   var %output
-  while ($db.query_row(%result,row)) {
-    if (!%output) { var %output $hget(row,setting) }
-    else { var %output %output $+ $chr(44) $hget(row,setting)
+  while ($db.query_row(%result,>row)) {
+    if (!%output) { var %output $hget(>row,setting) }
+    else { var %output %output $+ $chr(44) $hget(>row,setting)
     }
   }
   db.query_end %result

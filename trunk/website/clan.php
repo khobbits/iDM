@@ -33,7 +33,7 @@ if (($clan == '') || ($clan == '0')) {
 			print '<p>Searching for "' . htmlentities($searchd) . '", click on one of the matched clans below.</p>';
 			print '<table><tbody>';
 			while ($row = mysql_fetch_object($result)) {
-				print '<tr><td><a href="/c/' . urlencode($row->user) . '/">' . htmlentities($row->user) . '</td></tr>';
+				print '<tr><td><a href="/c/' . urlencode($row->user) . '">' . htmlentities($row->user) . '</td></tr>';
 			}
 			print '</tbody></table>';
 			if ($num == 25) {
@@ -72,7 +72,7 @@ if (($clan == '') || ($clan == '0')) {
 	<tbody>
 		<tr>
 			<th>Owner</td>
-			<td><a href="/u/' . urlencode($result ['owner']) . '/">' . htmlentities($result ['owner']) . '</td>
+			<td><a href="/u/' . urlencode($result ['owner']) . '">' . htmlentities($result ['owner']) . '</td>
 		</tr>
 		<tr>
 			<th style="width: 40%;">Lootshare?</td>
@@ -123,7 +123,7 @@ if (($clan == '') || ($clan == '0')) {
 		$class = ($i % 2 == 0) ? 'even' : 'odd';
 		print '
 		<tr class=' . $class . '>
-			<td style="width: 20%;"><a href="/u/' . urlencode($mrow->user) . '/">' . htmlentities($mrow->user) . '</td>
+			<td style="width: 20%;"><a href="/u/' . urlencode($mrow->user) . '">' . htmlentities($mrow->user) . '</td>
 			<td style="width: 20%;">' . number_format($mrow->money, 0, '', ',') . 'gp</td>
 			<td style="width: 15%;">' . number_format($mrow->wins, 0, '', ',') . '</td>
 			<td style="width: 15%;">' . number_format($mrow->losses, 0, '', ',') . '</td>

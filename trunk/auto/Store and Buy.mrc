@@ -17,7 +17,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
     $s1(Zamorak Godsword) ( $+ $s2($buyprice(zgs)) $+ ) - $&
     $s1(Dragon Claws) ( $+ $s2($buyprice(dclaws)) $+ ) - $&
     $s1(Mudkip) ( $+ $s2($buyprice(mudkip)) $+ ) - $&
-    $s1(Elysian Spirit Shield) (Reduces melee and range atks up to 15 $+ $chr(37) $+ ) ( $+ $s2($buyprice(elysian)) $+ ) - $&
+    $s1(Elysian Spirit Shield) (Reduces attack damage by up to 15 $+ $chr(37) $+ ) ( $+ $s2($buyprice(elysian)) $+ ) - $&
     $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2($buyprice(ring of wealth)) $+ )
 }
 
@@ -29,7 +29,6 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-  if (%stake [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) Please wait until the end of the DM to buy equipment. | halt }
   if ($db.get(user,indm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
 

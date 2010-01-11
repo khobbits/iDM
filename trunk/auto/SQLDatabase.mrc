@@ -52,7 +52,6 @@ alias db.hget {
   var %htable = $1
   var %table = $2
   var %user = $3
-
   var %columns = $iif($4,`user` $+ $chr(44) $+ ` $+ $4 $+ `,*)
 
   dbcheck

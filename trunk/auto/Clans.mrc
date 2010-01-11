@@ -30,7 +30,7 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   if (!%clanname) { notice $nick You need to make a clan before you can start adding members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !addclan new member. | halt }
   if ($db.get(user,money,$2) < 1) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
-  if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $v1 $+ ). | halt }
+  if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $getclanname($2) $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
@@ -90,10 +90,10 @@ on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
   var %clanname = $getclanname($nick)
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
-  if ($2 == on) { notice $nick $logo(CLAN) The drop share option for your clan has been enabled.
+  if ($2 == on) { notice $nick $logo(CLAN) The drop share option for $s2(%clanname) has been enabled.
     db.set clantracker share %clanname 1
   }
-  if ($2 == off) { notice $nick $logo(CLAN) The drop share option for your clan has been disabled.
+  if ($2 == off) { notice $nick $logo(CLAN) The drop share option for $s2(%clanname) has been disabled.
     db.set clantracker share %clanname 0
   }
 }

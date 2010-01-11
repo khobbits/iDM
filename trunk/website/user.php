@@ -32,7 +32,7 @@ if ($user == '') {
 			print '<p>Searching for "' . htmlentities($searchd) . '", click on one of the matched usernames below.</p>';
 			print '<table><tbody>';
 			while ($row = mysql_fetch_object($result)) {
-				print '<tr><td><a href="/u/' . urlencode($row->user) . '/">' . htmlentities($row->user) . '</td></tr>';
+				print '<tr><td><a href="/u/' . urlencode($row->user) . '">' . htmlentities($row->user) . '</td></tr>';
 			}
 			print '</tbody></table>';
 			if ($num == 25) {
@@ -77,6 +77,7 @@ if ($user == '') {
 				'profile' => '',
 				'banned' => 0,
 				'login' => 0,
+				'cookies' => 0,
 				'firecape' => 0,
 				'bgloves' => 0,
 				'elshield' => 0,
@@ -90,6 +91,7 @@ if ($user == '') {
 				'sgs' => 0,
 				'zgs' => 0,
 				'dclaws' => 0,
+				'snow' => 0,
 				'mudkip' => 0,
 				'wealth' => 0,
 				'specpot' => 0,
@@ -115,7 +117,7 @@ if ($user == '') {
 	<tbody>
 		<tr>
 			<th>Clan</td>
-			<td><a href="/c/' . urlencode($result ['clan']) . '/">' . htmlentities($result ['clan']) . '</td>
+			<td><a href="/c/' . urlencode($result ['clan']) . '">' . htmlentities($result ['clan']) . '</td>
 
 		</tr>
 		<tr>
@@ -132,13 +134,13 @@ if ($user == '') {
 <table class="table-user">
 	<tbody>
 		<tr>
-			<th>Money</td>
-			<th>Wins</td>
-			<th>Losses</td>
+			<th>Money (' . getrank($userd,'money') . ')</td>
+			<th>Wins (' . getrank($userd,'wins') . ')</td>
+			<th>Losses (' . getrank($userd,'losses') .')</td>
 			<th>Win/Loss Ratio</td>
 		</tr>
 		<tr>
-			<td style="width: 30%;">' . number_format($result ['money'], 0, '', ',') . 'gp</td>
+			<td style="width: 30%;"><abbr title="' . number_format($result ['money'], 0, '', ',') . '">'. n2a($result ['money']) .'</abbr> gp</td>
 			<td style="width: 20%;">' . number_format($result ['wins'], 0, '', ',') . '</td>
 			<td style="width: 20%;">' . number_format($result ['losses'], 0, '', ',') . '</td>
 			<td style="width: 30%;">' . ratiodist($result ['wins'], $result ['losses']) . '</td>
@@ -199,12 +201,16 @@ if ($user == '') {
 			<th>Ring of Wealth</td>
 			<th>Elysian Shield</td>
 			<th>Clue Scroll</td>
+			<th>Cookies</td>
+			<th>Snow Globe</td>
 		</tr>
 		<tr>
-			<td style="width: 25%;">' . valuebool($result ['specpot']) . '</td>
-			<td style="width: 25%;">' . valuebool($result ['wealth']) . '</td>
-			<td style="width: 25%;">' . valuebool($result ['elshield']) . '</td>
-			<td style="width: 25%;">' . valuebool($result ['clue']) . '</td>
+			<td style="width: 20%;">' . valuebool($result ['specpot']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['wealth']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['elshield']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['clue']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['cookies']) . '</td>
+			<td style="width: 16%;">' . valuebool($result ['snow']) . '</td>
 		</tr>
 	</tbody>
 </table>

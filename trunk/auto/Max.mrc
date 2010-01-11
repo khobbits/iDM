@@ -3,6 +3,7 @@ alias max {
     ;Normal Voidrange_or_Accumulator Both
     var %dmg = $maxdmg(r, $2, 3)
     if (%dmg == $null) { return }
+    elseif ($2 == surf) return %dmg %dmg %dmg
     elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +10),-,$calc(%dmg +10))
     elseif ($2 == snow) return $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg)
     else return %dmg $calc(%dmg +5) $calc(%dmg +10)
@@ -17,7 +18,6 @@ alias max {
     ;Normal Barrowgloves Firecape Both
     var %dmg = $maxdmg(m, $2, 3)
     if (%dmg == $null) { return }
-    elseif ($2 == surf) return %dmg %dmg %dmg %dmg
     elseif ($2 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     elseif ($2 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
     elseif ($2 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
@@ -67,6 +67,12 @@ alias dmg {
       if ($3 == 1) return 1,10
       elseif ($3 == 2) return 1,10
       elseif ($3 == 3) return 1,10
+      else return 2 30
+    }
+    if ($2 == surf) {
+      if ($3 == 1) return 0,10
+      elseif ($3 == 2) return 11,17
+      elseif ($3 == 3) return 18,25
       else return 2 30
     }
   }
@@ -126,12 +132,6 @@ alias dmg {
       elseif ($3 == 2) return 1,20
       elseif ($3 == 3) return 11,35
       else return 5 15
-    }
-    if ($2 == surf) {
-      if ($3 == 1) return 0,10
-      elseif ($3 == 2) return 11,17
-      elseif ($3 == 3) return 18,25
-      else return 2 30
     }
     if ($2 == dscim) {
       if ($3 == 1) return 0,0

@@ -139,3 +139,50 @@ tr.even td {
 ul.user-stats {
     padding-left: 0px;
 }
+
+.table-hs {
+	border-collapse:collapse;
+	width: 95%;
+	border-bottom: 1px solid;
+}
+.table-hs td {
+	text-align: center;
+	border: 0px;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+.table-hs th {
+	text-align: center;
+	border: 1px solid;
+	background-color: #812B2B;
+}
+
+.table-stats {
+	border-collapse:collapse;
+	width: 100%;
+	border-bottom: 1px solid;
+}
+.table-stats td {
+	text-align: center;
+	border: 0px;
+	border-left: 1px solid;
+	border-right: 1px solid;
+	padding: 5px;
+}
+
+.table-stats th {
+	text-align: center;
+	border: 1px solid;
+	background-color: #812B2B;
+}
+
+.progressbar {
+    height: 10px;
+	width: 175px;
+    background: url(img/pbar.png) no-repeat bottom right;
+}
+.progressbar-completed {
+    height: 10px;
+    background: url(img/pbar.png) no-repeat top left;
+}

@@ -13,8 +13,8 @@ $average = round($tMoney / $tDM);
 print '<h3><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
 ?>
 
-<table width="100%" align="center">
-<tr><td>Top 10 Channels (Money)</td><td>Top 10 Channels (DMs)</td><td>Top 10 Bots (Money)</td><td>Top 10 Bots (DMs)</td></tr>
+<table class="table-stats" align="center">
+<tr><th>Top 10 Channels (Money)</th><th>Top 10 Channels (DMs)</th><th>Top 10 Bots (Money)</th><th>Top 10 Bots (DMs)</th></tr>
 <tr><td>
 
 <?php
@@ -71,8 +71,8 @@ $average = round($tMoney / $tDM);
 print '<h3><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> ' . n2a($tMoney) . ' <strong>Average:</strong> ' . n2a($average) . '</h2>';
 ?>
 
-<table width="100%" align="center">
-<tr><td>Top 10 Channels (Money)</td><td>Top 10 Channels (DMs)</td><td>Top 10 Bots (Money)</td><td>Top 10 Bots (DMs)</td></tr>
+<table class="table-stats" align="center">
+<tr><th>Top 10 Channels (Money)</th><th>Top 10 Channels (DMs)</th><th>Top 10 Bots (Money)</th><th>Top 10 Bots (DMs)</th></tr>
 <tr><td>
 
 <?php

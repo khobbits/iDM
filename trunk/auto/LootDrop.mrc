@@ -2,7 +2,7 @@ alias dead {
   if (%stake [ $+ [ $1 ] ]) {
     db.set user money $3 + %stake [ $+ [ $1 ] ]
     db.set user money $2 - %stake [ $+ [ $1 ] ]
-    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price(%stake [ $+ [ $chan ] ])) $+ .
+    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($chan,stake))) $+ .
     unset %stake* [ $+ [ $1 ] ]
     cancel $1
     db.set user wins $3 + 1
@@ -97,8 +97,8 @@ alias gendrops {
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= ? AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $mysql_query(%db, %sql, %chance)
-  while ($mysql_fetch_row(%res, row)) {
-    var %drops %drops $+ $hget(row, item) $+ . $+ $hget(row, price) $+ :
+  while ($mysql_fetch_row(%res, >row)) {
+    var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
   }
   mysql_free %res
   return %chance %drops

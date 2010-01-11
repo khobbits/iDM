@@ -29,9 +29,9 @@ on $*:TEXT:/^[!@.]ltop/Si:#: {
 alias totalwins {
   var %sql SELECT sum(wins) as totalwins FROM `user`
   var %result = $db.query(%sql)
-  if ($db.query_row(%result,totalwins) === $null) { echo -s Error fetching total wins. - %sql }
+  if ($db.query_row(%result,>totalwins) === $null) { echo -s Error fetching total wins. - %sql }
   db.query_end %result
-  return $hget(totalwins,totalwins)
+  return $hget(>totalwins,totalwins)
 }
 
 alias toplist {
@@ -42,13 +42,13 @@ alias toplist {
   var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = 0 AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
 
   var %result = $db.query(%sql)
-  while ($db.query_row(%result,row)) {
+  while ($db.query_row(%result,>row)) {
     inc %i
     if ($3 == 1) {
-      %output = %output $chr(124) %i $+ . $s1($hget(row,user)) $s2($price($hget(row,$1)))
+      %output = %output $chr(124) %i $+ . $s1($hget(>row,user)) $s2($price($hget(>row,$1)))
     }
     else {
-      %output = %output $chr(124) %i $+ . $s1($hget(row,user)) $s2($bytes($hget(row,$1),db))
+      %output = %output $chr(124) %i $+ . $s1($hget(>row,user)) $s2($bytes($hget(>row,$1),db))
     }
   }
   db.query_end %result
@@ -107,9 +107,9 @@ alias ranks {
   if ($2 isnum 1-100000) {
     var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
     var %query = $db.query(%sql)
-    if ($db.query_row(%query,rrow) == 1) {
+    if ($db.query_row(%query,>rrow) == 1) {
       db.query_end %query
-      return $hget(rrow,user) $+ : $+ $hget(rrow,$1)
+      return $hget(>rrow,user) $+ : $+ $hget(>rrow,$1)
     }
   }
   else {
@@ -121,9 +121,9 @@ alias ranks {
       WHERE r1.user = $db.safe($2)
 
     var %query = $db.query(%sql)
-    if ($db.query_row(%query,rrow) == 1) {
+    if ($db.query_row(%query,>rrow) == 1) {
       db.query_end %query
-      return $hget(rrow,rank)
+      return $hget(>rrow,rank)
     }
   }
   return $null

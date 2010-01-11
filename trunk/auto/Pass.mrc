@@ -71,10 +71,10 @@ alias islogged {
   ; 3 = login attempt - Script returns 1 if logged in, halt if not logged in, 0 if login not attempted, tries to log user in and gives user feedback
   if (!$2) { putlog Syntax Error: islogged <nickname> <address> [option] - $1- | halt }
 
-  db.hget islogged user $1 login address
+  db.hget >islogged user $1 login address
 
-  var %login $hget(islogged,login)
-  var %address $hget(islogged,address)
+  var %login $hget(>islogged,login)
+  var %address $hget(>islogged,address)
 
   var %threshold $calc($ctime - (60*240))
   if ((%address == $2) && (%login > %threshold)) {

@@ -1,19 +1,26 @@
 on $*:TEXT:/^[!.]/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   var %attcmd $right($1,-1)
-  if (($nick == %p1 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 1) || ($nick == %p2 [ $+ [ $chan ] ] && %turn [ $+ [ $chan ] ] == 2)) {
+  if ($hget($chan)) && ($nick == $hget($chan,p1) && ($hget($chan,p2))) {
+    var %p2 $hget($chan,p2)
     if (%attcmd == specpot) {
-      if ($db.get(equip_item,specpot,$nick) < 1) { notice $nick You don't have any specpots. | halt }
-      if ($($+(%,sp,$player($nick,#),#),2) == 4) { notice $nick You already have a full special bar. | halt }
-      set $+(%,sp,$player($nick,#),#) 4
+      if ($hget($nick,specpot) < 1) { notice $nick You don't have any specpots. | halt }
+      if ($hget($nick,sp) == 4) { notice $nick You already have a full special bar. | halt }
+      hadd $nick sp 4
       db.set equip_item specpot $nick - 1
-      msgsafe # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
-      unset %laststyle [ $+ [ # ] ]
-      unset $+(%,frozen,$nick)
-      set %turn [ $+ [ # ] ] $iif($player($nick,#) == 1,2,1)
+      hadd $nick laststyle 0
+      if ($hget(%p2,poison) >= 1) && ($hget(%p2,hp) >= 1) {
+        var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
+        hdec %p2 poison
+        hdec %p2 hp %extra
+        msgsafe # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for 03 $+ %extra $+  damage. $hpbar($hget(%p2,hp))
+      }
+      else {
+        msgsafe # $logo(DM) $s1($nick) drinks their specpot and now has 100% special.
+      }
     }
     elseif ($attack(%attcmd)) {
-      if ($calc($specused($right($1,-1)) /25) > $($+(%,sp,$player($nick,#),#),2)) {
+      if ($calc($specused($right($1,-1)) /25) > $hget($nick,sp)) {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
@@ -21,7 +28,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
-      if (%frozen [ $+ [ $nick ] ] == on) && ($max(m,%attcmd)) {
+      if ($hget($nick,frozen)) && ($max(m,%attcmd)) {
         notice $nick You're frozen and can't use melee.
         halt
       }
@@ -39,8 +46,21 @@ on $*:TEXT:/^[!.]/Si:#: {
         }
       }
       set -u25 %enddm [ $+ [ $chan ] ] 0
-      damage $nick $iif($nick == %p1 [ $+ [ # ] ],%p2 [ $+ [ # ] ],$v2) %attcmd #
+      damage $nick %p2 %attcmd #
     }
+    else { halt }
+    if ($hget(%p2,hp) < 1) {
+      dead $chan %p2 $nick
+      halt
+    }
+    if ($specused(%attcmd)) {
+      hdec $nick sp $calc($specused(%attcmd) /25)
+      notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$gettok(25 50 75 100,$hget($nick,sp),32)) $+ $chr(37)
+    }
+    hadd $nick frozen 0
+    hadd $chan p1 %p2
+    hadd $chan p2 $nick
+    if (<iDM>* iswm %p2) { autoidm.turn $chan }
   }
 }
 
@@ -50,8 +70,8 @@ alias damage {
   ;3 is weapon
   ;4 is chan
 
-  var %hp1 $($+(%,hp,$player($1,$4),$4),2)
-  var %hp2 $($+(%,hp,$player($2,$4),$4),2)
+  var %hp1 $hget($1,hp)
+  var %hp2 $hget($2,hp)
 
   if ($3 == dh) {
     if (%hp1 < 10) { var %hit $hit(d_h9,$1,$2,$4) }
@@ -91,7 +111,6 @@ alias damage {
     var %msg %msg $doeswhat($3) $s1($replace($2,$chr(58),$chr(32)))
   }
 
-
   if ($splasher($3)) {
     if (%hitdmg == 0) {
       var %msg %msg using $attackname($3) and splashed
@@ -104,12 +123,11 @@ alias damage {
     var %msg %msg with their $attackname($3) hitting %hitshow
   }
 
-  unset $+(%,frozen,$1)
   if ($freezer($3)) {
     var %freeze $r(1,$v1)
     if ((%freeze == 1) && (%hitdmg >= 1)) {
-      set $+(%,frozen,$2) on
-      notice $2 You have been frozen and can't use melee!
+      hadd $2 frozen 1
+      if (<iDM>* !iswm $2) { notice $2 You have been frozen and can't use melee! }
       var %msg %msg and successfully 12FREEZES them
     }
     else {
@@ -128,13 +146,13 @@ alias damage {
 
   if ($poisoner($3)) {
     var %pois.chance $r(1,$v1)
-    if (%pois.chance == 1) || ($db.get(equip_staff,snake,$1)) && (!$($+(%,pois,$player($2,$4),$4),2)) {
-      set $+(%,pois,$player($2,$4),$4) 6
+    if (%pois.chance == 1) || ($db.get(equip_staff,snake,$1)) && (!$hget($2,poison)) {
+      hadd $2 poison 6
     }
   }
-  if ($($+(%,pois,$player($2,$4),$4),2) >= 1) && (%hp2 >= 1) {
-    var %extra $iif(%hp2 < $($+(%,pois,$player($2,$4),$4),2),$v1,$v2)
-    dec $+(%,pois,$player($2,$4),$4)
+  if ($hget($2,poison) >= 1) && (%hp2 >= 1) {
+    var %extra $iif(%hp2 < $hget($2,poison),$v1,$v2)
+    hdec $2 poison
     dec %hp2 %extra
     var %msg %msg - 03 $+ %extra $+ 
   }
@@ -148,29 +166,27 @@ alias damage {
 
   msgsafe $4 %msg
 
-  if ($max(m,$3)) { set %laststyle [ $+ [ $4 ] ] melee }
-  elseif ($max(ma,$3)) { set %laststyle [ $+ [ $4 ] ] mage }
-  elseif ($max(r,$3)) { set %laststyle [ $+ [ $4 ] ] range }
+  if ($max(m,$3)) { hadd $1 laststyle melee }
+  elseif ($max(ma,$3)) { hadd $1 laststyle mage }
+  elseif ($max(r,$3)) { hadd $1 laststyle range }
 
-  if (%stake [ $+ [ $chan ] ] == $null) {
-    db.hget equipstaff equip_staff $2
+  if ($hget($4,stake) == $null) {
 
-    if ($db.get(equip_staff,belong,$1)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    if ($hget(belong,$1)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
       var %extra $iif(%hp2 < 12,$($v1,2),12)
       dec %hp2 %extra
       msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
     }
-    if ($hget(equipstaff,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
+    if ($hget($2,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
       var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
       inc %hp2 %extraup
       msgsafe $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2)
     }
-    elseif ($hget(equipstaff,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
       inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
       msgsafe $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2)
-      set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
     }
-    elseif ($hget(equipstaff,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
       var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
       inc %hp2 $floor($calc(%temp.hit / 2))
       msgsafe $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
@@ -178,30 +194,15 @@ alias damage {
   }
 
   if (%hp2 < 1) {
-    if ($hget(equipstaff,beau)) && ($r(1,50) >= 49) && (%stake [ $+ [ $chan ] ] == $null) {
+    if ($hget($2,beau)) && ($r(1,50) >= 49) && ($hget($4,stake) == $null) {
       var %hp2 1
       msgsafe $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2)
     }
-    else {
-      dead $4 $2 $1
-      halt
-    }
   }
-
-  if ($specused($3)) {
-    dec $+(%,sp,$player($1,$4),$4) $calc($specused($3) /25)
-    notice $1 Specbar: $iif($($+(%,sp,$player($1,$4),$4),2) < 1,0,$gettok(25 50 75 100,$($+(%,sp,$player($1,$4),$4),2),32)) $+ $chr(37)
-  }
-
-  set $+(%,hp,$player($1,$4),$4) %hp1
-  set $+(%,hp,$player($2,$4),$4) %hp2
-  set %turn [ $+ [ $4 ] ] $iif($player($1,$4) == 1,2,1)
+  hadd $1 hp %hp1
+  hadd $2 hp %hp2
 }
 
-alias player {
-  if ($1 == %p1 [ $+ [ $2 ] ]) { return 1 }
-  if ($1 == %p2 [ $+ [ $2 ] ]) { return 2 }
-}
 
 alias hpbar {
   if (-* iswm $1) { tokenize 32 0 }
@@ -211,25 +212,24 @@ alias hpbar {
   return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $1 $+ 3 $+ $str($chr(58),$ceil($calc(( $1 /5) -11)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /5))))) $+ 
 }
 
-
 alias accuracy {
   ;1 is Attack
-  ;2 is Chan
-  if ($istok(melee mage range,%laststyle [ $+ [ $2 ] ],32)) {
+  ;2 is Attackee
+  if ($istok(melee mage range,$hget($2,laststyle),32)) {
     if ($max(m,$1)) {
-      if (%laststyle [ $+ [ $2 ] ] == melee) return 0
-      elseif (%laststyle [ $+ [ $2 ] ] == mage) return -1
-      elseif (%laststyle [ $+ [ $2 ] ] == range) return 1
+      if ($hget($2,laststyle) == melee) return 0
+      elseif ($hget($2,laststyle) == mage) return -1
+      elseif ($hget($2,laststyle) == range) return 1
     }
     elseif ($max(ma,$1)) {
-      if (%laststyle [ $+ [ $2 ] ] == melee) return 1
-      elseif (%laststyle [ $+ [ $2 ] ] == mage) return 0
-      elseif (%laststyle [ $+ [ $2 ] ] == range) return -1
+      if ($hget($2,laststyle) == melee) return 1
+      elseif ($hget($2,laststyle) == mage) return 0
+      elseif ($hget($2,laststyle) == range) return -1
     }
     elseif ($max(r,$1)) {
-      if (%laststyle [ $+ [ $2 ] ] == melee) return -1
-      elseif (%laststyle [ $+ [ $2 ] ] == mage) return 1
-      elseif (%laststyle [ $+ [ $2 ] ] == range) return 0
+      if ($hget($2,laststyle) == melee) return -1
+      elseif ($hget($2,laststyle) == mage) return 1
+      elseif ($hget($2,laststyle) == range) return 0
     }
   }
   return 0
@@ -240,16 +240,14 @@ alias hit {
   ;2 is Attacker
   ;3 is Attackee
   ;4 is Chan
-  if ($accuracy($1,$4) == -1) { var %acc $r(1,80) }
-  elseif ($accuracy($1,$4) == 1) { var %acc $r(15,100) }
+  if ($accuracy($1,$3) == -1) { var %acc $r(1,80) }
+  elseif ($accuracy($1,$3) == 1) { var %acc $r(15,100) }
   else { var %acc $r(1,100) }
 
-  db.hget equiphit equip_armour $2
-
-  var %atk $calc($iif($hget(equiphit,firecape),5,0) + $iif($hget(equiphit,bgloves),3,0))
-  var %def $iif($db.get(equip_armour,elshield,$3),$calc($r(85,99) / 100),1)
-  var %ratk $calc($iif($hget(equiphit,void),5,0) + $iif($hget(equiphit,accumulator),5,0))
-  var %matk $calc($iif($hget(equiphit,void-mage),5,0) + $iif($hget(equiphit,mbook),5,0) + $iif($hget(equiphit,godcape),5,0))
+  var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))
+  var %def $iif($hget($3,elshield),$calc($r(85,99) / 100),1)
+  var %ratk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0))
+  var %matk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,mbook),5,0) + $iif($hget($2,godcape),5,0))
 
   goto $1
   :whip
@@ -259,7 +257,7 @@ alias hit {
   :ags
   return $hitdmg(m,ags,%acc,1,%atk,%def)
   :cbow
-  if (%acc isnum 98-100) && ($hget(equiphit,void) || $hget(equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+  if (%acc isnum 98-100) && ($hget(>equiphit,void) || $hget(>equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
   return $hitdmg(r,cbow,%acc,1,%ratk,%def)
   :dbow
   return $hitdmg(r,dbow,%acc,2,%ratk,%def)
@@ -280,7 +278,7 @@ alias hit {
   :smoke
   return $hitdmg(ma,smoke,%acc,1,%matk,%def)
   :surf
-  return $hitdmg(m,surf,%acc,1,0,1)
+  return $hitdmg(r,surf,%acc,1,0,1)
   :dclaws
   var %dclaws $hitdmg(m,dclaws,%acc,1,%atk,%def)
   return %dclaws $ceil($calc(%dclaws * 0.5)) $ceil($calc(%dclaws * 0.25)) $ceil($calc(%dclaws * 0.125))

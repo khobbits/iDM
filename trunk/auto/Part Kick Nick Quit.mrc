@@ -18,23 +18,23 @@ on *:PART:#: {
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
     cancel #
   }
-  if ($nick == %p1 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    db.set user money %p1 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2) )
-    msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
-    cancel #
-    .timer $+ # off
-  }
-  if ($nick == %p2 [ $+ [ $chan ] ]) && (%stake [ $+ [ $chan ] ]) && (%turn [ $+ [ $chan ] ]) {
-    db.set user money %p2 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2))
-    msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
-    cancel #
-    .timer $+ # off
-  }
-  if ($nick == %p1 [ $+ [ $chan ] ]) || ($nick == %p2 [ $+ [ $chan ] ]) {
-    msgsafe # $logo(DM) The DM has been canceled, because one of the players parted.
-    if (%turn [ $+ [ $chan ] ]) {
+  if ($hget($nick)) && ($hget($chan)) {
+    if $hget($chan,p2)) && ($hget($chan,p1) == $nick) && ($hget($chan,stake)) {
+      db.set user money $nick - $ceil($calc($+(%,stake,#) / 2) )
+      msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
+      cancel #
+      .timer $+ # off
+    }
+    if ($hget($chan,p2) == $nick) && ($hget($chan,stake)) {
+      db.set user money %p2 [ $+ [ $chan  ] ] - $ceil($calc($+(%,stake,#) / 2))
+      msgsafe # $logo(DM) The stake has been canceled, because one of the players parted. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,#) / 2) ))) $+ .
+      cancel #
+      .timer $+ # off
+    }
+    if ($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2)) {
+      msgsafe # $logo(DM) The DM has been canceled, because one of the players parted.
       if ($enddmcatch(part,$nick,$chan,$1-) == 1) {
-        var %oldmoney = $db.get(user,money,$nick)
+        var %oldmoney = $hget($nick,money)
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney * 0.02))
           notice $nick You left the channel during a dm, you lose $s2($price(%newmoney)) cash
@@ -43,70 +43,68 @@ on *:PART:#: {
         }
         db.set user losses $nick + 1
       }
+      cancel #
+      .timer $+ # off
     }
-    cancel #
-    .timer $+ # off
   }
-  ;  if ($1-3 == Left all channels) || ($1-2 == Part All)  || ($1 == Partall) {
-  ;    unauth $nick
-  ;  }
 }
 
 on *:QUIT: {
-  ;  unauth $nick
   var %a 1
-  while (%a <= $chan(0)) {
-    if ($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
-      msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
-      if (%turn [ $+ [ $chan(%a) ] ]) {
-        if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
-          var %oldmoney = $db.get(user,money,$nick)
-          if (%oldmoney > 100) {
-            var %newmoney = $ceil($calc(%oldmoney * 0.01))
-            write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney penalty %newmoney
-            db.set user money $nick - %newmoney
+  if ($hget($nick)) {
+    while (%a <= $chan(0)) {
+      if ($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2)) {
+        msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players quit.
+        if (%turn [ $+ [ $chan(%a) ] ]) {
+          if ($enddmcatch(quit,$nick,$chan(%a),$1-) == 1) {
+            var %oldmoney = $db.get($nick,money)
+            if (%oldmoney > 100) {
+              var %newmoney = $ceil($calc(%oldmoney * 0.01))
+              write penalty.txt $timestamp $nick quit during a dm oldcash %oldmoney penalty %newmoney
+              db.set user money $nick - %newmoney
+            }
+            db.set user losses $nick + 1
           }
-          db.set user losses $nick + 1
         }
+        cancel $chan(%a)
+        .timer $+ $chan(%a) off
       }
-      cancel $chan(%a)
-      .timer $+ $chan(%a) off
+      inc %a
     }
-    inc %a
   }
 }
 on *:NICK: {
-  ;  unauth $nick
-  ;  unauth $newnick
   var %a = 1
-  while (%a <= $chan(0)) {
-    if (%stake [ $+ [ $chan(%a) ] ]) && (($nick == %p1 [ $+ [ $chan(%a) ] ]) || ($nick == %p2 [ $+ [ $chan(%a) ] ])) {
-      db.set user money $nick - $ceil($calc($+(%,stake,$chan(%a)) / 2))
-      msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($+(%,stake,$chan(%a)) / 2) ))) $+ .
-      cancel $chan(%a)
-      .timer $+ $chan(%a) off
-      halt
+  if ($hget($nick)) {
+    while (%a <= $chan(0)) {
+      if ($hget($chan(%a),stake) && (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
+        db.set user money $nick - $ceil($calc($hget($chan(%a),stake)) / 2))
+        msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($hget($chan(%a),stake)) / 2))) $+ .
+        cancel $chan(%a)
+        .timer $+ $chan(%a) off
+        halt
+      }
+      if ($nick == $hget($chan(%a),p1)) {
+        db.set user indm $nick 0
+        db.set user indm $newnick 1
+        hadd $chan(%a) p1 $newnick
+      }
+      if ($nick == $hget($chan(%a),p2)) {
+        db.set user indm $nick 0
+        db.set user indm $newnick 1
+        hadd $chan(%a) p2 $newnick    
+      }
+      inc %a
     }
-    if ($nick == %p1 [ $+ [ $chan(%a) ] ]) {
-      db.set user indm $nick 0
-      db.set user indm $newnick 1
-      set %p1 [ $+ [ $chan(%a) ] ] $newnick
-    }
-    if ($nick == %p2 [ $+ [ $chan(%a) ] ]) {
-      db.set user indm $nick 0
-      db.set user indm $newnick 1
-      set %p2 [ $+ [ $chan(%a) ] ] $newnick
-    }
-    inc %a
   }
 }
 on *:KICK:#: {
   if ($nick(#,0) < 6) && ($knick != $me) { part # Parting channel. Need 5 or more people to have iDM. }
-  if ($knick == %p1 [ $+ [ $chan ] ]) || ($knick == %p2 [ $+ [ $chan ] ]) {
-    msgsafe # $logo(DM) The DM has been ended because one of the players was kicked!
-    if (%turn [ $+ [ $chan ] ]) {
+  if ($hget($knick)) && ($hget($chan)) {
+    if ($knick == $hget($chan,p1)) || ($knick == $hget($chan,p2)) {
+      msgsafe # $logo(DM) The DM has been ended because one of the players was kicked!
       if ($enddmcatch(kick,$knick,$nick,$chan,$1-) == 1) {
-        var %oldmoney = $db.get(user,money,$knick)
+        var %oldmoney = $db.get($knick,money)
         if (%oldmoney > 100) {
           var %newmoney = $ceil($calc(%oldmoney * 0.01))
           notice $nick You left the channel during a dm, you lose $s2($price(%newmoney)) cash
@@ -115,10 +113,10 @@ on *:KICK:#: {
         }
         db.set user losses $nick + 1
       }
+      cancel #
+      .timer $+ # off
+      halt
     }
-    cancel #
-    .timer $+ # off
-    halt
   }
   if ($knick == $me) {
     .timer 1 15 waskicked #

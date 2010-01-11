@@ -13,15 +13,21 @@ function adminlist($item) {
 }
 ?>
 
-<p>To gain an staff item you need to perform a task worthy of such a
-gift.  Each item belongs to a different staff member and each staff member has
-a different idea of what you have to do to be worthy of such a reward.</p>
-<p>For example:<br />
+<p>To gain an staff item you need to perform a task worthy of such a gift.<br />
+Each item belongs to a different staff member and each staff member has a different idea
+of what you have to do to be worthy of such a reward.<br />
+Keep in mind however each item belongs to the admin, they can grant/remove the right to use their item
+at will.</p>
+<p>We've recently added cookies to idm, a reward which staff can award a user for services rendered.<br />
+Cookies are given away for suggestions, bug reports, abuse reports, being helpful etc...<br />
+The amount of cookies you will get will vairy on the task, an accepted feature suggestion can be worth between 40-100 cookies.
+</p>
+
+<p>Known ways to gain an admin item:<br />
+Allegra will sell her item for 69 cookies.
 Beau typically gives his item for being able to defeat him in a dm.<br />
-KHobbits typically gives his item for people who have suggested iDM
-features that were added to the bot.<br />
-Belongtome typically gives his item for bug reports, and helping with
-bot maintaince.<br />
+Belongtome will sell his item for 101 cookies.<br />
+KHobbits will sell his item for 100 cookies.<br />
 </p>
 <p>The easiest way to NOT get an item is to beg or continually ask for
 it, this is more likely to gain you the 'banned' status.</p>

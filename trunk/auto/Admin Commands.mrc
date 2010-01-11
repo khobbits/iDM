@@ -29,8 +29,8 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
   if ($me == iDM) {
     if (!$2) { notice $nick Syntax !(c|r)bl <channel> | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
-      db.hget checkban blist $2 who time reason
-      if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($v1) }
+      db.hget >checkban blist $2 who time reason
+      if ($hget(>checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($v1) }
       else { notice $nick $logo(BANNED) Channel $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.remove blist $2
@@ -68,8 +68,8 @@ alias banman {
   if ($me == iDM) {
     if (!$2) { notice %nick $logo(BANNED) 4Syntax Error: !(c|r)ignore <nickname> (or !(c|r)ignore <host>) | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
-      db.hget checkban ilist $2 who time reason
-      if ($hget(checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(checkban,who)) banned $s2($2) at $s2($hget(checkban,time)) for $s2($hget(checkban,reason)) }
+      db.hget >checkban ilist $2 who time reason
+      if ($hget(>checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
       else { notice %nick $logo(BANNED) User $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.remove ilist $2
@@ -153,8 +153,8 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   if (!$db.get(admins,position,$address($nick,3))) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
   if ((?c* iswm $1) || (?r* iswm $1)) {
-    db.hget checkban ilist $2 who time reason
-    if ($hget(checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(checkban,who)) suspended $s2($2) at $s2($hget(checkban,time)) for $s2($hget(checkban,reason)) }
+    db.hget >checkban ilist $2 who time reason
+    if ($hget(>checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
     elseif (!$db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
     if (?r* iswm $1) {
@@ -319,7 +319,7 @@ on *:TEXT:!whois*:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     if (!$2) { if ($me == idm ) { notice $nick Please specify a channel } | halt }
     if ($me ison $2) {
-      if (%p1 [ $+ [ $2 ] ]) && (%p2 [ $+ [ $2 ] ]) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address(%p1 [ $+ [ $2 ] ],0)) and Player2: $s1($address(%p2 [ $+ [ $2 ] ],0)) $+ . }
+      if ($hget($2,p1)) && ($hget($2,p2)) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address($hget($2,p1),0)) and Player2: $s1($address($hget($2,p2),0)) $+ . }
       else { notice $nick $logo(STATUS) There is no dm in $2 $+ . }
     }
   }
@@ -350,8 +350,8 @@ on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#: {
 on $*:TEXT:/^[!@.]info .*/Si:#idm.Staff,#idm.Support: {
   if ($me == iDM) {
     if (!$db.get(admins,position,$address($nick,3))) { if ($nick isreg $chan || $nick !ison $chan) { halt } }
-    db.hget userinfo user $$2
-    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(userinfo,indm),3YES,4NO) Excluded?: $iif($hget(userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(userinfo,login),YES,NO) $gmt($hget(userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(userinfo,address),3 $+ $v1 $+ ,4NONE)
+    db.hget >userinfo user $$2
+    $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(>userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(>userinfo,login),YES,NO) $gmt($hget(>userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(>userinfo,address),3 $+ $v1 $+ ,4NONE)
     ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msg #,notice $nick) $logo(Acc-Info)
   }
 }
@@ -368,16 +368,16 @@ alias ignoreinfo {
   }
   .timer $+ ignoreinfo $+ $1 off
   if ($2 != Host!Not@Found) {
-    db.hget checkban ilist $2 who time reason
-    if ($hget(checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(checkban,who) for $hget(checkban,reason) }
+    db.hget >checkban ilist $2 who time reason
+    if ($hget(>checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(>checkban,who) for $hget(>checkban,reason) }
     elseif ($ignore($2)) { var %reply 1, %reply1 $s1($2) $s2(is banned) on the bot but not in the db }
     else { var %reply1 $s1($2) is not ignored }
   }
   else {
     var %reply1 $s1($1) is not online, host not found.
   }
-  db.hget checkban ilist $1 who time reason
-  if ($hget(checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) by $hget(checkban,who) for $hget(checkban,reason) }
+  db.hget >checkban ilist $1 who time reason
+  if ($hget(>checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) by $hget(>checkban,who) for $hget(>checkban,reason) }
   elseif ($db.get(user,banned,$1)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) but no reason was given }
   else { var %reply2 $s1($1) is not suspended }
   if (%reply) {
@@ -392,14 +392,14 @@ alias ignoreinfo {
 oN $*:TEXT:/^[!.]hax on/Si:#: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     tokenize 32 $3 $nick
-    if (%p1 [ $+ [ $chan ] ] == $1) {
-      set %hp1 [ $+ [ $chan ] ] 300
-      set %sp1 [ $+ [ $chan ] ] 300
+    if ($hget($chan,p1) == $1) {
+      hadd $1 hp 300
+      hadd $1 sp 64
       msg # $logo(Hax) HP and Special hax has been turned on for player 1
     }
-    elseif (%p2 [ $+ [ $chan ] ] == $1) {
-      set %hp2 [ $+ [ $chan ] ] 300
-      set %sp2 [ $+ [ $chan ] ] 300
+    elseif ($hget($chan,p2) == $1) {
+      hadd $1 hp 300
+      hadd $1 sp 64
       msg # $logo(Hax) HP and Special hax has been turned on for player 2
     }
     else { notice $nick $logo(ERROR) $1 are currently not in a DM on this channel }
