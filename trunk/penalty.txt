@@ -820,3 +820,13 @@
 11/1 18:09:22 ``Light parted channel #Silph during a dm oldcash 347407366 penalty 6948148
 11/1 18:37:39 TwAs_SsJ parted channel #Ezlas during a dm oldcash 627121610 penalty 12542433
 11/1 18:43:23 `13_Dragon_1 parted channel #Sammai during a dm oldcash 5414673215 penalty 108293465
+11/1 20:11:04 aw-rok parted channel #aw-dm during a dm oldcash 1945254794 penalty 38905096
+11/1 20:40:34 Converse parted channel #tank during a dm oldcash 8283575025 penalty 165671501
+11/1 20:41:21 Converse parted channel #tank during a dm oldcash 8117903524 penalty 162358071
+11/1 20:42:13 Converse parted channel #tank during a dm oldcash 7955545453 penalty 159110910
+11/1 20:49:06 peyton parted channel #tank during a dm oldcash 1064247398 penalty 21284948
+11/1 20:53:27 Carl` parted channel #bloodfold during a dm oldcash 1220060108 penalty 24401203
+11/1 21:01:32 Crazipunki parted channel #aw-dm during a dm oldcash 334426218 penalty 6688525
+11/1 21:31:15 Ankit parted channel #ren during a dm oldcash 21099019 penalty 421981
+11/1 22:27:35 zX_ parted channel #aw-dm during a dm oldcash 15388100 penalty 307762
+11/1 23:02:10 Joe_Omg_its_Swt parted channel #wickedlove during a dm oldcash 41124903 penalty 822499
