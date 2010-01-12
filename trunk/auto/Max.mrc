@@ -239,6 +239,7 @@ alias bonus {
   elseif ($1 == onyx) return Heals 1/3 of whatever you hit
   elseif ($1 == dh) return !hitchance dh9
   elseif ($1 == snow) return Freezes your opponent for one turn
+  elseif ($1 == mjavelin) return 1/2 Chance of poisoning opponent
 }
 
 alias doeswhat {
@@ -351,6 +352,7 @@ alias poisoner {
   ;The number is the chance of it poisoning (Dds is 1/3).
   if ($1 == dds) return 3
   elseif ($1 == smoke) return 2
+  elseif ($1 == mjavelin) return 2
   else return $false
 }
 

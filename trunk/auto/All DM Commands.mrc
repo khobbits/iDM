@@ -8,7 +8,7 @@ on $*:TEXT:/^[!.]/Si:#: {
       if ($hget($nick,sp) == 4) { notice $nick You already have a full special bar. | halt }
       hadd $nick sp 4
       db.set equip_item specpot $nick - 1
-      hadd $nick laststyle 0
+      hadd $nick laststyle pot
       if ($hget(%p2,poison) >= 1) && ($hget(%p2,hp) >= 1) {
         var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
         hdec %p2 poison
@@ -33,14 +33,14 @@ on $*:TEXT:/^[!.]/Si:#: {
         halt
       }
       if ($ispvp(%attcmd)) {
-        if ($db.get(equip_pvp,%attcmd,$nick) < 1) {
+        if ($hget($nick,%attcmd) < 1) {
           notice $nick You don't have this weapon.
           halt
         }
         db.set equip_pvp %attcmd $nick - 1
       }
       if ($isweapon($replace(%attcmd,surf,mudkip))) {
-        if ($db.get(equip_item,$replace(%attcmd,surf,mudkip),$nick) < 1) {
+        if ($hget($nick,$replace(%attcmd,surf,mudkip)) < 1) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
@@ -50,7 +50,8 @@ on $*:TEXT:/^[!.]/Si:#: {
     }
     else { halt }
     if ($hget(%p2,hp) < 1) {
-      dead $chan %p2 $nick
+      if (<iDM>* iswm %p2) dead $chan iDM $nick
+      else dead $chan %p2 $nick
       halt
     }
     if ($specused(%attcmd)) {
@@ -146,7 +147,7 @@ alias damage {
 
   if ($poisoner($3)) {
     var %pois.chance $r(1,$v1)
-    if (%pois.chance == 1) || ($db.get(equip_staff,snake,$1)) && (!$hget($2,poison)) {
+    if (%pois.chance == 1) || ($hget($1,snake)) && (!$hget($2,poison)) {
       hadd $2 poison 6
     }
   }

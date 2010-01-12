@@ -1,9 +1,8 @@
 alias dead {
-  if (%stake [ $+ [ $1 ] ]) {
-    db.set user money $3 + %stake [ $+ [ $1 ] ]
-    db.set user money $2 - %stake [ $+ [ $1 ] ]
-    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($chan,stake))) $+ .
-    unset %stake* [ $+ [ $1 ] ]
+  if ($hget($1,stake)) {
+    db.set user money $3 + $hget($1,stake)
+    db.set user money $2 - $hget($1,stake)
+    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ .
     cancel $1
     db.set user wins $3 + 1
     db.set user losses $2 + 1
@@ -11,16 +10,16 @@ alias dead {
     .timer 1 10 msgsafe $1 $logo(DM) Ready.
     halt
   }
+  var %drops $rundrops($1, $3, $2)
+  var %combined $gettok(%drops,1,32)
+  var %items $gettok(%drops,2-,32)
+  var %winnerclan = $hget($3,clan)
+  var %looserclan = $hget($2,clan)
+
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
 
-  var %drops $rundrops($chan, $3, $2)
-  var %combined $gettok(%drops,1,32)
-  var %items $gettok(%drops,2-,32)
-
-  var %winnerclan = $getclanname($3)
-  var %looserclan = $getclanname($2)
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
