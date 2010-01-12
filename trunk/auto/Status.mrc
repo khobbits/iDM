@@ -1,6 +1,6 @@
 alias autoidm.run {
   ; $1 = chan
-  if (!$db.get(settings,$1,timeout)) {
+  if (!$isdisabled($1,timeout)) {
     enddm $1
     halt
   }
