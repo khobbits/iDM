@@ -8,6 +8,8 @@ on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
   if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
 
+  if (stake isin $1) { notice $nick $logo(ERROR) Staking is currently disabled | halt }
+
   if ($hget($chan)) {
     if (($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2))) { halt }
     if ($hget($nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
@@ -148,8 +150,11 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
     cancel $chan
-    msgsafe $chan $logo(DM) The DM has been canceled by an admin.
+    msgsafe $chan $logo(DM) The DM has been canceled by staff.
+    halt
   }
+  notice $nick $logo(ERROR) ENDDM has been disabled due to a few bugs, visit #iDM.Support to get help of a spoort staff or admin
+  halt
   elseif (($nick == $hget($chan,p2)) && (%turn [ $+ [ $chan ] ] == 1)) {
     var %othernick = $hget($chan,p1)
     if (%enddm [ $+ [ $chan ] ] == 0) {

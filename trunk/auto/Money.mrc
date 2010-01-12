@@ -177,7 +177,7 @@ alias whichitem {
   if ($1 == Beau) { return beau }
   if ($1 == [PCN]Sct_Snake || $1 == [PCN]Snake`Sleep) { return snake }
   if ($1 == KHobbits) { return kh }
-  if ($1 == _Ace_ || $1 == Lucas| || $1 == Lucas|H1t_V3r4c || $1 == Shinn_Gundam || $1 == Aaron``) { return support }
+  if ($1 == _Ace_ || $1 == Lucas| || $1 == Satan666 || $1 == Shinn_Gundam || $1 == Aaron``) { return support }
   return 0
 }
 

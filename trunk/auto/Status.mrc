@@ -1,5 +1,6 @@
 alias autoidm.run {
   ; $1 = chan
+  msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,p1)) $+ 's DM request, and the DM has ended.
   cancel $1
   halt
   var %nick <iDM> $+ $1

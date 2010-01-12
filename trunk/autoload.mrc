@@ -31,6 +31,7 @@ alias rehash.cont {
 alias rehash.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (*-Startup* iswm $cmdline) { var %botnum 0 }
   if (%botnum == $null) { privmsg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
     privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
