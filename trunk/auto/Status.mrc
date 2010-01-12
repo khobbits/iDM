@@ -4,7 +4,7 @@ alias autoidm.run {
     enddm $1
     halt
   }
-  var %nick <iDM> $+ $1
+  var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,p1)
   if (!%p1) halt
   db.set user indm %p1 1
@@ -18,7 +18,7 @@ alias autoidm.run {
 }
 
 alias autoidm.turn {
-  var %nick <iDM> $+ $1
+  var %nick $lower(<idm> $+ $1)
   var %p2 $hget($1,p2)
   var %spec $hget(%nick,sp)
   var %hp $hget(%nick,hp)
