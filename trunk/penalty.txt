@@ -830,3 +830,5 @@
 11/1 21:31:15 Ankit parted channel #ren during a dm oldcash 21099019 penalty 421981
 11/1 22:27:35 zX_ parted channel #aw-dm during a dm oldcash 15388100 penalty 307762
 11/1 23:02:10 Joe_Omg_its_Swt parted channel #wickedlove during a dm oldcash 41124903 penalty 822499
+11/1 23:44:03 jeffreyp parted channel #downfall during a dm oldcash 14519084824 penalty 290381697
+12/1 01:21:28 i_4ever_azn_ parted channel #gr1mm during a dm oldcash 660259233 penalty 13205185

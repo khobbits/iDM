@@ -46,7 +46,7 @@ alias dead {
 alias price {
   tokenize 32 $remove($1-,$chr(44))
   if ($1 isnum) {
-    return $iif($1 > 999,$+($regsubex($1,/(?<=.)((...)*)$/,$+(.,$left(\1,1),$mid(KMBT,$calc($len(\1) /3),1)))),$1)
+    return $iif($1 > 999,$+($regsubex($1,/(?<=.)((...)*)$/,$+(.,$left(\1,1),$mid(KMBT,$calc($len(\1) /3),1)))),$1 GP)
   }
 }
 

@@ -65,10 +65,10 @@ on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
       .timer $+ # 1 20 enddm #
     }
     else {
-      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(20 seconds) to accept.
+      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(30 seconds) to accept.
       hmake $chan 10
       hadd $chan p1 $nick
-      .timer $+ # 1 20 autoidm.run #
+      .timer $+ # 1 30 autoidm.run #
     }
     db.set user indm $nick 1
   }

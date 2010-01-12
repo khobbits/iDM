@@ -4,7 +4,7 @@ on $*:TEXT:/^[!.]/Si:#: {
   if ($hget($chan)) && ($nick == $hget($chan,p1) && ($hget($chan,p2))) {
     var %p2 $hget($chan,p2)
     if (%attcmd == specpot) {
-      if ($hget($nick,specpot) < 1) { notice $nick You don't have any specpots. | halt }
+      if (!$hget($nick,specpot)) { notice $nick You don't have any specpots. | halt }
       if ($hget($nick,sp) == 4) { notice $nick You already have a full special bar. | halt }
       hadd $nick sp 4
       db.set equip_item specpot $nick - 1
@@ -33,14 +33,15 @@ on $*:TEXT:/^[!.]/Si:#: {
         halt
       }
       if ($ispvp(%attcmd)) {
-        if ($hget($nick,%attcmd) < 1) {
+        if (!$hget($nick,%attcmd)) {
           notice $nick You don't have this weapon.
           halt
         }
         db.set equip_pvp %attcmd $nick - 1
       }
-      if ($isweapon($replace(%attcmd,surf,mudkip))) {
-        if ($hget($nick,$replace(%attcmd,surf,mudkip)) < 1) {
+      var %wep $replace(%attcmd,surf,mudkip)
+      if ($isweapon(%wep)) {
+        if (!$hget($nick,%wep)) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
