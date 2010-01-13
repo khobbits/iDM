@@ -1,1 +1,3 @@
 13/1 02:44:53 jek584 got !enddm'd on #jek584 oldcash 4838753985 newcash 4814560216
+13/1 02:55:51 Damascus got !enddm'd on #WWDM oldcash 23823924776 newcash 23704805153
+13/1 03:16:14 [344_link] parted channel #fishman during a dm oldcash 164082800 penalty 3281656

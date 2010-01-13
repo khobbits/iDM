@@ -125,15 +125,33 @@ alias chans {
 
 on $*:TEXT:/^[!.@]active$/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
-    var %a 1
-    while (%a <= $chan(0)) {
-      if ($hget($chan(%a))) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
-      if ($hget($chan(%a))) { var %b %b $chan(%a) }
-      inc %a
+    if ($scon(1) != $cid ) halt
+    var %x 1
+    var %b
+    var %c 0
+    while (%x <= $scon(0)) {
+      if ($scon(%x).listdmchan) {
+        var %b %b $s2($scon(%x).tag) $+ : $s1($scon(%x).listdmchan)
+      }
+      inc %x
     }
-    if (%b) { $iif($left($1,1) == @,msg #,notice $nick) $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - %b }
-    else { $iif($left($1,1) == @,msg #,notice $nick) $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - I'm not hosting any DMs. }
+    var %y 1
+    while (%y <= $hget(0)) {
+      if (#* iswm $hget(%y)) inc %c
+      inc %y
+    }
+    if (%b) { $iif($left($1,1) == @,msg # $logo(Active) $+ $iif($me != iDM,$chr(160)),notice $nick $logo(Active $+ $iif($me == iDM, Hub))) %c active DM -=- %b }
+    else { $iif($left($1,1) == @,msg # $logo(Active) $+ $iif($me != iDM,$chr(160)),notice $nick $logo(Active $+ $iif($me == iDM, Hub))) %c active DM -=- I'm not hosting any DMs. }
   }
+}
+
+alias listdmchan {
+  var %a 1
+  while (%a <= $chan(0)) {
+    if ($hget($chan(%a))) { var %b %b $chan(%a) }
+    inc %a
+  }
+  return $iif(%b,$v1,none)
 }
 
 on $*:TEXT:/^[!.]join .*/Si:*: {
