@@ -79,6 +79,7 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   if (!$db.get(%table,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
   db.set user money $nick + %price
   db.set %table %sname $nick - 1
+  write BuyStore.txt $timestamp $nick sold in the store ( $+ $2- $+ ) $address
   notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($db.get(user,money,$nick))) $+ .
   return
 }
