@@ -23,68 +23,36 @@ alias autoidm.turn {
   var %spec $hget(%nick,sp)
   var %hp $hget(%nick,hp)
   var %hp2 $hget(%p2,hp)
-  if (%hp2 <= 15) {
-    var %attcmd surf
-  }
-  elseif (%hp <= 9) {
-    var %attcmd dh
-  }
+  if (%hp2 <= 15) var %attcmd surf
+  elseif ((%hp <= 9) && (%hp2 <= 50)) var %attcmd dh
   elseif ($hget(%p2,laststyle) == melee) {
-    if ($hget(%p2,poison) >= 1) {
-      if (%hp >= 60) && (%spec >= 3) && (!$hget(%nick,frozen)) { 
-        var %attcmd dclaws
-      }
-      else {
-        var %attcmd blood
-      }
+    if ($hget(%p2,poison) >= 1) || (%hp < 60) {
+      if ((%hp >= 70) && (%spec >= 3) && (!$hget(%nick,frozen))) var %attcmd dclaws
+      else var %attcmd blood
     }
-    else {
-      var %attcmd smoke    
-    }
+    else var %attcmd smoke    
   }
   elseif ($hget(%p2,laststyle) == mage) {
-    if (%spec >= 3) && ($hget(%p2,poison) >= 1) {
-      var %attcmd dbow
-    }
-    elseif (%spec >= 1) {
-      var %attcmd mjavelin
-    }
-    else {
-      var %attcmd onyx
-    }
+    if ((%spec >= 3) && ($hget(%p2,poison) >= 1)) var %attcmd dbow
+    elseif ((%spec >= 1) && (%hp > 50)) var %attcmd mjavelin
+    else var %attcmd onyx
   }
   elseif ($hget(%p2,laststyle) == range) || ($hget(%p2,laststyle) == pot) {
-    if ($hget(%nick,frozen)) {
-      var %attcmd cbow
-    } 
-    elseif (!$hget(%p2,poison)) && (%spec >= 1) {
-      var %attcmd dds
-    }
+    if ($hget(%nick,frozen)) var %attcmd onyx
+    elseif ((!$hget(%p2,poison)) && (%spec >= 1) && (%hp2 > 50)) var %attcmd dds
     elseif (%spec >= 3) {
-      if (%hp >= 50) {
-        var %attcmd dhally
-      } 
-      else {
-        var %attcmd sgs
-      }
+      if ((%hp >= 50) || (%hp2 < 30)) var %attcmd dhally
+      else var %attcmd sgs
     }
     elseif (%spec >= 2) {
-      if (%hp >= 60) {
-        var %attcmd dclaws
-      } 
-      else {
-        var %attcmd sgs
-      }
+      if ((%hp >= 50) || (%hp2 < 30)) var %attcmd dclaws
+      else var %attcmd sgs
     }
-    elseif (%spec >= 1) {
-      var %attcmd dds
-    }
-    else {
-      var %attcmd guth
-    }
+    elseif (%spec >= 1) var %attcmd dds
+    else var %attcmd guth
   }
   else {
-    var %attcmd smoke
+    var %attcmd mjavelin
   }
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1

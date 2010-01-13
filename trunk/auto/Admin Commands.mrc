@@ -127,8 +127,8 @@ on $*:TEXT:/^[!.@]active$/Si:*: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     var %a 1
     while (%a <= $chan(0)) {
-      if (%dmon [ $+ [ $chan(%a) ] ]) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
-      if (%dmon [ $+ [ $chan(%a) ] ]) { var %b %b $chan(%a) }
+      if ($hget($chan(%a))) && (($chan(%a) == #idm) || ($chan(%a) == #idm.Staff)) && ($me != iDM) { inc %a }
+      if ($hget($chan(%a))) { var %b %b $chan(%a) }
       inc %a
     }
     if (%b) { $iif($left($1,1) == @,msg #,notice $nick) $var(%dmon*,0) active DM $+ $iif($var(%dmon*,0) != 1,s) - %b }
