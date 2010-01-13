@@ -118,10 +118,12 @@ alias db.set {
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($5 isnum) && (($4 == +) || ($4 == -))) {
     var %sql = INSERT INTO $db.tquote($1) ( user , $db.tquote($2) ) VALUES ( $db.safe($3) , $db.safe($5-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.tquote($2) $4 $db.safe($5-)
+    if (($1 == user) || (equip_ isin $1)) && ($hget($3)) { hadd $3 $calc($hget($3,$2) $4 $5- ) }
     return $db.exec(%sql)
   }
   elseif ($4 !== $null) {
     var %sql = INSERT INTO $db.tquote($1) ( user , $db.tquote($2) ) VALUES ( $db.safe($3) , $db.safe($4-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($4-)
+    if (($1 == user) || (equip_ isin $1)) && ($hget($3)) { hadd $3 $4- }
     return $db.exec(%sql)
   }
   else {

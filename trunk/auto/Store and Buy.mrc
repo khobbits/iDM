@@ -29,7 +29,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-  if ($db.get(user,indm,$nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
+  if ($hget($nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to buy equipment. | halt }
   if (!$db.get(user,money,$nick)) { notice $nick $logo(ERROR) You have no money. | halt }
 
   if ($storematch($2-) != 0) {
@@ -63,6 +63,8 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
+
+  if ($hget($nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to sell equipment. | halt }
 
   if ($storematch($2-) != 0) {
     var %price = $gettok($v1,1,32)
