@@ -11,7 +11,7 @@ on $*:TEXT:/^[!@.]delmem(ber)?.*/Si:*: {
   if (!%clanname) { notice $nick You need to make a clan before you can kick any members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !delmem member. | halt }
   if ($2 == $nick) { notice $nick $logo(ERROR) You can't kick yourself silly! Type: !leave to part your clan / cancel it. | halt }
-  if ($db.get(user,money,$2) < 1) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   if (%clanname != $getclanname($2)) { notice $nick $logo(ERROR) $s1($2) isn't in your clan. | halt }
   notice $nick $logo(CLANS) $s1($2) has been kicked from your clan.
@@ -29,7 +29,7 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   var %clanname = $getclanname($nick)
   if (!%clanname) { notice $nick You need to make a clan before you can start adding members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !addclan new member. | halt }
-  if ($db.get(user,money,$2) < 1) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $getclanname($2) $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   set %invite [ $+ [ $2 ] ] %clanname

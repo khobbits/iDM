@@ -18,7 +18,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
 on *:JOIN:#: {
   if ($nick != $me) {
     var %output = $displayoff($chan,1)
-    if (%output) { notice $nick Currently disabled in # $+ : %output }
+    if (%output) { notice $nick %output }
   }
 }
 
@@ -34,7 +34,7 @@ alias displayoff {
   }
   db.query_end %result
   if (!%output && $2 = 1) return
-  return $logo(DISABLED) These attacks are currently disabled: $iif(%output,$v1,None) $+ .
+  return $logo(DISABLED) These attacks are currently disabled in $1 $+ : $iif(%output,$v1,None) $+ .
 }
 
 alias isdisabled {
