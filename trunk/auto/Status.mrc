@@ -2,7 +2,7 @@ alias autoidm.run {
   ; $1 = chan
   if (!$isdisabled($1,timeout)) {
     enddm $1
-    halt
+    return
   }
   var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,p1)

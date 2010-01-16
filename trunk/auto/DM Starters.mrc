@@ -32,7 +32,6 @@ on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
         var %winlossp1 $gettok(%winloss,1,45)
         var %winlossp2 $gettok(%winloss,2,45)
         msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 stake of $s1($price($hget($chan,stake))) $+ . $s1($hget($chan,p1)) gets the first move.
-
       }
       else {    
         if ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
@@ -141,7 +140,7 @@ alias cancel {
 }
 
 alias enddm {
-  if ($hget($2,p2)) { halt }
+  if ($hget($1,p2)) { halt }
   msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,p1)) $+ 's DM request, and the DM has ended.
   cancel $1
 }
