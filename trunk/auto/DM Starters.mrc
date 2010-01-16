@@ -7,10 +7,10 @@ on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
   if ($regex($nick,/^Unknown[0-9]{5}$/Si)) { notice $Nick You currently have a nick that isn't allowed to use iDM please change it before DMing. | halt }
   if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
-  if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
-  if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($hget($chan)) {
     if (($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2))) { halt }
+    if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
+    if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
     if ($hget($chan,p2)) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
     else {
       if ($address($hget($chan,p1),2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address($hget($chan,p1),2)) > 3) {
@@ -45,9 +45,12 @@ on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
       }
       .timer $+ # off
       set -u25 %enddm [ $+ [ $chan ] ] 0
+      db.set user indm $nick 1
     }
   }
   else {
+    if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
+    if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
     if (stake isin $1) {
       if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
       var %money = $db.get(user,money,$nick)
