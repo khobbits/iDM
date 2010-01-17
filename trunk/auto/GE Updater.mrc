@@ -8,7 +8,7 @@ on *:text:!geupdate*:#idm.staff: {
         sockclose pu
       }
       else {
-        msgsafe #idm.staff $logo(GE UPDATE) Update is in progress. Status: $hget(>geupdate,id) - Duration: $duration($ctime - $hget(>geupdate,t))
+        msgsafe #idm.staff $logo(GE UPDATE) Update is in progress. Status: $hget(>geupdate,id) $+ / $+ $hget(>geupdate,max) - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
       }
     }
     elseif ($2 == start) {
@@ -31,6 +31,7 @@ alias geupdate {
 on *:sockopen:pu:{ 
   hadd >geupdate item $getitem($hget(>geupdate,id))
   hadd >geupdate price $getprice($hget(>geupdate,id))
+  hadd >geupdate name $getname($hget(>geupdate,id))
   if ($hget(>geupdate,item) == 0) { pu2 | return }
   sockwrite -nt $sockname GET /viewitem.ws?obj= $+ $hget(>geupdate,item) HTTP/1.1
   sockwrite -nt $sockname Host: itemdb-rs.runescape.com
@@ -51,14 +52,14 @@ on *:SOCKREAD:pu:{
     if (%price isnum) {
       if ($hget(>geupdate,price) != %price) {
         setitem $hget(>geupdate,item) %price
-        putlog $logo(GE UPDATE) $hget(>geupdate,item) $+ 's price updated from $hget(>geupdate,price) to %price
+        putlog $logo(GE UPDATE) $hget(>geupdate,name) ( $+ $hget(>geupdate,item) $+ ) $+ 's price updated from $hget(>geupdate,price) to %price
       }
     }
     else {
       putlog $logo(GE UPDATE) %price is not a number @ http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item)
     }
     hinc >geupdate id 1
-    if ($hget(>geupdate,id) <= $hget(>geupdate,max)) { .timerpu2 1 5 pu2 }
+    if ($hget(>geupdate,id) <= $hget(>geupdate,max)) { .timerpu2 1 3 pu2 }
     else { 
       msgsafe #idm.staff $logo(GE UPDATE) Price Update Completed. Duration: $duration($ctime - $hget(>geupdate,t)) 
       hfree >geupdate
@@ -67,9 +68,9 @@ on *:SOCKREAD:pu:{
   elseif (The item you were trying to view could not be found. isin %ge) { 
     sockclose pu
     hinc >geupdate id 1
-    if ($hget(>geupdate,id) <= $hget(>geupdate,max)) { .timerpu2 1 5 pu2 }
+    if ($hget(>geupdate,id) <= $hget(>geupdate,max)) { .timerpu2 1 3 pu2 }
     else { 
-      msgsafe #idm.staff $logo(GE UPDATE) Price Update Completed. Duration: $duration($ctime - $hget(>geupdate,t)) 
+      msgsafe #idm.staff $logo(GE UPDATE) Price Update Completed. Duration: $duration($calc($ctime - $hget(>geupdate,t)))
       hfree >geupdate
     }
     msgsafe #idm.staff $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
@@ -98,6 +99,11 @@ alias -l getprice {
   dbcheck
   var %sql = SELECT `price` FROM `drops` WHERE `id` != 0 ORDER BY `price` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,price) === $null,0,$v1)
+}
+alias -l getname {
+  dbcheck
+  var %sql = SELECT `item` FROM `drops` WHERE `id` != 0 ORDER BY `price` DESC LIMIT $1 $+ ,1
+  return $iif($db.select(%sql,item) === $null,0,$v1)
 }
 alias -l getmax {
   dbcheck
