@@ -68,7 +68,6 @@ alias autoidm.turn {
   hadd $1 p2 %nick
 }
 
-
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($hget($chan,p2)) {
