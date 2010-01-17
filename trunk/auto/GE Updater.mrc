@@ -94,17 +94,17 @@ alias -l xcalc {
 }
 alias -l getitem {
   dbcheck
-  var %sql = SELECT `id` FROM `drops` WHERE `id` != 0 ORDER BY `price` DESC LIMIT $1 $+ ,1
+  var %sql = SELECT `id` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,id) === $null,0,$v1)
 }
 alias -l getprice {
   dbcheck
-  var %sql = SELECT `price` FROM `drops` WHERE `id` != 0 ORDER BY `price` DESC LIMIT $1 $+ ,1
+  var %sql = SELECT `price` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,price) === $null,0,$v1)
 }
 alias -l getname {
   dbcheck
-  var %sql = SELECT `item` FROM `drops` WHERE `id` != 0 ORDER BY `price` DESC LIMIT $1 $+ ,1
+  var %sql = SELECT `item` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,item) === $null,0,$v1)
 }
 alias -l getmax {
