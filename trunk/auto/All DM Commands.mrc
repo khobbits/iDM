@@ -63,11 +63,11 @@ on $*:TEXT:/^[!.]/Si:#: {
     hadd $chan p1 %p2
     hadd $chan p2 $nick
     if (<iDM>* iswm %p2) { autoidm.turn $chan }
-	return
+        return
   }
   elseif ($hget($nick) && $hget($nick,$chan) == $chan && $hget($nick,g)) {
     gwd.att $nick $hget($nick,g) $1 $chan
-	return
+        return
   }
 }
 
