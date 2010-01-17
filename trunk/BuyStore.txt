@@ -1796,3 +1796,9 @@
 17/1 10:05:29 vygislt15 sold in the store (mudkip) ~vygislt15@9323D227.22C48D7E.855FE4F6.IP
 17/1 10:06:38 Mjepe bought from the store (accumulator) ~Mjepe@Swift-CF17C518.dhcp.inet.fi
 17/1 10:09:24 xSubZer0o sold in the store (mudkip) ~xSubZer0o@50A5E6C9.9879227C.2E9C2436.IP
+17/1 10:20:42 [{|Ari|}] sold in the store (mudkip) ~sugamama_@Swift-779C192A.lightspeed.prtgmi.sbcglobal.net
+17/1 10:21:52 Kainos3 sold in the store (mudkip) ~Kainos3@Swift-E2277823.sttlwa.fios.verizon.net
+17/1 10:25:26 [SF]James sold in the store (sgs) ~Fredizkoo@Swift-B15DCA3E.lnse1.lon.bigpond.net.au
+17/1 10:36:43 Trav_rawr sold in the store (mudkip) ~Trav_rawr@Swift-C1D6376F.optus.net.au
+17/1 10:37:01 hollaayy bought from the store (ags) ~hollaayy@Swift-BEFF9DF9.hsd1.in.comcast.net
+17/1 10:39:10 Mouldyyy bought from the store (god cape) ~Mouldyyy@Swift-5617C91E.lnse3.win.bigpond.net.au

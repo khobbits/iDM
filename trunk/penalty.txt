@@ -304,3 +304,6 @@
 17/1 07:55:35 Arlie_ parted channel #thecape during a dm oldcash 2935569141 penalty 58711383
 17/1 09:10:26 Norman1413 parted channel #kcr during a dm oldcash 288339211 penalty 5766785
 17/1 09:15:37 bowtehfkdown got !enddm'd on #Aa-Rs oldcash 43997936 newcash 43777947
+17/1 10:26:36 Jc_Rock parted channel #iDM.Boobs during a dm oldcash 3334100949 penalty 66682019
+17/1 10:30:28 Stoner` got !enddm'd on #bandospros oldcash 7867889946 newcash 7828550497
+17/1 10:42:17 Jc_Rock parted channel #Dm.newbies during a dm oldcash 3352287654 penalty 67045754
