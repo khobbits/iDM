@@ -1802,3 +1802,961 @@
 17/1 10:36:43 Trav_rawr sold in the store (mudkip) ~Trav_rawr@Swift-C1D6376F.optus.net.au
 17/1 10:37:01 hollaayy bought from the store (ags) ~hollaayy@Swift-BEFF9DF9.hsd1.in.comcast.net
 17/1 10:39:10 Mouldyyy bought from the store (god cape) ~Mouldyyy@Swift-5617C91E.lnse3.win.bigpond.net.au
+17/1 10:51:45 Stoner` bought from the store (elysian spirit shield) ~Gav@Swift-5BDE1B8C.threembb.co.uk
+17/1 10:53:55 Whity bought from the store (bgs) ~Whity@Swift-DF984D67.fibernet.hu
+17/1 11:13:07 Jaga1920 bought from the store (zgs) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 11:13:10 Jaga1920 bought from the store (ags) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 11:14:26 Hyra084 sold in the store (zgs) ~Hyra084@Swift-344125F0.access.telenet.be
+17/1 11:32:25 [SF]James bought from the store (god cape) ~Fredizkoo@Swift-B15DCA3E.lnse1.lon.bigpond.net.au
+17/1 11:44:14 Jaga1920 bought from the store (bgs) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 11:44:42 Kainos3 bought from the store (elysian shield) ~Kainos3@Swift-E2277823.sttlwa.fios.verizon.net
+17/1 11:44:47 Shelton sold in the store (bgs) ~Shelton@orange.xbnc.net
+17/1 11:46:05 Antony sold in the store (mudkip) ~Antony@7AE0AD68.81D9B110.EF8595C1.IP
+17/1 11:46:29 larding888 sold in the store (dclaws) ~larding88@Swift-89480F59.cable.casema.nl
+17/1 11:47:02 Shelton sold in the store (void mage) ~Shelton@orange.xbnc.net
+17/1 11:47:07 Shelton sold in the store (mage's book) ~Shelton@orange.xbnc.net
+17/1 11:47:28 larding888 sold in the store (accumulator) ~larding88@Swift-89480F59.cable.casema.nl
+17/1 11:56:08 Hyra084 bought from the store (god cape) ~Hyra084@Swift-344125F0.access.telenet.be
+17/1 12:02:18 Stoner` sold in the store (zgs) ~Gav@Swift-5BDE1B8C.threembb.co.uk
+17/1 12:03:08 [PCD]Mikey sold in the store (mudkip) ~PCDMike@Swift-F3E8723E.aztw.cable.virginmedia.com
+17/1 12:04:58 ximberto bought from the store (god cape) ~poker.dio@Swift-5A597B25.dsl.telepac.pt
+17/1 12:04:59 Hyra084 sold in the store (zgs) ~Hyra084@Swift-344125F0.access.telenet.be
+17/1 12:05:18 iDude sold in the store (mudkip) Brad@4271967B.A86BC663.F2B37CF.IP
+17/1 12:10:16 Im_Mango_lol sold in the store (Mudkip) ~Im_Mango_@Swift-D56BEAC2.wa.netspace.net.au
+17/1 12:12:18 [PCD]Mikey bought from the store (Ring of Wealth) ~PCDMike@Swift-F3E8723E.aztw.cable.virginmedia.com
+17/1 12:14:42 Jc_Rock bought from the store (fire cape) ~Jc_Rock@3428BD71.EADFE2F6.992304DA.IP
+17/1 12:41:05 gemeos95 sold in the store (mudkip) ~gemeos95@Swift-EBE437DC.dsl.telepac.pt
+17/1 12:43:41 Alaninhoo bought from the store (zgs) ~Alaninhoo@Swift-CBAF4C7C.bredband.comhem.se
+17/1 12:45:12 blk bought from the store (ring of wealth) ~blk@irc.xbnc.net
+17/1 12:47:50 Hand_of_God sold in the store (zgs) ~Tom@Swift-E41A02A3.atw.dyn.suddenlink.net
+17/1 12:55:39 kingbooker74 sold in the store (bgs) ~kingbooke@Swift-83A59552.cpe.net.cable.rogers.com
+17/1 13:05:23 Gopalas bought from the store (void range) ~Gopalas@Swift-AADD4A0F.vln.skynet.lt
+17/1 13:17:58 Do_Not_Envy sold in the store (mudkip) ~Do_Not_En@E4668A48.FA910E8.53CCF44A.IP
+17/1 13:18:01 noob_cube sold in the store (mudkip) ~noob_cube@Swift-91A3E83F.eburwd4.vic.optusnet.com.au
+17/1 13:18:01 ssj4_suraj sold in the store (mudkip) ~ssj4_sura@3733791.3A82AAC0.3AE3543A.IP
+17/1 13:18:46 Jaga1920 sold in the store (bgs) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 13:18:56 Do_Not_Envy bought from the store (void range) ~Do_Not_En@E4668A48.FA910E8.53CCF44A.IP
+17/1 13:24:12 Il_dumber bought from the store (firecape) ~Il_dumber@Swift-7C1DD446.dhcp.inet.fi
+17/1 13:29:09 kingbooker74 sold in the store (dragon claws) ~kingbooke@Swift-83A59552.cpe.net.cable.rogers.com
+17/1 13:41:35 noob_cube sold in the store (mudkip) ~noob_cube@Swift-91A3E83F.eburwd4.vic.optusnet.com.au
+17/1 13:54:22 Luncher sold in the store (mudkip) ~Saint_Lun@Swift-C9E3F5C6.e-wire.net.au
+17/1 13:56:09 ssj4_suraj bought from the store (god cape) ~ssj4_sura@3733791.3A82AAC0.3AE3543A.IP
+17/1 13:56:12 Hunlegolas bought from the store (void mage) ~Hunlegola@Swift-85AC78EC.pool.t-online.hu
+17/1 13:56:19 Hunlegolas bought from the store (bgs) ~Hunlegola@Swift-85AC78EC.pool.t-online.hu
+17/1 13:59:57 blk bought from the store (barrow gloves) ~blk@irc.xbnc.net
+17/1 14:05:12 Jaga1920 sold in the store (mudkip) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 14:05:15 Jaga1920 bought from the store (god cape) ~Jaga1920@Swift-A19348F6.dynamic.gprs.plus.pl
+17/1 14:05:31 I_Eryk_I sold in the store (mudkip) ~I_Eryk_I@Swift-EDE38C9D.vodafone.hu
+17/1 14:05:32 aussiesrule4 bought from the store (sgs) ~aussiesru@Swift-C4870733.leed.cable.ntl.com
+17/1 14:06:10 Antony sold in the store (zgs) ~Antony@7AE0AD68.81D9B110.EF8595C1.IP
+17/1 14:06:16 Antony sold in the store (mage book) ~Antony@7AE0AD68.81D9B110.EF8595C1.IP
+17/1 14:06:51 SupahPowerZ bought from the store (dclaws) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 14:06:52 boertje36 bought from the store (god cape) ~boertje36@Swift-78CB1454.adsl.scarlet.nl
+17/1 14:10:31 iDude bought from the store (saradomin godsword) Brad@4271967B.A86BC663.F2B37CF.IP
+17/1 14:13:55 Tang bought from the store (ags) ~Tang@Swift-C4BBF894.colc.cable.ntl.com
+17/1 14:16:37 Torres80 sold in the store (mudkip) ~Torres80@Swift-9848FEA4.netvisao.pt
+17/1 14:16:40 Torres80 sold in the store (mudkip) ~Torres80@Swift-9848FEA4.netvisao.pt
+17/1 14:16:41 Torres80 sold in the store (mudkip) ~Torres80@Swift-9848FEA4.netvisao.pt
+17/1 14:20:03 Cw777 bought from the store (void mage) ~Cw777@Swift-18FF6DCE.stny.res.rr.com
+17/1 14:21:43 k_1_l_lax sold in the store (sgs) ~k_1_l_lax@Swift-E50EAF4.dqpe1.lon.bigpond.net.au
+17/1 14:21:51 k_1_l_lax bought from the store (accumulator) ~k_1_l_lax@Swift-E50EAF4.dqpe1.lon.bigpond.net.au
+17/1 14:24:27 Dust_80 bought from the store (bgs) ~Dust_80@Swift-3C860C6F.plusnet.ptn-ag2.dyn.plus.net
+17/1 14:30:40 Cilfaen sold in the store (bgs) ~blah@Swift-B323B0C8.lutn.cable.ntl.com
+17/1 14:32:06 steve_urqule bought from the store (fire cape) ~steve_urq@Swift-DBC38292.access.telenet.be
+17/1 14:34:49 [BF]I-4-Pvp-I bought from the store (sgs) ~BFI-4-P@Swift-67528ED0.adsl2.static.versatel.nl
+17/1 14:39:07 Colten_AGS bought from the store (mudkip) ~Colten_AG@Swift-D10B6683.hsd1.mn.comcast.net
+17/1 14:40:50 Doutorsp sold in the store (mudkip) ~Doutorsp@Swift-8111C8BF.cpe.netcabo.pt
+17/1 14:41:22 [FSC]JD sold in the store (mudkip) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+17/1 14:41:29 I_Eryk_I bought from the store (sgs) ~I_Eryk_I@Swift-EDE38C9D.vodafone.hu
+17/1 14:57:22 Pansy bought from the store (ags) ~Pansy@DBA15BA3.F8789793.3B598581.IP
+17/1 14:59:39 Daanieel sold in the store (accumulator) ~Daanieel@2B70843A.8242B5D4.E70C443B.IP
+17/1 15:03:54 azerke5 sold in the store (mudkip) ~azerke5@Swift-9CF432E7.access.telenet.be
+17/1 15:07:31 Couchmaster4 sold in the store (sgs) ~Couchmast@Swift-915B9886.bstnma.fios.verizon.net
+17/1 15:19:07 Daanieel bought from the store (ags) ~Daanieel@2B70843A.8242B5D4.E70C443B.IP
+17/1 15:27:58 pryo_69 sold in the store (zgs) ~Nugget@Swift-CDBFCF6.lns9.woo.bigpond.net.au
+17/1 15:33:15 devilman bought from the store (armadyl godsword) ~devilman@Swift-BF9DE2B4.lnse4.lon.bigpond.net.au
+17/1 15:36:18 Robby bought from the store (ags) ~Robby@Swift-E85D92EC.hsd1.ma.comcast.net
+17/1 15:38:57 Ztzert sold in the store (mudkip) ~Ztzert@Swift-80FDEF51.jan.bellsouth.net
+17/1 15:43:13 Ix-Jamie-xl sold in the store (mudkip) ~Ix-Jamie-@Swift-8A4556CE.range86-177.btcentralplus.com
+17/1 15:44:48 Doutorsp sold in the store (mudkip) ~Doutorsp@Swift-8111C8BF.cpe.netcabo.pt
+17/1 15:45:16 ximberto sold in the store (bgs) ~poker.dio@Swift-5A597B25.dsl.telepac.pt
+17/1 15:45:26 Robby bought from the store (sgs) ~Robby@Swift-E85D92EC.hsd1.ma.comcast.net
+17/1 15:49:54 Shelton bought from the store (ags) ~Shelton@orange.xbnc.net
+17/1 15:50:01 Shelton bought from the store (zgs) ~Shelton@orange.xbnc.net
+17/1 15:50:08 Shelton bought from the store (sgs) ~Shelton@orange.xbnc.net
+17/1 15:53:18 Live_At_Home bought from the store (ags) ~Live_At_H@654424A1.ACBBFD7A.8F09C6D2.IP
+17/1 15:58:23 ``Adam sold in the store (accumulator) ~Adam@Adam.Helper.Staff.iDM-bot.com
+17/1 16:00:52 Deathday0101 sold in the store (bgs) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:04:23 Robby bought from the store (zgs) ~Robby@Swift-E85D92EC.hsd1.ma.comcast.net
+17/1 16:04:42 bebin5 sold in the store (mudkip) ~bebin5@Swift-2EA5B159.da.cgocable.ca
+17/1 16:06:29 Deathday0101 sold in the store (mudkip) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:09:00 Eveseindefdu sold in the store (accumulator) ~Eveseinde@Swift-6C61F011.hsd1.nj.comcast.net
+17/1 16:09:02 Eveseindefdu sold in the store (dclaws) ~Eveseinde@Swift-6C61F011.hsd1.nj.comcast.net
+17/1 16:16:13 [FSC]JD bought from the store (dclaws) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+17/1 16:21:35 |Hunter| sold in the store (mudkip) ~Hunter@2001:470:1f05:aa0:0:0:0:2102
+17/1 16:22:40 ^Tej^ sold in the store (accumulator) ~Tej@Swift-4CAC12AE.dynamic.dsl.as9105.com
+17/1 16:29:43 kingbooker74 sold in the store (bgs) ~kingbooke@Swift-83A59552.cpe.net.cable.rogers.com
+17/1 16:34:16 TI_xDEATHx bought from the store (void range) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:37:00 Deathday0101 sold in the store (wealth) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:37:06 Deathday0101 sold in the store (ags) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:37:11 Deathday0101 sold in the store (bgs) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:37:16 Deathday0101 sold in the store (sgs) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:37:55 Gavva69 sold in the store (bgs) ~Gavva69@Swift-7AE444AA.adsl.datanet.hu
+17/1 16:38:00 Gavva69 bought from the store (void mage) ~Gavva69@Swift-7AE444AA.adsl.datanet.hu
+17/1 16:38:25 SupahPowerZ bought from the store (ags) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 16:38:31 SupahPowerZ bought from the store (bgs) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 16:42:35 kingbooker74 sold in the store (sgs) ~kingbooke@Swift-83A59552.cpe.net.cable.rogers.com
+17/1 16:42:44 Deathday0101 sold in the store (void range) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:42:53 Deathday0101 bought from the store (elysian spirit shield) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 16:44:48 |Hunter| bought from the store (bgs) ~Hunter@2001:470:1f05:aa0:0:0:0:2102
+17/1 16:50:35 Hydra858 sold in the store (dclaws) ~Hydra858@Swift-757A5F5F.hsd1.il.comcast.net
+17/1 17:01:30 Tang bought from the store (bgs) ~Tang@Swift-C4BBF894.colc.cable.ntl.com
+17/1 17:11:18 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 17:11:29 Iban sold in the store (mudkip) Mibbit@Swift-779FB20C.bb.sky.com
+17/1 17:15:10 vinniej bought from the store (ring of wealth) ~vinniej@Swift-463553A1.ftth.concepts.nl
+17/1 17:16:43 ruee5 bought from the store (ring of wealth) ~ruee5@Swift-D22CE718.lightspeed.wevloh.sbcglobal.net
+17/1 17:17:11 kil_and_win sold in the store (zgs) ~kil_and_w@Swift-41D48866.adsl-dyn.isp.belgacom.be
+17/1 17:21:56 Lucas^ sold in the store (ags) ~Lucas@Swift-AAC9ABC3.ss.shawcable.net
+17/1 17:22:35 Lucas^ bought from the store (accumulator) ~Lucas@Swift-AAC9ABC3.ss.shawcable.net
+17/1 17:22:46 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 17:24:36 Lucas^ sold in the store (mudkip) ~Lucas@Swift-AAC9ABC3.ss.shawcable.net
+17/1 17:24:48 Lucas^ sold in the store (mages book) ~Lucas@Swift-AAC9ABC3.ss.shawcable.net
+17/1 17:28:22 purmagey1 sold in the store (ags) ~purmagey1@Swift-41BBE274.cfl.res.rr.com
+17/1 17:30:52 dommen80 sold in the store (mudkip) ~dommen80@Swift-825A08D9.access.telenet.be
+17/1 17:34:15 dementor238 sold in the store (zgs) ~dementor2@Swift-60962887.meganet.lt
+17/1 17:40:46 danielucho54 bought from the store (fire cape) ~danieluch@A93947F0.3585DA79.323BDCA4.IP
+17/1 17:45:07 steve_urqule sold in the store (bgs) ~steve_urq@Swift-DBC38292.access.telenet.be
+17/1 17:46:45 Red-Tyrant sold in the store (mudkip) ~Red-Tyran@Swift-BE9FDFF3.aztw.cable.virginmedia.com
+17/1 17:50:35 The_Rocky33 sold in the store (mudkip) fiye@Swift-54933AAE.cpe.netcabo.pt
+17/1 17:57:04 ben29rockss bought from the store (void range) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+17/1 18:00:35 Natee bought from the store (Armadyl Godsword) ~Natee@C42CBF63.D8D9DD4B.ADDADD4C.IP
+17/1 18:08:13 jupi234 sold in the store (mudkip) ~Ricsi@Swift-B16F2D14.adsl.enternet.hu
+17/1 18:12:31 Warfare52 sold in the store (ags) ~Warfare52@Swift-2D626338.ss.shawcable.net
+17/1 18:12:38 Warfare52 bought from the store (bgs) ~Warfare52@Swift-2D626338.ss.shawcable.net
+17/1 18:15:27 Tank_Teh_Hit bought from the store (ags) ~Tank_Teh_@Swift-4D08CD05.dsl.rcsntx.sbcglobal.net
+17/1 18:20:30 Ip0d sold in the store (zgs) ~Ip0d@Swift-1A5E62F5.wk.net
+17/1 18:20:34 Ip0d sold in the store (zgs) ~Ip0d@Swift-1A5E62F5.wk.net
+17/1 18:20:43 Ip0d sold in the store (mudkip) ~Ip0d@Swift-1A5E62F5.wk.net
+17/1 18:21:52 Ip0d bought from the store (void range) ~Ip0d@Swift-1A5E62F5.wk.net
+17/1 18:23:47 |Hunter| sold in the store (bgs) ~Hunter@2001:470:1f05:aa0:0:0:0:2102
+17/1 18:23:48 noobcake bought from the store (sgs) ~noobcake@Swift-DB91AE97.dynamic.ip.windstream.net
+17/1 18:25:51 fighter_fre sold in the store (ags) ~fighter_f@Swift-D9940602.access.telenet.be
+17/1 18:38:13 Nick|N0t bought from the store (void range) ~NickN0t@Swift-C633B0A6.nctv.com
+17/1 18:48:32 Tank_Teh_Hit sold in the store (ags) ~Tank_Teh_@Swift-4D08CD05.dsl.rcsntx.sbcglobal.net
+17/1 18:55:29 Micah860 bought from the store (God Cape) ~Micah860@Swift-618E71EA.hsd1.in.comcast.net
+17/1 19:07:27 [U]Shtrength bought from the store (void mage) ~UShtren@Swift-5902EBB5.tx.res.rr.com
+17/1 19:07:50 kittyzombie5 bought from the store (mudkip) ~Kittyzomb@Swift-3513FDA8.mpls.qwest.net
+17/1 19:07:52 Taajir bought from the store (accumulator) ~Taajir@Swift-BADE1D0C.rochester.res.rr.com
+17/1 19:08:06 AntKosScrubs bought from the store (mudkip) ~AntKosScr@D0502DC8.8D5F157C.5214208E.IP
+17/1 19:08:23 AntKosScrubs sold in the store (mudkip) ~AntKosScr@D0502DC8.8D5F157C.5214208E.IP
+17/1 19:09:10 kodyqwerty sold in the store (mudkip) ~kodyqwert@33CE7108.5DC0024F.D49599D7.IP
+17/1 19:10:23 Codyyyyyyyy bought from the store (void range) ~Codyyyyyy@Swift-2020A8C7.hsd1.fl.comcast.net
+17/1 19:18:07 Thief sold in the store (mudkip) ~Thief@Thief.owns.be
+17/1 19:18:34 Thief sold in the store (mudkip) ~Thief@Thief.owns.be
+17/1 19:18:37 Thief sold in the store (mudkip) ~Thief@Thief.owns.be
+17/1 19:19:10 `13_Dragon_1 sold in the store (saradomin godsword) ~13_Drago@Swift-72CEB83D.dynamic.dial.as9105.com
+17/1 19:19:17 `13_Dragon_1 bought from the store (fire cape) ~13_Drago@Swift-72CEB83D.dynamic.dial.as9105.com
+17/1 19:23:34 david[pip] bought from the store (accumulator) ~davidpip@Swift-9CC87BA9.tampfl.fios.verizon.net
+17/1 19:23:42 david[pip] bought from the store (void range) ~davidpip@Swift-9CC87BA9.tampfl.fios.verizon.net
+17/1 19:24:31 Bondjee sold in the store (accumulator) ~Bondjee@Swift-6B106F02.direct-adsl.nl
+17/1 19:29:04 Codyyyyyyyy sold in the store (Mudkip) ~Codyyyyyy@Swift-2020A8C7.hsd1.fl.comcast.net
+17/1 19:36:10 loopy_land33 sold in the store (dclaws) ~loopy_lan@Swift-EA3041AA.chi.dsl-w.verizon.net
+17/1 19:38:22 Bondjee sold in the store (accumulator) ~Bondjee@Swift-6B106F02.direct-adsl.nl
+17/1 19:38:28 Bondjee sold in the store (accumulator) ~Bondjee@Swift-6B106F02.direct-adsl.nl
+17/1 19:38:37 Bondjee bought from the store (accumulator) ~Bondjee@Swift-6B106F02.direct-adsl.nl
+17/1 19:43:43 [FSC]JD bought from the store (mudkip) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+17/1 19:44:01 CY5 sold in the store (zgs) ~CY5@8E94E031.7363DB13.522DFF59.IP
+17/1 19:44:12 CY5 bought from the store (ags) ~CY5@8E94E031.7363DB13.522DFF59.IP
+17/1 19:44:29 Sid|Follow sold in the store (mage's book) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+17/1 19:45:01 Warfare52 bought from the store (void range) ~Warfare52@Swift-2D626338.ss.shawcable.net
+17/1 19:47:20 Sid|Follow bought from the store (dragon claws) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+17/1 19:48:55 Maxiii-69 bought from the store (ags) ~Maxiii-69@Swift-2024450A.range86-139.btcentralplus.com
+17/1 19:51:49 KierKJR bought from the store (ags) ~KierKJR@Swift-F3EEC9C9.range217-39.btcentralplus.com
+17/1 19:53:59 loopy_land33 sold in the store (mudkip) ~loopy_lan@Swift-EA3041AA.chi.dsl-w.verizon.net
+17/1 19:57:30 Stoner` sold in the store (mudkip) ~Gav@Swift-FDB87C0.threembb.co.uk
+17/1 19:59:09 Black_Guy bought from the store (bgs) ~Black_Guy@Swift-CDE5EA62.sip.chs.bellsouth.net
+17/1 20:02:06 [FSC]JD sold in the store (mudkip) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+17/1 20:04:10 flyer1017 bought from the store (bgs) ~flyguy101@Swift-C4A05AE.dhcp.insightbb.com
+17/1 20:08:47 Tirri sold in the store (mudkip) ~Tirri@Swift-503B5563.elisa-laajakaista.fi
+17/1 20:12:26 Slimjustin sold in the store (mudkip) ~Slimjusti@Swift-F23FE921.dyn.centurytel.net
+17/1 20:15:37 Stoner` bought from the store (barrows gloves) ~Gav@Swift-FDB87C0.threembb.co.uk
+17/1 20:32:26 Ancient_sge bought from the store (barrow gloves) ~Ancient_s@Swift-B417D7E9.dsl.irvnca.pacbell.net
+17/1 20:32:39 Newton3788 sold in the store (mudkip) ~_Matt_@Swift-C96B34F3.buffalo.res.rr.com
+17/1 20:34:37 WASTED sold in the store (sgs) ~WASTED@my.friend.wants.a.vh0st.co.cc
+17/1 20:40:34 loopy_land33 bought from the store (wealth) ~loopy_lan@Swift-EA3041AA.chi.dsl-w.verizon.net
+17/1 20:43:03 iron01 sold in the store (ags) ~iron01@Swift-4E4CAC48.hsd1.pa.comcast.net
+17/1 20:59:29 ^Tej^ sold in the store (accumulator) ~Tej@Swift-4CAC12AE.dynamic.dsl.as9105.com
+17/1 21:00:03 kyleisbest4 sold in the store (bgs) ~kyleisbes@Swift-16FFB4AF.dynamic.ip.windstream.net
+17/1 21:00:10 kyleisbest4 sold in the store (mudkip) ~kyleisbes@Swift-16FFB4AF.dynamic.ip.windstream.net
+17/1 21:01:30 tfot bought from the store (barrows gloves) ~ya@Swift-359AC78B.dc.dc.cox.net
+17/1 21:04:38 tfot sold in the store (mudkip) ~ya@Swift-359AC78B.dc.dc.cox.net
+17/1 21:05:08 Ix-Jamie-xl bought from the store (bgs) ~Ix-Jamie-@Swift-8A4556CE.range86-177.btcentralplus.com
+17/1 21:05:11 Ix-Jamie-xl bought from the store (zgs) ~Ix-Jamie-@Swift-8A4556CE.range86-177.btcentralplus.com
+17/1 21:05:57 Siena sold in the store (bgs) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:04 Siena sold in the store (sgs) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:11 Siena sold in the store (dragon claws) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:19 Siena sold in the store (mudkip) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:20 Siena sold in the store (mudkip) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:22 Siena sold in the store (mudkip) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:36 Siena sold in the store (accumulator) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:06:38 Siena sold in the store (mages book) ~Siena@E57F7CC1.9B2025BA.55BC0CBA.IP
+17/1 21:09:23 PK_U bought from the store (fire cape) ~Emericabo@Swift-1A017DC9.neo.res.rr.com
+17/1 21:09:53 Pure_0wns55 bought from the store (accumulator) ~Pure_0wns@Swift-382F8FCF.dip.t-dialin.net
+17/1 21:12:16 Maxiii-69 sold in the store (mudkip) ~Maxiii-69@Swift-2024450A.range86-139.btcentralplus.com
+17/1 21:24:29 rubenapf bought from the store (dclaws) ~rubenapf@Swift-188345C8.dial.nortenet.pt
+17/1 21:26:09 gangstergast bought from the store (void mage) ~gangsterg@Swift-A19B3E8C.zeelandnet.nl
+17/1 21:27:21 davidbabas bought from the store (sgs) ~davidbaba@58816884.EC37DBE3.37F09837.IP
+17/1 21:29:13 [FSC]JD bought from the store (mages book) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+17/1 21:30:15 ``Danny bought from the store (dclaws) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:30:23 ``Danny sold in the store (mudkip) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:30:26 ``Danny sold in the store (mudkip) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:30:29 ``Danny sold in the store (ags) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:31:04 Exe_Arco bought from the store (ags) ~Exe_Arco@Swift-5215C177.hsd1.ut.comcast.net
+17/1 21:31:14 timothyj9 sold in the store (mudkip) ~timothyj9@Swift-3C8C177D.dsl.okcyok.swbell.net
+17/1 21:32:11 ``Danny sold in the store (ags) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:44:34 ``Danny sold in the store (zgs) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 21:54:13 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 21:54:15 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 21:59:30 `13_Dragon_1 sold in the store (armadyl godsword) ~13_Drago@Swift-72CEB83D.dynamic.dial.as9105.com
+17/1 21:59:41 davidbabas bought from the store (void range) ~davidbaba@Swift-E7B79CC.net.novis.pt
+17/1 22:01:35 `slayer bought from the store (ags) ~lath@Swift-B19A7CEB.triad.res.rr.com
+17/1 22:05:27 ``Danny sold in the store (mudkip) DNTWHOISME@Swift-1398BF6B.ipt.aol.com
+17/1 22:11:05 SupahPowerZ bought from the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+17/1 22:16:21 [Fire_Coco] bought from the store (god cape) ~Fire_Coc@Swift-46D68FFB.adsl2.static.versatel.nl
+17/1 22:20:25 I_SEBAAQ_II bought from the store (ags) ~I_SEBAAQ_@A40A50B8.C7DDDC23.A0F19412.IP
+17/1 22:22:27 [Laura] bought from the store (mage's book) ~Laura@Swift-6EDB448E.dynamic.dsl.as9105.com
+17/1 22:22:33 [Laura] bought from the store (void mage) ~Laura@Swift-6EDB448E.dynamic.dsl.as9105.com
+17/1 22:25:09 Frag bought from the store (accumulator) ~Frag@Swift-2AFAD6CC.upc-f.chello.nl
+17/1 22:25:18 `[James] sold in the store (mudkip) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+17/1 22:26:16 flo bought from the store (void range) ~flo@Swift-87F5C139.vie.surfer.at
+17/1 22:26:21 Deathday0101 sold in the store (mudkip) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 22:26:51 winky_bill bought from the store (ags) ~winky_bil@DE4642D9.16088D5E.61E42330.IP
+17/1 22:27:59 Deathday0101 sold in the store (mudkip) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 22:28:05 Deathday0101 bought from the store (void range) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 22:28:40 winky_bill sold in the store (ags) ~winky_bil@DE4642D9.16088D5E.61E42330.IP
+17/1 22:30:12 [--|Darklight|--] sold in the store (mudkip) ~--Darkl@4F8D8104.5EC5A74.7B52391.IP
+17/1 22:30:53 winky_bill sold in the store (mudkip) ~winky_bil@DE4642D9.16088D5E.61E42330.IP
+17/1 22:31:43 Amore94 bought from the store (bgs) ~Amore94@Swift-EF3C1CD1.range86-164.btcentralplus.com
+17/1 22:34:23 frisbeep bought from the store (Barrows Gloves) ~mememe@Swift-BA90D47D.hsd1.ma.comcast.net
+17/1 22:34:24 Pure_0_pk_0 bought from the store (ags) ~iamgod@pinged.xbnc.net
+17/1 22:34:35 shadowes bought from the store (sgs) ~shadowes@Swift-6FE89846.cinci.res.rr.com
+17/1 22:54:19 santamarko sold in the store (mudkip) ~santamark@Swift-6987D653.cpe.netcabo.pt
+17/1 22:54:35 bruce|killn sold in the store (mudkip) ~bruceafr@80301A4A.B629BF48.AC56145.IP
+17/1 22:55:07 Elarer sold in the store (accumulator) Mibbit@Swift-29E7E1EE.dsl.hstntx.swbell.net
+17/1 22:55:17 `[James] sold in the store (sgs) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+17/1 22:55:22 [[Matt sold in the store (sgs) ~Matt@Swift-FFF8BC55.zone3.bethere.co.uk
+17/1 22:58:48 santamarko bought from the store (god cape) ~santamark@Swift-6987D653.cpe.netcabo.pt
+17/1 22:58:56 santamarko bought from the store (mage's book) ~santamark@Swift-6987D653.cpe.netcabo.pt
+17/1 23:00:24 Mrs_Satch bought from the store (ags) ~Mrs_Satch@DDF14763.B7C7F5E2.EDFFD25D.IP
+17/1 23:04:35 nitegazero sold in the store (sgs) ~nitegazer@Swift-F637C6CB.sotn.cable.ntl.com
+17/1 23:05:17 nitegazero sold in the store (Accumulator) ~nitegazer@Swift-F637C6CB.sotn.cable.ntl.com
+17/1 23:12:08 Apupils11 sold in the store (godcape) ~Apupils11@Swift-EF0B41F2.lsanca.dsl-w.verizon.net
+17/1 23:23:43 kiss210 bought from the store (void mage) ~kiss210@Swift-AA300A7.range86-132.btcentralplus.com
+17/1 23:24:37 iron01 sold in the store (mudkip) ~iron01@Swift-4E4CAC48.hsd1.pa.comcast.net
+17/1 23:30:22 ``Light bought from the store (sgs) ~admin@Swift-1CB58982.jetstream.xtra.co.nz
+17/1 23:31:09 Ti_xDEATHx bought from the store (void mage) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+17/1 23:33:17 I-Brandon-I sold in the store (mudkip) ~I-Brandon@Swift-47660B2C.dsl.tpkaks.swbell.net
+17/1 23:36:35 Rasp sold in the store (ags) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:40 Rasp sold in the store (ags) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:44 Rasp sold in the store (bgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:49 Rasp sold in the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:51 Rasp sold in the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:51 Rasp sold in the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:56 Rasp sold in the store (zgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:36:57 Rasp sold in the store (zgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:00 Rasp sold in the store (dclaws) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:01 Rasp sold in the store (dclaws) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:12 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:13 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:14 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:15 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:15 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:37:15 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:39:25 Rasp sold in the store (mages book) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:39:28 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:39:37 Rasp sold in the store (accumulator) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:39:42 Rasp sold in the store (accumulator) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:39:48 Rasp sold in the store (accumulator) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+17/1 23:42:50 Lasse sold in the store (mudkip) ~Master_la@Swift-7A979C7C.rev.stofanet.dk
+17/1 23:46:02 |Nathan| sold in the store (mudkip) ~Nathan@Swift-900A8D4C.dsl.spfdmo.sbcglobal.net
+17/1 23:48:21 The_Rocky33 sold in the store (zgs) fiye@Swift-54933AAE.cpe.netcabo.pt
+17/1 23:51:03 The_Rocky33 bought from the store (void range) fiye@Swift-54933AAE.cpe.netcabo.pt
+17/1 23:57:05 Zis22 sold in the store (mudkip) ~gmedcyoi@Swift-6B6EAA72.rev.vodafone.pt
+17/1 23:57:39 [FSC]JD sold in the store (mudkip) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 00:00:11 jhann13 sold in the store (ags) ~nhmzdpdo@605E9A03.503C70FC.5F283333.IP
+18/1 00:00:22 jhann13 sold in the store (sgs) ~nhmzdpdo@605E9A03.503C70FC.5F283333.IP
+18/1 00:02:18 Deathday0101 bought from the store (sgs) ~Ti_xDEATH@Swift-9872814.hsd1.ma.comcast.net
+18/1 00:04:42 Hattricks3 sold in the store (ags) ~Hattricks@Swift-85FB3443.sbndin.dsl-w.verizon.net
+18/1 00:04:52 Hattricks3 sold in the store (sgs) ~Hattricks@Swift-85FB3443.sbndin.dsl-w.verizon.net
+18/1 00:05:15 ben29rockss bought from the store (bgs) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+18/1 00:05:35 Hattricks3 bought from the store (void mage) ~Hattricks@Swift-85FB3443.sbndin.dsl-w.verizon.net
+18/1 00:06:11 kyleisbest4 sold in the store (mudkip) ~kyleisbes@Swift-16FFB4AF.dynamic.ip.windstream.net
+18/1 00:09:38 Stoner` bought from the store (ags) ~Gav@Swift-73D9043.sub.mbb.three.co.uk
+18/1 00:09:41 Stoner` bought from the store (zgs) ~Gav@Swift-73D9043.sub.mbb.three.co.uk
+18/1 00:11:03 coolgreencat bought from the store (ring of wealth) ~coolziggy@Swift-E992E924.om.om.cox.net
+18/1 00:12:02 switchblade bought from the store (bgs) ~switchbla@Swift-52A5611A.bfcz1.lon.bigpond.net.au
+18/1 00:13:41 br_kiss sold in the store (mudkip) ~br_kiss@BE41C761.9E6A14C5.1BCBBCBF.IP
+18/1 00:14:50 Yasinova bought from the store (wealth) ~Yasinova@Swift-D4661B65.direct-adsl.nl
+18/1 00:15:44 Raven2002 sold in the store (zgs) ~Raven2002@Swift-52ADC33B.client.mchsi.com
+18/1 00:15:48 Dannii sold in the store (ags) ~Dannii@Swift-B0CE5C8.cable.virginmedia.com
+18/1 00:15:51 Dannii sold in the store (bgs) ~Dannii@Swift-B0CE5C8.cable.virginmedia.com
+18/1 00:15:58 Dannii sold in the store (accumulator) ~Dannii@Swift-B0CE5C8.cable.virginmedia.com
+18/1 00:15:59 Dannii sold in the store (accumulator) ~Dannii@Swift-B0CE5C8.cable.virginmedia.com
+18/1 00:16:43 xo_d34th bought from the store (fire cape) ~xo_d34th@Swift-94576EFD.cpe.net.cable.rogers.com
+18/1 00:19:17 Lordbum6 bought from the store (wealth) ~Ben@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 00:22:08 Aaron`` sold in the store (accumulator) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+18/1 00:23:13 Unforgiv4ble bought from the store (void range) ~Unforgiv4@Swift-3DD68773.dsl.telstraclear.net
+18/1 00:24:42 Jacks906 bought from the store (ags) ~Jacks906@Swift-320AA7D2.dsl.telepac.pt
+18/1 00:26:41 Jacks906 sold in the store (mudkip) ~Jacks906@Swift-320AA7D2.dsl.telepac.pt
+18/1 00:27:06 [FSC]JD bought from the store (sgs) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 00:29:45 Deathbeam bought from the store (void range) ~Deathbeam@Swift-99DD0110.dsl.akrnoh.sbcglobal.net
+18/1 00:30:11 jhann13 sold in the store (bgs) ~nhmzdpdo@605E9A03.503C70FC.5F283333.IP
+18/1 00:30:28 Stoner` sold in the store (mudkip) ~Gav@Swift-73D9043.sub.mbb.three.co.uk
+18/1 00:30:31 Stoner` bought from the store (sgs) ~Gav@Swift-73D9043.sub.mbb.three.co.uk
+18/1 00:31:48 jhann13 sold in the store (void range) ~nhmzdpdo@605E9A03.503C70FC.5F283333.IP
+18/1 00:34:52 Norman1413 bought from the store (armadyl Godsword) ~Norman141@Swift-342DA028.lns7.wel.bigpond.net.au
+18/1 00:44:09 `Dante sold in the store (ags) ~Dante@Swift-693D5D0A.bb.sky.com
+18/1 00:48:37 LordWyve sold in the store (mudkip) ~LordWyve@Swift-D794D109.asm.bellsouth.net
+18/1 00:49:27 Dslay2 bought from the store (god cape) ~Dslay2@69152952.981226DB.9A03824B.IP
+18/1 00:49:36 [Austin] sold in the store (sgs) ~Austin@Swift-405FF884.client.mchsi.com
+18/1 00:51:19 Trav_rawr sold in the store (mudkip) ~Trav_rawr@Swift-C1D6376F.optus.net.au
+18/1 00:58:56 okumurha_ sold in the store (mudkip) ~okumurha@8147ED70.E8243B.D0FEE34B.IP
+18/1 00:59:33 Hattricks3 bought from the store (void range) ~Hattricks@Swift-85FB3443.sbndin.dsl-w.verizon.net
+18/1 01:00:02 Retro_Robots sold in the store (mudkip) ~Retro_rob@Swift-1990AB78.cg.shawcable.net
+18/1 01:00:14 Raven2002 sold in the store (mages book) ~Raven2002@Swift-52ADC33B.client.mchsi.com
+18/1 01:09:49 [[`Stephen`]] sold in the store (mudkip) ~Obamaa@Its.not.what.it.looks.like.so.undo.it
+18/1 01:13:06 hsarules bought from the store (sgs) ~hsarules@Swift-B4AB9018.jetstream.xtra.co.nz
+18/1 01:14:33 Retro_Robots bought from the store (fire cape) ~Retro_rob@Swift-1990AB78.cg.shawcable.net
+18/1 01:18:11 CY5 bought from the store (bgs) ~CY5@8E94E031.7363DB13.522DFF59.IP
+18/1 01:20:09 Jacks906 bought from the store (god cape) ~Jacks906@Swift-320AA7D2.dsl.telepac.pt
+18/1 01:22:25 CY5 sold in the store (ags) ~CY5@8E94E031.7363DB13.522DFF59.IP
+18/1 01:30:44 [FSC]JD sold in the store (bgs) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 01:30:45 `13_Dragon_1 sold in the store (mudkip) ~13_Drago@Swift-72CEB83D.dynamic.dial.as9105.com
+18/1 01:40:38 rang_18 bought from the store (ags) ~rang_18@B15C4896.F7B8E6A7.A1C7E4A0.IP
+18/1 01:42:22 Chris|Downfall bought from the store (God Cape) ~ChrisDow@Swift-B4F4B1C.burl.east.myfairpoint.net
+18/1 01:42:42 darke_serian sold in the store (mudkip) ~darke_ser@E3B7153A.605ADCAD.6519E54A.IP
+18/1 01:43:38 Damo bought from the store (void range) ~Damo@Swift-647A37B8.lnse2.woo.bigpond.net.au
+18/1 01:55:42 blackthorn92 bought from the store (ring of wealth) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 01:55:51 nubson bought from the store (void range) ~chatzilla@Swift-4280D55A.home.cgocable.net
+18/1 01:56:04 nubson bought from the store (mudkip) ~chatzilla@Swift-4280D55A.home.cgocable.net
+18/1 01:57:56 WeeZyJr bought from the store (barrows gloves) ~WeeZyJr@Swift-13B3E8D2.iland.net
+18/1 02:00:22 [FSC]JD sold in the store (zgs) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 02:00:24 [FSC]JD sold in the store (zgs) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 02:02:39 d0ggie_day bought from the store (sgs) ~d0ggie_da@Swift-80349DC3.hsd1.va.comcast.net
+18/1 02:07:14 bempire bought from the store (firecape) ~bempire@B87334B2.F6C38A5A.57B37B27.IP
+18/1 02:11:52 Kman bought from the store (accumulator) ~Kman@Swift-93C2F2B5.static.dsl.dodo.com.au
+18/1 02:15:46 nropking1 sold in the store (accumulator) ~nropking1@someone.help.me.i.really.want.a.vh0st.co.cc
+18/1 02:21:02 kodyqwerty sold in the store (zgs) ~kodyqwert@33CE7108.5DC0024F.D49599D7.IP
+18/1 02:24:07 conquerking bought from the store (void range) ~conquerki@Swift-49978F10.lsanca.fios.verizon.net
+18/1 02:25:14 bowtehfkdown bought from the store (ags) ~bowtehfkd@Swift-BCB19AA1.lns5.fli.bigpond.net.au
+18/1 02:25:24 To_much_red sold in the store (mudkip) ~To_much_r@Swift-2AA1D34B.cust.wildblue.net
+18/1 02:26:05 To_much_red bought from the store (ags) ~To_much_r@Swift-2AA1D34B.cust.wildblue.net
+18/1 02:27:24 rangeorstr1 bought from the store (armadyl godsword) ~rangeorst@Swift-781ED5F4.satx.res.rr.com
+18/1 02:31:54 CY5 bought from the store (void range) ~CY5@8E94E031.7363DB13.522DFF59.IP
+18/1 02:37:23 [FSC]JD sold in the store (ags) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 02:39:21 Norman1413 bought from the store (bgs) ~Norman141@Swift-342DA028.lns7.wel.bigpond.net.au
+18/1 02:41:41 To_much_red sold in the store (ags) ~To_much_r@Swift-2AA1D34B.cust.wildblue.net
+18/1 02:45:00 To_much_red bought from the store (void range) ~To_much_r@Swift-2AA1D34B.cust.wildblue.net
+18/1 02:48:27 Aaron`` sold in the store (mages) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+18/1 02:48:46 Shot_teh_ownz sold in the store (mudkip) ~Shot@Swift-CE54C44A.washdc.east.verizon.net
+18/1 02:49:56 Shot_teh_ownz sold in the store (mudkip) ~Shot@Swift-CE54C44A.washdc.east.verizon.net
+18/1 02:56:21 ben29rockss bought from the store (accumulator) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+18/1 02:57:36 Newton3788 bought from the store (wealth) ~_Matt_@Swift-C96B34F3.buffalo.res.rr.com
+18/1 03:03:32 [FSC]JD bought from the store (ring of wealth) ~FSCJD@Swift-E081235B.dhcp.embarqhsd.net
+18/1 03:14:04 [px]xtremhocke8 sold in the store (accumulator) ~pxxtrem@Swift-599E050B.hsd1.nj.comcast.net
+18/1 03:14:20 [px]xtremhocke8 bought from the store (ags) ~pxxtrem@Swift-599E050B.hsd1.nj.comcast.net
+18/1 03:23:34 I_Taze sold in the store (bgs) ~I_Taze@Swift-A077E037.austin.res.rr.com
+18/1 03:27:57 Brainiac186 sold in the store (mudkip) ~Brainiac1@Swift-664CC192.nwrknj.fios.verizon.net
+18/1 03:32:38 Thief sold in the store (ags) ~Thief@Thief.owns.be
+18/1 03:39:47 bowtehfkdown bought from the store (bgs) ~bowtehfkd@Swift-BCB19AA1.lns5.fli.bigpond.net.au
+18/1 03:42:45 [--Casey--] bought from the store (zamorak godsword) ~--Casey-@Swift-E2A5C83E.ptldme.east.myfairpoint.net
+18/1 03:49:12 Ivan_Lord bought from the store (ags) ~gkhfqj@2D74BDCD.C2AA5A6.46A9C355.IP
+18/1 03:57:22 Goban bought from the store (barrows gloves) ~goban@2001:470:1f05:aa0:0:0:0:2395
+18/1 04:02:30 Blck sold in the store (mudkip) ~t3h_m3h@4DCA67CE.6FFFBFA2.CB22AE4A.IP
+18/1 04:06:37 nikolas bought from the store (void mage) ~nikolas@D98E7FD7.83979F49.D11E35AB.IP
+18/1 04:06:44 nikolas bought from the store (god cape) ~nikolas@D98E7FD7.83979F49.D11E35AB.IP
+18/1 04:09:50 Me_LuVs_AtK bought from the store (ags) ~Me_LuVs_A@Swift-23E9EA85.dsl.elpstx.swbell.net
+18/1 04:13:23 piff109 sold in the store (mage book) ~id2darkfu@Swift-54E3141D.cpe.cableone.net
+18/1 04:13:25 Unforgiv4ble sold in the store (mudkip) ~Unforgiv4@Swift-3DD68773.dsl.telstraclear.net
+18/1 04:16:42 Known bought from the store (void mage) ~Known@swiftscript.chaosbnc.net
+18/1 04:18:26 conquerking bought from the store (accumulator) ~conquerki@Swift-49978F10.lsanca.fios.verizon.net
+18/1 04:26:55 Brainiac186 sold in the store (mudkip) ~Brainiac1@Swift-664CC192.nwrknj.fios.verizon.net
+18/1 04:30:34 Brainiac186 bought from the store (ring of wealth) ~Brainiac1@Swift-664CC192.nwrknj.fios.verizon.net
+18/1 04:31:04 Domi_Atan sold in the store (mudkip) ~Perfect@i.know.your.mothers.facebook.info.gf
+18/1 04:32:35 [344_link] sold in the store (mudkip) ~344_link@Swift-D751BEEC.mpls.qwest.net
+18/1 04:32:48 hsarules sold in the store (mudkip) ~hsarules@Swift-B4AB9018.jetstream.xtra.co.nz
+18/1 04:35:42 Norman1413 sold in the store (bgs) ~Norman141@Swift-342DA028.lns7.wel.bigpond.net.au
+18/1 04:37:35 Antony sold in the store (dragon claws) ~Antony@7AE0AD68.81D9B110.EF8595C1.IP
+18/1 04:47:59 glauco234 sold in the store (mudkip) ~glauco_ru@Swift-D342EE46.dsl.telesp.net.br
+18/1 04:49:44 Boss_Peter sold in the store (zgs) ~Peter@Swift-7AF65C14.fuse.net
+18/1 04:52:10 chrissss bought from the store (God cape) ~chrissss@Swift-521F12ED.ipt.aol.com
+18/1 04:53:37 Exe_Arco bought from the store (void range) ~Exe_Arco@Swift-5215C177.hsd1.ut.comcast.net
+18/1 04:57:43 glauco234 bought from the store (ags) ~glauco_ru@Swift-D342EE46.dsl.telesp.net.br
+18/1 04:57:49 Me_LuVs_AtK bought from the store (sgs) ~Me_LuVs_A@Swift-23E9EA85.dsl.elpstx.swbell.net
+18/1 04:58:07 oops_barrage sold in the store (ags) ~oops_barr@Swift-9B184884.dsl.ltrkar.sbcglobal.net
+18/1 05:19:19 kodyqwerty sold in the store (mudkip) ~kodyqwert@33CE7108.5DC0024F.D49599D7.IP
+18/1 05:21:46 [SF]James bought from the store (sgs) ~Fredizkoo@Swift-B15DCA3E.lnse1.lon.bigpond.net.au
+18/1 05:24:43 [x] bought from the store (sgs) ~FO@nice.run3scaper.co.cc
+18/1 05:46:36 Dr_Dre_Beats sold in the store (mudkip) ~Dr_Dre_Be@4CB77E43.D43300D7.F8D2770C.IP
+18/1 05:53:24 [DP]lVludkipzz|Mark sold in the store (mudkip) ~DPlVlud@Swift-30C57F65.dhcp.insightbb.com
+18/1 05:53:53 Newton3788 sold in the store (accumulator) ~_Matt_@Swift-C96B34F3.buffalo.res.rr.com
+18/1 05:54:02 DJ`` bought from the store (godcape) ~DJ@Swift-EF8E818B.hsd1.il.comcast.net
+18/1 05:54:32 hsarules sold in the store (mudkip) ~hsarules@Swift-B4AB9018.jetstream.xtra.co.nz
+18/1 06:06:58 |Jay| bought from the store (fire cape) ~Jay@Swift-8B250665.hsd1.ca.comcast.net
+18/1 06:12:48 Wojownik sold in the store (mudkip) ~Wojownik@Swift-3F9215B2.adsl.inetia.pl
+18/1 06:14:05 blackthorn92 sold in the store (bgs) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 06:16:34 [344_link] bought from the store (ring of wealth) ~344_link@Swift-D751BEEC.mpls.qwest.net
+18/1 06:22:44 Lordbum6 sold in the store (zgs) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 06:29:44 Taylor|iEagles bought from the store (zgs) ~TayloriE@Swift-23E20ECF.lv.lv.cox.net
+18/1 06:33:32 conquerking sold in the store (mudkip) ~conquerki@Swift-49978F10.lsanca.fios.verizon.net
+18/1 06:33:52 fire_yard1 sold in the store (wealth) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:34:03 fire_yard1 sold in the store (ags) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:34:06 fire_yard1 sold in the store (bgs) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:34:12 fire_yard1 sold in the store (mudkip) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:34:46 kenshu-x sold in the store (zgs) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
+18/1 06:34:51 fire_yard1 sold in the store (accumulator) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:35:06 Artic_Wolf14 bought from the store (dclaws) ~ArcticWol@Swift-816E1F78.rochester.res.rr.com
+18/1 06:35:28 fire_yard1 sold in the store (void range) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:37:24 fire_yard1 sold in the store (mudkip) ~fire_yard@Swift-747B3AA8.lns7.pie.bigpond.net.au
+18/1 06:42:28 Taylor|iEagles bought from the store (mudkip) ~TayloriE@Swift-23E20ECF.lv.lv.cox.net
+18/1 06:43:39 flopples_b sold in the store (mudkip) ~Darren_Da@Swift-A0CA8DA0.hsd1.or.comcast.net
+18/1 06:46:00 Oger sold in the store (mudkip) ~Oger@Swift-D1F5F5CF.dr03.mdtw.ny.frontiernet.net
+18/1 06:47:20 kenshu-x sold in the store (mudkip) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
+18/1 06:51:25 nropking1 sold in the store (mudkip) ~nropking1@35B40348.C2FACE23.1A658EE1.IP
+18/1 06:52:12 kenshu-x sold in the store (accumulator) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
+18/1 06:56:50 Me_LuVs_AtK sold in the store (mudkip) ~Me_LuVs_A@Swift-23E9EA85.dsl.elpstx.swbell.net
+18/1 07:02:16 lily_99ab1 bought from the store (dragon claws) ~lily_99ab@Swift-8C2E212C.static.tpgi.com.au
+18/1 07:02:56 Lordbum6 sold in the store (accumulator) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 07:06:46 LoWcOIV bought from the store (sgs) ~LoWcOIV@Swift-55FBCCC3.neo.res.rr.com
+18/1 07:07:42 ^Tara^ bought from the store (ring of life) ~Tara@Swift-E5158BAF.dr01.myck.or.frontiernet.net
+18/1 07:12:55 Andrew_Richnoob4u sold in the store (dclaws) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:13:40 ididoth bought from the store (accumulator) ~ididoth@Swift-AE898006.dsl.nsw.optusnet.com.au
+18/1 07:14:53 Andrew_Richnoob4u bought from the store (void range) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:15:50 Andrew_Richnoob4u bought from the store (armadyl godsword) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:15:57 Andrew_Richnoob4u bought from the store (saradomin godsword) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:16:02 flopples_b sold in the store (mbook) ~Darren_Da@Swift-A0CA8DA0.hsd1.or.comcast.net
+18/1 07:16:14 flopples_b sold in the store (voidmage) ~Darren_Da@Swift-A0CA8DA0.hsd1.or.comcast.net
+18/1 07:18:49 Andrew_Richnoob4u sold in the store (ags) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:19:34 spam_king bought from the store (mudkip) ~spam_king@Swift-3D48D6D5.dsl.syd.iprimus.net.au
+18/1 07:23:24 Andrew_Richnoob4u sold in the store (sgs) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:23:27 kenshu-x sold in the store (ags) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
+18/1 07:23:29 Andrew_Richnoob4u bought from the store (bgs) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+18/1 07:31:14 Thora_X bought from the store (god cape) ~Thora_X@Swift-423779B6.dhcp.embarqhsd.net
+18/1 07:31:49 [BF]Ert001_ sold in the store (mudkip) ~BFErt00@Swift-A8CDB358.cust.wildblue.net
+18/1 07:31:59 l_beans_l sold in the store (mudkip) ~l_beans_l@Swift-5FD21CB1.frank1.vic.optusnet.com.au
+18/1 07:32:07 Lordbum6 sold in the store (bandos godsword) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 07:39:34 Thora_X sold in the store (mudkip) ~Thora_X@Swift-423779B6.dhcp.embarqhsd.net
+18/1 07:42:57 [[Tyler]] sold in the store (mudkip) ~LadyGaG@Swift-814050E8.hsd1.pa.comcast.net
+18/1 07:56:04 flopples_b bought from the store (wealth) ~Darren_Da@Swift-A0CA8DA0.hsd1.or.comcast.net
+18/1 07:56:23 Magicelisa sold in the store (ags) ~Magicelis@Swift-1E0EEBFA.dsl.lsan03.sbcglobal.net
+18/1 07:58:15 Artic_Wolf14 sold in the store (ags) ~ArcticWol@Swift-816E1F78.rochester.res.rr.com
+18/1 07:58:28 Artic_Wolf14 sold in the store (mages book) ~ArcticWol@Swift-816E1F78.rochester.res.rr.com
+18/1 07:59:50 Lordbum6 bought from the store (fire cape) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 07:59:58 rbk_pollo1 bought from the store (dragon claws) ~rbk_pollo@F5B06302.E9713814.1253D3C9.IP
+18/1 08:07:06 Supernurdy bought from the store (dragon claws) ~Supernurd@Swift-1BC65338.socal.res.rr.com
+18/1 08:10:19 [[Tyler]] bought from the store (sgs) ~LadyGaG@Swift-814050E8.hsd1.pa.comcast.net
+18/1 08:14:08 Zachafor bought from the store (void range) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:15:03 Merked_you bought from the store (Sgs) ~Merked_yo@Swift-D651B9A8.hlrn.qwest.net
+18/1 08:17:31 Zachafor bought from the store (saradomin godsword) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:18:13 Zachafor sold in the store (sgs) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:18:25 Lordbum6 sold in the store (zgs) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 08:18:39 Zachafor bought from the store (bgs) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:27:20 Zachafor sold in the store (bgS) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:27:25 Zachafor bought from the store (mudkip) ~zachmedwa@Swift-AD8D7B4B.hsd1.wa.comcast.net
+18/1 08:37:31 Koi bought from the store (dclaws) ~Koi@we.are.all.noep.info
+18/1 08:58:30 Lordbum6 sold in the store (sgs) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 09:11:11 |VV|JR bought from the store (void range) ~VVJR@Swift-623B1F5E.om.om.cox.net
+18/1 09:31:16 i_hart_jacob sold in the store (ags) ~i_hart_ja@BFEB85EA.79244C4.955178D2.IP
+18/1 09:33:15 deathsight33 sold in the store (mudkip) ~deathsigh@2B51F233.5FA85C5B.776BD11C.IP
+18/1 09:34:48 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+18/1 09:40:22 blackthorn92 sold in the store (ring o dick) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 09:40:41 blackthorn92 bought from the store (ring) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 09:54:01 Lordbum6 sold in the store (zgs) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 09:54:49 blackthorn92 sold in the store (mudkip) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 10:12:10 Arnel bought from the store (sgs) ~Arnel@Swift-D2025571.hawaii.res.rr.com
+18/1 10:20:20 deathsight33 bought from the store (ring of welath) ~deathsigh@2B51F233.5FA85C5B.776BD11C.IP
+18/1 10:33:34 Sammai bought from the store (dragon claws) ~Sammai@Swift-A0719408.ks.ks.cox.net
+18/1 10:48:58 Ramneet bought from the store (void range) ~Ramneet@Swift-AAC1BE42.revip.asianet.co.th
+18/1 11:08:33 The_Rocky33 sold in the store (mudkip) Mibbit@Swift-8B47AEE.telepac.pt
+18/1 11:12:55 Ramneet sold in the store (mudkip) ~Ramneet@Swift-AAC1BE42.revip.asianet.co.th
+18/1 11:15:26 Ramneet sold in the store (zgs) ~Ramneet@Swift-AAC1BE42.revip.asianet.co.th
+18/1 11:15:49 tuga_jp sold in the store (sgs) Mibbit@Swift-5FAA87C2.es-dduarte.edu.pt
+18/1 11:19:01 [PX]fafasa sold in the store (mage's book) ~PXfafas@Swift-8F1221F8.geusnet.com
+18/1 11:19:19 [PX]fafasa bought from the store (ags) ~PXfafas@Swift-8F1221F8.geusnet.com
+18/1 11:32:20 tuga_jp bought from the store (dclaws) Mibbit@Swift-5FAA87C2.es-dduarte.edu.pt
+18/1 11:35:46 tuga_jp sold in the store (dclaws) Mibbit@Swift-5FAA87C2.es-dduarte.edu.pt
+18/1 11:48:13 Shelton sold in the store (ags zgs sgs) ~Shelton@orange.xbnc.net
+18/1 11:48:37 Shelton sold in the store (zgs) ~Shelton@orange.xbnc.net
+18/1 11:48:45 Shelton sold in the store (sgs) ~Shelton@orange.xbnc.net
+18/1 12:00:16 Norman1413 bought from the store (sgs) ~Norman141@Swift-E4003408.lns2.wel.bigpond.net.au
+18/1 12:03:23 Norman1413 bought from the store (mudkip) ~Norman141@Swift-E4003408.lns2.wel.bigpond.net.au
+18/1 12:22:34 Tirri sold in the store (mudkip) ~Tirri@Swift-503B5563.elisa-laajakaista.fi
+18/1 12:23:29 werr4560 sold in the store (bgs) ~wer4560@15C0264A.1736EC2D.D267941.IP
+18/1 12:34:42 ximberto sold in the store (mudkip) ~poker.dio@Swift-CE8D437E.dsl.telepac.pt
+18/1 12:35:19 Tribuzi7 sold in the store (mudkip) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+18/1 12:35:25 Tribuzi7 sold in the store (mudkip) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+18/1 12:36:01 Tribuzi7 bought from the store (void range) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+18/1 12:36:06 Luncher bought from the store (Ring of Wealth) ~Saint_Lun@Swift-C9E3F5C6.e-wire.net.au
+18/1 12:41:46 Werr4560 sold in the store (bgs) ~Werr4560@15C0264A.1736EC2D.D267941.IP
+18/1 12:51:34 The_Rocky33 bought from the store (accumulator) Mibbit@Swift-8B47AEE.telepac.pt
+18/1 13:13:05 Antony sold in the store (mudkip) ~Antony@7AE0AD68.81D9B110.EF8595C1.IP
+18/1 13:13:32 vnbm bought from the store (void range) ~vnbm@5A3B16F7.D2EA2E9B.89E0F6B0.IP
+18/1 13:30:05 |Ash| sold in the store (zgs) ~Ash@Swift-52E95461.barn.cable.virginmedia.com
+18/1 13:30:13 |Ash| sold in the store (mudkip) ~Ash@Swift-52E95461.barn.cable.virginmedia.com
+18/1 13:30:31 |Ash| bought from the store (accumulator) ~Ash@Swift-52E95461.barn.cable.virginmedia.com
+18/1 13:34:47 vedter bought from the store (fire cape) ~vedter@1200A31F.3C5D9F04.E8DF254B.IP
+18/1 13:35:00 vedter bought from the store (barrow gloves) ~vedter@1200A31F.3C5D9F04.E8DF254B.IP
+18/1 13:35:06 vedter bought from the store (wealth) ~vedter@1200A31F.3C5D9F04.E8DF254B.IP
+18/1 13:35:52 vedter bought from the store (ags) ~vedter@1200A31F.3C5D9F04.E8DF254B.IP
+18/1 13:44:28 `[James] sold in the store (sgs) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+18/1 13:56:01 `[James] sold in the store (ags) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+18/1 13:59:30 Mathew sold in the store (void mage) Matt@eddie.veritynet.net
+18/1 13:59:43 Mathew bought from the store (sgs) Matt@eddie.veritynet.net
+18/1 13:59:51 Mathew bought from the store (ags) Matt@eddie.veritynet.net
+18/1 14:04:23 SupahPowerZ bought from the store (wealth) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 14:23:40 jhann13 bought from the store (void range) ~nhmzdpdo@Swift-2B5A8038.claro.net.br
+18/1 14:23:48 jhann13 bought from the store (bgs) ~nhmzdpdo@Swift-2B5A8038.claro.net.br
+18/1 14:24:26 jhann13 sold in the store (void range) ~nhmzdpdo@Swift-2B5A8038.claro.net.br
+18/1 14:39:07 SupahPowerZ bought from the store (void range) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 14:47:51 `Harlzz bought from the store (accumulator) ~Harlzz@Swift-DFA5CDD.lns6.woo.bigpond.net.au
+18/1 15:00:51 {o}_{o} sold in the store (sgs) ~o_o@Swift-885F3BD.newwavecomm.net
+18/1 15:01:38 [Dv]Kennnn sold in the store (mudkip) ~KennDm_R@Swift-1953E8.adsl-dyn.isp.belgacom.be
+18/1 15:05:42 Randy_Hekman sold in the store (mudkip) ~Randy_Hek@Swift-CCCBFE09.cable.ziggo.nl
+18/1 15:05:55 Vi bought from the store (god cape) ~Vi@8F4ABB85.17FC3521.5E94BF38.IP
+18/1 15:07:26 Erk1 sold in the store (mudkip) ~Erk1@Swift-82153170.generic-hostname.arrownet.dk
+18/1 15:09:03 Randy_Hekman sold in the store (mudkip) ~Randy_Hek@Swift-CCCBFE09.cable.ziggo.nl
+18/1 15:23:55 `Henry88 sold in the store (mudkip ..) Henry.r0x@C63CA8A3.65964072.69AFE06.IP
+18/1 15:27:01 ShotYoGurl sold in the store (zgs) ~ShotYoGur@Swift-A80F0394.rcmdva.fios.verizon.net
+18/1 15:27:25 okumurha_ bought from the store (bgs) ~okumurha@8147ED70.E8243B.D0FEE34B.IP
+18/1 15:35:11 flo bought from the store (bandos godsword) ~flo@Swift-87F5C139.vie.surfer.at
+18/1 15:41:39 {o}_{o} bought from the store (ags) ~o_o@Swift-885F3BD.newwavecomm.net
+18/1 15:43:25 {o}_{o} bought from the store (zgs) ~o_o@Swift-885F3BD.newwavecomm.net
+18/1 15:50:49 aussiesrule4 bought from the store (ring of wealth) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 15:51:16 Wojownik sold in the store (bgs) ~Wojownik@Swift-3F9215B2.adsl.inetia.pl
+18/1 15:51:20 Wojownik sold in the store (mudkip) ~Wojownik@Swift-3F9215B2.adsl.inetia.pl
+18/1 15:51:38 aussiesrule4 bought from the store (bandos godsword) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 15:51:44 aussiesrule4 bought from the store (zamorak godsword) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 15:53:05 aussiesrule4 bought from the store (accumulator) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 15:53:38 SupahPowerZ sold in the store (ags) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 15:53:40 SupahPowerZ sold in the store (zgs) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 15:58:50 br_kiss bought from the store (void range) ~br_kiss@Swift-79E2B1AB.ny325.east.verizon.net
+18/1 16:05:15 Swordfighta7 sold in the store (mudkip) ~a@Swift-7911331C.try.wideopenwest.com
+18/1 16:10:43 ozz sold in the store (elysian spirit shield) ~ozz@Swift-265ECFA6.aztw.cable.virginmedia.com
+18/1 16:13:11 ozz bought from the store (ring of wealth) ~ozz@Swift-265ECFA6.aztw.cable.virginmedia.com
+18/1 16:13:47 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+18/1 16:15:34 `[James] sold in the store (mudkip) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+18/1 16:16:48 Jim_w bought from the store (zgs) ~Jim_W@Swift-D82438DC.lns5.pie.bigpond.net.au
+18/1 16:17:06 ozz bought from the store (void mage) ~ozz@Swift-265ECFA6.aztw.cable.virginmedia.com
+18/1 16:17:29 r0f1 sold in the store (mudkip) ~r0f1@2810D451.4981CA0F.853FE2D9.IP
+18/1 16:18:29 Rasp sold in the store (mudkip) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+18/1 16:18:32 Rasp sold in the store (ely) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+18/1 16:23:06 Tank_Teh_Hit bought from the store (void range) ~Tank_Teh_@Swift-4D08CD05.dsl.rcsntx.sbcglobal.net
+18/1 16:23:21 aussiesrule4 sold in the store (accumulator) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 16:29:25 Hidalgoxx sold in the store (ags) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 16:31:11 Hidalgoxx bought from the store (void range) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 16:37:03 M3tis bought from the store (dclaws) ~M3tis@FE6CE8E6.41556E52.E6880EE2.IP
+18/1 16:45:38 M3tis sold in the store (dclaws) ~M3tis@FE6CE8E6.41556E52.E6880EE2.IP
+18/1 16:47:21 blk sold in the store (accumulator) ~blk@irc.xbnc.net
+18/1 16:54:02 Black_Guy bought from the store (saradomin godsword) ~Black_Guy@Swift-CDE5EA62.sip.chs.bellsouth.net
+18/1 16:54:46 batli sold in the store (mage book) ~batli@Swift-6CD07EAE.dsl.emhril.sbcglobal.net
+18/1 16:55:37 Mafios sold in the store (sgs) ~Mafios@Swift-DA49C08D.internetdsl.tpnet.pl
+18/1 16:58:31 `13_Dragon_1 bought from the store (barrows gloves) ~13_Drago@Swift-4CECCD5.dynamic.dial.as9105.com
+18/1 16:58:41 `13_Dragon_1 bought from the store (zamorak godsword) ~13_Drago@Swift-4CECCD5.dynamic.dial.as9105.com
+18/1 16:59:04 Mafios sold in the store (mudkip) ~Mafios@Swift-DA49C08D.internetdsl.tpnet.pl
+18/1 17:01:43 Nero bought from the store (god cape) ~Chewiespl@Swift-13ACAD82.bltmmd.east.verizon.net
+18/1 17:02:05 aussiesrule4 sold in the store (mudkip) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 17:09:45 leo_8817 bought from the store (god cape) ~leandro._@F8FE428E.20EA7753.D6283432.IP
+18/1 17:10:33 Ix-Jamie-xl sold in the store (mudkip) ~Ix-Jamie-@Swift-8A4556CE.range86-177.btcentralplus.com
+18/1 17:18:56 Jaga1920 sold in the store (zgs) ~Jaga1920@Swift-99679416.dynamic.gprs.plus.pl
+18/1 17:20:55 okumurha_ sold in the store (mudkip) ~okumurha@8147ED70.E8243B.D0FEE34B.IP
+18/1 17:30:31 [CP]Weeee_Jr bought from the store (mage book) ~CPWeeee@Swift-8A2BDC0D.hsd1.il.comcast.net
+18/1 17:30:39 [CP]Weeee_Jr bought from the store (void mage) ~CPWeeee@Swift-8A2BDC0D.hsd1.il.comcast.net
+18/1 17:31:36 racanelli_br bought from the store (bgs) ~vurpj@661AEBAC.26EC6F63.9D1EA390.IP
+18/1 17:35:44 Tyler|Send sold in the store (ags) ~Ohi_Im_Ty@Swift-A0BC9445.cfl.res.rr.com
+18/1 17:43:13 halo_12apist sold in the store (mage's book) ~halo_12ap@Swift-AA1147AC.tampabay.res.rr.com
+18/1 17:43:24 halo_12apist sold in the store (mage book) ~halo_12ap@Swift-AA1147AC.tampabay.res.rr.com
+18/1 17:43:49 J0ker_0f_804 bought from the store (ags) ~J0ker_0f_@Swift-F1C4F9A9.hsd1.va.comcast.net
+18/1 17:44:01 ozz bought from the store (void range) ~ozz@Swift-265ECFA6.aztw.cable.virginmedia.com
+18/1 17:48:48 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 17:48:53 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 17:49:04 marvin sold in the store (mudkip) ~marvin@Swift-6F5D3E5F.i05-6.onvol.net
+18/1 17:49:24 SupahPowerZ sold in the store (Accumulator) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 17:49:47 SupahPowerZ sold in the store (bgs) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 17:50:30 Genius bought from the store (Elysian Spirit Shield) ~Simler@6DA65310.9A4BCFD3.10AE2329.IP
+18/1 17:51:43 Jaga1920 sold in the store (bgs) ~Jaga1920@Swift-99679416.dynamic.gprs.plus.pl
+18/1 17:54:45 Hyra084 sold in the store (bgs) ~Hyra084@Swift-344125F0.access.telenet.be
+18/1 18:00:33 jeroentje029 sold in the store (ags) ~jeroentje@Swift-BC802D54.hnglo1.ov.home.nl
+18/1 18:02:18 jeroentje029 bought from the store (sgs) ~jeroentje@Swift-BC802D54.hnglo1.ov.home.nl
+18/1 18:02:56 Kuwaity_Boy1 sold in the store (dragon claws) ~BrazzersM@789D8D59.E1A00048.4F2B1D59.IP
+18/1 18:06:13 Hyra084 sold in the store (mudkip) ~Hyra084@Swift-344125F0.access.telenet.be
+18/1 18:11:38 `[James] sold in the store (mudkip) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+18/1 18:20:24 Werr4560 sold in the store (mages book) ~Werr4560@15C0264A.1736EC2D.D267941.IP
+18/1 18:26:51 Ymeknowu bought from the store (firecape) ~ymeknowu@Swift-E29E1C0D.dr01.apvy.mn.frontiernet.net
+18/1 18:30:41 Ymeknowu bought from the store (ags) ~ymeknowu@Swift-E29E1C0D.dr01.apvy.mn.frontiernet.net
+18/1 18:30:52 Natee bought from the store (void range) ~Natee@C42CBF63.D8D9DD4B.ADDADD4C.IP
+18/1 18:31:53 SupahPowerZ sold in the store (zgs) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 18:33:19 aussiesrule4 sold in the store (zgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 18:33:24 aussiesrule4 sold in the store (zgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 18:33:31 aussiesrule4 sold in the store (mudkip) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 18:45:44 fighter_fre bought from the store (dclaws) ~fighter_f@Swift-D9940602.access.telenet.be
+18/1 18:47:10 Raven2002 sold in the store (mudkip) ~Raven2002@Swift-52ADC33B.client.mchsi.com
+18/1 18:49:45 [E]Ava bought from the store (ags) ssh15f435@Swift-122393BE.hsd1.il.comcast.net
+18/1 18:50:26 joylord1O_ sold in the store (mudkip) ~joylord1O@Swift-66AF8710.tampfl.fios.verizon.net
+18/1 18:52:02 [ipz]anguish_34_ sold in the store (mudkip) ~ipzangu@Swift-66D2EDE.clt.bellsouth.net
+18/1 18:52:49 Jaga1920 sold in the store (mudkip) ~Jaga1920@Swift-99679416.dynamic.gprs.plus.pl
+18/1 18:52:50 [E]Ava sold in the store (ags) ssh15f435@Swift-122393BE.hsd1.il.comcast.net
+18/1 18:53:20 Maxiii-69 bought from the store (sgs) ~Maxiii-69@Swift-9A4746F2.range81-154.btcentralplus.com
+18/1 18:56:01 Jaga1920 sold in the store (mudkip) ~Jaga1920@Swift-99679416.dynamic.gprs.plus.pl
+18/1 19:10:15 Bf_Executor bought from the store (sgs) ~Bf_Execut@Swift-1BD52346.dyn.tyfon.se
+18/1 19:11:56 Ix-Jamie-xl sold in the store (mudkip) ~Ix-Jamie-@Swift-8A4556CE.range86-177.btcentralplus.com
+18/1 19:12:43 Hi_im_beard bought from the store (ags) ~Hi_im_bea@Swift-1A7E4013.upc-i.chello.nl
+18/1 19:13:35 Iban bought from the store (BGS) Mibbit@Swift-E0482F4B.bb.sky.com
+18/1 19:13:56 Hidalgoxx sold in the store (void range) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 19:13:58 Hidalgoxx bought from the store (ags) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 19:16:16 sherwin46 sold in the store (mudkip) ~sherwin46@Swift-B89E21D7.aichi.ocn.ne.jp
+18/1 19:17:50 [ipz]anguish_34_ sold in the store (mudkip) ~ipzangu@Swift-66D2EDE.clt.bellsouth.net
+18/1 19:21:19 keiththebomb bought from the store (ags) ~keiththeb@Swift-9C8C5390.zoominternet.net
+18/1 19:24:47 fighter_fre bought from the store (ags) ~fighter_f@Swift-D9940602.access.telenet.be
+18/1 19:27:11 Aog_eoye bought from the store (void range) ~Aog_eoye@Swift-10C80074.tx.res.rr.com
+18/1 19:28:18 Aog_eoye bought from the store (Accumulator) ~Aog_eoye@Swift-10C80074.tx.res.rr.com
+18/1 19:32:59 joylord1O_ bought from the store (sgs) ~joylord1O@Swift-66AF8710.tampfl.fios.verizon.net
+18/1 19:33:14 Gekke|Navel1 sold in the store (zgs) ~GekkeNav@Swift-73121B82.direct-adsl.nl
+18/1 19:39:52 Northern_Lights bought from the store (void range) ~Northern_@Swift-72AC002A.hsd1.ma.comcast.net
+18/1 19:41:04 iTz_Mr_MauL bought from the store (accumulator) ~iTz_Mr_Ma@Swift-783CB980.midd.cable.ntl.com
+18/1 19:47:04 Aog_eoye sold in the store (sgs) ~Aog_eoye@Swift-10C80074.tx.res.rr.com
+18/1 19:47:52 iman bought from the store (ags) ~iman@Swift-53CBB5C3.speed.planet.nl
+18/1 19:52:20 keiththebomb sold in the store (ags) ~keiththeb@Swift-9C8C5390.zoominternet.net
+18/1 19:55:17 failboats bought from the store (sgs) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 19:55:28 failboats bought from the store (mudkip) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 19:58:00 Slimjustin sold in the store (mudkip) ~Slimjusti@Swift-F23FE921.dyn.centurytel.net
+18/1 19:58:49 Domi_Atan sold in the store (mudkip) ~Perfect@i.know.your.mothers.facebook.info.gf
+18/1 19:58:54 Domi_Atan bought from the store (firecape) ~Perfect@i.know.your.mothers.facebook.info.gf
+18/1 20:01:46 ultimate_be sold in the store (Mage's Book) ~ultimate_@Swift-18F5605F.adsl-dyn.isp.belgacom.be
+18/1 20:19:12 gf_rawrr sold in the store (mudkip) ~gf_rawrr@Swift-86FA7909.hsd1.fl.comcast.net
+18/1 20:21:12 failboats sold in the store (mudkip) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 20:22:15 praymysins bought from the store (armadyl godsword) ~praymysin@Swift-C56B134E.range86-133.btcentralplus.com
+18/1 20:30:05 failboats sold in the store (sgs) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 20:39:30 praymysins sold in the store (ags) ~praymysin@Swift-C56B134E.range86-133.btcentralplus.com
+18/1 20:41:00 Sid|Follow sold in the store (bgs) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+18/1 20:41:55 joylord1O_ sold in the store (mudkip) ~joylord1O@Swift-66AF8710.tampfl.fios.verizon.net
+18/1 20:43:56 bempire bought from the store (ags) ~bempire@B87334B2.F6C38A5A.57B37B27.IP
+18/1 20:44:11 bempire bought from the store (zamorak godsword) ~bempire@B87334B2.F6C38A5A.57B37B27.IP
+18/1 20:44:36 dannypower11 bought from the store (void range) ~dannypowe@Swift-2A3770AE.cpe.netcabo.pt
+18/1 20:44:42 marcelo_1444 bought from the store (void range) ~marcelo_1@Swift-30A3A162.netvisao.pt
+18/1 20:45:36 dannypower11 bought from the store (void mage) ~dannypowe@Swift-2A3770AE.cpe.netcabo.pt
+18/1 20:50:06 Aog_Eoye sold in the store (mudkip) ~Aog_eoye@Swift-10C80074.tx.res.rr.com
+18/1 20:50:11 keiththebomb sold in the store (mudkip) ~keiththeb@Swift-9C8C5390.zoominternet.net
+18/1 20:50:40 keiththebomb bought from the store (void range) ~keiththeb@Swift-9C8C5390.zoominternet.net
+18/1 20:54:41 Ip0d bought from the store (VOID MAGE) ~Ip0d@Swift-1A5E62F5.wk.net
+18/1 20:55:25 ToNy|iCeD sold in the store (wealth) ~ToNyiCeD@Swift-225D8166.tampabay.res.rr.com
+18/1 20:55:33 ToNy|iCeD bought from the store (firecape) ~ToNyiCeD@Swift-225D8166.tampabay.res.rr.com
+18/1 20:59:27 Pkd-A-Ipod bought from the store (void mage) ~Pkd-A-Ipo@Swift-526AAB57.ed.shawcable.net
+18/1 20:59:27 Bf_Executor bought from the store (void range) ~Bf_Execut@Swift-1BD52346.dyn.tyfon.se
+18/1 21:10:26 BR_Jake bought from the store (ags) ~BR_Jake@Swift-AF0B59DC.nc.res.rr.com
+18/1 21:12:17 joylord1O_ bought from the store (bgs) ~joylord1O@Swift-66AF8710.tampfl.fios.verizon.net
+18/1 21:13:05 x_i_dizz_i_x[PIP] bought from the store (armadyl godsword) ~x_i_dizz_@Swift-7AB8FD1C.sip.sav.bellsouth.net
+18/1 21:16:25 Sid|Follow bought from the store (accumulator) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+18/1 21:18:05 bebin5 sold in the store (ags) ~bebin5@Swift-2EA5B159.da.cgocable.ca
+18/1 21:18:36 ToNy|iCeD sold in the store (bgs) ~ToNyiCeD@Swift-225D8166.tampabay.res.rr.com
+18/1 21:21:27 xo_d34th sold in the store (mudkip) ~xo_d34th@Swift-94576EFD.cpe.net.cable.rogers.com
+18/1 21:26:40 Oyez sold in the store (mudkip) ~Oyez@Swift-823B1AC5.bmly.cable.ntl.com
+18/1 21:36:06 Sid|Follow sold in the store (mudkip) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+18/1 21:36:43 Lordbum6 sold in the store (bgs) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 21:47:09 Domi_Atan sold in the store (mudkip) ~Perfect@i.know.your.mothers.facebook.info.gf
+18/1 21:48:04 `Ricky` bought from the store (void range) ~spade987@Swift-23107AB8.hlrn.qwest.net
+18/1 21:50:52 `Ricky` bought from the store (accumulator) ~spade987@Swift-23107AB8.hlrn.qwest.net
+18/1 21:50:59 Sid|Follow sold in the store (mage's book) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+18/1 21:54:03 Megalancer5 sold in the store (mudkip) ~i_r_fanta@Swift-B98ED4E2.indy.res.rr.com
+18/1 21:57:12 CY5 bought from the store (Dclaws) ~CY5@8E94E031.7363DB13.522DFF59.IP
+18/1 22:07:54 satch103 bought from the store (dclaws) ~Mr_Satchy@85AFF96F.46758DDD.61DD6EB4.IP
+18/1 22:12:48 kyle_l33 bought from the store (void range) ~kyle_l33@Swift-8C7E62B7.cfl.res.rr.com
+18/1 22:14:03 I_Taze bought from the store (sgs) ~I_Taze@Swift-A077E037.austin.res.rr.com
+18/1 22:14:31 SupahPowerZ sold in the store (mudkip) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 22:14:41 H4iden bought from the store (ags) ~JakeSlay@Swift-DC7FEFFC.uconnect.utah.edu
+18/1 22:16:34 bullet sold in the store (ags) ~Tricky@i.count.sheeps.b4.i.sleep.sheeppower.com
+18/1 22:19:47 jamalxxx2 bought from the store (void range) ~jamalxxx2@Swift-501EF433.hsd1.ga.comcast.net
+18/1 22:21:29 ToNy|IcEd bought from the store (void range) ~ToNyiCeD@Swift-225D8166.tampabay.res.rr.com
+18/1 22:21:52 Hidalgoxx bought from the store (void range) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 22:22:01 Hidalgoxx sold in the store (void range) ~Hidalgoxx@Swift-417D77CE.dsl.emhril.sbcglobal.net
+18/1 22:24:44 SupahPowerZ bought from the store (elysian spirit shield) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+18/1 22:26:16 failboats sold in the store (mages book) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 22:26:58 failboats sold in the store (accumulator) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 22:29:25 failboats sold in the store (Void Range) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 22:29:30 failboats bought from the store (dclaws) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 22:33:09 Supernurdy sold in the store (zamorak godsword) ~Supernurd@Swift-1BC65338.socal.res.rr.com
+18/1 22:33:50 sxcjoe18 sold in the store (zamorak godsword) ~sxcjoe18@Swift-F1D75B57.range81-135.btcentralplus.com
+18/1 22:36:28 Lordbum6 sold in the store (dclaws) ~Lordbum6@5AD823A8.69EFD0F1.A842BFC2.IP
+18/1 22:37:49 Aaron`` sold in the store (bgs) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+18/1 22:39:48 rangeorstr1 bought from the store (saradomin godsword) ~rangeorst@Swift-781ED5F4.satx.res.rr.com
+18/1 22:41:18 [--|Darklight|--] bought from the store (fire cape) ~--Darkl@4F8D8104.5EC5A74.7B52391.IP
+18/1 22:44:24 Colten_AGS sold in the store (mudkip) ~Colten_AG@Swift-D10B6683.hsd1.mn.comcast.net
+18/1 22:46:19 J0ker_0f_804 bought from the store (sgs) ~J0ker_0f_@Swift-F1C4F9A9.hsd1.va.comcast.net
+18/1 22:48:11 Elarer sold in the store (mudkip) ~Elarer@Swift-29E7E1EE.dsl.hstntx.swbell.net
+18/1 22:51:17 aussiesrule4 sold in the store (ags) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 23:02:26 aussiesrule4 sold in the store (sgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 23:02:30 aussiesrule4 sold in the store (bgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+18/1 23:02:49 Ronocko bought from the store (accumulator) ~Adam-@Swift-34BA203B.leic.cable.ntl.com
+18/1 23:03:42 Tim|Slayer sold in the store (mudkip) ~TimSlaye@Swift-B873AA73.wi.res.rr.com
+18/1 23:03:51 Scimi sold in the store (ags) ~Scimi@Swift-231D0B70.bflony.east.verizon.net
+18/1 23:06:24 Out_Of_Service sold in the store (mudkip) ~Out_Of_Se@Swift-B240659A.adsl-dyn.isp.belgacom.be
+18/1 23:07:11 Ronocko sold in the store (mudkip) ~Adam-@Swift-34BA203B.leic.cable.ntl.com
+18/1 23:07:35 Scimi bought from the store (bandos godsword) ~Scimi@Swift-231D0B70.bflony.east.verizon.net
+18/1 23:07:43 DivineRightz bought from the store (ags) ~Colten_AG@Swift-D10B6683.hsd1.mn.comcast.net
+18/1 23:09:31 Igor_Br_Sp bought from the store (zgs) ~Igor_Br_S@Swift-97DB560A.dsl.telesp.net.br
+18/1 23:10:05 Partiboi4 bought from the store (god cape) ~Partiboi4@Swift-9414D0DF.lns5.ken.bigpond.net.au
+18/1 23:11:20 [Gothie] bought from the store (void mage) ~Joshhh@D07F7750.F07B9527.8E9FFFEC.IP
+18/1 23:11:34 [Gothie] bought from the store (mage's book) ~Joshhh@D07F7750.F07B9527.8E9FFFEC.IP
+18/1 23:12:36 Aog_Eoye bought from the store (ring of wealth) ~Aog_eoye@Swift-10C80074.tx.res.rr.com
+18/1 23:12:41 [ipz]anguish_34_ sold in the store (ags) ~ipzangu@Swift-66D2EDE.clt.bellsouth.net
+18/1 23:13:45 [ipz]anguish_34_ bought from the store (void range) ~ipzangu@Swift-66D2EDE.clt.bellsouth.net
+18/1 23:14:13 rangeorstr1 bought from the store (bandos godsword) ~rangeorst@Swift-781ED5F4.satx.res.rr.com
+18/1 23:17:04 JCabrera8515 sold in the store (bgs) ~JCabrera8@Swift-6A2A665F.tx.res.rr.com
+18/1 23:17:31 keiththebomb bought from the store (accumulator) ~keiththeb@Swift-9C8C5390.zoominternet.net
+18/1 23:20:47 BR_Jake sold in the store (ags) ~BR_Jake@Swift-AF0B59DC.nc.res.rr.com
+18/1 23:26:55 Out_Of_Service sold in the store (mudkip) ~Out_Of_Se@Swift-B240659A.adsl-dyn.isp.belgacom.be
+18/1 23:31:44 Igor_Br_Sp bought from the store (dclaws) ~Igor_Br_S@Swift-97DB560A.dsl.telesp.net.br
+18/1 23:35:17 [Gothie] sold in the store (sgs) ~Joshhh@D07F7750.F07B9527.8E9FFFEC.IP
+18/1 23:37:19 irondef bought from the store (mudkip) ~Irondef@Swift-3513FDA8.mpls.qwest.net
+18/1 23:37:28 cha_ching62 sold in the store (bgs) ~cha_ching@Swift-85272CC1.stc.clearwire-dns.net
+18/1 23:39:34 Slasher bought from the store (void range) ~Slasher@2159FB0E.825CDC78.37F0F6DD.IP
+18/1 23:40:36 blackthorn92 sold in the store (mudkip) ~blackthor@29DB381C.64169646.437400E1.IP
+18/1 23:41:12 failboats sold in the store (dclaws) ~failboats@Swift-946FB8EB.dsl.snfc21.sbcglobal.net
+18/1 23:41:13 Mrs_Satch sold in the store (mudkip) ~Mrs_Satch@DDF14763.B7C7F5E2.EDFFD25D.IP
+18/1 23:41:51 Bxhitman001 bought from the store (void range) ~Bxhitman0@1B2A3663.81B2F73C.ED3DACBF.IP
+18/1 23:53:42 Hank bought from the store (void range) ~hankajohn@Swift-7EBE9D6C.woh.res.rr.com
+18/1 23:56:16 Panda_Cub2 bought from the store (sgs) ~Panda_Cub@Swift-9CB79089.dhcp.athn.ga.charter.com
+18/1 23:59:50 failboats bought from the store (void range) ~failboats@9A0DB07D.D9EB3540.E8C08B69.IP
+19/1 00:00:22 Sid|Follow sold in the store (mudkip) ~Sid@Swift-A045E161.hsd1.mi.comcast.net
+19/1 00:00:45 ang_9x9_ sold in the store (mudkip) ~ang_9x9_@Swift-1D6D2CB0.dynamic.ip.windstream.net
+19/1 00:04:19 yum1234567 sold in the store (mudkip) ~yum123456@Swift-4D314F4C.dsl.emhril.sbcglobal.net
+19/1 00:04:46 xo_d34th bought from the store (bgs) ~xo_d34th@Swift-94576EFD.cpe.net.cable.rogers.com
+19/1 00:05:00 iTz_Mr_MauL bought from the store (void mage) ~iTz_Mr_Ma@Swift-783CB980.midd.cable.ntl.com
+19/1 00:14:42 Shot_teh_ownz bought from the store (accumulator) ~Shot@Swift-99476048.washdc.east.verizon.net
+19/1 00:25:38 JCabrera8515 sold in the store (mudkip) ~JCabrera8@Swift-6A2A665F.tx.res.rr.com
+19/1 00:29:06 Yum1234567 sold in the store (zgs) ~yum123456@Swift-4D314F4C.dsl.emhril.sbcglobal.net
+19/1 00:29:08 failboats bought from the store (accumulator) ~failboats@9A0DB07D.D9EB3540.E8C08B69.IP
+19/1 00:32:05 jhon sold in the store (zgs) Mibbit@Swift-F267820.lnk.telstra.net
+19/1 00:32:19 ren|miguel sold in the store (mudkip) ~renmigue@Swift-3D0446AC.prtc.net
+19/1 00:40:00 Mytwin0wnz bought from the store (zgs) ~Mytwin0wn@Swift-CB45B51A.bb.online.no
+19/1 00:43:52 BR_Jake bought from the store (bgs) ~BR_Jake@Swift-AF0B59DC.nc.res.rr.com
+19/1 00:47:13 drojas sold in the store (sgs) ~drojas@Swift-5FB38340.hlrn.qwest.net
+19/1 00:48:11 Andrew_Richnoob4u bought from the store (accumulator) ~Andrew_Ri@Swift-6B7A4EE5.sip.mcn.bellsouth.net
+19/1 01:02:25 ra_red67 sold in the store (bgs) ~ra_red67@Swift-86B57ED.dsl.lgvwtx.swbell.net
+19/1 01:14:04 Alex_of_Ai bought from the store (void range) ~Alex_of_A@Swift-A1CCC7E2.lightspeed.jcvlfl.sbcglobal.net
+19/1 01:19:22 flo bought from the store (void mage) ~flo@Swift-87F5C139.vie.surfer.at
+19/1 01:21:45 Dslay2 bought from the store (mudkip) ~Dslay2@69152952.981226DB.9A03824B.IP
+19/1 01:22:15 `[James] sold in the store (mudkip) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+19/1 01:34:21 Dudman sold in the store (zgs) ~Dudman@Swift-A8B554AE.dyn.optonline.net
+19/1 01:34:41 ehms_88 bought from the store (ags) ~ehms_88@Swift-1431B7C0.nc.res.rr.com
+19/1 01:36:35 singhb08 bought from the store (ring of wealth) ~singhb08@Swift-9FEF4062.hsd1.tx.comcast.net
+19/1 01:40:24 `[James] sold in the store (SGS) ~James@Swift-78DEF3C2.lightspeed.sprntx.sbcglobal.net
+19/1 01:47:38 daredqueen bought from the store (armadyl godsword) ~amos23x@Swift-C36865A9.fast.net.id
+19/1 01:47:56 ben29rockss bought from the store (sgs) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+19/1 01:58:10 Exe_Arco sold in the store (ags) ~Exe_Arco@Swift-720828F3.hsd1.ut.comcast.net
+19/1 02:17:04 |Jay| sold in the store (mage's book) ~Jay@Swift-8B250665.hsd1.ca.comcast.net
+19/1 02:17:21 Pkd-A-Ipod bought from the store (bgs) ~Pkd-A-Ipo@Swift-526AAB57.ed.shawcable.net
+19/1 02:21:09 Boss_Peter bought from the store (god cape) ~Peter@Swift-7AF65C14.fuse.net
+19/1 02:22:03 Ip0d sold in the store (mudkip) ~Ip0d@Swift-1A5E62F5.wk.net
+19/1 02:31:11 drojas sold in the store (mudkip) ~drojas@Swift-5FB38340.hlrn.qwest.net
+19/1 02:34:32 Ele sold in the store (mudkip) ~Ele@Swift-CCE65076.dvnp.qwest.net
+19/1 02:34:43 Stan bought from the store (armadyl godsword) ~Stan@Swift-26C0575B.dc.dc.cox.net
+19/1 02:35:09 angel_of_drags bought from the store (sgs) ~angel_of_@Swift-7A60DB7A.dsl.lgvwtx.swbell.net
+19/1 02:37:47 Rang3rpur3z sold in the store (mudkip) ~Rang3rpur@Swift-BB1E626A.lsanca.fios.verizon.net
+19/1 02:41:18 p_harvin_12_ bought from the store (sgs) ~p_harvin_@Swift-F201B35D.pm3-2.str-pt.va.localnet.com
+19/1 02:43:12 Ip0d sold in the store (ags) ~Ip0d@Swift-1A5E62F5.wk.net
+19/1 02:43:14 Ip0d sold in the store (sgs) ~Ip0d@Swift-1A5E62F5.wk.net
+19/1 02:43:27 Retro_Robots bought from the store (mage's book) ~Retro_rob@Swift-1990AB78.cg.shawcable.net
+19/1 02:43:52 Hank bought from the store (accumulator) ~hankajohn@Swift-7EBE9D6C.woh.res.rr.com
+19/1 02:46:11 Lebanesepure sold in the store (mudkip) ~Lebanesep@Swift-7A85BF8C.arm-bsr1.chi-arm.il.cable.rcn.com
+19/1 02:46:46 Matt``` sold in the store (Bgs) ~Matt@Swift-B129C0E7.twcny.res.rr.com
+19/1 02:47:24 Matt``` bought from the store (Void Range) ~Matt@Swift-B129C0E7.twcny.res.rr.com
+19/1 02:47:34 Matt``` bought from the store (Accumulator) ~Matt@Swift-B129C0E7.twcny.res.rr.com
+19/1 02:47:47 coolgreencat sold in the store (mudkip) ~coolziggy@Swift-E992E924.om.om.cox.net
+19/1 02:50:17 Tigger12108 sold in the store (ags) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:50:23 Tigger12108 sold in the store (bgs) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:50:25 Tigger12108 sold in the store (sgs) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:50:33 Tigger12108 sold in the store (accumulator) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:53:18 [--|Darklight|--] bought from the store (ags) ~--Darkl@4F8D8104.5EC5A74.7B52391.IP
+19/1 02:54:17 Tigger12108 bought from the store (armadyl godsword) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:54:25 Tigger12108 bought from the store (zamorak godsword) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:54:36 Tigger12108 bought from the store (bandos godsword) ~Tigger121@Swift-6694FA01.dhcp.insightbb.com
+19/1 02:57:33 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 03:05:41 arrow619 bought from the store (godcape) ~arrow619@Swift-3C62DFDF.dsl.pltn13.sbcglobal.net
+19/1 03:09:45 GiE bought from the store (void range) ~nn@Swift-AB9BC8AA.socal.res.rr.com
+19/1 03:18:27 Rang3rpur3z bought from the store (void range) ~Rang3rpur@Swift-BB1E626A.lsanca.fios.verizon.net
+19/1 03:19:32 GiE sold in the store (mudkip) ~nn@Swift-AB9BC8AA.socal.res.rr.com
+19/1 03:22:50 Boss_DeeJay|Hiway bought from the store (void mage) ~Boss_DeeJ@Swift-3CC8AFDF.hsd1.fl.comcast.net
+19/1 03:29:02 [_--JEN--_] bought from the store (saradomin godsword) ~_--JEN--@Swift-5CABFFBE.satx.res.rr.com
+19/1 03:30:45 [[Matthew]] sold in the store (mudkip) ~Matthew@Swift-631981AA.range86-134.btcentralplus.com
+19/1 03:31:06 Supernurdy sold in the store (mudkip) ~Supernurd@Swift-1BC65338.socal.res.rr.com
+19/1 03:31:26 Supernurdy bought from the store (fire cape) ~Supernurd@Swift-1BC65338.socal.res.rr.com
+19/1 03:33:30 [--|Darklight|--] bought from the store (bgs) ~--Darkl@4F8D8104.5EC5A74.7B52391.IP
+19/1 03:33:35 Rang3rpur3z sold in the store (mudkip) ~Rang3rpur@Swift-BB1E626A.lsanca.fios.verizon.net
+19/1 03:39:58 iMoan bought from the store (ags) ~iMoan@Swift-13AB6CD0.hsd1.nh.comcast.net
+19/1 03:41:37 i_Taze bought from the store (armadyl godsword) ~i_Taze@Swift-A077E037.austin.res.rr.com
+19/1 03:41:59 Mouldyyy bought from the store (accumulator) ~Mouldyyy@Swift-9F1FD9EF.lnse4.lon.bigpond.net.au
+19/1 03:49:32 Panda_Cub2 bought from the store (void range) ~Panda_Cub@Swift-9CB79089.dhcp.athn.ga.charter.com
+19/1 04:06:22 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 04:15:36 `1_Specd sold in the store (bandos godsword) ~Ryan@17B108B.2262D77E.6960FD91.IP
+19/1 04:23:29 Tank_Teh_Hit sold in the store (bgs) ~Tank_Teh_@Swift-4D08CD05.dsl.rcsntx.sbcglobal.net
+19/1 04:26:42 spam_king bought from the store (zamorak godsword) ~spam_king@Swift-E7C79ADB.dynamic.dsl.syd.iprimus.net.au
+19/1 04:28:36 spam_king sold in the store (elyisian) ~spam_king@Swift-E7C79ADB.dynamic.dsl.syd.iprimus.net.au
+19/1 04:29:34 Natee sold in the store (ags) ~Natee@C42CBF63.D8D9DD4B.ADDADD4C.IP
+19/1 04:33:11 Codyyyyyyyy bought from the store (accumulator) ~Codyyyyyy@Swift-2020A8C7.hsd1.fl.comcast.net
+19/1 04:44:52 procombo bought from the store (sgs) ~procombo@Swift-3E87FEDB.ph.ph.cox.net
+19/1 04:53:52 nicole|saechao bought from the store (accumulator) ~nicolesa@Swift-6152122.dsl.pltn13.sbcglobal.net
+19/1 04:56:47 [SF]James bought from the store (zgs) ~SFJames@Swift-B15DCA3E.lnse1.lon.bigpond.net.au
+19/1 04:58:33 Rang3rpur3z bought from the store (accumulator) ~Rang3rpur@Swift-BB1E626A.lsanca.fios.verizon.net
+19/1 04:58:54 GiE bought from the store (accumulator) ~nn@Swift-AB9BC8AA.socal.res.rr.com
+19/1 05:12:51 JCabrera8515 sold in the store (zgs) ~JCabrera8@Swift-6A2A665F.tx.res.rr.com
+19/1 05:13:01 `|Jesse|` sold in the store (mudkip) ~Jesse@Swift-A5DACB29.pools.spcsdns.net
+19/1 05:24:37 Panda_Cub2 bought from the store (void mage) ~Panda_Cub@Swift-9CB79089.dhcp.athn.ga.charter.com
+19/1 05:25:20 T-Dot_Swag bought from the store (sgs) ~T-Dot_Swa@Swift-574DD8FD.cpe.net.cable.rogers.com
+19/1 05:34:28 violentj1100 bought from the store (ring of wealth) ~sup@Swift-F592E707.evdo.leapwireless.net
+19/1 05:38:08 deathsight33 sold in the store (mudkip) ~deathsigh@Swift-34899B68.dyn.centurytel.net
+19/1 05:38:22 Aaron`` sold in the store (accumulator) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 05:42:52 [[Tyler]] sold in the store (mudkip) ~Tyler@Swift-814050E8.hsd1.pa.comcast.net
+19/1 05:42:55 Brohamed sold in the store (ags) ~Brohamed@Swift-DCF948DE.lns7.wel.bigpond.net.au
+19/1 05:45:14 violentj1100 sold in the store (mudkip) ~sup@Swift-F592E707.evdo.leapwireless.net
+19/1 05:45:25 Hattricks3 sold in the store (mudkip) ~Hattricks@Swift-85FB3443.sbndin.dsl-w.verizon.net
+19/1 05:49:50 Brohamed bought from the store (void range) ~Brohamed@Swift-DCF948DE.lns7.wel.bigpond.net.au
+19/1 06:00:29 Kman sold in the store (mudkip) ~Kman@Swift-93C2F2B5.static.dsl.dodo.com.au
+19/1 06:01:43 Kman bought from the store (void mage) ~Kman@Swift-93C2F2B5.static.dsl.dodo.com.au
+19/1 06:03:55 kend0g sold in the store (mudkip) ~kend0g@Swift-ACAE3EA0.lns12.cha.bigpond.net.au
+19/1 06:04:06 kend0g bought from the store (sgs) ~kend0g@Swift-ACAE3EA0.lns12.cha.bigpond.net.au
+19/1 06:10:23 `Nugget sold in the store (mudkip) ~Nugget@Swift-CDBFCF6.lns9.woo.bigpond.net.au
+19/1 06:10:48 Kool_Kohen25 sold in the store (Mage's Book) ~Kool_Kohe@Swift-5D4328C3.tukw.qwest.net
+19/1 06:12:10 Deadly_Derek bought from the store (ags) ~Deadly_De@Swift-7BA46888.hsd1.in.comcast.net
+19/1 06:15:48 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 06:19:08 Aaron`` sold in the store (ags) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 06:27:42 loony sold in the store (mudkip) ~loony@Swift-613D05D4.bna.bellsouth.net
+19/1 06:29:59 pablo bought from the store (void range) ~chuchine_@Swift-667153C0.dsl.lsan03.sbcglobal.net
+19/1 06:36:47 Asashorts sold in the store (ags) ~Asashorts@Swift-102AB3B.wi.res.rr.com
+19/1 06:40:54 Kool_Kohen25 sold in the store (Accumulator) ~Kool_Kohe@Swift-5D4328C3.tukw.qwest.net
+19/1 06:43:21 Mouldyyy sold in the store (mudkip) ~Mouldyyy@Swift-9F1FD9EF.lnse4.lon.bigpond.net.au
+19/1 06:58:12 loony sold in the store (mudkip) ~loony@Swift-613D05D4.bna.bellsouth.net
+19/1 06:58:56 tfot sold in the store (bgs) ~ya@Swift-359AC78B.dc.dc.cox.net
+19/1 06:59:10 tfot sold in the store (mudkip) ~ya@Swift-359AC78B.dc.dc.cox.net
+19/1 07:02:12 trabia44 bought from the store (god cape) ~trabia44@Swift-8EC26500.jetstream.xtra.co.nz
+19/1 07:02:17 trabia44 bought from the store (mage book) ~trabia44@Swift-8EC26500.jetstream.xtra.co.nz
+19/1 07:05:07 Aaron`` sold in the store (ags) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 07:06:02 tim_oneal91 sold in the store (mudkip) ~tim_oneal@EB6FEBA9.5B91BD05.D93A7457.IP
+19/1 07:14:41 Blue_speed bought from the store (mudkip) ~Blue_spee@Swift-DBF3593A.dsl.hstntx.swbell.net
+19/1 07:19:07 I_Dunno bought from the store (sgs) ~dunnobnc@I.ddos.until.you.logout.us
+19/1 07:45:21 Wojownik sold in the store (mudkip) ~Wojownik@Swift-53FCF304.adsl.inetia.pl
+19/1 07:45:24 Wojownik sold in the store (accumulator) ~Wojownik@Swift-53FCF304.adsl.inetia.pl
+19/1 07:45:29 Wojownik bought from the store (elysian shield) ~Wojownik@Swift-53FCF304.adsl.inetia.pl
+19/1 07:51:53 Tidus bought from the store (ags) Tidus@The.Farplane.Final.Fantasy
+19/1 07:52:50 knalkoen sold in the store (accumulator) ~knalkoen@Swift-6D2716CE.direct-adsl.nl
+19/1 07:56:32 nropking1 sold in the store (sgs) ~nropking1@someone.help.me.i.really.want.a.vh0st.co.cc
+19/1 07:56:37 nropking1 sold in the store (mudkip) ~nropking1@someone.help.me.i.really.want.a.vh0st.co.cc
+19/1 07:57:25 Tegan_xx bought from the store (ags) ~Tegan_xx@Swift-34837FCE.nsw.netspace.net.au
+19/1 07:58:47 fatsith5222 bought from the store (bgs) ~fatsith52@DB609CFA.86DD1A17.1B90DB86.IP
+19/1 08:03:08 fatsith5222 bought from the store (ags) ~fatsith52@DB609CFA.86DD1A17.1B90DB86.IP
+19/1 08:05:47 nropking1 sold in the store (zgs) ~nropking1@someone.help.me.i.really.want.a.vh0st.co.cc
+19/1 08:41:10 kenshu-x sold in the store (mudkip) ~kenshu-x@Swift-A564373E.dsl1.ekgv.ca.frontiernet.net
+19/1 09:26:30 [PCD]Mikey bought from the store (sgs) ~PCDMike@Swift-F3E8723E.aztw.cable.virginmedia.com
+19/1 09:33:11 [PCD]Mikey bought from the store (void mage) ~PCDMike@Swift-F3E8723E.aztw.cable.virginmedia.com
+19/1 09:33:54 pureess420 bought from the store (sgs) ~pureess42@Swift-2C104784.cpe.cableone.net
+19/1 09:49:17 Sieggy bought from the store (void range) ~Sieggy@Swift-9BF1E418.lns1.way.bigpond.net.au
+19/1 09:51:03 Esther sold in the store (Zgs) ~Esther@2001:470:c0ad:1:0:0:1337:12
+19/1 10:05:15 swordman_pl1 sold in the store (mage's book) ~swordman_@Swift-D5013A77.tktelekom.pl
+19/1 10:16:09 swordman_pl1 sold in the store (mage's book) ~swordman_@Swift-D5013A77.tktelekom.pl
+19/1 11:03:17 pureess420 bought from the store (mudkip) ~pureess42@Swift-2C104784.cpe.cableone.net
+19/1 11:04:08 Luncher sold in the store (mudkip) ~Saint_Lun@Swift-C9E3F5C6.e-wire.net.au
+19/1 11:15:22 TheNitin bought from the store (ags) indianishe@8AADD1F8.785AD120.A44D5B9D.IP
+19/1 11:29:05 pureess420 sold in the store (Elysian Spirit Shield) ~pureess42@Swift-2C104784.cpe.cableone.net
+19/1 11:32:08 shindog007 bought from the store (void mage) ~shindog00@Swift-34B8E610.lns5.fli.bigpond.net.au
+19/1 11:39:53 Psyknight1 sold in the store (bgs) ~Psyknight@Swift-7A6088EC.know.cable.virginmedia.com
+19/1 11:51:59 Dontxk0xme bought from the store (void range) ~Dontxk0xm@Swift-49AA71F9.dynamic.ip.windstream.net
+19/1 11:56:28 master_erfan sold in the store (mudkip) ~master_er@B3B4972E.FA0B2F5E.2E9C2436.IP
+19/1 12:03:15 Dontxk0xme sold in the store (void range) ~Dontxk0xm@Swift-49AA71F9.dynamic.ip.windstream.net
+19/1 12:03:27 Dontxk0xme sold in the store (mudkip) ~Dontxk0xm@Swift-49AA71F9.dynamic.ip.windstream.net
+19/1 12:08:47 I_r_pixies sold in the store (mudkip) ~I_r_pixie@Swift-B2E6DD1E.hsd1.mi.comcast.net
+19/1 12:09:48 Im_Mango_lol sold in the store (bgs) ~Im_Mango_@Swift-7E5145F3.wa.netspace.net.au
+19/1 12:11:41 Im_Mango_lol sold in the store (accumulator) ~Im_Mango_@Swift-7E5145F3.wa.netspace.net.au
+19/1 12:26:26 Tribuzi7 bought from the store (bgs) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+19/1 12:27:55 Gekke|Navel1 sold in the store (mudkip) ~GekkeNav@Swift-73121B82.direct-adsl.nl
+19/1 12:27:55 Gekke|Navel1 sold in the store (mudkip) ~GekkeNav@Swift-73121B82.direct-adsl.nl
+19/1 12:28:02 knalkoen sold in the store (mudkip) ~knalkoen@Swift-6D2716CE.direct-adsl.nl
+19/1 12:34:20 Gekke|Navel1 sold in the store (mudkip) ~GekkeNav@Swift-73121B82.direct-adsl.nl
+19/1 12:37:12 killernerd7 bought from the store (void range) ~killerner@Swift-D957153F.access.telenet.be
+19/1 12:37:12 echo68 bought from the store (ags) ~echo68@Swift-64549C2B.cpe.unwired.net.au
+19/1 12:38:14 laser_eye12 bought from the store (firecape) ~laser_eye@Swift-6C6507B0.dyn.iinet.net.au
+19/1 12:48:55 Luncher sold in the store (sgs) ~Saint_Lun@Swift-C9E3F5C6.e-wire.net.au
+19/1 12:51:22 `Mike bought from the store (sgs) ~Mike@Swift-72BF7F9F.lns1.win.bigpond.net.au
+19/1 12:51:26 `Mike bought from the store (void range) ~Mike@Swift-72BF7F9F.lns1.win.bigpond.net.au
+19/1 12:58:27 violentj1100 sold in the store (ags) ~sup@Swift-F592E707.evdo.leapwireless.net
+19/1 13:16:01 denikids sold in the store (mudkip) ~denikids@Swift-9CAD11BF.cust.tele2.nl
+19/1 13:19:06 victordudu bought from the store (god cape) soaoel@240AA80C.F685E767.816C870B.IP
+19/1 13:30:33 Rasp sold in the store (accumulator) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:32:45 Luncher bought from the store (dragon claws) ~Saint_Lun@Swift-C9E3F5C6.e-wire.net.au
+19/1 13:34:12 Rasp sold in the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:34:12 Rasp sold in the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:41:58 Rasp bought from the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:41:58 Rasp bought from the store (sgs) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:37 Rasp sold in the store (firecape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:40 Rasp bought from the store (firecape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:40 Rasp bought from the store (firecape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:52 Rasp sold in the store (void mage) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:52 Rasp sold in the store (void mage) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:54 Rasp bought from the store (void mage) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:42:57 Rasp sold in the store (god cape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:00 Rasp bought from the store (god cape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:00 Rasp bought from the store (god cape) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:29 Rasp sold in the store (void range) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:29 Rasp sold in the store (void range) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:35 Rasp bought from the store (void range) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:43:35 Rasp bought from the store (void range) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:44:05 Rasp sold in the store (barrows gloves) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:44:05 Rasp sold in the store (barrows gloves) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:44:09 Rasp bought from the store (barrows bloves) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:44:09 Rasp bought from the store (barrows bloves) ~Rasp@Swift-4AE1DE35.sbr4.nsw.optusnet.com.au
+19/1 13:44:58 Tirri sold in the store (mudkip) ~Tirri@Swift-503B5563.elisa-laajakaista.fi
+19/1 13:50:49 violentj1100 bought from the store (Accumulator) ~sup@Swift-F592E707.evdo.leapwireless.net
+19/1 13:52:48 Tirri sold in the store (mudkip) ~Tirri@Swift-503B5563.elisa-laajakaista.fi
+19/1 14:16:25 Pura_Bucha44 sold in the store (mudkip) ~christian@Swift-BCA979D0.coagril-rs.com.br
+19/1 14:16:45 Pura_Bucha44 bought from the store (mage's book) ~christian@Swift-BCA979D0.coagril-rs.com.br
+19/1 14:20:19 Tribuzi7 bought from the store (accumulator) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+19/1 14:20:58 monstrozoide sold in the store (mudkip) ~monstrozo@Swift-C33DA60F.netvisao.pt
+19/1 14:30:33 violentj1100 sold in the store (dragon claws) ~sup@Swift-F592E707.evdo.leapwireless.net
+19/1 14:47:17 nfs442 bought from the store (dclaws) ~nfs442@FDF356.1ABDCBF4.C1A38CE.IP
+19/1 14:49:37 Tribuzi7 sold in the store (mudkip) ~tribuzi7@Swift-9771174.cpe.netcabo.pt
+19/1 14:49:44 {orion_renegd} sold in the store (mudkip) ~Magia_pre@Swift-D2F774D3.rev.vodafone.pt
+19/1 15:11:48 {orion_renegd} bought from the store (ring of wealth) ~Magia_pre@Swift-D2F774D3.rev.vodafone.pt
+19/1 15:15:17 ximberto bought from the store (dragon claws) ~poker.dio@Swift-D157F165.dsl.telepac.pt
+19/1 15:19:18 Gavva69 sold in the store (ags) ~Gavva69@Swift-81FDE8F.adsl.datanet.hu
+19/1 15:32:48 Bardock bought from the store (Void Range) ~Bardock@Swift-92C51A3.belchatow.vectranet.pl
+19/1 16:11:52 wolfting4 bought from the store (ags) ~wolfting4@Swift-23B0379B.dsl.telepac.pt
+19/1 16:11:56 aussiesrule4 sold in the store (bgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+19/1 16:12:00 aussiesrule4 sold in the store (zgs) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+19/1 16:31:53 iman bought from the store (sgs) ~iman@Swift-53CBB5C3.speed.planet.nl
+19/1 16:32:04 steve_urqule bought from the store (dclaws) ~steve_urq@Swift-AEE00E7D.access.telenet.be
+19/1 16:34:24 BR_Jake bought from the store (ags) ~BR_Jake@Swift-AF0B59DC.nc.res.rr.com
+19/1 16:40:11 iman sold in the store (mudkip) ~iman@Swift-53CBB5C3.speed.planet.nl
+19/1 16:40:17 iman sold in the store (mudkip) ~iman@Swift-53CBB5C3.speed.planet.nl
+19/1 16:44:14 KierKJR bought from the store (accumulator) ~KierKJR@Swift-92495386.range217-43.btcentralplus.com
+19/1 16:45:29 fighter_fre bought from the store (bgs) ~fighter_f@Swift-D9940602.access.telenet.be
+19/1 16:46:24 Dark6732 sold in the store (mudkip) ~Dark6732@Swift-F490B98C.direct-adsl.nl
+19/1 16:53:03 wolfting4 sold in the store (mudkip) ~wolfting4@Swift-23B0379B.dsl.telepac.pt
+19/1 16:53:05 coolcool344 sold in the store (mudkip) ~ezz1994@EF7433C1.CDD6F8F9.EB130A8.IP
+19/1 16:53:23 coolcool344 bought from the store (Accumulator) ~ezz1994@EF7433C1.CDD6F8F9.EB130A8.IP
+19/1 16:53:59 aussiesrule4 bought from the store (ely) ~djaussie@Swift-C4870733.leed.cable.ntl.com
+19/1 16:58:49 Out_Of_Service sold in the store (mudkip) ~Out_Of_Se@Swift-D0903879.adsl-dyn.isp.belgacom.be
+19/1 17:09:34 fighter_fre sold in the store (mudkip) ~fighter_f@Swift-D9940602.access.telenet.be
+19/1 17:10:21 Hand_of_God sold in the store (mudkip) ~Tom@Swift-E41A02A3.atw.dyn.suddenlink.net
+19/1 17:14:32 Muraatovic bought from the store (Armadyl Godsword) ~Muraatovi@Swift-968259B8.onsbrabantnet.nl
+19/1 17:16:09 Uzumaki508 sold in the store (zgs) ~Uzumaki50@AFB4BD3A.40F87C03.11CD6A51.IP
+19/1 17:20:39 SupahPowerZ sold in the store (sgs) ~Pow@Swift-BD22F4DD.seac.cable.virginmedia.com
+19/1 17:21:00 Uzumaki508 sold in the store (mudkip) ~Uzumaki50@AFB4BD3A.40F87C03.11CD6A51.IP
+19/1 17:21:25 iman bought from the store (void range) ~iman@Swift-53CBB5C3.speed.planet.nl
+19/1 17:23:26 Hand_of_God sold in the store (ely) ~Tom@Swift-E41A02A3.atw.dyn.suddenlink.net
+19/1 17:23:29 Hand_of_God sold in the store (accumulator) ~Tom@Swift-E41A02A3.atw.dyn.suddenlink.net
+19/1 17:24:19 Igor_Br_Sp sold in the store (zgs) ~Igor_Br_S@Swift-EBA0644.dial-up.telesp.net.br
+19/1 17:24:34 Uzumaki508 sold in the store (zgs) ~Uzumaki50@AFB4BD3A.40F87C03.11CD6A51.IP
+19/1 17:32:21 Uzumaki508 sold in the store (mudkip) ~Uzumaki50@AFB4BD3A.40F87C03.11CD6A51.IP
+19/1 17:34:15 Mafios bought from the store (Ring of Wealth) ~Mafios@Swift-DA49C08D.internetdsl.tpnet.pl
+19/1 17:35:21 ben29rockss sold in the store (bgs) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+19/1 17:36:37 Aaron`` sold in the store (mudkip) ~Aaron@Swift-8A770D15.bstnma.fios.verizon.net
+19/1 17:38:51 ben29rockss bought from the store (ring of wealth) ~ben29rock@Swift-68FDB2C1.dhcp.mtpk.ca.charter.com
+19/1 18:04:14 longfish2 bought from the store (void range) ~longfish2@E4C4247.2214FE43.5E02740A.IP

@@ -77,23 +77,30 @@ on *:NICK: {
   var %a = 1
   if ($hget($nick)) {
     while (%a <= $chan(0)) {
-      if ($hget($chan(%a),stake) && (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
+      if ($hget($chan(%a),stake)) && (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
         db.set user money $nick - $ceil($calc($hget($chan(%a),stake)) / 2))
         msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($hget($chan(%a),stake)) / 2))) $+ .
         cancel $chan(%a)
         .timer $+ $chan(%a) off
         halt
       }
-      if ($nick == $hget($chan(%a),p1)) {
-        db.set user indm $nick 0
-        db.set user indm $newnick 1
-        hadd $chan(%a) p1 $newnick
+      elseif (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
+        msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
+        cancel $chan(%a)
+        .timer $+ $chan(%a) off
+        halt
       }
-      if ($nick == $hget($chan(%a),p2)) {
-        db.set user indm $nick 0
-        db.set user indm $newnick 1
-        hadd $chan(%a) p2 $newnick    
-      }
+
+      ;if ($nick == $hget($chan(%a),p1)) {
+      ;  db.set user indm $nick 0
+      ;  db.set user indm $newnick 1
+      ;  hadd $chan(%a) p1 $newnick
+      ;}
+      ;if ($nick == $hget($chan(%a),p2)) {
+      ;  db.set user indm $nick 0
+      ;  db.set user indm $newnick 1
+      ;  hadd $chan(%a) p2 $newnick    
+      ;}
       inc %a
     }
   }

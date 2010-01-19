@@ -34,7 +34,7 @@ on *:sockopen:pu:{
     hadd >geupdate item $getitem($hget(>geupdate,id))
     hadd >geupdate price $getprice($hget(>geupdate,id))
     hadd >geupdate name $getname($hget(>geupdate,id))
-    if ($hget(>geupdate,item) == 0) { pu2 | return }
+    if ($hget(>geupdate,item) == 0) { hinc >geupdate id 1 | pu2 | return }
     sockwrite -nt $sockname GET /viewitem.ws?obj= $+ $hget(>geupdate,item) HTTP/1.1
     sockwrite -nt $sockname Host: itemdb-rs.runescape.com
     sockwrite -nt $sockname $crlf
@@ -61,7 +61,7 @@ on *:SOCKREAD:pu:{
       if ($hget(>geupdate,price) != %price) {
         setitem $hget(>geupdate,item) %price
         if ($abs($calc($hget(>geupdate,price) - %price)) > $abs($calc($hget(>geupdate,price) * 0.1))) {
-          putlog $logo(GE UPDATE) $hget(>geupdate,name) ( $+ $hget(>geupdate,item) $+ ) $+ 's price updated from $hget(>geupdate,price) to %price
+          putlog $logo(GE UPDATE) $hget(>geupdate,name) ( $+ $hget(>geupdate,item) $+ ) $+ 's price updated from $hget(>geupdate,price) to %price Status: $hget(>geupdate,id) $+ / $+ $hget(>geupdate,max)
         }
       }
     }
@@ -77,6 +77,9 @@ on *:SOCKREAD:pu:{
     .timerpu2 1 3 pu2 
     msgsafe #idm.staff $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
   }
+}
+on *:sockclose:pu: {
+  pu2
 }
 alias -l pu2 {
   if ($sock(pu)) { sockclose pu }
