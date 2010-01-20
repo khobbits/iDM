@@ -7,6 +7,9 @@ alias autoidm.run {
   autoidm.start $1
 }
 alias autoidm.start {
+  if (!$hget($chan)) return
+  if ($hget($chan,p2)) return
+
   var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,p1)
   if (!%p1) halt
