@@ -557,3 +557,4 @@
 20/1 21:06:04 Soda parted channel #iDM during a dm oldcash 2223664343 penalty 44473287
 20/1 21:09:00 ```Kyle``` parted channel #curtis during a dm oldcash 81091260 penalty 1621826
 20/1 21:09:01 Uzumaki508 parted channel #gays during a dm oldcash 79819841 penalty 1596397
+20/1 21:33:48 Denny_966 parted channel #benelux-dm during a dm oldcash 3044321900 penalty 60886438

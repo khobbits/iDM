@@ -7,8 +7,8 @@ alias autoidm.run {
   autoidm.start $1
 }
 alias autoidm.start {
-  if (!$hget($chan)) return
-  if ($hget($chan,p2)) return
+  if (!$hget($1)) return
+  if ($hget($1,p2)) return
 
   var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,p1)
@@ -32,20 +32,23 @@ alias autoidm.turn {
   if (%hp2 <= 15) var %attcmd surf
   elseif ((%hp <= 9) && (%hp2 <= 50)) var %attcmd dh
   elseif ($hget(%p2,laststyle) == melee) {
-    if ($hget(%p2,poison) >= 1) || (%hp < 60) {
+    if ($1 == #dm.newbies) { var %attcmd blood }
+    elseif ($hget(%p2,poison) >= 1) || (%hp < 60) {
       if ((%hp >= 70) && (%spec >= 3) && (!$hget(%nick,frozen))) var %attcmd dclaws
       else var %attcmd blood
     }
     else var %attcmd smoke    
   }
   elseif ($hget(%p2,laststyle) == mage) {
-    if ((%spec >= 3) && ($hget(%p2,poison) >= 1)) var %attcmd dbow
+    if ($1 == #dm.newbies) { var %attcmd onyx }
+    elseif ((%spec >= 3) && ($hget(%p2,poison) >= 1)) var %attcmd dbow
     elseif ((%spec >= 1) && (%hp > 50)) var %attcmd mjavelin
     else var %attcmd onyx
   }
   elseif ($hget(%p2,laststyle) == range) || ($hget(%p2,laststyle) == pot) {
     if ($hget(%nick,frozen)) var %attcmd onyx
     elseif ((!$hget(%p2,poison)) && (%spec >= 1) && (%hp2 > 50)) var %attcmd dds
+    elseif ($1 == #dm.newbies) { var %attcmd guth }
     elseif (%spec >= 3) {
       if ((%hp >= 50) || (%hp2 < 30)) var %attcmd dhally
       else var %attcmd sgs
@@ -63,7 +66,7 @@ alias autoidm.turn {
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1
   if ($hget(%p2,hp) < 1) {
-    dead $1 %p2 iDM
+    dead $1 %p2 idm
     halt
   }
   if ($specused(%attcmd)) {

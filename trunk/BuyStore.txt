@@ -3125,3 +3125,5 @@
 20/1 20:30:39 keiththebomb bought from the store (bgs) ~keiththeb@Swift-FA7ACBB4.zoominternet.net
 20/1 20:34:48 keiththebomb bought from the store (ags) ~keiththeb@Swift-FA7ACBB4.zoominternet.net
 20/1 20:52:33 [{|Ari|}] sold in the store (ags) ~Ari@Swift-779C192A.lightspeed.prtgmi.sbcglobal.net
+20/1 21:24:40 Eren sold in the store (ring of wealth) ~swordmast@Swift-13E40B42.dsl.lsan03.sbcglobal.net
+20/1 21:38:22 littlemanran bought from the store (void range) ~littleman@Swift-BF32C662.hsd1.il.comcast.net
