@@ -53,7 +53,7 @@ alias enablec {
     db.remove settings $3 setting onyx
     var %notice %notice Healing attacks are now on in $3 $+ .
   }
-  elseif ($1 == all) {
+  elseif (($1 == all) || ($1 == -a)) {
     db.remove settings $3
     var %notice %notice All attacks have been turned on in $3 $+ .
   }
