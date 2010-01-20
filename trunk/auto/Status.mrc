@@ -4,6 +4,9 @@ alias autoidm.run {
     enddm $1
     return
   }
+  autoidm.start $1
+}
+alias autoidm.start {
   var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,p1)
   if (!%p1) halt

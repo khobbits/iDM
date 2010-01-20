@@ -12,6 +12,17 @@ on $*:TEXT:/^[!.]Bot-ON$/Si:#idm.staff: {
   }
 }
 
+on $*:TEXT:/^[!.]autodm$/Si:#idm.staff: {
+  if ($db.get(admins,position,$address($nick,3))) {
+    if ($2 == on) { db.set settings setting $chan timeout }
+    elseif ($2 == off) { db.remove settings $chan setting timeout }
+    else {  
+         .timer $+ $chan off
+     autodm.start
+    }
+  }
+}
+
 on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
