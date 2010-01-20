@@ -12,7 +12,7 @@ on $*:TEXT:/^[!.]Bot-ON$/Si:#idm.staff: {
   }
 }
 
-on $*:TEXT:/^[!.]autoidm$/Si:#: {
+on $*:TEXT:/^[!.]autoidm/Si:#: {
   if ($db.get(admins,position,$address($nick,3))) {
     if ($2 == on) { db.set settings setting $chan timeout | notice $nick $logo(AutoIDM) Disabled Timeout }
     elseif ($2 == off) { db.remove settings $chan setting timeout | notice $nick $logo(AutoIDM) Enabled Timeout }
