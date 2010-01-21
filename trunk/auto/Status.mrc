@@ -61,7 +61,8 @@ alias autoidm.turn {
     else var %attcmd guth
   }
   else {
-    var %attcmd mjavelin
+    if ($1 == #dm.newbies) { var %attcmd smoke }
+    else { var %attcmd mjavelin }
   }
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1
