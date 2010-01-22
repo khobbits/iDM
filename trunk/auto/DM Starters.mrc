@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.](dm|stake)\b/Si:#: {
+on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }

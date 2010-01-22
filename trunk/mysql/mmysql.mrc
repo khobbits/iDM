@@ -46,7 +46,7 @@ alias -l mysql_dll return $qt($+($scriptdir,mmysql.dll))
 ** MySQL Internals
 */
 
-alias -l mysql_param return $qt($replace($1, \, \\, ", \"))
+alias mysql_param return $qt($replace($1, \, \\, ", \"))
 
 alias mysql_help {
   run $+($scriptdir,mmysql.chm)

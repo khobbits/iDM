@@ -172,16 +172,28 @@ alias db.exec {
   var %fail 0
   :dbexec
   dbcheck
-  var %sql = $1-
-  if (!$mysql_exec(%db, %sql)) {
-    inc %fail
-    mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
-    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
-    return $null
+  if (!$isid || !$2) {
+    var %sql = $1-
+    if (!$mysql_exec(%db, %sql)) {
+      inc %fail
+      mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
+      if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
+      return $null
+    }
+  }
+  else {
+    var %sql = $1
+    if (!$mysql_exec(%db, %sql, $2, $3, $4, $5, $6, $7, $8, $9)) {
+      inc %fail
+      mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql - $2-
+      if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
+      return $null
+    }  
   }
   if (%debugq == $me) echo 12 -s Query %sql executed
   return 1
 }
+
 
 alias mysqlderror {
   echo 4 -s $2-

@@ -3,11 +3,16 @@ alias dead {
     db.set user money $3 + $hget($1,stake)
     db.set user money $2 - $hget($1,stake)
     .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ .
-    cancel $1
     db.set user wins $3 + 1
+
+    var %sql = INSERT INTO tracking (user, searnings, sloss, scount) VALUES (?, ?, ?, '1') ON DUPLICATE KEY UPDATE searnings = searnings + ?, sloss = sloss + ?, scount = scount + 1
+    noop $db.exec(%sql, $3, $hget($1,stake), 0, $hget($1,stake), 0)
+    noop $db.exec(%sql, $2, 0, $hget($1,stake), 0, $hget($1,stake))
+
     db.set user losses $2 + 1
     set -u10 %wait. [ $+ [ $1 ] ] on
     .timer 1 10 msgsafe $1 $logo(DM) Ready.
+    cancel $1
     halt
   }
   var %drops $rundrops($1, $3, $2)
