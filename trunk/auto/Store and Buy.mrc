@@ -17,7 +17,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
     $s1(Zamorak Godsword) ( $+ $s2($buyprice(zgs)) $+ ) - $&
     $s1(Dragon Claws) ( $+ $s2($buyprice(dclaws)) $+ ) - $&
     $s1(Mudkip) ( $+ $s2($buyprice(mudkip)) $+ ) - $&
-    $s1(Elysian Spirit Shield) (Reduces attack damage by up to 15 $+ $chr(37) $+ ) ( $+ $s2($buyprice(elysian)) $+ ) - $&
+    $s1(Elysian Spirit Shield) (Reduces attack damage by up to 10 $+ $chr(37) $+ ) ( $+ $s2($buyprice(elysian)) $+ ) - $&
     $s1(Ring of Wealth) (Doubles chance of rare drop) ( $+ $s2($buyprice(ring of wealth)) $+ )
 }
 

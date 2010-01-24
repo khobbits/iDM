@@ -63,11 +63,11 @@ on $*:TEXT:/^[!.]/Si:#: {
     hadd $chan p1 %p2
     hadd $chan p2 $nick
     if (<iDM>* iswm %p2) { autoidm.turn $chan }
-        return
+    return
   }
   elseif ($hget($nick) && $hget($nick,$chan) == $chan && $hget($nick,g)) {
     gwd.att $nick $hget($nick,g) $1 $chan
-        return
+    return
   }
 }
 
@@ -252,7 +252,7 @@ alias hit {
   else { var %acc $r(1,100) }
 
   var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))
-  var %def $iif($hget($3,elshield),$calc($r(85,99) / 100),1)
+  var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
   var %ratk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0))
   var %matk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,mbook),5,0) + $iif($hget($2,godcape),5,0))
 
