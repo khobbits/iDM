@@ -53,7 +53,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
       var %p1 $hget($chan,p1)
       chaninit %p1 $nick $chan $iif(%stake,$v1)
-      var %winloss $winloss($nick,$hget($chan,p1),$chan)
+      var %winloss $winloss($nick,%p1,$chan)
       var %winlossp1 $gettok(%winloss,1,45)
       var %winlossp2 $gettok(%winloss,2,45)
       msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 $iif(%msg,$v1,DM) $+ . $s1($hget($chan,p1)) gets the first move.
