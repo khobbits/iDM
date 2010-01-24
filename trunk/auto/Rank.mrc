@@ -69,7 +69,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %money = $ranks(money,$2)
     var %nextmoney = $price($calc($gettok($ranks(money,$calc(%money -1)),2,58) - $db.get(user,money,$2)))
     var %wins = $ranks(wins,$2)
-    var %nextwins = $calc($gettok($ranks(wins,$calc(%wins -1)),2,58) - $.db.get(user,wins,$2))
+    var %nextwins = $calc($gettok($ranks(wins,$calc(%wins -1)),2,58) - $db.get(user,wins,$2))
     var %losses = $ranks(losses,$2)
     var %nextlosses = $calc($gettok($ranks(losses,$calc(%losses -1)),2,58) - $db.get(user,losses,$2))
 

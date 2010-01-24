@@ -20,7 +20,7 @@ alias db.get {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($1 == user) || (equip_ isin $1)) {
-    if ($hget($3)) return $hget($3,$2)
+    if (($hget($3)) && ($hget($3,money))) { return $hget($3,$2) }
   }
   var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
   return $iif($db.select(%sql,$2) === $null,0,$v1)

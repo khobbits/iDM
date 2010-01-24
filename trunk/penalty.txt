@@ -830,3 +830,16 @@
 24/1 19:58:30 Hydra858 quit channel #Lomp during a dm oldcash 1100344531 penalty 22006891
 24/1 19:59:32 Hydra858 quit channel #Lomp during a dm oldcash 1078337640 penalty 21566753
 24/1 20:06:39 marcelo_1444 got !enddm'd on #questers oldcash 459567174 newcash 457269339
+24/1 20:30:07 matt4aly got !enddm'd on #bradz oldcash 225445696 newcash 224318468
+24/1 20:54:54 Torres80 got !enddm'd on #questers oldcash 5848906796 newcash 5819662263
+24/1 20:55:53 microham69 got !enddm'd on #bradz oldcash 3835081250 newcash 3815905844
+24/1 20:56:47 Dark6732 part channel #tank during a dm oldcash 22106025655 penalty 442120514
+24/1 21:12:24 rubenapf got !enddm'd on #questers oldcash 585064420 newcash 582139098
+24/1 21:39:45 omar_1111 got !enddm'd on #bewbiesmcbewbers oldcash 17565332278 newcash 17477505617
+24/1 21:50:37 Boss_DeeJay|Hiway part channel #jek584 during a dm oldcash 351997620 penalty 7039953
+24/1 22:00:42 Robyroakill got !enddm'd on #We.dm oldcash 2136832460 newcash 2126148298
+24/1 22:02:24 Wojownik got !enddm'd on #WWDM oldcash 1585078762 newcash 1577153369
+24/1 22:34:12 marcelo_1444 got !enddm'd on #questers oldcash 192991449 newcash 192026492
+24/1 22:38:24 Ronnie518 got !enddm'd on #Tank oldcash 42580745092 newcash 42367841367
+24/1 22:51:05 lily_99ab1 got !enddm'd on #Mango oldcash 8134842891 newcash 8094168677
+24/1 22:58:43 Gham part channel #bradz during a dm oldcash 299032794 penalty 5980656
