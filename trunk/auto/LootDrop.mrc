@@ -20,7 +20,6 @@ alias dead {
   var %items $gettok(%drops,2-,32)
   var %winnerclan = $hget($3,clan)
   var %looserclan = $hget($2,clan)
-
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1

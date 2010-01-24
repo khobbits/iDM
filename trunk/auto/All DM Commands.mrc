@@ -179,7 +179,7 @@ alias damage {
 
   if ($hget($4,stake) == $null) {
 
-    if ($hget(belong,$1)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
       var %extra $iif(%hp2 < 12,$($v1,2),12)
       dec %hp2 %extra
       msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
