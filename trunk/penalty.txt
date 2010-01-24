@@ -809,3 +809,5 @@
 24/1 16:42:34 Dark_slay168 got !enddm'd on #Tank oldcash 1865423586 newcash 1856096469
 24/1 16:56:33 I_got_munnyz got !enddm'd on #ls oldcash 63012934 newcash 62697870
 24/1 17:06:17 matt4aly got !enddm'd on #bradz oldcash 353562469 newcash 351794657
+24/1 17:15:45 Satan666 part channel #istake during a dm oldcash 107154626026 penalty 2143092521
+24/1 17:20:04 Satan666 part channel #istake during a dm oldcash 105008533505 penalty 2100170671

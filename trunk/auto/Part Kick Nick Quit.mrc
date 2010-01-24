@@ -19,7 +19,7 @@ on *:PART:#: {
     cancel #
   }
   if ($hget($chan) && $hget($nick))  {
-    if ($enddmcheck($chan,$knick,part,$1,$2-)) { return }
+    if ($enddmcheck($chan,$nick,part,$1,$2-)) { return }
   }
 }
 
@@ -124,6 +124,7 @@ alias enddmcheck {
   if ($hget($1,p2)) && ($hget($1,stake)) && (($hget($1,p1) == $2) || ($hget($1,p2) == $2)) {
     db.set user money $2 - $ceil($calc($hget($1,stake) / 2) )
     msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($2) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
+    notice $2 You left the channel during a stake, you loose $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
     cancel $1
     .timer $+ $1 off
     return 1
