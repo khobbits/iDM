@@ -9833,3 +9833,5 @@
 11/2 22:55:47 Me_Not_Weak bought from the store (ags) ~Me_Not_We@Swift-3245CE08.cg.shawcable.net
 11/2 22:58:55 Mast3rpker4 bought from the store (void range) ~Mast3rpke@Swift-75E6D15F.tampabay.res.rr.com
 11/2 23:00:30 Mast3rpker4 sold in the store (mudkip) ~Mast3rpke@Swift-75E6D15F.tampabay.res.rr.com
+11/2 23:10:22 the_0wn3r358 sold in the store (mudkip) ~the_0wn3r@733F7A46.F4D794CD.EF78B446.IP
+11/2 23:10:26 target sold in the store (mudkip) ~target@Swift-F16DD076.socal.res.rr.com

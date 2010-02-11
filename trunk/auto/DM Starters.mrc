@@ -42,17 +42,17 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       halt
     }
     if (stake isin $1) && ($hget($chan,stake)) {
-      var %money = $db.get(user,money,$nick), %stake $hget($chan,stake)
-      ;if ($2 == max) { var %stake $maxstake(%money) }
-      ;elseif (!$2) { var %stake $hget($chan,stake) }
-      ;else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
-      ;if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
+      var %money = $db.get(user,money,$nick)
+      if ($2 == max) { var %stake $maxstake(%money) }
+      elseif (!$2) { var %stake $hget($chan,stake) }
+      else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
+      if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
       if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
       var %msg stake of $s1($price($hget($chan,stake)))
     }
     elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
     var %p1 $hget($chan,p1)
-    chaninit %p1 $nick $chan $iif(%stake,%stake)
+    chaninit %p1 $nick $chan $iif($hget($chan,stake),$hget($chan,stake))
     var %winloss $winloss($nick,%p1,$chan)
     var %winlossp1 $gettok(%winloss,1,45)
     var %winlossp2 $gettok(%winloss,2,45)
