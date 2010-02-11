@@ -23,7 +23,7 @@ on $*:TEXT:/^[!.]autoidm/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff: {
+on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
@@ -41,7 +41,7 @@ on $*:TEXT:/^[!.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
     if (!$2) { notice $nick Syntax !(c|r)bl <channel> | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
       db.hget >checkban blist $2 who time reason
-      if ($hget(>checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($v1) }
+      if ($hget(>checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
       else { notice $nick $logo(BANNED) Channel $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.remove blist $2
@@ -165,7 +165,7 @@ alias listdmchan {
   return $iif(%b,$v1,none)
 }
 
-on $*:TEXT:/^[!.]join .*/Si:*: {
+on $*:TEXT:/^[!.]join .*/Si:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
@@ -278,7 +278,7 @@ On $*:TEXT:/^[!@.]cookie .*/Si:#: {
   }
 }
 
-On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff: {
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,position,$address($nick,3)) == admins && $me == iDM) {
     if ($4 !isnum) { goto error }
     if (?increase iswm $1) { var %sign + }

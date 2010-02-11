@@ -142,7 +142,7 @@ raw 322:*:{
       set %raw322 [ $+ [ $2 ] ] %raw322 [ $+ [ $2 ] ] on
       join $2
       idmstaff invite $2 $gettok(%raw322 [ $+ [ $2 ] ],1,32) 
-      $+(.timer,$2) 1 1 msgsafe $2 $entrymsg($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
+      $+(.timer,$2) 1 1 msg $2 $entrymsgsafe($2,$gettok(%raw322 [ $+ [ $2 ] ],1,32))
     }
   }
 }
@@ -163,18 +163,18 @@ alias entrymsgsafe {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: New site features + changes to !money -- !dmnews for more
+  return News: New clues and drop system
 }
-
-on $*:TEXT:/^[!@.]dmnews/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  notice $nick $logo(News #1) Login changes -> http://r.idm-bot.com/efn2
-  notice $nick $logo(News #2) Request a channel blacklist by visiting #iDM.Support Note: Channel owners + admins ONLY
-}
-
 
 alias bottag {
   tokenize 32 $iif($1,$1-,$me)
   if ($1 == iDM) { return iDM | halt }
   else { return $remove($1,idm[,$chr(93)) | halt }
+}
+
+Raw 470:*: {
+  msg #iDM.Staff $logo(Link) I was invited to $3 but was forced into $17
+  timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
+  db.set blist who $3 AUTO
+  db.set blist reason $3 Channel $3 linked to $17
 }

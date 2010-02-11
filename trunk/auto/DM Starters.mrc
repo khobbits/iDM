@@ -36,30 +36,30 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
     db.set user indm $nick 1
   }
   else {
-      if ($address($hget($chan,p1),2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address($hget($chan,p1),2)) > 3) {
-        msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
-        inc -u5 %dm.spam [ $+ [ $nick ] ]
-        halt
-      }
-      if (stake isin $1) && ($hget($chan,stake)) {
-      var %money = $db.get(user,money,$nick)
-      if ($2 == max) { var %stake $maxstake(%money) }
-      elseif (!$2) { var %stake $hget($chan,stake) }
-      else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
-      if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
+    if ($address($hget($chan,p1),2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address($hget($chan,p1),2)) > 3) {
+      msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
+      inc -u5 %dm.spam [ $+ [ $nick ] ]
+      halt
+    }
+    if (stake isin $1) && ($hget($chan,stake)) {
+      var %money = $db.get(user,money,$nick), %stake $hget($chan,stake)
+      ;if ($2 == max) { var %stake $maxstake(%money) }
+      ;elseif (!$2) { var %stake $hget($chan,stake) }
+      ;else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
+      ;if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
       if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
       var %msg stake of $s1($price($hget($chan,stake)))
-      }
-      elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-      var %p1 $hget($chan,p1)
-      chaninit %p1 $nick $chan $iif(%stake,$v1)
-      var %winloss $winloss($nick,%p1,$chan)
-      var %winlossp1 $gettok(%winloss,1,45)
-      var %winlossp2 $gettok(%winloss,2,45)
-      msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 $iif(%msg,$v1,DM) $+ . $s1($hget($chan,p1)) gets the first move.
-      .timer $+ # off
-      set -u25 %enddm [ $+ [ $chan ] ] 0
-      db.set user indm $nick 1
+    }
+    elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
+    var %p1 $hget($chan,p1)
+    chaninit %p1 $nick $chan $iif(%stake,%stake)
+    var %winloss $winloss($nick,%p1,$chan)
+    var %winlossp1 $gettok(%winloss,1,45)
+    var %winlossp2 $gettok(%winloss,2,45)
+    msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 $iif(%msg,$v1,DM) $+ . $s1($hget($chan,p1)) gets the first move.
+    .timer $+ # off
+    set -u25 %enddm [ $+ [ $chan ] ] 0
+    db.set user indm $nick 1
   }
 }
 
@@ -161,8 +161,8 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] %othernick
-    timer 1 20 delaycancelw $chan %othernick
-    timer 1 40 delaycancel $chan %othernick
+    timer $+ $chan 1 20 delaycancelw $chan %othernick
+    timer $+ $chan 1 40 delaycancel $chan %othernick
 
   }
   elseif ($nick == $hget($chan,p1)) {
@@ -180,15 +180,15 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
 
 alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] != $2) { return }
-    var %oldmoney = $hget($2,money)
-    if (%oldmoney > 100) {
-      var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
-      notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
-      write penalty.txt $timestamp $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
-      db.set user money $2 %newmoney
-    }
-    cancel $1
-    msgsafe $1 $logo(DM) The DM has ended due to timeout.
+  var %oldmoney = $hget($2,money)
+  if (%oldmoney > 100) {
+    var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
+    notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
+    write penalty.txt $timestamp $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
+    db.set user money $2 %newmoney
+  }
+  cancel $1
+  msgsafe $1 $logo(DM) The DM has ended due to timeout.
 }
 
 alias delaycancelw {

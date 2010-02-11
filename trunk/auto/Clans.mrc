@@ -53,7 +53,7 @@ on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
 }
 
 on $*:TEXT:/^[!@.](start|create)clan.*/Si:*: {
-  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  tokenize 32 $strip($remove($1-,$chr(36),$chr(37)))
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)

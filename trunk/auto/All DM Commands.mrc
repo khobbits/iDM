@@ -264,7 +264,8 @@ alias hit {
   :ags
   return $hitdmg(m,ags,%acc,1,%atk,%def)
   :cbow
-  if (%acc isnum 98-100) && ($hget(>equiphit,void) || $hget(>equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+  ;if (%acc isnum 98-100) && ($hget(>equiphit,void) || $hget(>equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+  if (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
   return $hitdmg(r,cbow,%acc,1,%ratk,%def)
   :dbow
   return $hitdmg(r,dbow,%acc,2,%ratk,%def)
