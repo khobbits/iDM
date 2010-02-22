@@ -197,7 +197,7 @@ alias db.exec {
 
 alias mysqlderror {
   echo 4 -s $2-
-  putlog 3BotError - $me $+ 4 $2- 
+  ;putlog 3BotError - $me $+ 4 $2- 
   if (($1 == 3000) || ($1 == 1)) { dbinit }
   mysql_ping %db
 }
@@ -218,8 +218,10 @@ alias dbinit {
 
   set %db $mysql_connect(%host, %user, %pass)
   if (!%db) {
-    mysqlderror %mysql_errno Error: %mysql_errstr - %mysql_errno
-    if (%mysql_errno isnum 1000-2999) { inc %dbfail 1 | halt }
+    var %bk_mysql_errno %mysql_errno
+    if (%dbfail <= 4) { mysqlderror Error: %mysql_errstr - %mysql_errno }
+    if (%dbfail == 4) { msg #idm.staff $logo(MySQL) 4Error: %mysql_errstr - %mysql_errno 4,1[BOT DISABLED] }
+    if (%bk_mysql_errno isnum 1000-2999) { inc %dbfail 1 | halt }
     return
   }
   else {
@@ -229,7 +231,8 @@ alias dbinit {
       inc %dbfail 1
       halt
     }
-    set %dbfail 0 
-    echo 4 -s SQLDB LOADED
+    set %dbfail 0
+    if (!timer(dbinit)) timerdbinit off
+    msg #idm.staff $logo(MySQL) MySQL Connection Established.
   }
 }
