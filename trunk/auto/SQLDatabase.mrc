@@ -17,11 +17,11 @@ alias db.tquote {
 ; This is a convience function to return a single cell from a table
 alias db.get {
   if (!$3) { putlog Syntax Error: db.get <table> <column> <user> - $db.safe($1-) | halt }
-  dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($1 == user) || (equip_ isin $1)) {
     if (($hget($3)) && ($hget($3,money))) { return $hget($3,$2) }
   }
+  dbcheck
   var %sql = SELECT user, $db.tquote($2) FROM $db.tquote($1) WHERE user = $db.safe($3)
   return $iif($db.select(%sql,$2) === $null,0,$v1)
 }
