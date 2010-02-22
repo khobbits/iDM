@@ -26,6 +26,7 @@ alias rehash.cont {
   if (%botnum == 0) { var %botnum 1 }
   inc %botnum
   putlog perform rehash.run %botnum
+  botrefresh
 }
 
 alias rehash.run {
