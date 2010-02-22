@@ -23,7 +23,7 @@ alias rehash.cont {
   noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
   privmsg #idm.staff Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
-  if (%botnum == 0) { var %botnum 1 }
+  if (%botnum !isnum 1-10) { var %botnum 1 }
   inc %botnum
   putlog perform rehash.run %botnum
   botrefresh

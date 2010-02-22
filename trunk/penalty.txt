@@ -16,3 +16,4 @@
 22/2 03:41:55 |[Crystal]| got !enddm'd on #fkz-dm oldcash 32853708 newcash 32689440
 22/2 03:47:12 Giovani part channel #indez during a dm oldcash 578759638 penalty 11575193
 22/2 04:22:43 i_stay_faded got !enddm'd on #idiots oldcash 815048475 newcash 810973233
+22/2 04:55:43 Unforgiv4ble quit channel #its during a dm oldcash 1093994850 penalty 21879897

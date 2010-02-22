@@ -21,14 +21,15 @@ on *:CONNECT: {
     timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
   }
   mode $me +pB
+  mysql_close %db
+  unsetall
   botrefresh
   echo -s 4Connected.
   timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 
 alias botrefresh {
-  mysql_close %db
-  unsetall
+  dbcheck
   if ($hget(>weapon)) { hfree >weapon }
   echo -s 4Clearing active dms
   db.clear user indm
