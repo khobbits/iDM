@@ -19,3 +19,6 @@
 22/2 04:55:43 Unforgiv4ble quit channel #its during a dm oldcash 1093994850 penalty 21879897
 22/2 05:05:53 b00m_bch part channel #idm during a dm oldcash 1128125156 penalty 22562504
 22/2 05:11:53 beersy part channel #B3Sr1 during a dm oldcash 209081722 penalty 4181635
+22/2 05:48:55 `M3rcy part channel #troyy during a dm oldcash 272077370 penalty 5441548
+22/2 05:55:54 CrestSide quit channel #troyy during a dm oldcash 184333417 penalty 3686669
+22/2 06:09:30 CrestSide part channel #idm during a dm oldcash 180646748 penalty 3612935
