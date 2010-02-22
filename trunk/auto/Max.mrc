@@ -104,15 +104,15 @@ alias dmg {
   return $dmg.hget($gettok($1,1,95),$2)
 }
 
-alias attackname return $dmg($1,name) 
-alias specused return $calc($dmg($1,spec) * 25)
-alias poisoner return $dmg($1,poison)
-alias freezer return $dmg($1,freeze) 
-alias healer return $dmg($1,healchance) $dmg($1,healamount)
-alias splasher return $dmg($1,splash)
-alias doeswhat return $dmg($1,what)
-alias effect return $dmg($1,effect)
-alias attack return $iif($dmg($1,name),$true,$false)
+alias attackname { return $dmg($1,name) }
+alias specused { return $calc($dmg($1,spec) * 25) }
+alias poisoner { return $dmg($1,poison) }
+alias freezer { return $dmg($1,freeze) }
+alias healer { return $dmg($1,heal) }
+alias splasher { return $dmg($1,splash) }
+alias doeswhat { return $dmg($1,what) }
+alias effect { return $dmg($1,effect) }
+alias attack { return $iif($dmg($1,name),$true,$false) }
 
 alias ispvp {
   if ($1 == mjavelin) return 1

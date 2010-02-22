@@ -81,3 +81,9 @@
 22/2 04:17:25 lyra bought from the store (wealth) ~lyra@i.r.cookie.monster.on.darklite.be
 22/2 04:28:45 [Rage]Dave bought from the store (Accumulator) ~RageDav@Swift-BF367F59.woh.res.rr.com
 22/2 04:33:39 yourgarbajio bought from the store (void range) ~yourgarba@81EF168E.BA845D47.3C6F2895.IP
+22/2 05:16:55 humpry_ sold in the store (sgs) ~humpry_@Swift-F99D037A.dsl.covlil.sbcglobal.net
+22/2 05:16:58 yourgarbajio sold in the store (sgs) ~yourgarba@81EF168E.BA845D47.3C6F2895.IP
+22/2 05:17:00 yourgarbajio bought from the store (bgs) ~yourgarba@81EF168E.BA845D47.3C6F2895.IP
+22/2 05:17:22 humpry_ bought from the store (accum) ~humpry_@Swift-F99D037A.dsl.covlil.sbcglobal.net
+22/2 05:23:18 JCabrera8515 sold in the store (mudkip) ~JCabrera8@Swift-CFA37892.tx.res.rr.com
+22/2 05:23:36 i_stay_faded bought from the store (void mage) ~i_stay_fa@Swift-BE5C8493.gci.net
