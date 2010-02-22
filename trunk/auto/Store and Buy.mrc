@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.]store/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. Visit #iDM.Support if you have any questions. | halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STORE) $&
     $s1(Void Range) (+5 to ranged attacks) ( $+ $s2($buyprice(void range)) $+ ) - $&
@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
 
 on $*:TEXT:/^[!@.]buy/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -57,7 +57,7 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
 
 on $*:TEXT:/^[!@.]sell/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) || ($allupdate) { notice $nick $logo(ERROR) Use of the store is disabled, as we're performing an update. | halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)

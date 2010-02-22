@@ -43,8 +43,8 @@ alias db.select {
   }
   else {
     inc %fail
+    if (%fail < 3) goto dbselect
     mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
-    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbselect
     return $null
   }
 }
@@ -79,8 +79,8 @@ alias db.query {
   }
   else {
     inc %fail
+    if (%fail < 3) goto dbquery
     mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
-    if ((%mysql_errno == 3000) && (%fail < 3)) goto dbquery
     return $null
   }
 }
@@ -176,8 +176,8 @@ alias db.exec {
     var %sql = $1-
     if (!$mysql_exec(%db, %sql)) {
       inc %fail
+      if (%fail < 3) goto dbexec
       mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql
-      if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
       return $null
     }
   }
@@ -185,8 +185,8 @@ alias db.exec {
     var %sql = $1
     if (!$mysql_exec(%db, %sql, $2, $3, $4, $5, $6, $7, $8, $9)) {
       inc %fail
+      if (%fail < 3) goto dbexec
       mysqlderror %mysql_errno Error executing query: %mysql_errstr - %mysql_errno - Query %sql - $2-
-      if ((%mysql_errno == 3000) && (%fail < 3)) goto dbexec
       return $null
     }  
   }
@@ -198,7 +198,7 @@ alias db.exec {
 alias mysqlderror {
   echo 4 -s $2-
   putlog 3BotError - $me $+ 4 $2- 
-  if ($1 == 3000) { dbinit }
+  if (($1 == 3000) || ($1 == 1)) { dbinit }
   mysql_ping %db
 }
 
@@ -218,15 +218,18 @@ alias dbinit {
 
   set %db $mysql_connect(%host, %user, %pass)
   if (!%db) {
-    mysqlderror %mysql_errno Error: %mysql_errstr
+    mysqlderror %mysql_errno Error: %mysql_errstr - %mysql_errno
+    if (%mysql_errno isnum 1000-2999) { inc %dbfail 1 | halt }
     return
   }
   else {
     if (!$mysql_select_db(%db, %database)) {
       echo 4 -a Failed selecting database %database
       mysql_close %db
-      return
+      inc %dbfail 1
+      halt
     }
+    set %dbfail 0 
     echo 4 -s SQLDB LOADED
   }
 }

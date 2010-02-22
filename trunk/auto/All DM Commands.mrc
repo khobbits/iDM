@@ -81,12 +81,10 @@ alias damage {
   var %hp2 $hget($2,hp)
 
   if ($3 == dh) {
-    if (%hp1 < 10) { var %hit $hit(d_h9,$1,$2,$4) }
-    else { var %hit $hit(d_h10,$1,$2,$4) }
+    if (%hp1 < 10) { var %hit $hit(dh_9,$1,$2,$4) }
+    else { var %hit $hit(dh_10,$1,$2,$4) }
   }
-  else {
-    var %hit $hit($3,$1,$2,$4)
-  }
+  else { var %hit $hit($3,$1,$2,$4) }
 
   var %i = 1
   var %hitshow
@@ -114,21 +112,13 @@ alias damage {
     var %msg %msg 5UNLEASHES a dragon bolt special on $s1($replace($2,$chr(58),$chr(32)))
     unset %cbowspec [ $+ [ $1 ] ]
   }
-  else {
-    var %msg %msg $doeswhat($3) $s1($replace($2,$chr(58),$chr(32)))
-  }
+  else { var %msg %msg $doeswhat($3) $s1($replace($2,$chr(58),$chr(32))) }
 
   if ($splasher($3)) {
-    if (%hitdmg == 0) {
-      var %msg %msg using $attackname($3) and splashed
-    }
-    else {
-      var %msg %msg using $attackname($3) hitting %hitshow
-    }
+    if (%hitdmg == 0) { var %msg %msg using $attackname($3) and splashed }
+    else { var %msg %msg using $attackname($3) hitting %hitshow }
   }
-  else {
-    var %msg %msg with their $attackname($3) hitting %hitshow
-  }
+  else { var %msg %msg with their $attackname($3) hitting %hitshow }
 
   if ($freezer($3)) {
     var %freeze $r(1,$v1)
@@ -137,9 +127,7 @@ alias damage {
       if (<iDM>* !iswm $2) { notice $2 You have been frozen and can't use melee! }
       var %msg %msg and successfully 12FREEZES them
     }
-    else {
-      var %msg %msg and fails to freeze them
-    }
+    else { var %msg %msg and fails to freeze them }
   }
 
   var %heal 0
@@ -164,12 +152,8 @@ alias damage {
     var %msg %msg - 03 $+ %extra $+ 
   }
 
-  if (%heal == 1) {
-    var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1)
-  }
-  else {
-    var %msg %msg $+ . $hpbar(%hp2)
-  }
+  if (%heal == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
+  else { var %msg %msg $+ . $hpbar(%hp2) }
 
   msgsafe $4 %msg
 
@@ -223,17 +207,18 @@ alias accuracy {
   ;1 is Attack
   ;2 is Attackee
   if ($istok(melee mage range,$hget($2,laststyle),32)) {
-    if ($max(m,$1)) {
+
+    if ($dmg($1,type) == melee) {
       if ($hget($2,laststyle) == melee) return 0
       elseif ($hget($2,laststyle) == mage) return -1
       elseif ($hget($2,laststyle) == range) return 1
     }
-    elseif ($max(ma,$1)) {
+    elseif ($dmg($1,type) == magic) {
       if ($hget($2,laststyle) == melee) return 1
       elseif ($hget($2,laststyle) == mage) return 0
       elseif ($hget($2,laststyle) == range) return -1
     }
-    elseif ($max(r,$1)) {
+    elseif ($dmg($1,type) == range) {
       if ($hget($2,laststyle) == melee) return -1
       elseif ($hget($2,laststyle) == mage) return 1
       elseif ($hget($2,laststyle) == range) return 0
@@ -247,101 +232,21 @@ alias hit {
   ;2 is Attacker
   ;3 is Attackee
   ;4 is Chan
+
   if ($accuracy($1,$3) == -1) { var %acc $r(1,80) }
   elseif ($accuracy($1,$3) == 1) { var %acc $r(15,100) }
   else { var %acc $r(1,100) }
 
-  var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
-  var %ratk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0))
-  var %matk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,mbook),5,0) + $iif($hget($2,godcape),5,0))
 
-  goto $1
-  :whip
-  return $hitdmg(m,whip,%acc,1,%atk,%def)
-  :dds
-  return $hitdmg(m,dds,%acc,2,%atk,%def)
-  :ags
-  return $hitdmg(m,ags,%acc,1,%atk,%def)
-  :cbow
-  ;if (%acc isnum 98-100) && ($hget(>equiphit,void) || $hget(>equiphit,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
-  if (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
-  return $hitdmg(r,cbow,%acc,1,%ratk,%def)
-  :dbow
-  return $hitdmg(r,dbow,%acc,2,%ratk,%def)
-  :bgs
-  return $hitdmg(m,bgs,%acc,1,%atk,%def)
-  :sgs
-  return $hitdmg(m,sgs,%acc,1,%atk,%def)
-  :gmaul
-  return $hitdmg(m,gmaul,%acc,3,%atk,%def)
-  :guth
-  return $hitdmg(m,guth,%acc,1,%atk,%def)
-  :ice
-  return $hitdmg(ma,ice,%acc,1,%matk,%def)
-  :zgs
-  return $hitdmg(m,zgs,%acc,1,%atk,%def)
-  :blood
-  return $hitdmg(ma,blood,%acc,1,%matk,%def)
-  :smoke
-  return $hitdmg(ma,smoke,%acc,1,%matk,%def)
-  :surf
-  return $hitdmg(r,surf,%acc,1,0,1)
-  :dclaws
-  var %dclaws $hitdmg(m,dclaws,%acc,1,%atk,%def)
-  return %dclaws $ceil($calc(%dclaws * 0.5)) $ceil($calc(%dclaws * 0.25)) $ceil($calc(%dclaws * 0.125))
-  :dmace
-  return $hitdmg(m,dmace,%acc,1,%atk,%def)
-  :dscim
-  return $hitdmg(m,dscim,%acc,1,%atk,%def)
-  :dlong
-  return $hitdmg(m,dlong,%acc,1,%atk,%def)
-  :dhally
-  return $hitdmg(m,dhally,%acc,2,%atk,%def)
-  :d_h9
-  return $hitdmg(m,dh9,%acc,1,%atk,%def)
-  :d_h10
-  return $hitdmg(m,dh,%acc,1,%atk,%def)
-  :vlong
-  return $hitdmg(m,vlong,%acc,1,%atk,1)
-  :statius
-  return $hitdmg(m,statius,%acc,1,%atk,1)
-  :vspear
-  return $hitdmg(m,vspear,%acc,1,%atk,%def)
-  :mjavelin
-  return $hitdmg(r,mjavelin,%acc,1,%ratk,%def)
-  :onyx
-  return $hitdmg(r,onyx,%acc,1,%ratk,%def)
-  :snow
-  return $hitdmg(r,snow,%acc,3,0,1)
-}
+  if ($dmg($2,type) == magic) { var %atk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,godcape),5,0)) + $iif($hget($2,mbook),5,0)  }
+  elseif ($dmg($2,type) == range) { var %atk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0)) }
+  elseif ($dmg($2,type) == melee) { var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))  }
 
-alias hitdmg {
-  ; $1 = r/ma/m
-  ; $2 = attack
-  ; $3 = accuracy
-  ; $4 = number of hits
-  ; $5 = attack bonus
-  ; $6 = defense bonus
-  if ($6) {
-    var %acclimit $dmg($1,$2)
-    if ($3 <= $gettok(%acclimit,1,32)) {
-      var %ndmg $dmg($1,$2,1)
-    }
-    elseif ($3 <= $gettok(%acclimit,2,32)) {
-      var %ndmg $dmg($1,$2,2)
-    }
-    else {
-      var %ndmg $dmg($1,$2,3)
-    }
-    var %i = 0
-    while (%i < $4) {
-      inc %i
-      var %dmg = $rand($gettok(%ndmg,1,44),$calc($gettok(%ndmg,2,44) + $5)))
-      var %dmg = $ceil($calc(%dmg * $6))
-      var %return = %return %dmg
-    }
-    return %return
-  }
-  return
+  if ($dmg($2,atkbonus) == 0) { var %atk 1 }
+  if ($dmg($2,defbonus) == 0) { var %def 1 }
+
+  if ($1 == cbow) && (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
+
+  return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }

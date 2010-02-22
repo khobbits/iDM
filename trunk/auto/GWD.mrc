@@ -1,6 +1,7 @@
 #on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
 
   if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }

@@ -2,7 +2,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
-  if ($allupdate) { notice $nick $logo(ERROR) DMing is currently disabled, as we're performing an update. | halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
   if ($hget($chan)) && (($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2))) { halt }

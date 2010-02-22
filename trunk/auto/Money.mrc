@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$2) {
     $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
   }
@@ -10,6 +11,7 @@ on $*:TEXT:/^[!@.]money/Si:#: {
 
 on $*:TEXT:/^[!@.]equip/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$2) {
     $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$nick),$v1,0)
     if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))

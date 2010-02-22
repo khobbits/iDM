@@ -4,6 +4,7 @@ on *:TEXT:id*:?: msgauth $nick $address $2-
 on *:TEXT:auth*:?: msgauth $nick $address $2-
 
 alias msgauth {
+  if ($update) { notice $1 $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($3) {
     auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
   }

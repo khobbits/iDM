@@ -1,7 +1,7 @@
 on *:INVITE:#: {
   if ($me != iDM) { halt }
   if (%invig. [ $+ [ # ] ]) { halt }
-  if (%loottimer) { msgsafe $nick Invite is disabled because GE database is updating. Please wait several minutes. | halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
   if ((!%inv.spam [ $+ [ $nick ] ]) && ($db.get(blist,reason,#))) {
     notice $nick Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )

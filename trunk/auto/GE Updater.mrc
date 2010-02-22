@@ -1,6 +1,7 @@
 on *:text:!geupdate*:#idm.staff: {
   if ($db.get(admins,position,$address($nick,3)) == admins) {
     if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+    if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
     if ($hget(>geupdate)) { 
       if ($2 == stop) {
         msgsafe #idm.staff $logo(GE UPDATE) Update stopped. - Duration: $duration($calc($ctime - $hget(>geupdate,t)))

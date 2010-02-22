@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!@.]top/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
@@ -10,6 +11,7 @@ on $*:TEXT:/^[!@.]top/Si:#: {
 
 on $*:TEXT:/^[!@.]wtop/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
@@ -19,6 +21,7 @@ on $*:TEXT:/^[!@.]wtop/Si:#: {
 
 on $*:TEXT:/^[!@.]ltop/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
@@ -58,6 +61,7 @@ alias toplist {
 on $*:TEXT:/^[!@.]dmrank/Si:#: {
   tokenize 32 $1- $nick
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   if ($2 isnum) {
     var %money = $ranks(money,$2)

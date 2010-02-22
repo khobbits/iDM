@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!.](on|off).*/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }

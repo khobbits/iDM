@@ -1,4 +1,4 @@
-alias logo { return $+($s2,[,$s1,$$1-,,$s2,],) }
+alias logo { return $+($s2,[,$s1,$$1-,$iif(%ver,- $+ $v1),,$s2,],) }
 
 alias c1 return 03
 alias c2 return 07
@@ -21,12 +21,17 @@ on *:CONNECT: {
     timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
   }
   mode $me +pB
-  mysql_close %db
-  unsetall
-  echo -s 4Clearing active dms
-  db.clear user indm
+  botrefresh
   echo -s 4Connected.
   timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
+}
+
+alias botrefresh {
+  mysql_close %db
+  unsetall
+  if ($hget(>weapon)) { hfree >weapon }
+  echo -s 4Clearing active dms
+  db.clear user indm
 }
 
 alias pingo {
@@ -37,13 +42,12 @@ on *:START:.timerAnti-10053 -o 0 60 scon -at1 raw -q ping Anti-10053
 on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
-  ;True if you don't want people using the store at all while updating.
+
+  ;return $true
+  if (%dbfail > 3) { dbinit | return $true }
   return $false
 }
-alias allupdate {
-  ;True if you don't want people DMing while updating.
-  return $false
-}
+
 alias secondchan {
   return #idm.Staff
 }
