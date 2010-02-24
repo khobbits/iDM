@@ -28,7 +28,7 @@ on $*:TEXT:/^[!.]/Si:#: {
         notice $nick $logo(ERROR) This command has been disabled for this channel.
         halt
       }
-      if ($hget($nick,frozen)) && ($max(m,%attcmd)) {
+      if ($hget($nick,frozen)) && ($dmg(%attcmd,type) == melee) {
         notice $nick You're frozen and can't use melee.
         halt
       }
@@ -157,9 +157,9 @@ alias damage {
 
   msgsafe $4 %msg
 
-  if ($max(m,$3)) { hadd $1 laststyle melee }
-  elseif ($max(ma,$3)) { hadd $1 laststyle mage }
-  elseif ($max(r,$3)) { hadd $1 laststyle range }
+  if ($dmg($3,type) == melee) { hadd $1 laststyle melee }
+  elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
+  elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
 
   if ($hget($4,stake) == $null) {
 

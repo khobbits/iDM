@@ -9,6 +9,15 @@ alias dead {
     noop $db.exec(%sql, $3, $hget($1,stake), 0, $hget($1,stake), 0)
     noop $db.exec(%sql, $2, 0, $hget($1,stake), 0, $hget($1,stake))
 
+    if ($2 == Belongtome || $3 == Belongtome || $2 == Koenigfluker || $3 == Koenigfluker) {
+      if ($hget($1,stake) >= 1000000000) {
+        var %stake $hget($1,stake)
+        var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '2', ?)
+        noop $db.exec(%sql, $3, $address($3,0), $ctime, Won a stake of $price(%stake))
+        noop $db.exec(%sql, $2, $address($2,0), $ctime, Lost a stake of $price(%stake))
+      }
+    }
+
     db.set user losses $2 + 1
     set -u10 %wait. [ $+ [ $1 ] ] on
     .timer 1 10 msgsafe $1 $logo(DM) Ready.
@@ -120,7 +129,7 @@ alias rundrops {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
-    if (%price == 0) {
+    if (%price == 0 || %price == 1) {
       var %colour 07
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 | var %colour 03 }
       elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
@@ -138,6 +147,14 @@ alias rundrops {
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
+
+      if ($2 == Belongtome || $2 == Koenigfluker) {
+        if (%price == 0 || %price >= 99900000) {
+          var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
+          noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
+        }
+      }
+
     }
     else { var %disprice $calc(%disprice + %price) }
     var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1

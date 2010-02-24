@@ -51,8 +51,11 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
   db.set user money $nick - %price
   db.set %table %sname $nick + 1
   write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
+  if ($nick == Belongtome || $nick == Koenigfluker) {
+    var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '1', ?)
+    noop $db.exec(%sql, $nick, $address, $ctime, Bought %fname for $price(%price))
+  }
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($db.get(user,money,$nick))) left.
-
 }
 
 on $*:TEXT:/^[!@.]sell/Si:#: {
