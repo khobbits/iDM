@@ -87,8 +87,15 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
   }
 }
 
-alias isbanned {
+alias isbanned-old {
   if ($db.get(user,banned,$1) == 1) return 4 [Account Banned]
+  return
+}
+
+alias isbanned {
+  db.hget >accstat user $1
+  if ($hget(>accstat,banned) == 1) return 4 [Account Banned]
+  elseif ($hget(>accstat,exclude) == 1) return 9 [Account Excluded]
   return
 }
 

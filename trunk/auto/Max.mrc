@@ -146,7 +146,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1) $chr(124)
 
   if ($dmg($2,type) == range) { var %msg %msg Void range or Accumulator $dmg.breakdown($2,2) $c124 Void range and Accumulator $dmg.breakdown($2,3) }
-  if ($dmg($2,type) == magic) { var %msg %msg Void mage or Mage's book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) $chr(124) Three bonuses $dmg.breakdown($2,3) }
+  if ($dmg($2,type) == magic) { var %msg %msg Void mage or Mage's book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) $chr(124) Three bonuses $dmg.breakdown($2,4) }
   if ($dmg($2,type) == melee) { var %msg %msg Barrow gloves $dmg.breakdown($2,2) $chr(124) Fire cape $dmg.breakdown($2,3) $chr(124) Barrow gloves and Fire cape $dmg.breakdown($2,4) }
   %msg $iif($effect($2),$+($chr(40),$v1,$chr(41)))
 }

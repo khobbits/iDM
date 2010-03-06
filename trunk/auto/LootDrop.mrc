@@ -9,13 +9,11 @@ alias dead {
     noop $db.exec(%sql, $3, $hget($1,stake), 0, $hget($1,stake), 0)
     noop $db.exec(%sql, $2, 0, $hget($1,stake), 0, $hget($1,stake))
 
-    if ($2 == Belongtome || $3 == Belongtome || $2 == Koenigfluker || $3 == Koenigfluker) {
-      if ($hget($1,stake) >= 1000000000) {
-        var %stake $hget($1,stake)
-        var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '2', ?)
-        noop $db.exec(%sql, $3, $address($3,0), $ctime, Won a stake of $price(%stake))
-        noop $db.exec(%sql, $2, $address($2,0), $ctime, Lost a stake of $price(%stake))
-      }
+    if ($hget($1,stake) >= 1000000000) {
+      var %stake $hget($1,stake)
+      var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '2', ?)
+      noop $db.exec(%sql, $3, $address($3,0), $ctime, Won a stake of $price(%stake))
+      noop $db.exec(%sql, $2, $address($2,0), $ctime, Lost a stake of $price(%stake))
     }
 
     db.set user losses $2 + 1
@@ -79,7 +77,8 @@ on $*:TEXT:/^[!@.]dmclue/Si:#: {
   if ($db.get(equip_item,clue,$nick) == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
 }
-on $*:TEXT:/^[!@.]solve/Si:#: {
+
+OFF $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
   if ($istok($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),2,58),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
@@ -96,6 +95,23 @@ on $*:TEXT:/^[!@.]solve/Si:#: {
   db.set equip_item clue $nick 0
 }
 
+ON $*:TEXT:/^[!@.]solve/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
+  if ($istok($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),2,58),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
+  var %combined 0
+  var %sql SELECT * FROM drops WHERE chance >= 50 AND chance <= 500 AND disabled = '0' AND price > '1' ORDER BY rand() LIMIT 3
+  var %res $db.query(%sql)
+  while ($db.query_row(%res, >clue)) {
+    var %items $hget(>clue, item) $+ $chr(44) $+ %items
+    inc %combined $hget(>clue, price)
+  }
+  db.query_end %res
+  notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
+  db.set user money $nick + %combined
+  db.set equip_item clue $nick 0
+}
+
 alias gendrops {
   ; $1 User
   ; $2 Otheruser
@@ -108,6 +124,8 @@ alias gendrops {
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
+  ;if ($1 == Belongtome) var %sql SELECT * FROM drops WHERE chance >= '700' AND price > 1 AND disabled = '0' ORDER BY rand() LIMIT 3
+  ;if ($1 == Aaron``) var %sql SELECT * FROM drops WHERE chance = '42' AND disabled = '1' LIMIT 1
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
@@ -129,7 +147,16 @@ alias rundrops {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
-    if (%price == 0 || %price == 1) {
+
+
+    if (($1 == #iDM || $1 == #iStake) && $2 != Belongtome) {
+      if (%price == 0 || %price >= 272600000) {
+        var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
+        noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
+      }
+    }
+
+    if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 | var %colour 03 }
       elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
@@ -147,14 +174,6 @@ alias rundrops {
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
-
-      if ($2 == Belongtome || $2 == Koenigfluker) {
-        if (%price == 0 || %price >= 99900000) {
-          var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
-          noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
-        }
-      }
-
     }
     else { var %disprice $calc(%disprice + %price) }
     var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1

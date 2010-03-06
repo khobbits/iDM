@@ -4,7 +4,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
   if ($nick isop # || $nick ishop #) || ($db.get(admins,position,$address($nick,3))) {
     if (%part.spam [ $+ [ # ] ]) { return }
     part # Part requested by $nick $+ .
-    set -u10 %part.spam [ $+ [ # ] ] on
+    set -u60 %part.spam [ $+ [ # ] ] on
     msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
     cancel #
   }
@@ -24,6 +24,10 @@ on *:PART:#: {
 }
 
 on *:QUIT: {
+  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32)) {
+    cancel #
+    part # Parting channel. Need 5 or more people to have iDM.
+  }
   if (!$hget($nick)) { return }
   var %a 1
   while (%a <= $chan(0)) {
@@ -33,7 +37,10 @@ on *:QUIT: {
 }
 
 on *:KICK:#: {
-  if ($nick(#,0) < 6) && ($knick != $me) { part # Parting channel. Need 5 or more people to have iDM. }
+  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32) && ($knick != $me)) {
+    cancel #
+    part # Parting channel. Need 5 or more people to have iDM.
+  }
   if ($hget($knick)) && ($hget($chan)) {
     if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
@@ -91,29 +98,31 @@ alias enddmcatch {
   ; $3 = chan
   ; $4 = string/offender
   ; $5- = string
-  goto $1
-  :part
-  var %action = parted $3 with reason " $+ $iif($4-,$4-,N/A) $+ "
-  goto pass
-  :quit
-  var %action = quit $network & $3 ( $+ $4- $+ )
-  if ($4 == Quit:) { goto pass }
-  else { goto qfail  }
-  :kick
-  var %action = was kicked from $3 by $4 for " $+ $5- $+ "
-  if ($3 == $4) { goto pass }
-  else { goto fail }
-  :error
-  reseterror
-  goto fail
-  :pass
-  msgsafe #idm.staff $logo(ENDDM) $2 %action *
-  return 1
-  :fail
-  msgsafe #idm.staff $logo(ENDDM) $2 %action
-  return 0
-  :qfail
-  return 0
+  if ($hget($3,p2)) {
+    goto $1
+    :part
+    var %action = parted $3 with reason " $+ $iif($4-,$4-,N/A) $+ "
+    goto pass
+    :quit
+    var %action = quit $network & $3 ( $+ $4- $+ )
+    if ($4 == Quit:) { goto pass }
+    else { goto qfail  }
+    :kick
+    var %action = was kicked from $3 by $4 for " $+ $5- $+ "
+    if ($3 == $4) { goto pass }
+    else { goto fail }
+    :error
+    reseterror
+    goto fail
+    :pass
+    msgsafe #idm.staff $logo(ENDDM) $2 %action *
+    return 1
+    :fail
+    msgsafe #idm.staff $logo(ENDDM) $2 %action
+    return 0
+    :qfail
+    return 0
+  }
 }
 
 alias enddmcheck {
@@ -121,7 +130,7 @@ alias enddmcheck {
   ; $2 = nick
   ; $3 = event
   ; $4- = string
-  if ($hget($1,p2)) && ($hget($1,stake)) && (($hget($1,p1) == $2) || ($hget($1,p2) == $2)) {
+  if ($hget($1,p2)) && ($hget($1,stake)) && (($hget($1,p1) == $2) || ($hget($1,p2) == $2) && ($3 == part)) {
     db.set user money $2 - $ceil($calc($hget($1,stake) / 2) )
     msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($2) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
     notice $2 You left the channel during a stake, you loose $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
@@ -130,7 +139,7 @@ alias enddmcheck {
     return 1
   }
   elseif ($2 == $hget($1,p1)) || ($2 == $hget($1,p2)) {
-    msgsafe $1 $logo(DM) The DM has been canceled, because one of the players parted.
+    msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.
     if ($enddmcatch($3,$2,$1,$4,$5-) == 1) && ($hget($1,p2)) {
       var %oldmoney = $hget($2,money)
       if (%oldmoney > 100) {

@@ -119,10 +119,10 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 }
 
 alias claninfo {
-  var %ci $clanmembers($1)
-  var %tc $numtok(%ci,32)
   var %cowner $db.get(clantracker,owner,$1)
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %ci,(Owner: $s2(%cowner) $+ )) (Lootshare: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
+  var %ci $remove($clanmembers($1),%cowner)
+  var %tc $numtok(%ci,32) + 1
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 10,Members: %cowner $+ * %ci,(Owner: $s2(%cowner) $+ )) (LS: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {

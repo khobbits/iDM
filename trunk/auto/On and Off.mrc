@@ -112,13 +112,16 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
 }
 
 on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's website: $s2(http://idm-bot.com/)
 }
 
 on $*:TEXT:/^[!@.](dm)?rules$/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.idm-bot.com/rules)
 }
 
 on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
 }

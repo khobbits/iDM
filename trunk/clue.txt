@@ -18,5 +18,5 @@ How many iDM admins are there?:5!five
 What is dragon mace max hit with bonuses?:53
 How many staff items are there?:6!six
 How many iDM support staff are there?:5!five
-How many iDM helpers are there?:5!five
+How many iDM helpers are there?:4!four
 Who is the newest support staff?:Satan666!Satan

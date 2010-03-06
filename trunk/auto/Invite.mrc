@@ -3,8 +3,9 @@ on *:INVITE:#: {
   if (%invig. [ $+ [ # ] ]) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
+  if (%part.spam  [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) iDM has parted from $chan less then 60 seconds ago, please wait to re-invite | halt }
   if ((!%inv.spam [ $+ [ $nick ] ]) && ($db.get(blist,reason,#))) {
-    notice $nick Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )
+    notice $nick $logo(Blacklist) Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )
     inc -u10 %inv.spam [ $+ [ $nick ] ]
     halt
   }
@@ -24,7 +25,7 @@ alias botsonline {
 }
 
 alias botnames {
-  return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU]
+  return iDM.iDM[US].iDM[LL].iDM[BA].iDM[PK].iDM[AL].iDM[BU].iDM[FU].iDM[SN].iDM[BE].iDM[LA].iDM[EU].iDM[Newbies].iDM[Tank].iDM[Elites].iDM[We-DM].iDM[Support]
 }
 
 CTCP *:*join*:?: {
@@ -58,20 +59,25 @@ on *:JOIN:#:{
   }
   else {
     if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies,#,32)) {
+      cancel #
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
       var %dmrank $ranks(money,$nick)
-      if ($db.get(admins,position,$address($nick,3)) = admins) {
-        msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick has joined the channel.
+      db.hget >staff admins $address($nick,3)
+      if ($hget(>staff,position) == admins) {
+        msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick has joined the channel.
       }
-      elseif ($db.get(admins,position,$address($nick,3))) {
-        msgsafe # $logo(SUPPORT) Bot support $nick has joined the channel.
+      elseif ($hget(>staff,position) == support) {
+        msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick has joined the channel.
+      }
+      elseif ($hget(>staff,position) == helper) {
+        msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick has joined the channel.
       }
       elseif (%dmrank <= 12) {
         if ($isbanned($nick)) { halt }
-        msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
+        msgsafe # $logo(TOP12) $nick is ranked $ord(%dmrank) in the top 12.
       }
       elseif ((# == #idm.support) || (# == #idm.help)) {
         logcheck $nick $address $chan supportjointitle
@@ -88,18 +94,23 @@ alias supportjointitle {
   ignoreinfo $1 $1 msg +#idm.support $logo(Acc-Info)
 }
 
-on $*:TEXT:/^[!@.]title/Si:#: {
+
+ON $*:TEXT:/^[!@.]title$/Si:#: {
   if (# != #idm && # != #idm.Staff) || ($me == iDM) {
-    if ($isbanned($nick)) { halt }
+    if ($db.get(user,banned,$nick) == 1) { halt }
     var %dmrank $ranks(money,$nick)
-    if ($db.get(admins,position,$address($nick,3)) = admins) {
-      msgsafe # $logo(ADMIN) $+($upper($left($position($nick),1)),$lower($right($position($nick),-1))) $nick is on the channel.
+    db.hget >staff admins $lower($address($nick,3))
+    if ($hget(>staff,position) == admins) {
+      msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
     }
-    elseif ($db.get(admins,position,$address($nick,3))) {
-      msgsafe # $logo(SUPPORT) Bot support $nick is on the channel.
+    elseif ($hget(>staff,position) == support) {
+      msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
+    }
+    elseif ($hget(>staff,position) == helper) {
+      msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
     }
     elseif (%dmrank <= 12) {
-      msgsafe # $logo(TOP12) iDM player $nick is ranked $ord(%dmrank) in the top 12.
+      msgsafe # $logo(TOP12) $nick is ranked $ord(%dmrank) in the top 12.
     }
   }
 }
@@ -119,9 +130,14 @@ alias scanbots {
       part $1 Bot already in channel. ( $+ $nick($1,%a) $+ )
       halt
     }
+    if (Gwi[**] iswm $nick($1,%a)) {
+      part $1 $logo(ERROR) Gwi bots have many similiar commands which causes conflicts with iDM so please part Gwi before re-inviting iDM
+      halt 
+    }
     inc %a
   }
 }
+
 
 alias position {
   if ($db.get(admins,title,$address($nick,3))) {

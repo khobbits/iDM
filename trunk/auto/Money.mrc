@@ -147,7 +147,7 @@ on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
+on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
@@ -160,7 +160,7 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff,#idm.support: {
   }
 }
 
-On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff,#idm.support: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
   if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
