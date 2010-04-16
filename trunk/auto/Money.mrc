@@ -136,7 +136,7 @@ alias pvp {
 
 
 on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($db.get(admins,rank,$address($nick,3)) >= 2 && $me == iDM) {
     var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
     if ($db.query_row(%result,>equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
@@ -148,7 +148,7 @@ on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
 }
 
 on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
       var %item $v1
@@ -161,7 +161,7 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
 }
 
 On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
-  if ($db.get(admins,position,$address($nick,3)) && $me == iDM) {
+  if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
       var %item $v1

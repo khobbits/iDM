@@ -130,6 +130,7 @@ alias isweapon {
   elseif ($1 == zgs) return 1
   elseif ($1 == dclaws) return 1
   elseif ($1 == snow) return 1
+  elseif ($1 == corr) return 1
   else return 0
 }
 

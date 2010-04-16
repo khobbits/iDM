@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!@.]part/Si:#: {
   if (# == #idm) || (# == #idm.Staff) { return }
   if ($2 != $me) { return }
-  if ($nick isop # || $nick ishop #) || ($db.get(admins,position,$address($nick,3))) {
+  if ($nick isop # || $nick ishop #) || ($db.get(admins,rank,$address($nick,3)) >= 2) {
     if (%part.spam [ $+ [ # ] ]) { return }
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on

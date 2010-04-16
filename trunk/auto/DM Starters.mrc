@@ -135,7 +135,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($hget($chan,stake)) {
-    if ($db.get(admins,position,$address($nick,3))) {
+    if ($db.get(admins,rank,$address($nick,3)) >= 3) {
       if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
       cancel $chan
       msgsafe $chan $logo(DM) The DM has been canceled by staff.
@@ -147,7 +147,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick This is a stake, you cannot end stakes! | halt }
   }
-  if ($db.get(admins,position,$address($nick,3))) {
+  if ($db.get(admins,rank,$address($nick,3)) >= 2) {
     if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
     cancel $chan
     msgsafe $chan $logo(DM) The DM has been canceled by staff.

@@ -1,12 +1,13 @@
 on *:INVITE:#: {
+  db.hget >blist blist $lower($chan)
   if ($me != iDM) { halt }
   if (%invig. [ $+ [ # ] ]) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
   if (%part.spam  [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) iDM has parted from $chan less then 60 seconds ago, please wait to re-invite | halt }
-  if ((!%inv.spam [ $+ [ $nick ] ]) && ($db.get(blist,reason,#))) {
-    notice $nick $logo(Blacklist) Channel has been blacklisted. (Reason: $v1 $iif($db.get(blist,who,#),By: $v1) $+ )
-    inc -u10 %inv.spam [ $+ [ $nick ] ]
+  if ($hget(>blist,reason)) {
+    notice $nick $logo(BANNED) Channel has been blacklisted. Reason: $hget(>blist,reason) By: $hget(>blist,who)
+    inc -u60 %inv.spam [ $+ [ $nick ] ]
     halt
   }
   sbnc joinbot $chan $nick
@@ -66,14 +67,17 @@ on *:JOIN:#:{
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
       var %dmrank $ranks(money,$nick)
       db.hget >staff admins $address($nick,3)
-      if ($hget(>staff,position) == admins) {
+      if ($hget(>staff,rank) == 4) {
         msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick has joined the channel.
       }
-      elseif ($hget(>staff,position) == support) {
+      elseif ($hget(>staff,rank) == 3) {
         msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick has joined the channel.
       }
-      elseif ($hget(>staff,position) == helper) {
+      elseif ($hget(>staff,rank) == 2) {
         msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick has joined the channel.
+      }
+      elseif ($hget(>staff,rank) == 1) {
+        msgsafe # $logo(VIP) $nick has joined the channel.
       }
       elseif (%dmrank <= 12) {
         if ($isbanned($nick)) { halt }
@@ -100,14 +104,17 @@ ON $*:TEXT:/^[!@.]title$/Si:#: {
     if ($db.get(user,banned,$nick) == 1) { halt }
     var %dmrank $ranks(money,$nick)
     db.hget >staff admins $lower($address($nick,3))
-    if ($hget(>staff,position) == admins) {
-      msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
+    if ($hget(>staff,rank) == 4) {
+      msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick has joined the channel.
     }
-    elseif ($hget(>staff,position) == support) {
-      msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
+    elseif ($hget(>staff,rank) == 3) {
+      msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick has joined the channel.
     }
-    elseif ($hget(>staff,position) == helper) {
-      msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick $+ $iif(%dmrank <= 12,$chr(44) ranked $ord(%dmrank) in top 12 $+ $chr(44),$chr(32)) has joined the channel.
+    elseif ($hget(>staff,rank) == 2) {
+      msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick has joined the channel.
+    }
+    elseif ($hget(>staff,rank) == 1) {
+      msgsafe # $logo(VIP) $nick has joined the channel.
     }
     elseif (%dmrank <= 12) {
       msgsafe # $logo(TOP12) $nick is ranked $ord(%dmrank) in the top 12.
@@ -136,15 +143,6 @@ alias scanbots {
     }
     inc %a
   }
-}
-
-
-alias position {
-  if ($db.get(admins,title,$address($nick,3))) {
-    return $v1
-    halt
-  }
-  return Bot admin
 }
 
 raw 322:*:{
