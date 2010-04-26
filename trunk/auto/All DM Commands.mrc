@@ -139,13 +139,10 @@ alias damage {
     }
   }
 
-  if ($poisoner($3)) {
+  if ($gettok($poisoner($3),1,32)) {
     var %pois.chance $r(1,$v1)
-    if (%pois.chance == 1) || ($hget($1,snake)) && (!$hget($2,poison) && $3 != corr) {
-      hadd $2 poison 6
-    }
-    elseif (%pois.chance == 1 && !$hget($2,poison) && $3 == corr) {
-      hadd $2 poison 12
+    if (%pois.chance == 1) || ($hget($1,snake)) && (!$hget($2,poison)) {
+      hadd $2 poison $gettok($poisoner($3),2,32)
     }
   }
   if ($hget($2,poison) >= 1) && (%hp2 >= 1) {

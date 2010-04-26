@@ -1,38 +1,36 @@
 alias max {
+; $1 = attack
+  var %dbhits = $dmg($1,hits)
+  var %dbdmg = $gettok($dmg($1, 3),2,44)
+  var %dbbonus = $dmg($1, atkbonus)
+    
   if ($dmg($1,type) == range) {
     ;Normal Voidrange_or_Accumulator Both
-    var %dmg = $dmg.maxhit($1, 3)
-    if (%dmg == $null) { return }
-    elseif ($1 == surf) return %dmg %dmg %dmg
-    elseif ($1 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +10),-,$calc(%dmg +10))
-    elseif ($1 == snow) return $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg) $+(%dmg,-,%dmg,-,%dmg)
-    else return %dmg $calc(%dmg +5) $calc(%dmg +10)
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,10,%dbbonus)
   }
   elseif ($dmg($1,type) == magic) {
     ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
-    var %dmg = $dmg.maxhit($1, 3)
-    if (%dmg == $null) { return }
-    else return %dmg $calc(%dmg +5) $calc(%dmg +10) $calc(%dmg +15)
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,10,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,15,%dbbonus)
   }
-  elseif ($dmg($1,type) == melee) {
+  else {
     ;Normal Barrowgloves Firecape Both
-    var %dmg = $dmg.maxhit($1, 3)
-    if (%dmg == $null) { return }
-    elseif ($1 == dds) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($1 == dbow) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($1 == dhally) return $+(%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($1 == gmaul) return $+(%dmg,-,%dmg,-,%dmg) $+($calc(%dmg +3),-,$calc(%dmg +3),-,$calc(%dmg +3)) $+($calc(%dmg +5),-,$calc(%dmg +5),-,$calc(%dmg +5)) $+($calc(%dmg +8),-,$calc(%dmg +8),-,$calc(%dmg +8))
-    elseif ($1 == dclaws) return $dmg.dclaws(%dmg,0) $dmg.dclaws(%dmg,3) $dmg.dclaws(%dmg,5) $dmg.dclaws(%dmg,8)
-    elseif ($1 == dh) {
-      var %dmg2 = $dmg.maxhit($1, 1)
-      return $+(%dmg2,/,%dmg) $+($calc(%dmg2 +3),/,$calc(%dmg +3)) $+($calc(%dmg2 +5),/,$calc(%dmg +5)) $+($calc(%dmg2 +8),/,$calc(%dmg +8))
-    }
-    else return %dmg $calc(%dmg +3) $calc(%dmg +5) $calc(%dmg +8)
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,3,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
   }
 }
 
-alias dmg.maxhit { return $gettok($dmg($1, $2),2,44) }
-alias dmg.dclaws { return $+($calc($1 + $2),-,$ceil($calc(($1 + $2) * 0.5)),-,$ceil($calc(($1 + $2) * 0.25)),-,$ceil($calc(($1 + $2) * 0.125))) }
+alias dmg.ratio {
+; $1 = hit pattern - 1-1-1
+; $2 = max hit
+; $3 = attack bonus
+; $4 = bonus toggle
+  var %hits
+  var %i = 0
+  while (%i < $numtok($1,45)) {
+    inc %i
+    var %hits $iif(%hits,%hits $+ -) $+ $ceil($calc(($2 + ($3 * $4)) / $gettok($1,%i,45)))
+  }
+  return %hits
+}
 
 alias hitdmg {
   ; $1 = attack
@@ -73,6 +71,8 @@ alias dmg.hload {
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     hadd >weapon $hget(>row, weapon) $+ .name $hget(>row, name)
+    hadd >weapon $hget(>row, weapon) $+ .item $hget(>row, item)
+    hadd >weapon $hget(>row, weapon) $+ .pvp $hget(>row, pvp)
     hadd >weapon $hget(>row, weapon) $+ .0 $hget(>row, range)
     hadd >weapon $hget(>row, weapon) $+ .1 $hget(>row, low)
     hadd >weapon $hget(>row, weapon) $+ .2 $hget(>row, mid)
@@ -82,7 +82,7 @@ alias dmg.hload {
     hadd >weapon $hget(>row, weapon) $+ .atkbonus $hget(>row, atkbonus)
     hadd >weapon $hget(>row, weapon) $+ .defbonus $hget(>row, defbonus)
     hadd >weapon $hget(>row, weapon) $+ .spec $hget(>row, spec)
-    hadd >weapon $hget(>row, weapon) $+ .poison $hget(>row, poison)
+    hadd >weapon $hget(>row, weapon) $+ .poison $hget(>row, poisonchance) $hget(>row, poisonamount)
     hadd >weapon $hget(>row, weapon) $+ .freeze $hget(>row, freeze)
     hadd >weapon $hget(>row, weapon) $+ .heal $hget(>row, healchance) $hget(>row, healamount)
     hadd >weapon $hget(>row, weapon) $+ .splash $hget(>row, splash)
@@ -113,26 +113,9 @@ alias splasher { return $dmg($1,splash) }
 alias doeswhat { return $dmg($1,what) }
 alias effect { return $dmg($1,effect) }
 alias attack { return $iif($dmg($1,name),$true,$false) }
+alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
+alias isweapon { return $iif($dmg($1,item),$true,$false) }
 
-alias ispvp {
-  if ($1 == mjavelin) return 1
-  elseif ($1 == statius) return 1
-  elseif ($1 == vlong) return 1
-  elseif ($1 == vspear) return 1
-  else return 0
-}
-
-alias isweapon {
-  if ($1 == ags) return 1
-  elseif ($1 == bgs) return 1
-  elseif ($1 == mudkip) return 1
-  elseif ($1 == sgs) return 1
-  elseif ($1 == zgs) return 1
-  elseif ($1 == dclaws) return 1
-  elseif ($1 == snow) return 1
-  elseif ($1 == corr) return 1
-  else return 0
-}
 
 on $*:TEXT:/^[!@.]max/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
@@ -144,11 +127,12 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   }
   if (!$max($2)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
   var %msg $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
-  var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1) $chr(124)
+  var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
 
-  if ($dmg($2,type) == range) { var %msg %msg Void range or Accumulator $dmg.breakdown($2,2) $c124 Void range and Accumulator $dmg.breakdown($2,3) }
-  if ($dmg($2,type) == magic) { var %msg %msg Void mage or Mage's book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) $chr(124) Three bonuses $dmg.breakdown($2,4) }
-  if ($dmg($2,type) == melee) { var %msg %msg Barrow gloves $dmg.breakdown($2,2) $chr(124) Fire cape $dmg.breakdown($2,3) $chr(124) Barrow gloves and Fire cape $dmg.breakdown($2,4) }
+  if ($dmg($2,atkbonus) == 0) { var %msg %msg (No attack bonuses) }
+  elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Void Range or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Void Mage or Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) $chr(124) Three bonuses $dmg.breakdown($2,4) }
+  elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves $dmg.breakdown($2,2) $chr(124) Fire cape $dmg.breakdown($2,3) $chr(124) Barrow gloves and Fire cape $dmg.breakdown($2,4) }
   %msg $iif($effect($2),$+($chr(40),$v1,$chr(41)))
 }
 
