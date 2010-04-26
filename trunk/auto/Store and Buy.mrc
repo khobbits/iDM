@@ -66,7 +66,6 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-
   if ($hget($nick)) { notice $nick $logo(ERROR) Please wait until the end of your DM to sell equipment. | halt }
 
   if ($storematch($2-) != 0) {

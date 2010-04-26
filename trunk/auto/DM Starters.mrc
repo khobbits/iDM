@@ -3,7 +3,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if ($db.get(user,banned,$nick) == 1) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
+  if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
   if ($hget($chan)) && (($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2))) { halt }
   if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }

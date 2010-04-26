@@ -2,10 +2,10 @@ on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$2) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $acc-stat($nick) $money($nick) $clan($nick) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($nick,1) 
   }
   if ($2) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $acc-stat($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
   }
 }
 
@@ -13,11 +13,11 @@ on $*:TEXT:/^[!@.]equip/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$2) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $equipment($nick) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$nick),$v1,0)
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $acc-stat($nick) $equipment($nick) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$nick),$v1,0)
     if ($sitems($nick)) || ($pvp($nick)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $+ $isbanned($nick) $iif($sitems($nick),$s1(Special Items) $+ : $sitems($nick)) $iif($pvp($nick),$s1(PvP Items) $+ : $pvp($nick))
   }
   if ($2) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $equipment($2) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$2),$v1,0)
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $acc-stat($2) $equipment($2) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$2),$v1,0)
     if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
   }
 }
