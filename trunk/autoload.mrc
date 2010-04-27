@@ -42,6 +42,7 @@ alias rehash.run {
 
 alias putlog {
   sbnc tcl setctx admin; putchan -#idm.staff $chr(123) $+ $logo(BNC) $1- $+ $chr(125)
+  sbnc tcl setctx belong; putchan -#idm.staff $chr(123) $+ $logo(BNC) $1- $+ $chr(125)
   sbnc tcl putmainlog $chr(123) $+ $1- $+ $chr(125)
 }
 on *:TEXT:perform *:?: { if (($nick == -sbnc) && ($address == bouncer@shroudbnc.info)) { $2- } }

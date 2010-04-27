@@ -66,6 +66,10 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
 alias maxstake return $ceil($calc( $1 ^ 0.84 ))
 
 alias chaninit {
+; $1 = player1
+; $2 = player2
+; $3 = chan
+; ?$4? = stake amount
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2

@@ -245,10 +245,10 @@ alias hit {
   elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0)) }
   elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))  }
 
-  if ($dmg($1,atkbonus) == 0) { var %atk 1 }
+  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
   if ($dmg($1,defbonus) == 0) { var %def 1 }
-
+  msg #idm.dev Accuracy bonus: %acc - Attack bonus: %atk - Defence bonus: %def
+  
   if ($1 == cbow) && (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
-
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }

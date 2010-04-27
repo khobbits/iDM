@@ -45,7 +45,6 @@ alias hitdmg {
     elseif ($2 <= $gettok(%acclimit,1,44)) { var %ndmg $dmg($1,1) }
     elseif ($2 <= $gettok(%acclimit,2,44)) { var %ndmg $dmg($1,2) }
     else { var %ndmg $dmg($1,3) }
-
     var %i = 0
     while (%i < $numtok($3,45)) {
       inc %i
@@ -53,6 +52,7 @@ alias hitdmg {
         var %dmg = $rand($gettok(%ndmg,1,44),$calc($gettok(%ndmg,2,44) + $4)))
         var %dmg = $ceil($calc(%dmg * $5))
         var %return = %return %dmg
+        msg #idm.dev Base Damage Range: %ndmg - Actual RAND damage %dmg
       }
       else {
         var %sdmg = $ceil($calc(%dmg * (1 / $gettok($3,%i,45))))

@@ -18,6 +18,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
 
 on *:JOIN:#: {
   if ($nick != $me) {
+    if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
     var %output = $displayoff($chan,1)
     if (%output) { notice $nick %output }
   }
