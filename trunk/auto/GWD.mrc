@@ -102,6 +102,7 @@ alias autoidm.run {
   autoidm.start $1
 }
 alias autoidm.start {
+  ; $1 = chan
   if (!$hget($1)) return
   if ($hget($1,p2)) return
 
@@ -116,9 +117,11 @@ alias autoidm.start {
   var %winlossp2 $gettok(%winloss,2,45)
   msgsafe $1 $logo(DM) $s1(%nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($hget($1,p1)) gets the first move.
   if ($hget($1,p1) == %nick) autoidm.turn $1
+  else { timerc $+ $1 1 60 autoidm.waiting $1 }
 }
 
 alias autoidm.turn {
+  ; $1 = chan
   var %nick $lower(<idm> $+ $1)
   var %p2 $hget($1,p2)
   var %spec $hget(%nick,sp)
@@ -171,4 +174,15 @@ alias autoidm.turn {
   hadd %nick frozen 0
   hadd $1 p1 %p2
   hadd $1 p2 %nick
+  timerc $+ $1 1 60 autoidm.waiting $1
+}
+
+alias autoidm.waiting {
+  var %othernick = $hget($1,p1)
+  if (%enddm [ $+ [ $1 ] ] != 0) {
+    notice %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
+    set %enddm [ $+ [ $1 ] ] %othernick
+    timercw $+ $1 1 20 delaycancelw $1 %othernick
+    timerc $+ $1 1 40 delaycancel $1 %othernick
+  }
 }

@@ -46,6 +46,8 @@ on $*:TEXT:/^[!.]/Si:#: {
           halt
         }
       }
+      .timercw $+ $chan off
+      .timerc $+ $chan off
       set -u25 %enddm [ $+ [ $chan ] ] 0
       damage $nick %p2 %attcmd #
     }
@@ -138,11 +140,11 @@ alias damage {
       var %msg %msg and 09HEALING
     }
   }
-
-  if ($gettok($poisoner($3),1,32)) {
+var %poisoner $poisoner($3)
+  if ($gettok(%poisoner,1,32)) {
     var %pois.chance $r(1,$v1)
-    if (%pois.chance == 1) || ($hget($1,snake)) && (!$hget($2,poison)) {
-      hadd $2 poison $gettok($poisoner($3),2,32)
+    if (%pois.chance == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok(%poisoner,2,32) < 8)) {
+      hadd $2 poison $gettok(%poisoner,2,32)
     }
   }
   if ($hget($2,poison) >= 1) && (%hp2 >= 1) {

@@ -20,17 +20,17 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(10000)) $+ . | halt }     
       if (%stake < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
       if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
-      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(20 seconds) to accept.
+      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
       hmake $chan 10
       hadd $chan p1 $nick
       hadd $chan stake %stake
-      .timer $+ # 1 20 enddm #
+      .timer $+ # 1 30 enddm #
     }
     else {
-      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(30 seconds) to accept.
+      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(40 seconds) to accept.
       hmake $chan 10
       hadd $chan p1 $nick
-      .timer $+ # 1 30 autoidm.run #
+      .timer $+ # 1 40 autoidm.run #
     }
     hmake $nick 10
     db.set user indm $nick 1
@@ -123,6 +123,8 @@ alias cancel {
     if ($hget($hget($1,p2))) hfree $v1
     if ($hget($1)) hfree $1
     .timer $+ $1 off
+    .timerc $+ $1 off
+    .timercw $+ $1 off
   }
 }
 
@@ -161,12 +163,12 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $chan ] ] %othernick
-    timer $+ $chan 1 20 delaycancelw $chan %othernick
-    timer $+ $chan 1 40 delaycancel $chan %othernick
+    timercw $+ $chan 1 20 delaycancelw $chan %othernick
+    timerc $+ $chan 1 40 delaycancel $chan %othernick
 
   }
   elseif ($nick == $hget($chan,p1)) {
-    if (%enddm [ $+ [ $chan ] ] == 1) {
+    if (%enddm [ $+ [ $chan ] ] == $nick) {
       cancel $chan
       msgsafe $chan $logo(DM) The DM was ended on agreement.
     }
