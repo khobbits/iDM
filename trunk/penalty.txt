@@ -294,3 +294,10 @@
 26/4 19:41:58 p3un_n0ob3_d part channel #downie during a dm oldcash 771838390 penalty 15436768
 26/4 20:35:10 Tiny_turkeyy got !enddm'd on #simprs oldcash 299002395 newcash 297507384
 26/4 21:04:06 iiM_M3rk got !enddm'd on #swzombies oldcash 713450856 newcash 709883602
+26/4 23:04:06 [EOP]Ari|Visage got !enddm'd on #tank oldcash 459456615 newcash 457159332
+26/4 23:41:44 bgsgentleman got !enddm'd on #idm oldcash 1724371434 newcash 1715749577
+27/4 01:29:01 oscarito got !enddm'd on #punto_cl oldcash 99234116 newcash 98737946
+27/4 01:51:54 Nederwiet got !enddm'd on #idm oldcash 12457031531 newcash 12394746374
+27/4 02:32:55 roman_glory part channel #dm.newbies during a dm oldcash 1688585555 penalty 33771712
+27/4 03:02:06 [FP]Ybsking got !enddm'd on #idm oldcash 39872086396 newcash 39672725965
+27/4 03:13:51 Mash got !enddm'd on #mash oldcash 687850901 newcash 684411647
