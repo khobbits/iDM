@@ -56,6 +56,7 @@ alias ignoresync {
 
   msgsafe $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (*-Startup* iswm $cmdline) { var %botnum 0 }
   if (%botnum == 0) { var %botnum 1 }
   inc %botnum
   putlog perform ignoresync.run %botnum
@@ -64,9 +65,10 @@ alias ignoresync {
 alias ignoresync.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (*-Startup* iswm $cmdline) { var %botnum 0 }
   if (%botnum == $null) { msgsafe #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
-    privmsgsafe #idm.staff $logo(IgnoreSync) Running ignore sync script in 5 seconds.
+    msgsafe #idm.staff $logo(IgnoreSync) Running ignore sync script in 5 seconds.
     timer -m 1 5000 ignoresync
   }
 }
