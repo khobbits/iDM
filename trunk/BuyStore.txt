@@ -1410,3 +1410,23 @@
 28/4 03:04:59 Slasher sold in the store (ags) ~Slasher@22B4B205.825CDC78.37F0F6DD.IP
 28/4 03:24:01 HowWasLumbie bought from the store (ags) ~HowWasLum@Swift-3E0D0A0D.ri.ri.cox.net
 28/4 04:17:31 Slim-Shady bought from the store (bgs) ~Fabolous@Swift-D83D24E0.dsl.irvnca.pacbell.net
+28/4 05:35:15 Reeco76 bought from the store (bandos godsword) ~Reeco76@Swift-1A768B9B.pool.t-online.hu
+28/4 05:40:46 Jayke sold in the store (bgs) ~Jayke@Swift-2DFA4A0.dhcp.aldl.mi.charter.com
+28/4 05:40:49 Jayke sold in the store (mudkip) ~Jayke@Swift-2DFA4A0.dhcp.aldl.mi.charter.com
+28/4 05:40:55 Jayke sold in the store (accumulator) ~Jayke@Swift-2DFA4A0.dhcp.aldl.mi.charter.com
+28/4 05:41:42 Reeco76 sold in the store (bandos godsword) ~Reeco76@Swift-1A768B9B.pool.t-online.hu
+28/4 06:28:00 Dadehnizzla bought from the store (ring of wealth) ~Dadehnizz@Swift-8C072F11.dhcp.eucl.wi.charter.com
+28/4 06:33:02 Dadehnizzla sold in the store (accumulator) ~Dadehnizz@Swift-8C072F11.dhcp.eucl.wi.charter.com
+28/4 07:15:01 deathshadowp sold in the store (bgs) ~deathshad@Swift-DA65E416.nocal.dialup.o1.com
+28/4 07:30:57 deathshadowp sold in the store (sgs) ~deathshad@Swift-DA65E416.nocal.dialup.o1.com
+28/4 09:52:28 Jaga1920 sold in the store (accumulator) ~Jaga1920@Swift-63482388.dynamic.gprs.plus.pl
+28/4 10:00:05 Jaga1920 sold in the store (accumulator) ~Jaga1920@Swift-63482388.dynamic.gprs.plus.pl
+28/4 11:10:16 invidiae bought from the store (bgs) invidiae@Swift-BB7C2BC0.ssp.dialog.net.pl
+28/4 11:59:21 A_N_T_Y bought from the store (sgs) ~A_N_T_Y@Swift-E3A760A4.neoplus.adsl.tpnet.pl
+28/4 12:09:33 Wojownik sold in the store (mage's book) ~Wojownik@Swift-E938A41D.adsl.inetia.pl
+28/4 12:13:05 nathan_TMR bought from the store (void mage) ~nathan_TM@Swift-BDE15E14.swan.cable.ntl.com
+28/4 12:34:35 b00gy_monsta bought from the store (sgs) ~b00gy_mon@Swift-DA53F072.lnse1.cht.bigpond.net.au
+28/4 12:56:31 invidiae bought from the store (zgs) invidiae@Swift-BB7C2BC0.ssp.dialog.net.pl
+28/4 13:07:37 siwy-jestem_ sold in the store (zgs) ~siwy-jest@DF30639E.E7D44761.4E6C3C7C.IP
+28/4 13:11:09 siwy-jestem_ bought from the store (sgs) ~siwy-jest@DF30639E.E7D44761.4E6C3C7C.IP
+28/4 13:13:14 weeman1690 bought from the store (god cape) ~weeman169@Swift-24E70EBE.zone14.bethere.co.uk

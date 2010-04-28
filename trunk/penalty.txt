@@ -322,3 +322,10 @@
 28/4 03:30:28 Tarfiti got !enddm'd on #idm oldcash 4636704121 newcash 4613520601
 28/4 03:44:21 ifrezetokill part channel #ri-games during a dm oldcash 4413719436 penalty 88274389
 28/4 03:45:26 Xdx94 part channel #ri-games during a dm oldcash 460245062 penalty 9204902
+28/4 06:16:53 strnthpk3rs got !enddm'd on #iDM oldcash 702578166 newcash 699065276
+28/4 06:32:29 strnthpk3rs got !enddm'd on #idm oldcash 701970196 newcash 698460346
+28/4 06:36:31 strnthpk3rs got !enddm'd on #idm oldcash 698460346 newcash 694968045
+28/4 10:11:30 Creatone got !enddm'd on #raclan oldcash 195810411 newcash 194831359
+28/4 12:15:13 KHobbits got !enddm'd on #dm.newbies oldcash 133701255117 newcash 133032748842
+28/4 12:19:57 KHobbits got !enddm'd on #dm.newbies oldcash 133032748842 newcash 132367585098
+28/4 12:54:46 Flasharm got !enddm'd on #idm oldcash 6030385583 newcash 6000233656
