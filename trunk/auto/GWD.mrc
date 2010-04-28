@@ -112,7 +112,7 @@ alias autoidm.start {
   db.set user indm %p1 1
   chaninit %nick %p1 $1
   set -u25 %enddm [ $+ [ $1 ] ] 0
-  var %winloss $winloss(%nick,%p1,iDM)
+  var %winloss $winloss(%nick,%p1,$iif($2 == #idm.newbies,iDM,iDMnewbie))
   var %winlossp1 $gettok(%winloss,1,45)
   var %winlossp2 $gettok(%winloss,2,45)
   msgsafe $1 $logo(DM) $s1(%nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($hget($1,p1)) gets the first move.
@@ -165,7 +165,7 @@ alias autoidm.turn {
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1
   if ($hget(%p2,hp) < 1) {
-    dead $1 %p2 idm
+    dead $1 %p2 $iif($2 == #idm.newbies,iDM,iDMnewbie)
     halt
   }
   if ($specused(%attcmd)) {

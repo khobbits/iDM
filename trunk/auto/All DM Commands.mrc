@@ -110,6 +110,7 @@ alias damage {
   }
   var %msg $logo(DM) $s1($1)
 
+  ; ## OVERRIDE
   if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
     var %msg %msg 5UNLEASHES a dragon bolt special on $s1($replace($2,$chr(58),$chr(32)))
     unset %cbowspec [ $+ [ $1 ] ]
@@ -248,6 +249,7 @@ alias hit {
   if ($dmg($1,atkbonus) == 0) { var %atk 0 }
   if ($dmg($1,defbonus) == 0) { var %def 1 }
 
+  ; ## OVERRIDE
   if ($1 == cbow) && (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }

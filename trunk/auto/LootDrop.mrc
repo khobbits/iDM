@@ -124,8 +124,6 @@ alias gendrops {
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
-  ;if ($1 == Belongtome) var %sql SELECT * FROM drops WHERE chance >= '700' AND price > 1 AND disabled = '0' ORDER BY rand() LIMIT 3
-  ;if ($1 == Aaron``) var %sql SELECT * FROM drops WHERE chance = '42' AND disabled = '1' LIMIT 1
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
@@ -166,6 +164,7 @@ alias rundrops {
       elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 }
       elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 }
       elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 }
+      elseif (idmnewbie == $2) { noop }
       elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
       elseif (Clue isin %item) { db.set equip_item clue $2 $r(1,$lines(clue.txt)) }

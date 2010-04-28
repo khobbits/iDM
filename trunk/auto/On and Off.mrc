@@ -49,10 +49,11 @@ alias enablec {
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   var %notice
   if ($1 == -h) {
-    db.remove settings $3 setting guth
-    db.remove settings $3 setting sgs
-    db.remove settings $3 setting blood
-    db.remove settings $3 setting onyx
+    var %i 1
+    while (%i <= $dmg(list,0)) {
+     if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
+     inc %i
+    }
     var %notice %notice Healing attacks are now on in $3 $+ .
   }
   elseif (($1 == all) || ($1 == -a)) {
@@ -78,10 +79,11 @@ alias disablec {
   tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
   var %notice
   if ($1 == -h) {
-    db.set settings setting $3 guth
-    db.set settings setting $3 sgs
-    db.set settings setting $3 blood
-    db.set settings setting $3 onyx
+    var %i 1
+    while (%i <= $dmg(list,0)) {
+     if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
+     inc %i
+    }
     var %notice %notice Healing attacks are now off.
   }
   elseif ($attack($1)) {

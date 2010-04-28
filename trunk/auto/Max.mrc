@@ -68,7 +68,9 @@ alias dmg.hload {
   hmake >weapon 50
   var %sql SELECT * FROM weapon
   var %res $db.query(%sql)
+  var %i 0
   while ($db.query_row(%res, >row)) {
+    inc %i
     hadd >weapon $hget(>row, weapon) $+ .name $hget(>row, name)
     hadd >weapon $hget(>row, weapon) $+ .item $hget(>row, item)
     hadd >weapon $hget(>row, weapon) $+ .pvp $hget(>row, pvp)
@@ -81,13 +83,19 @@ alias dmg.hload {
     hadd >weapon $hget(>row, weapon) $+ .atkbonus $hget(>row, atkbonus)
     hadd >weapon $hget(>row, weapon) $+ .defbonus $hget(>row, defbonus)
     hadd >weapon $hget(>row, weapon) $+ .spec $hget(>row, spec)
-    hadd >weapon $hget(>row, weapon) $+ .poison $hget(>row, poisonchance) $hget(>row, poisonamount)
+    hadd >weapon $hget(>row, weapon) $+ .poison $hget(>row, poisonchance)
+    hadd >weapon $hget(>row, weapon) $+ .poisonamount $hget(>row, poisonamount)
     hadd >weapon $hget(>row, weapon) $+ .freeze $hget(>row, freeze)
-    hadd >weapon $hget(>row, weapon) $+ .heal $hget(>row, healchance) $hget(>row, healamount)
+    hadd >weapon $hget(>row, weapon) $+ .heal $hget(>row, healchance)
+    hadd >weapon $hget(>row, weapon) $+ .healamount $hget(>row, healamount)
     hadd >weapon $hget(>row, weapon) $+ .splash $hget(>row, splash)
     hadd >weapon $hget(>row, weapon) $+ .what $hget(>row, what)
     hadd >weapon $hget(>row, weapon) $+ .effect $hget(>row, effect)
+    hadd >weapon list. $+ %i $hget(>row, weapon)
+    var %list $iif(%list,%list $+ $chr(44)) $+ $hget(>row, weapon)
   }
+  hadd >weapon list %list
+  hadd >weapon list.0 %i
   mysql_free %res
 }
 
@@ -99,15 +107,19 @@ alias dmg.hget {
 
 alias dmg {
   ; $1 = attack
-  ; $2 = 1/2/3 = low/med/high
-  return $dmg.hget($gettok($1,1,95),$2)
+  ; $2 = value
+  if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,95),$2),$prop)
+  if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
+  if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)
+  return $hget(>weapon,list)
+  
 }
 
 alias attackname { return $dmg($1,name) }
 alias specused { return $calc($dmg($1,spec) * 25) }
-alias poisoner { return $dmg($1,poison) }
+alias poisoner { return $dmg($1,poison) $dmg($1,poisonamount) }
 alias freezer { return $dmg($1,freeze) }
-alias healer { return $dmg($1,heal) }
+alias healer { return $dmg($1,heal) $dmg($1,healamount) }
 alias splasher { return $dmg($1,splash) }
 alias doeswhat { return $dmg($1,what) }
 alias effect { return $dmg($1,effect) }
