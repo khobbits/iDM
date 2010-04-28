@@ -24,6 +24,9 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       hmake $chan 10
       hadd $chan p1 $nick
       hadd $chan stake %stake
+      if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
+      else { var %sitems 1 }
+      hadd $chan sitems %sitems
       .timer $+ # 1 30 enddm #
     }
     else {
@@ -52,7 +55,9 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
     }
     elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
     var %p1 $hget($chan,p1)
-    chaninit %p1 $nick $chan $iif($hget($chan,stake),$hget($chan,stake))
+    if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
+    else { var %sitems 1 }
+    chaninit %p1 $nick $chan $hget($chan,sitems) %sitems $iif($hget($chan,stake),$hget($chan,stake))
     var %winloss $winloss($nick,%p1,$chan)
     var %winlossp1 $gettok(%winloss,1,45)
     var %winlossp2 $gettok(%winloss,2,45)
@@ -69,7 +74,9 @@ alias chaninit {
 ; $1 = player1
 ; $2 = player2
 ; $3 = chan
-; ?$4? = stake amount
+; $4 = player1 sitems
+; $5 = player2 sitems
+; ?$6? = stake amount
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2
@@ -78,13 +85,15 @@ alias chaninit {
   if (%turn == 1) { hadd $3 p1 $1 | hadd $3 p2 $2 }
   else { hadd $3 p1 $2 | hadd $3 p2 $1 }
   if ($4) hadd $3 stake $4
-  playerinit $1 $3
-  playerinit $2 $3
+  playerinit $1 $3 $4
+  playerinit $2 $3 $5
+
 }
 
 alias playerinit {
 ; $1 = player
 ; $2 = chan
+; $3 = sitems
   dbcheck
   var %nick $iif(<idm>* iswm $1,$iif($2 == #dm.newbies,idmnewbie,idm),$1)
   var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) LEFT JOIN `equip_staff` USING (user) WHERE user = $db.safe(%nick)
@@ -97,6 +106,7 @@ alias playerinit {
   hadd $1 poison 0
   hadd $1 frozen 0
   hadd $1 laststyle 0
+  hadd $1 sitems $3
 }
 
 alias winloss {
@@ -105,8 +115,8 @@ alias winloss {
     var %p2win $hget($2,wins)
     var %p1loss $hget($1,losses)
     var %p2loss $hget($2,losses)
-    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
-    var %p2 $s2($chr(91)) $+ Wins $s1($iif(%p2win,$bytes($v1,bd),0)) Losses $s1($iif(%p2loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
+    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93)) $iif($hget($1,sitems),,(NA))
+    var %p2 $s2($chr(91)) $+ Wins $s1($iif(%p2win,$bytes($v1,bd),0)) Losses $s1($iif(%p2loss,$bytes($v1,bd),0)) $+ $s2($chr(93)) $iif($hget($2,sitems),,(NA))
     if ((($calc(%p1win + %p1loss) > 80) && (($calc(%p1win / %p1loss) > 4) || ($calc(%p1win / %p1loss) < 0.22))) || (($calc(%p2win + %p2loss) > 80) && (($calc(%p2win / %p2loss) > 4) || ($calc(%p2win / %p2loss) < 0.22)))) {
       msg #idm.staff $logo(4RATIO) $3 = $1 %p1 ( $+ $calc(%p1win / %p1loss) $+ ) - $2 %p2 ( $+ $calc(%p2win / %p2loss) $+ )
     }

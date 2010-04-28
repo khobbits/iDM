@@ -164,8 +164,6 @@ var %poisoner $poisoner($3)
   elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
   elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
 
-  if ($hget($4,stake) == $null) {
-
     if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
       var %extra $iif(%hp2 < 12,$($v1,2),12)
       dec %hp2 %extra
@@ -185,10 +183,9 @@ var %poisoner $poisoner($3)
       inc %hp2 $floor($calc(%temp.hit / 2))
       msgsafe $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
     }
-  }
 
   if (%hp2 < 1) {
-    if ($hget($2,beau)) && ($r(1,50) >= 49) && ($hget($4,stake) == $null) {
+    if (($hget($2,beau)) && ($r(1,50) >= 49) ) {
       var %hp2 1
       msgsafe $4 $logo(DM) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2)
     }
