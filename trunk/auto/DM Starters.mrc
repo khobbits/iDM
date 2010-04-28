@@ -98,7 +98,7 @@ alias playerinit {
   dbcheck
   var %nick $iif(<idm>* iswm $1,$iif($2 == #dm.newbies,idmnewbie,idm),$1)
   var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) 
-  if (!$3) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
+  if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
   var %sql %sql WHERE user = $db.safe(%nick)
   var %result = $db.query(%sql)
   if ($db.query_row(%result,$1) === $null) { echo -a Error: Failure to find player. }
