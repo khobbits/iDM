@@ -72,12 +72,12 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
 alias maxstake return $ceil($calc( $1 ^ 0.84 ))
 
 alias chaninit {
-; $1 = player1
-; $2 = player2
-; $3 = chan
-; $4 = player1 sitems
-; $5 = player2 sitems
-; ?$6? = stake amount
+  ; $1 = player1
+  ; $2 = player2
+  ; $3 = chan
+  ; $4 = player1 sitems
+  ; $5 = player2 sitems
+  ; ?$6? = stake amount
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2
@@ -92,14 +92,14 @@ alias chaninit {
 }
 
 alias playerinit {
-; $1 = player
-; $2 = chan
-; $3 = sitems
+  ; $1 = player
+  ; $2 = chan
+  ; $3 = sitems
   dbcheck
   var %nick $iif(<idm>* iswm $1,$iif($2 == #dm.newbies,idmnewbie,idm),$1)
-  var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) LEFT JOIN `equip_staff` USING (user) WHERE user = $db.safe(%nick)
-  if (!$3) { var %sql %sql LEFT JOIN `equip_staff` }
-  var %sql %sql USING (user) WHERE user = $db.safe(%nick)
+  var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) 
+  if (!$3) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
+  var %sql %sql WHERE user = $db.safe(%nick)
   var %result = $db.query(%sql)
   if ($db.query_row(%result,$1) === $null) { echo -a Error: Failure to find player. }
   db.query_end %result
