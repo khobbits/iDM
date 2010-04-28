@@ -24,15 +24,15 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       hmake $chan 10
       hadd $chan p1 $nick
       hadd $chan stake %stake
-      if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
-      else { var %sitems 1 }
-      hadd $chan sitems %sitems
       .timer $+ # 1 30 enddm #
     }
     else {
       msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(40 seconds) to accept.
       hmake $chan 10
       hadd $chan p1 $nick
+      if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
+      else { var %sitems 1 }
+      hadd $chan sitems %sitems
       .timer $+ # 1 40 autoidm.run #
     }
     hmake $nick 10
