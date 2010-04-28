@@ -301,3 +301,24 @@
 27/4 02:32:55 roman_glory part channel #dm.newbies during a dm oldcash 1688585555 penalty 33771712
 27/4 03:02:06 [FP]Ybsking got !enddm'd on #idm oldcash 39872086396 newcash 39672725965
 27/4 03:13:51 Mash got !enddm'd on #mash oldcash 687850901 newcash 684411647
+27/4 06:29:10 im_da_pker2 got !enddm'd on #idm oldcash 2409866444 newcash 2397817112
+27/4 12:16:52 b00gy_monsta got !enddm'd on #idm oldcash 185087771 newcash 184162333
+27/4 12:20:06 b00gy_monsta got !enddm'd on #idm oldcash 184162333 newcash 183241522
+27/4 15:51:44 Terminator_|_ got !enddm'd on #idm oldcash 2785662431 newcash 2771734119
+27/4 16:19:00 [Ex]Weed_Addlct got !enddm'd on #ex-dm oldcash 510089103 newcash 507538658
+27/4 17:17:47 Dkila01 got !enddm'd on #mysticguild oldcash 577078207 newcash 574192816
+27/4 18:11:26 rabbitzpwn got !enddm'd on #idm oldcash 1126820013 newcash 1121185913
+27/4 20:55:01 roman_glory part channel #simprs during a dm oldcash 1657055464 penalty 33141110
+27/4 21:06:48 popht part channel #idm during a dm oldcash 318321534 penalty 6366431
+28/4 00:06:59 toby_ got !enddm'd on #idm oldcash 10635312938 newcash 10582136374
+28/4 00:14:28 Azelais got !enddm'd on #idm oldcash 70101007887 newcash 69750502848
+28/4 00:18:46 Hax_Bow part channel #warehouse during a dm oldcash 1432646963 penalty 28652940
+28/4 00:21:31 Purely_Nema got !enddm'd on #hern oldcash 954801107 newcash 950027102
+28/4 00:26:56 wicho_killer got !enddm'd on #ticos_inter oldcash 1525611422 newcash 1517983365
+28/4 00:40:30 Hax_Bow got !enddm'd on #dm.newbies oldcash 512708542 newcash 510145000
+28/4 00:54:40 John|Mauls part channel #T0tal during a dm oldcash 386511828 penalty 7730237
+28/4 01:37:31 Dory364 quit channel #idm during a dm oldcash 16381507219 penalty 327630145
+28/4 03:16:53 herbal got !enddm'd on #team-omega oldcash 214779377 newcash 213705481
+28/4 03:30:28 Tarfiti got !enddm'd on #idm oldcash 4636704121 newcash 4613520601
+28/4 03:44:21 ifrezetokill part channel #ri-games during a dm oldcash 4413719436 penalty 88274389
+28/4 03:45:26 Xdx94 part channel #ri-games during a dm oldcash 460245062 penalty 9204902

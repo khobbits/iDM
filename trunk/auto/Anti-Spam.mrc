@@ -53,8 +53,8 @@ alias ignoresync {
     if (@ isin %user) { .ignore -x %user }
   }
   db.query_end %result
-
-  msgsafe $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list.
+  if ($hget(>weapon)) { hfree >weapon }
+  msgsafe $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list. (Also refreshed weapon cache.)
   var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
   if (*-Startup* iswm $cmdline) { var %botnum 0 }
   if (%botnum == 0) { var %botnum 1 }
