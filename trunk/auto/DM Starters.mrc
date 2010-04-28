@@ -24,6 +24,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       hmake $chan 10
       hadd $chan p1 $nick
       hadd $chan stake %stake
+      hadd $chan sitems 1
       .timer $+ # 1 30 enddm #
     }
     else {
