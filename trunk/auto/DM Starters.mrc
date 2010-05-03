@@ -24,7 +24,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       hmake $chan 10
       hadd $chan p1 $nick
       hadd $chan stake %stake
-      hadd $chan sitems 1
+      hadd $chan sitems 0
       .timer $+ # 1 30 enddm #
     }
     else {
@@ -45,6 +45,8 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       inc -u5 %dm.spam [ $+ [ $nick ] ]
       halt
     }
+    if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
+    else { var %sitems 1 }
     if (stake isin $1) && ($hget($chan,stake)) {
       var %money = $db.get(user,money,$nick)
       if ($2 == max) { var %stake $maxstake(%money) }
@@ -53,11 +55,10 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
       if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
       if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
       var %msg stake of $s1($price($hget($chan,stake)))
+      var %sitems 0
     }
     elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
     var %p1 $hget($chan,p1)
-    if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
-    else { var %sitems 1 }
     chaninit %p1 $nick $chan $hget($chan,sitems) %sitems $iif($hget($chan,stake),$hget($chan,stake))
     var %winloss $winloss($nick,%p1,$chan)
     var %winlossp1 $gettok(%winloss,1,45)
