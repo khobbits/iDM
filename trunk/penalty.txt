@@ -991,3 +991,7 @@
 13/5 12:32:52 b00gy_monsta got !enddm'd on #idm oldcash 8259548239 newcash 8218250498
 13/5 13:41:31 Dassrull quit channel #unam_Killer during a dm oldcash 1176527832 penalty 23530557
 13/5 17:02:28 [FP]Ybsking got !enddm'd on #idm oldcash 40618572244 newcash 40415479383
+13/5 17:32:54 alig1000100 part channel #idm during a dm oldcash 3959600141 penalty 79192003
+13/5 17:34:15 Classic_zerk part channel #immortal_pures during a dm oldcash 87509237 penalty 1750185
+13/5 18:18:58 [FP]Ybsking got !enddm'd on #idm oldcash 40567277886 newcash 40364441497
+13/5 18:32:31 Warlord094 part channel #tc during a dm oldcash 211800678 penalty 4236014
