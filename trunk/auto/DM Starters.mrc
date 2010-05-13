@@ -79,7 +79,7 @@ alias chaninit {
   ; $4 = player1 sitems
   ; $5 = player2 sitems
   ; ?$6? = stake amount
-  if (!$5) { putlog Syntax Error: chaninit (6) - $db.safe($1-) | halt }
+  if ($5 == $null) { putlog Syntax Error: chaninit (5) - $db.safe($1-) | halt }
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2
