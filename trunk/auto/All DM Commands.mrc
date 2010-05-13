@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!.]/Si:#: {
+on $*:TEXT:/^[!.]\w/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   var %attcmd $right($1,-1)
   if ($hget($chan)) && ($nick == $hget($chan,p1) && ($hget($chan,p2))) {

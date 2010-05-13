@@ -41,7 +41,7 @@ alias hitdmg {
   ; $4 = attack bonus
   ; $5 = defense bonus
   if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
-  var %acclimit $dmg($1)
+  var %acclimit $dmg($1,0)
   if ($1 == dh_9) { var %ndmg $dmg(dh,3) }
   elseif ($1 == dh_10) { var %ndmg $dmg(dh,1) }
   elseif ($2 <= $gettok(%acclimit,1,44)) { var %ndmg $dmg($1,1) }
