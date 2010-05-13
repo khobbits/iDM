@@ -1,6 +1,6 @@
 alias max {
 ; $1 = attack
-if (!$1) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
+if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
   var %dbhits = $dmg($1,hits)
   var %dbdmg = $gettok($dmg($1, 3),2,44)
   var %dbbonus = $dmg($1, atkbonus)
@@ -24,7 +24,7 @@ alias dmg.ratio {
 ; $2 = max hit
 ; $3 = attack bonus
 ; $4 = bonus toggle
-if (!$4) { putlog Syntax Error: dmg.ratio (1) - $db.safe($1-) | halt }
+if ($4 == $null) { putlog Syntax Error: dmg.ratio (4) - $db.safe($1-) | halt }
   var %hits
   var %i = 0
   while (%i < $numtok($1,45)) {
@@ -40,7 +40,7 @@ alias hitdmg {
   ; $3 = hit pattern
   ; $4 = attack bonus
   ; $5 = defense bonus
-  if (!$5) { putlog Syntax Error: hitdmg (1) - $db.safe($1-) | halt }
+  if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
   var %acclimit $dmg($1)
   if ($1 == dh_9) { var %ndmg $dmg(dh,3) }
   elseif ($1 == dh_10) { var %ndmg $dmg(dh,1) }
@@ -108,7 +108,7 @@ alias dmg.hget {
 alias dmg {
   ; $1 = attack
   ; ?$2? = value
-  if (!$1) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
+  if ($1 == $null) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
   if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,95),$2),$prop)
   if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
   if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)

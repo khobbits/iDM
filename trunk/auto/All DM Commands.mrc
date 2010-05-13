@@ -77,7 +77,7 @@ alias damage {
   ;2 is other person
   ;3 is weapon
   ;4 is chan
-  if (!$4) { putlog Syntax Error: damage (4) - $db.safe($1-) | halt }
+  if ($4 == $null) { putlog Syntax Error: damage (4) - $db.safe($1-) | halt }
   var %hp1 $hget($1,hp)
   var %hp2 $hget($2,hp)
 
@@ -231,7 +231,7 @@ alias hit {
   ;2 is Attacker
   ;3 is Attackee
   ;4 is Chan
-  if (!$4) { putlog Syntax Error: hit (4) - $db.safe($1-) | halt }
+  if ($4 == $null) { putlog Syntax Error: hit (4) - $db.safe($1-) | halt }
   if ($accuracy($1,$3) == -1) { var %acc $r(1,80) }
   elseif ($accuracy($1,$3) == 1) { var %acc $r(15,100) }
   else { var %acc $r(1,100) }

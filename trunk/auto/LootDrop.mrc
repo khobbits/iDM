@@ -2,7 +2,7 @@ alias dead {
   ; $1 = chan
   ; $2 = looser
   ; $3 = winner
-  if (!$3) { putlog Syntax Error: dead (3) - $db.safe($1-) | halt }
+  if ($3 == $null) { putlog Syntax Error: dead (3) - $db.safe($1-) | halt }
   if ($hget($1,stake)) {
     db.set user money $3 + $hget($1,stake)
     db.set user money $2 - $hget($1,stake)
@@ -124,7 +124,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
 alias gendrops {
   ; $1 User
   ; $2 Otheruser
-  if (!$2) { putlog Syntax Error: gendrops (2) - $db.safe($1-) | halt }
+  if ($2 == $null) { putlog Syntax Error: gendrops (2) - $db.safe($1-) | halt }
   var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,910)
   if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
   var %oldchance %chance
@@ -145,7 +145,7 @@ alias rundrops {
   ; $1 $chan
   ; $2 User
   ; $3 Otheruser
-  if (!$3) { putlog Syntax Error: rundrops (3) - $db.safe($1-) | halt }
+  if ($3 == $null) { putlog Syntax Error: rundrops (3) - $db.safe($1-) | halt }
   var %drops $gendrops($2,$3), %disprice 0, %display, %wealth 0, %i 1
   var %chance $gettok(%drops,1,32)
   var %drops $gettok(%drops,2-,32)
