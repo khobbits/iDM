@@ -53,8 +53,7 @@ on $*:TEXT:/^[!.]/Si:#: {
     }
     else { halt }
     if ($hget(%p2,hp) < 1) {
-      if (<iDM>* iswm %p2) dead $chan iDM $nick
-      else dead $chan %p2 $nick
+      dead $chan $autoidm.acc(%p2) $nick
       halt
     }
     if ($specused(%attcmd)) {
