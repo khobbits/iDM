@@ -995,3 +995,5 @@
 13/5 17:34:15 Classic_zerk part channel #immortal_pures during a dm oldcash 87509237 penalty 1750185
 13/5 18:18:58 [FP]Ybsking got !enddm'd on #idm oldcash 40567277886 newcash 40364441497
 13/5 18:32:31 Warlord094 part channel #tc during a dm oldcash 211800678 penalty 4236014
+13/5 18:43:05 KHobbits got !enddm'd on #idm.staff oldcash 1337004261500 newcash 1330319240193
+13/5 18:56:38 chickenpony part channel #idm during a dm oldcash 4849893075 penalty 96997862
