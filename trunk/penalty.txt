@@ -641,3 +641,352 @@
 3/5 21:49:59 Jose_elite got !enddm'd on #idm oldcash 3003589055 newcash 2988571110
 3/5 21:59:49 Danielucho54 part channel #fulgore during a dm oldcash 3986276569 penalty 79725532
 3/5 22:38:33 Newton3788 got !enddm'd on #idm oldcash 360494445 newcash 358691973
+3/5 23:41:51 SawyerFord got !enddm'd on #dm.newbies oldcash 3347759267 newcash 3331020471
+4/5 00:54:15 `Litoazn` got !enddm'd on #tank oldcash 189822778 newcash 188873665
+4/5 00:57:21 bgsgentleman got !enddm'd on #idm oldcash 456067396 newcash 453787060
+4/5 01:01:10 madskittles1 got !enddm'd on #idm oldcash 5391311886 newcash 5364355327
+4/5 01:10:33 B3g|Havotine got !enddm'd on #slight-ko oldcash 2707085168 newcash 2693549743
+4/5 01:17:07 calmir-lol part channel #tank during a dm oldcash 7164470296 penalty 143289406
+4/5 01:36:35 jjmmtt5 got !enddm'd on #dm.newbies oldcash 550701425 newcash 547947918
+4/5 02:06:11 llubere got !enddm'd on #idm oldcash 1038257439 newcash 1033066152
+4/5 02:24:57 chickenpony got !enddm'd on #idm oldcash 3912724696 newcash 3893161073
+4/5 03:09:17 herbal got !enddm'd on #team-omega oldcash 1374585459 newcash 1367712532
+4/5 05:52:07 strnthpk3rs got !enddm'd on #idm oldcash 2260087656 newcash 2248787218
+4/5 06:13:10 strnthpk3rs got !enddm'd on #idm oldcash 2248787218 newcash 2237543282
+4/5 06:18:27 b00gy_monsta got !enddm'd on #idm oldcash 2916954080 newcash 2902369310
+4/5 06:23:16 b00gy_monsta got !enddm'd on #idm oldcash 2902369310 newcash 2887857464
+4/5 06:50:01 strnthpk3rs got !enddm'd on #idm oldcash 2292118685 newcash 2280658092
+4/5 09:01:04 tL part channel #SBDM during a dm oldcash 1167009336 penalty 23340187
+4/5 11:14:35 Pure_Pkr221 got !enddm'd on #dm.newbies oldcash 105295732 newcash 104769254
+4/5 11:29:08 Leonnzor` got !enddm'd on #zambo oldcash 1147488981 newcash 1141751537
+4/5 13:01:50 jasonbot got !enddm'd on #dm.newbies oldcash 1016323280 newcash 1011241664
+4/5 14:52:55 range|boy got !enddm'd on #bs-unit oldcash 643293606 newcash 640077138
+4/5 18:02:44 Reeco76 got !enddm'd on #idm oldcash 516806977 newcash 514222943
+4/5 18:03:54 Dwt_Beertje part channel #denikids during a dm oldcash 656683407 penalty 13133669
+4/5 18:21:48 Reeco76 got !enddm'd on #idm oldcash 514222943 newcash 511651829
+4/5 19:24:39 X_Envyme_X got !enddm'd on #Vybz oldcash 111399981 newcash 110842982
+4/5 19:26:12 PackYakLegend got !enddm'd on #Vybz oldcash 3365321949 newcash 3348495340
+4/5 19:28:25 opk_elvemage got !enddm'd on #RSFanta oldcash 48223197 newcash 47982082
+4/5 19:34:02 Reb part channel #tank during a dm oldcash 18507060398 penalty 370141208
+4/5 19:47:01 rabbitzpwn got !enddm'd on #RSFanta oldcash 5212868447 newcash 5186804105
+4/5 19:53:41 unl` got !enddm'd on #RSFanta oldcash 83570608 newcash 83152755
+4/5 20:04:26 XxBlackfulgoreXx part channel #fulgore during a dm oldcash 1829490291 penalty 36589806
+4/5 20:20:32 rabbitzpwn got !enddm'd on #RSFanta oldcash 5188708405 newcash 5162764863
+4/5 21:34:22 Amaltej part channel #dh_clan during a dm oldcash 991864020 penalty 19837281
+4/5 21:36:04 `John|PvP|Bh got !enddm'd on #wetterd oldcash 11935214 newcash 11875538
+4/5 21:52:07 Melissa`away part channel #x_x during a dm oldcash 22965808 penalty 459317
+4/5 21:54:27 andresito112 got !enddm'd on #ak-latin oldcash 2393856902 newcash 2381887618
+4/5 23:00:28 Abkb|Inspectar_Xx part channel #nar during a dm oldcash 1735717120 penalty 34714343
+4/5 23:55:18 LOki` got !enddm'd on #tom_00_7 oldcash 560560984 newcash 557758180
+5/5 00:16:51 Man_u_dicl got !enddm'd on #tank oldcash 10764918121 newcash 10711093531
+5/5 00:32:24 X_Envyme_X got !enddm'd on #Vybz oldcash 383724495 newcash 381805873
+5/5 00:34:57 Devon|Nice_Magic got !enddm'd on #iDM oldcash 127888573 newcash 127249131
+5/5 00:55:09 HowWasLumbie got !enddm'd on #idm oldcash 434237909 newcash 432066720
+5/5 01:00:45 |VV| got !enddm'd on #dm.newbies oldcash 40996537 newcash 40791555
+5/5 01:29:35 ear got !enddm'd on #Vybz oldcash 277171565 newcash 275785708
+5/5 01:36:26 Kepreth got !enddm'd on #anti-welfare oldcash 183122967 newcash 182207353
+5/5 01:46:23 BloodyTwin got !enddm'd on #ak-latin oldcash 3651541120 newcash 3633283415
+5/5 01:50:40 Purestr_ part channel #notorious during a dm oldcash 2966429525 penalty 59328591
+5/5 01:52:17 Gata part channel #notorious during a dm oldcash 1410110241 penalty 28202205
+5/5 02:32:03 llubere got !enddm'd on #idm oldcash 1448409892 newcash 1441167843
+5/5 02:51:20 `Pk_Zero9910 got !enddm'd on #dm.newbies oldcash 4295122843 newcash 4273647229
+5/5 03:57:39 Stormykins got !enddm'd on #sir oldcash 34517080 newcash 34344495
+5/5 05:11:49 herbal got !enddm'd on #team-omega oldcash 1833179873 newcash 1824013974
+5/5 05:44:42 herbal got !enddm'd on #team-omega oldcash 1851861074 newcash 1842601769
+5/5 06:56:25 tyler_808 got !enddm'd on #idm oldcash 202186008 newcash 201175078
+5/5 07:04:14 strnthpk3rs got !enddm'd on #idm oldcash 2532374956 newcash 2519713082
+5/5 07:30:33 strnthpk3rs got !enddm'd on #idm oldcash 2525313973 newcash 2512687404
+5/5 08:38:26 el_guwapo part channel #pinoy_ftw during a dm oldcash 253997559 penalty 5079952
+5/5 08:43:19 tyler_808 got !enddm'd on #idm oldcash 201175078 newcash 200169203
+5/5 08:46:30 `Sigex3 part channel #notorious during a dm oldcash 1380257351 penalty 27605148
+5/5 09:08:21 heartdamaged got !enddm'd on #tank oldcash 620268800 newcash 617167456
+5/5 10:05:19 Ivo got !enddm'd on #idm oldcash 44873498302 newcash 44649130811
+5/5 10:05:21 extdimension got !enddm'd on #werun18 oldcash 1247047588 newcash 1240812351
+5/5 10:35:40 jasonbot got !enddm'd on #dm.newbies oldcash 917013250 newcash 912428184
+5/5 11:24:03 Ivo got !enddm'd on #idm oldcash 44783611406 newcash 44559693349
+5/5 12:30:03 heartdamaged got !enddm'd on #tank oldcash 779038560 newcash 775143368
+5/5 12:55:54 X_Envyme_X got !enddm'd on #tank oldcash 643622667 newcash 640404554
+5/5 14:07:32 X_Envyme_X got !enddm'd on #tank oldcash 59514965 newcash 59217391
+5/5 14:22:40 force584 got !enddm'd on #Vybz oldcash 2504471371 newcash 2491949015
+5/5 15:34:16 X_Envyme_X got !enddm'd on #tank oldcash 61902191 newcash 61592681
+5/5 15:38:12 X_Envyme_X got !enddm'd on #tank oldcash 61592681 newcash 61284718
+5/5 17:27:07 X_Envyme_X got !enddm'd on #Vybz oldcash 165914248 newcash 165084677
+5/5 17:58:10 X_Envyme_X got !enddm'd on #vybz oldcash 165084677 newcash 164259254
+5/5 18:11:51 chickenpony got !enddm'd on #idm oldcash 2022087280 newcash 2011976844
+5/5 18:12:39 PackYakLegend got !enddm'd on #Vybz oldcash 3580177286 newcash 3562276400
+5/5 18:16:49 Leonnzor` got !enddm'd on #zambo oldcash 1612454739 newcash 1604392466
+5/5 18:20:25 Leonnzor` got !enddm'd on #zambo oldcash 1604392466 newcash 1596370504
+5/5 18:26:24 Reeco76 got !enddm'd on #idm oldcash 548992029 newcash 546247069
+5/5 18:32:50 Reeco76 got !enddm'd on #idm oldcash 546247069 newcash 543515834
+5/5 18:59:23 |Nate| got !enddm'd on #idm oldcash 2048632133 newcash 2038388973
+5/5 19:16:04 Ben__ got !enddm'd on #tom_00_7 oldcash 4017306066 newcash 3997219536
+5/5 19:33:34 Ben__ got !enddm'd on #tom_00_7 oldcash 542522963 newcash 539810349
+5/5 19:36:17 l0ve_2_pk got !enddm'd on #idm oldcash 3662910725 newcash 3644596172
+5/5 20:10:55 SenDogg got !enddm'd on #tank oldcash 31886329435 newcash 31726897788
+5/5 20:14:37 im_lil_noob part channel #dubstep during a dm oldcash 1428897822 penalty 28577957
+5/5 20:29:15 gienio got !enddm'd on #idm oldcash 815358061 newcash 811281271
+5/5 21:01:00 alig1000100 got !enddm'd on #dony oldcash 749404314 newcash 745657293
+5/5 21:06:21 \[Sam] part channel #nar during a dm oldcash 353232889 penalty 7064658
+5/5 21:12:44 Leonnzor` got !enddm'd on #zambo oldcash 1724923055 newcash 1716298440
+5/5 22:03:24 RuggigOne got !enddm'd on #pkm oldcash 336696222 newcash 335012741
+5/5 22:32:37 Jakerout got !enddm'd on #Vybz oldcash 1173601197 newcash 1167733192
+5/5 22:48:44 n00by_ part channel #eg_home during a dm oldcash 188380455 penalty 3767610
+6/5 00:38:45 Ilias128 quit channel #xSecretLead during a dm oldcash 3674505276 penalty 73490106
+6/5 00:50:53 Zq50 got !enddm'd on #xSecretLead oldcash 7188314 newcash 7152373
+6/5 00:51:32 chickenpony got !enddm'd on #idm oldcash 2773393291 newcash 2759526325
+6/5 03:13:40 X_Envyme_X got !enddm'd on #tank oldcash 504976449 newcash 502451567
+6/5 03:16:12 X_Envyme_X got !enddm'd on #tank oldcash 502451567 newcash 499939310
+6/5 03:48:02 X_Envyme_X got !enddm'd on #tank oldcash 758524786 newcash 754732163
+6/5 04:31:37 Licho619 got !enddm'd on #ak-latin oldcash 1721751863 newcash 1713143104
+6/5 05:24:04 strnthpk3rs got !enddm'd on #idm oldcash 2512687404 newcash 2500123967
+6/5 05:30:45 JCabrera8515 got !enddm'd on #idm oldcash 204832561802 newcash 203808398993
+6/5 06:39:39 racanelli_br quit channel #idm during a dm oldcash 3662990382 penalty 73259808
+6/5 07:23:54 Ban09 part channel #notorious during a dm oldcash 321624226 penalty 6432485
+6/5 07:57:57 guess_wh0 part channel #idm during a dm oldcash 86402332 penalty 1728047
+6/5 08:17:02 Mage_dan2 part channel #idm during a dm oldcash 7508612313 penalty 150172247
+6/5 08:23:26 Archerygenre got !enddm'd on #idm oldcash 121836536 newcash 121227354
+6/5 09:21:10 `Sigex3 part channel #idm during a dm oldcash 903021437 penalty 18060429
+6/5 12:34:38 Nederwiet got !enddm'd on #idm oldcash 17246915364 newcash 17160680788
+6/5 13:28:11 X_Envyme_X got !enddm'd on #tank oldcash 327050437 newcash 325415185
+6/5 13:34:44 X_Envyme_X got !enddm'd on #tank oldcash 422436176 newcash 420323996
+6/5 14:02:28 Nederwiet got !enddm'd on #idm oldcash 17189781672 newcash 17103832764
+6/5 14:16:43 JCabrera8515 got !enddm'd on #idm oldcash 204101689380 newcash 203081180934
+6/5 14:31:38 Sander_277 part channel #tank during a dm oldcash 5274971971 penalty 105499440
+6/5 16:08:16 Ben__ got !enddm'd on #tom_00_7 oldcash 492602058 newcash 490139048
+6/5 16:10:31 Geeboi got !enddm'd on #idm oldcash 3961463871 newcash 3941656552
+6/5 16:53:44 |Nate| got !enddm'd on #idm oldcash 3069272344 newcash 3053925983
+6/5 16:56:24 X_Envyme_X got !enddm'd on #tank oldcash 476720218 newcash 474336617
+6/5 17:11:02 [420]_7yler got !enddm'd on #slight-ko oldcash 273340300 newcash 271973599
+6/5 18:15:16 rabbitzpwn got !enddm'd on #tank oldcash 5512552441 newcash 5484989679
+6/5 18:17:17 X_Envyme_X got !enddm'd on #vybz oldcash 594449151 newcash 591476906
+6/5 18:21:10 rabbitzpwn got !enddm'd on #tank oldcash 5492794754 newcash 5465330781
+6/5 18:27:04 Reeco76 got !enddm'd on #idm oldcash 578520085 newcash 575627485
+6/5 19:13:40 sawyerford got !enddm'd on #dm.newbies oldcash 7206066046 newcash 7170035716
+6/5 19:48:04 force584 part channel #Vybz during a dm oldcash 4290690633 penalty 85813813
+6/5 20:48:06 strnthpk3rs got !enddm'd on #tank oldcash 2779063777 newcash 2765168459
+6/5 21:15:49 UncarnLT got !enddm'd on #blood_vipers oldcash 4843624180 newcash 4819406060
+6/5 21:52:45 woodenpug got !enddm'd on #tank oldcash 47776267139 newcash 47537385804
+6/5 21:58:23 Chris_Fury part channel #eg_home during a dm oldcash 1115679647 penalty 22313593
+6/5 22:56:18 SawyerFord got !enddm'd on #dm.newbies oldcash 7475260696 newcash 7437884393
+7/5 00:02:38 CKO got !enddm'd on #slight-ko oldcash 48564145 newcash 48321325
+7/5 00:49:08 Patnoy1 quit channel #xSecretLead during a dm oldcash 2665382701 penalty 53307655
+7/5 00:53:48 Reebien got !enddm'd on #idm oldcash 3807265273 newcash 3788228947
+7/5 01:51:22 n00by part channel #EgHome during a dm oldcash 686866636 penalty 13737333
+7/5 01:54:11 {envy} part channel #gb-lobby during a dm oldcash 216946869 penalty 4338938
+7/5 02:03:51 `Pk_Zero9910 got !enddm'd on #dm.newbies oldcash 4280630918 newcash 4259227764
+7/5 02:16:00 calmir-lol part channel #thefirefox during a dm oldcash 6029070786 penalty 120581416
+7/5 02:45:04 Ban09 part channel #notorious during a dm oldcash 383862465 penalty 7677250
+7/5 02:52:17 Megablk got !enddm'd on #mash oldcash 2676646495 newcash 2663263263
+7/5 10:24:08 Love4fun0 part channel #notorious during a dm oldcash 194496788 penalty 3889936
+7/5 11:34:03 i_DISCREP_x part channel #zambo during a dm oldcash 460419598 penalty 9208392
+7/5 14:05:17 snowsquare part channel #berserkers during a dm oldcash 692618394 penalty 13852368
+7/5 15:00:46 JCabrera8515 got !enddm'd on #idm oldcash 205345878349 newcash 204319148958
+7/5 16:13:37 jep6 quit channel #jeps during a dm oldcash 247424553 penalty 4948492
+7/5 16:23:39 Bl4meTruth got !enddm'd on #rs.soldiers oldcash 78856734 newcash 78462451
+7/5 17:48:42 ukitaki1 got !enddm'd on #idm oldcash 31476731163 newcash 31319347508
+7/5 18:29:25 |Nate| got !enddm'd on #idm oldcash 424710605 newcash 422587052
+7/5 18:53:48 Ronnie518 got !enddm'd on #tank oldcash 49382754520 newcash 49135840748
+7/5 19:07:15 |Nate| got !enddm'd on #idm oldcash 425628240 newcash 423500099
+7/5 19:56:28 [Fi]Zulu_Mambulu got !enddm'd on #zuluz oldcash 1390412 newcash 1383460
+7/5 21:14:25 BV_Ben got !enddm'd on #blood_vipers oldcash 64006450 newcash 63686418
+7/5 22:00:58 {Alexandersid} part channel #punto_cl during a dm oldcash 542767572 penalty 10855352
+7/5 22:50:13 Jamie_ got !enddm'd on #tank oldcash 101676711130 newcash 101168327575
+7/5 23:16:14 fergus562 got !enddm'd on #thefirefox oldcash 7724273115 newcash 7685651750
+7/5 23:38:06 Licho619 got !enddm'd on #ak-latin oldcash 1761976817 newcash 1753166933
+7/5 23:40:22 IvRaNgE quit channel #jeps during a dm oldcash 546024477 penalty 10920490
+8/5 00:09:43 strnthpk3rs got !enddm'd on #idm oldcash 830504684 newcash 826352161
+8/5 00:14:44 strnthpk3rs got !enddm'd on #idm oldcash 836514361 newcash 832331790
+8/5 00:23:24 strnthpk3rs got !enddm'd on #idm oldcash 832331790 newcash 828170132
+8/5 00:35:39 strnthpk3rs quit channel #idm during a dm oldcash 949966432 penalty 18999329
+8/5 01:46:43 sean_silver got !enddm'd on #idm oldcash 3546305612 newcash 3528574084
+8/5 01:54:58 Michael6810 got !enddm'd on #notoriousdm oldcash 403777433 newcash 401758546
+8/5 01:59:04 Michael6810 part channel #notoriousdm during a dm oldcash 489255636 penalty 9785113
+8/5 02:00:32 Gokuu got !enddm'd on #gokuu oldcash 793405532 newcash 789438505
+8/5 02:18:44 codyy got !enddm'd on #tank oldcash 167897149846 newcash 167057664097
+8/5 02:31:42 Man_u_dicl got !enddm'd on #tank oldcash 11858393977 newcash 11799102008
+8/5 02:40:47 Man_u_dicl got !enddm'd on #tank oldcash 11829126212 newcash 11769980581
+8/5 04:48:24 SawyerFord part channel #dm.newbies during a dm oldcash 558526675 penalty 11170534
+8/5 05:41:47 iPhysicx got !enddm'd on #idm oldcash 441618924 newcash 439410830
+8/5 06:08:29 Jonah` got !enddm'd on #idm oldcash 1215611273 newcash 1209533217
+8/5 06:36:04 Jdamon588 got !enddm'd on #idm oldcash 3210026861 newcash 3193976727
+8/5 09:45:38 Archerygenre got !enddm'd on #idm oldcash 964504060 newcash 959681540
+8/5 11:56:52 Archerygenre got !enddm'd on #tank oldcash 440790820 newcash 438586866
+8/5 12:15:15 naimbrundage part channel #tank during a dm oldcash 78198016861 penalty 1563960338
+8/5 12:42:36 angel_bluey part channel #jhxy during a dm oldcash 452655500 penalty 9053110
+8/5 13:11:30 rabbitzpwn got !enddm'd on #tank oldcash 6109822615 newcash 6079273502
+8/5 13:29:00 rabbitzpwn got !enddm'd on #tank oldcash 6091953887 newcash 6061494118
+8/5 13:38:12 poison_uk0 quit channel #Giant during a dm oldcash 14789967242 penalty 295799345
+8/5 13:39:01 `Sarah` got !enddm'd on #sarahdani oldcash 2624338375 newcash 2611216684
+8/5 13:39:57 rabbitzpwn got !enddm'd on #tank oldcash 6067847450 newcash 6037508213
+8/5 15:24:17 |1234bob4321| got !enddm'd on #zambo oldcash 5303703204 newcash 5277184688
+8/5 15:56:58 Cheesey315 got !enddm'd on #blood_vipers oldcash 599155073 newcash 596159298
+8/5 16:22:14 Tactical quit channel #sweetie during a dm oldcash 2409884 penalty 48198
+8/5 16:47:06 Omg_Divine quit channel #tank during a dm oldcash 51880308 penalty 1037607
+8/5 16:50:19 Looney got !enddm'd on #dm.newbies oldcash 1943307900 newcash 1933591361
+8/5 17:50:25 TaNk|ChRiS got !enddm'd on #slight-ko oldcash 2549707869 newcash 2536959330
+8/5 18:24:28 Reebien got !enddm'd on #tank oldcash 4165655092 newcash 4144826817
+8/5 18:44:26 rabbitzpwn got !enddm'd on #tank oldcash 6627050158 newcash 6593914908
+8/5 19:22:22 Arvva part channel #pure_hearts during a dm oldcash 636380198 penalty 12727604
+8/5 20:42:55 sky_ranger00 part channel #last_legion during a dm oldcash 7216701943 penalty 144334039
+8/5 20:53:26 Lord310 got !enddm'd on #Lord310 oldcash 3890724810 newcash 3871271186
+8/5 22:09:31 Phd_ got !enddm'd on #slight-ko oldcash 1638159111 newcash 1629968316
+8/5 22:50:10 Phd_ got !enddm'd on #slight-ko oldcash 1640979009 newcash 1632774114
+8/5 22:52:56 Man_u_dicl got !enddm'd on #tank oldcash 12184489304 newcash 12123566858
+8/5 23:11:46 BlackTalon got !enddm'd on #EgHome oldcash 667387574 newcash 664050637
+8/5 23:36:21 Looney got !enddm'd on #dm.newbies oldcash 1948742851 newcash 1938999137
+8/5 23:51:56 Looney got !enddm'd on #dm.newbies oldcash 1945778698 newcash 1936049805
+8/5 23:57:17 Looney got !enddm'd on #dm.newbies oldcash 1936713903 newcash 1927030334
+9/5 00:13:55 Mybff got !enddm'd on #idm oldcash 741772226 newcash 738063365
+9/5 00:29:51 opk_elvemage part channel #RSFanta during a dm oldcash 379127903 penalty 7582559
+9/5 00:40:57 holey got !enddm'd on #idm oldcash 73571601340 newcash 73203743334
+9/5 01:29:16 Step__han got !enddm'd on #tank oldcash 2643107665 newcash 2629892127
+9/5 01:35:44 fearless_eg got !enddm'd on #EgHome oldcash 746832349 newcash 743098188
+9/5 02:29:53 Jason5090 got !enddm'd on #sikbredbin oldcash 698688316 newcash 695194875
+9/5 02:57:12 Edge part channel #rebuild during a dm oldcash 524687662 penalty 10493754
+9/5 03:05:38 b00gy_monsta got !enddm'd on #idm oldcash 4117343301 newcash 4096756585
+9/5 03:20:58 tdg_trent got !enddm'd on #tank oldcash 758134771 newcash 754344098
+9/5 03:32:27 n00by_ part channel #EgHome during a dm oldcash 289782556 penalty 5795652
+9/5 03:34:54 XDaniel part channel #tanbomb during a dm oldcash 392256908 penalty 7845139
+9/5 04:53:56 Reebien got !enddm'd on #tank oldcash 4826571343 newcash 4802438487
+9/5 05:37:36 Omg_Divine got !enddm'd on #tank oldcash 119002190 newcash 118407180
+9/5 06:18:50 Justintimme1 got !enddm'd on #iDM oldcash 148032025 newcash 147291865
+9/5 06:53:27 kenji24 part channel #pinoy_ftw during a dm oldcash 246938758 penalty 4938776
+9/5 08:40:34 Megablk got !enddm'd on #kitchen oldcash 2739257769 newcash 2725561481
+9/5 09:21:23 petitbleuet part channel #idm during a dm oldcash 2154318772 penalty 43086376
+9/5 09:22:56 Oscar2796 got !enddm'd on #ff oldcash 1253125579 newcash 1246859952
+9/5 09:25:49 Oscar2796 got !enddm'd on #ff oldcash 1246859952 newcash 1240625653
+9/5 10:03:51 b00gy_monsta got !enddm'd on #tank oldcash 1826079417 newcash 1816949020
+9/5 11:07:59 tf_jake part channel #terminal-ftw during a dm oldcash 3417587 penalty 68352
+9/5 11:12:29 TaNk|ChRiS got !enddm'd on #tank oldcash 3965220776 newcash 3945394673
+9/5 14:07:24 batli got !enddm'd on #dm.newbies oldcash 2597521129 newcash 2584533524
+9/5 14:08:44 Nederwiet part channel #idm during a dm oldcash 20571306524 penalty 411426131
+9/5 15:46:46 Rizzle| got !enddm'd on #fighting_d oldcash 55458390 newcash 55181099
+9/5 15:56:50 `Adrian part channel #f1r3 during a dm oldcash 3644111 penalty 72883
+9/5 16:37:13 slayer3313 got !enddm'd on #dony oldcash 5318011014 newcash 5291420959
+9/5 17:21:41 Ivo got !enddm'd on #idm oldcash 51917180907 newcash 51657595003
+9/5 17:26:37 codyy got !enddm'd on #tank oldcash 168945289805 newcash 168100563356
+9/5 17:38:14 rabbitzpwn got !enddm'd on #tank oldcash 7267358468 newcash 7231021676
+9/5 18:28:58 BlackTalon got !enddm'd on #idm oldcash 2133331892 newcash 2122665233
+9/5 18:29:03 Vandow4 got !enddm'd on #blood_vipers oldcash 3379315971 newcash 3362419392
+9/5 19:07:28 Erei_|_Ava_N_Maul got !enddm'd on #team-omega oldcash 453978801 newcash 451708907
+9/5 20:14:04 frogeater got !enddm'd on #tank oldcash 273745840 newcash 272377111
+9/5 20:15:22 [R]andy got !enddm'd on #idm oldcash 37041690457 newcash 36856482005
+9/5 22:01:58 tdg_trent got !enddm'd on #idm oldcash 201491139 newcash 200483684
+9/5 22:47:57 [FP]Ybsking got !enddm'd on #idm oldcash 40242487413 newcash 40041274976
+9/5 23:29:42 Taunt got !enddm'd on #Flaivia oldcash 2888328812 newcash 2873887168
+9/5 23:30:56 Erei_|_Ava_N_Maul got !enddm'd on #team-omega oldcash 451708907 newcash 449450363
+9/5 23:40:37 herbal got !enddm'd on #team-omega oldcash 2870192675 newcash 2855841712
+10/5 00:26:38 JCabrera8515 got !enddm'd on #idm oldcash 209860703723 newcash 208811400205
+10/5 00:56:31 Crovax_King got !enddm'd on #cknights oldcash 480053265 newcash 477652999
+10/5 01:41:59 grunting4 got !enddm'd on #idm oldcash 270169075 newcash 268818230
+10/5 01:52:26 andresito112 got !enddm'd on #ak-latin oldcash 1415035979 newcash 1407960800
+10/5 01:59:24 big_n_red88 got !enddm'd on #tank oldcash 50910338663 newcash 50655786970
+10/5 04:09:52 Marcio got !enddm'd on #w92 oldcash 597848236 newcash 594858995
+10/5 05:36:29 strnthpk3rs got !enddm'd on #idm oldcash 963749281 newcash 958930535
+10/5 06:04:31 Alordian part channel #tank during a dm oldcash 2157989261 penalty 43159786
+10/5 07:57:42 b00gy_monsta got !enddm'd on #iDM oldcash 3568644889 newcash 3550801665
+10/5 09:40:07 T33J4Y got !enddm'd on #idm oldcash 8128013573 newcash 8087373506
+10/5 09:53:31 b00gy_monsta got !enddm'd on #idm oldcash 3817736036 newcash 3798647356
+10/5 11:07:26 b00gy_monsta got !enddm'd on #idm oldcash 4750708074 newcash 4726954534
+10/5 12:13:38 b00gy_monsta got !enddm'd on #idm oldcash 2908289689 newcash 2893748241
+10/5 14:05:34 Tim^ got !enddm'd on #sipsik oldcash 218607793 newcash 217514755
+10/5 16:21:41 xManieeekx quit channel #dhrt during a dm oldcash 320916663 penalty 6418334
+10/5 18:27:36 Saulinbrutal got !enddm'd on #tank oldcash 54993923098 newcash 54718953483
+10/5 18:36:41 IvRaNgE quit channel #jeps during a dm oldcash 336116780 penalty 6722336
+10/5 18:43:33 Jakerout part channel #onzichtbaar during a dm oldcash 1167733392 penalty 23354668
+10/5 18:56:53 TaNk|ChRiS got !enddm'd on #tank oldcash 1003422106 newcash 998404996
+10/5 19:35:52 mikeyLiluno got !enddm'd on #tank oldcash 8952601955 newcash 8907838946
+10/5 19:38:43 Amaltej got !enddm'd on #idm.polska oldcash 66884062 newcash 66549642
+10/5 19:51:37 Turkeyman003 part channel #fighting_d during a dm oldcash 1639607054 penalty 32792142
+10/5 20:33:35 `Pk_Zero9910 got !enddm'd on #dm.newbies oldcash 4259227764 newcash 4237931626
+10/5 20:43:07 Mr_Fosbinder part channel #Collision during a dm oldcash 400131121 penalty 8002623
+10/5 21:19:51 Tallnskiny got !enddm'd on #idm oldcash 8833422013 newcash 8789254903
+10/5 21:34:12 |Rachel quit channel #|Rachel during a dm oldcash 278704879 penalty 5574098
+10/5 22:02:58 bgsgentleman got !enddm'd on #idm oldcash 1009718346 newcash 1004669755
+10/5 22:33:00 Tallnskiny got !enddm'd on #tank oldcash 8929101037 newcash 8884455532
+10/5 23:06:10 kingkilla109 got !enddm'd on #Collision oldcash 1918687122 newcash 1909093687
+10/5 23:07:47 Tallnskiny got !enddm'd on #tank oldcash 9233918825 newcash 9187749231
+10/5 23:21:06 Tallnskiny got !enddm'd on #tank oldcash 9187749231 newcash 9141810485
+10/5 23:26:01 Tallnskiny got !enddm'd on #tank oldcash 9153063885 newcash 9107298566
+10/5 23:34:09 qwo9000 got !enddm'd on #collision oldcash 1156366024 newcash 1150584194
+10/5 23:37:59 bgsgentleman got !enddm'd on #iDM oldcash 1090717280 newcash 1085263694
+11/5 00:43:48 Jose_Elite got !enddm'd on #idm oldcash 4010521036 newcash 3990468431
+11/5 01:02:05 Str0wnsppl` got !enddm'd on #rebuild oldcash 961965371 newcash 957155545
+11/5 01:36:28 Abner_X got !enddm'd on #ak-latin oldcash 804672134 newcash 800648774
+11/5 01:41:39 JCabrera8515 got !enddm'd on #idm oldcash 210876952857 newcash 209822568093
+11/5 02:11:22 bgsgentleman got !enddm'd on #idm oldcash 1531685920 newcash 1524027491
+11/5 02:17:38 [[whipdudead2]] got !enddm'd on #idm oldcash 23898806504 newcash 23779312472
+11/5 02:53:44 Chase- part channel #solitude during a dm oldcash 689973904 penalty 13799479
+11/5 03:51:54 HowWasLumbie got !enddm'd on #idm oldcash 484522505 newcash 482099893
+11/5 05:01:22 cheo got !enddm'd on #Collision oldcash 191514698 newcash 190557125
+11/5 06:10:06 Leahh quit channel #t0 during a dm oldcash 139966777 penalty 2799336
+11/5 06:22:45 jozper got !enddm'd on #idm oldcash 42193034524 newcash 41982069352
+11/5 08:10:15 b00gy_monsta got !enddm'd on #idm oldcash 3785544576 newcash 3766616854
+11/5 08:29:27 kib part channel #dm.newbies during a dm oldcash 159300924 penalty 3186019
+11/5 08:48:06 kib part channel #dm.newbies during a dm oldcash 156114905 penalty 3122299
+11/5 12:19:43 b00gy_monsta got !enddm'd on #idm oldcash 4756284235 newcash 4732502814
+11/5 13:30:58 X_Envyme_X got !enddm'd on #tank oldcash 504194500 newcash 501673528
+11/5 15:52:47 X_Envyme_X got !enddm'd on #tank oldcash 692663838 newcash 689200519
+11/5 16:17:52 TaNk|ChRiS got !enddm'd on #tank oldcash 1332229702 newcash 1325568554
+11/5 16:35:57 TaNk|ChRiS got !enddm'd on #tank oldcash 1337402303 newcash 1330715292
+11/5 16:43:27 Petur part channel #w143 during a dm oldcash 12212286 penalty 244246
+11/5 17:14:59 alig1000100 got !enddm'd on #dm.newbies oldcash 1601965030 newcash 1593955205
+11/5 17:40:34 I_Atiaz_I part channel #fighting_d during a dm oldcash 1147883864 penalty 22957678
+11/5 18:22:38 sSsHhEeTtT got !enddm'd on #idm oldcash 991532759 newcash 986575096
+11/5 20:03:57 xx_l_u_i_s_x got !enddm'd on #tank oldcash 752395824 newcash 748633845
+11/5 20:20:14 Iva_Bigens got !enddm'd on #blood_vipers oldcash 83292447 newcash 82875985
+11/5 20:21:21 xx_l_u_i_s_x got !enddm'd on #tank oldcash 748633845 newcash 744890676
+11/5 20:29:14 sour_defied got !enddm'd on #swanmore oldcash 84441654 newcash 84019446
+11/5 21:06:05 apples228 got !enddm'd on #vybzdm oldcash 2915776056 newcash 2901197176
+11/5 21:58:54 alig1000100 got !enddm'd on #dm.newbies oldcash 3312782449 newcash 3296218537
+11/5 23:23:00 Saulinbrutal got !enddm'd on #tank oldcash 55705785639 newcash 55427256711
+11/5 23:59:37 BlackTalon got !enddm'd on #idm oldcash 1396442706 newcash 1389460493
+12/5 00:12:52 BlackTalon got !enddm'd on #idm oldcash 1993261265 newcash 1983294959
+12/5 00:28:35 MeGa_StR67 got !enddm'd on #tank oldcash 35319062455 newcash 35142467143
+12/5 00:51:01 Jdamon588 got !enddm'd on #tank oldcash 5496225403 newcash 5468744276
+12/5 01:12:44 Jdamon588 got !enddm'd on #tank oldcash 5515198773 newcash 5487622780
+12/5 01:21:21 `Pk_Zero9910 got !enddm'd on #dm.newbies oldcash 4239979932 newcash 4218780033
+12/5 01:33:22 `Pk_Zero9910 got !enddm'd on #dm.newbies oldcash 4218780033 newcash 4197686133
+12/5 02:20:07 Lbittencourt part channel #Collision during a dm oldcash 409477344 penalty 8189547
+12/5 03:01:45 bomaye got !enddm'd on #bomaye1 oldcash 2476295872 newcash 2463914393
+12/5 03:25:54 dusty361 got !enddm'd on #tank oldcash 18346992241 newcash 18255257280
+12/5 06:01:53 Archerygenre got !enddm'd on #iDM oldcash 1486619563 newcash 1479186466
+12/5 07:02:45 T33J4Y got !enddm'd on #idm oldcash 8273879316 newcash 8232509920
+12/5 07:08:57 essej86 got !enddm'd on #tank oldcash 6935339927 newcash 6900663228
+12/5 08:12:02 Ready_Nerd got !enddm'd on #idm oldcash 450708482 newcash 448454940
+12/5 08:41:01 b00gy_monsta got !enddm'd on #idm oldcash 7773656548 newcash 7734788266
+12/5 10:25:18 b00gy_monsta got !enddm'd on #iDM oldcash 7751389935 newcash 7712632986
+12/5 10:52:14 b00gy_monsta got !enddm'd on #iDM oldcash 7881684814 newcash 7842276390
+12/5 11:17:47 b00gy_monsta got !enddm'd on #idm oldcash 7842276390 newcash 7803065009
+12/5 13:26:05 b00gy_monsta got !enddm'd on #idm oldcash 7846340401 newcash 7807108699
+12/5 14:59:18 `Micha got !enddm'd on #RSFanta oldcash 6162840639 newcash 6132026436
+12/5 15:25:24 Joeep part channel #botgame during a dm oldcash 1862341103 penalty 37246823
+12/5 15:58:06 Ivo got !enddm'd on #idm oldcash 57234343358 newcash 56948171642
+12/5 16:44:35 Sneacky_Hugs part channel #charmey during a dm oldcash 1071730055 penalty 21434602
+12/5 16:45:11 rabbitzpwn got !enddm'd on #iDM oldcash 7927937989 newcash 7888298300
+12/5 17:02:29 Mystic_Heart part channel #kr during a dm oldcash 28077727 penalty 561555
+12/5 17:35:41 Pure_kralj got !enddm'd on #tank oldcash 216084569 newcash 215004147
+12/5 19:28:24 tekktrippin got !enddm'd on #tank oldcash 47947443 newcash 47707706
+12/5 20:45:25 alig1000100 got !enddm'd on #dm.newbies oldcash 2073831425 newcash 2063462268
+12/5 22:06:57 julian10789 part channel #lady-gaga during a dm oldcash 13570332 penalty 271407
+12/5 22:41:38 julian10789 got !enddm'd on #n-wellingtons oldcash 187879439 newcash 186940042
+12/5 23:24:25 JCabrera8515 got !enddm'd on #idm oldcash 215854384483 newcash 214775112561
+12/5 23:37:30 Whiteyy got !enddm'd on #dm.newbies oldcash 284098080 newcash 282677590
+13/5 00:28:58 bgsgentleman got !enddm'd on #idm oldcash 1959436414 newcash 1949639232
+13/5 01:08:50 Apples228 got !enddm'd on #tank oldcash 132330572 newcash 131668920
+13/5 01:10:15 herbal got !enddm'd on #team-omega oldcash 562738767 newcash 559925074
+13/5 01:31:02 Erei_|_Ava_N_Maul got !enddm'd on #team-omega oldcash 903933957 newcash 899414288
+13/5 01:38:04 [DR]Tommy got !enddm'd on #Xecution oldcash 1278200665 newcash 1271809662
+13/5 01:44:49 Madman got !enddm'd on #dm.newbies oldcash 772498879 newcash 768636385
+13/5 02:55:15 Lbittencourt got !enddm'd on #lady-gaga oldcash 1399391518 newcash 1392394561
+13/5 04:55:45 iDclawYoui got !enddm'd on #idm oldcash 1379167372 newcash 1372271536
+13/5 04:58:25 Erei_|_Ava_N_Maul got !enddm'd on #team-omega oldcash 899414288 newcash 894917217
+13/5 08:36:08 jordanious77 got !enddm'd on #idm oldcash 1650954386 newcash 1642699615
+13/5 09:49:23 Shifty_Turk got !enddm'd on #dm.newbies oldcash 2622557612 newcash 2609444824
+13/5 09:54:27 b00gy_monsta got !enddm'd on #idm oldcash 8168289061 newcash 8127447616
+13/5 10:03:57 Step__han got !enddm'd on #tank oldcash 12631219967 newcash 12568063868
+13/5 10:10:25 b00gy_monsta got !enddm'd on #idm oldcash 8127447616 newcash 8086810378
+13/5 10:24:00 b00gy_monsta got !enddm'd on #idm oldcash 8086810378 newcash 8046376327
+13/5 10:58:59 knalkoen got !enddm'd on #idm oldcash 11999858533 newcash 11939859241
+13/5 12:32:52 b00gy_monsta got !enddm'd on #idm oldcash 8259548239 newcash 8218250498
+13/5 13:41:31 Dassrull quit channel #unam_Killer during a dm oldcash 1176527832 penalty 23530557

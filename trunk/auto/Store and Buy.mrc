@@ -50,11 +50,11 @@ on $*:TEXT:/^[!@.]buy/Si:#: {
   if ($db.get(user,money,$nick) < %price) { notice $nick You don't have $s2($price(%price)) to buy this! | halt }
   db.set user money $nick - %price
   db.set %table %sname $nick + 1
-  write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
-  if ($chan == #iDM) {
-    var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '1', ?)
-    noop $db.exec(%sql, $nick, $address, $ctime, Bought %fname for $price(%price))
-  }
+  ;write BuyStore.txt $timestamp $nick bought from the store ( $+ $2- $+ ) $address
+
+  var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '1', ?)
+  noop $db.exec(%sql, $nick, $address, $ctime, Bought %fname for $price(%price))
+
   notice $nick You have bought $s1(%fname) for $s2($price(%price)) $+ . You have: $s2($price($db.get(user,money,$nick))) left.
 }
 
@@ -81,7 +81,11 @@ on $*:TEXT:/^[!@.]sell/Si:#: {
   if (!$db.get(%table,%sname,$nick)) { notice $nick You don't have %fname $+ . | halt }
   db.set user money $nick + %price
   db.set %table %sname $nick - 1
-  write BuyStore.txt $timestamp $nick sold in the store ( $+ $2- $+ ) $address
+  ;write BuyStore.txt $timestamp $nick sold in the store ( $+ $2- $+ ) $address
+
+  var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '1', ?)
+  noop $db.exec(%sql, $nick, $address, $ctime, Sold %fname for $price(%price))
+
   notice $nick You have sold $s1(%fname) for $s2($price(%price)) $+ . You now have: $s2($price($db.get(user,money,$nick))) $+ .
   return
 }

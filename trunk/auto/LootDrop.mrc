@@ -110,6 +110,11 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
   db.set equip_item clue $nick 0
+
+  if (%combined >= 100000000) {
+    var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '4', ?)
+    noop $db.exec(%sql, $2, $address($2,0), $ctime, Got a clue worth $price(%combined)))
+  }
 }
 
 alias gendrops {
@@ -147,11 +152,9 @@ alias rundrops {
     var %colour 0
 
 
-    if (($1 == #iDM || $1 == #iStake) && $2 != Belongtome) {
-      if (%price == 0 || %price >= 272600000) {
-        var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
-        noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
-      }
+    if (%price == 0 || %price >= 272600000) {
+      var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
+      noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
     }
 
     if ((%price == 0 || %price == 1) && %item != Nothing) {
