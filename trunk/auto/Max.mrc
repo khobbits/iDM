@@ -108,7 +108,7 @@ alias dmg.hget {
 alias dmg {
   ; $1 = attack
   ; $2 = value
-  if (!$2) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
+  if (!$1) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
   if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,95),$2),$prop)
   if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
   if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)
