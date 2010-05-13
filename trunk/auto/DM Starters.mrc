@@ -79,6 +79,7 @@ alias chaninit {
   ; $4 = player1 sitems
   ; $5 = player2 sitems
   ; ?$6? = stake amount
+  if (!$5) { putlog Syntax Error: chaninit (6) - $db.safe($1-) | halt }
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2
@@ -97,6 +98,7 @@ alias playerinit {
   ; $2 = chan
   ; $3 = sitems
   dbcheck
+  if (!$3) { putlog Syntax Error: playerinit (3) - $db.safe($1-) | halt }
   var %nick $autoidm.acc($1)
   var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) 
   if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }

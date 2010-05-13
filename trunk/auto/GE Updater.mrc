@@ -42,6 +42,7 @@ on *:sockopen:pu:{
   }
   else { 
     sockclose pu
+    .timerpucheck off
     msgsafe #idm.staff $logo(GE UPDATE) Price Update Completed. Duration: $duration($calc($ctime - $hget(>geupdate,t)))
     hfree >geupdate
   }
@@ -84,6 +85,7 @@ on *:sockclose:pu: {
 }
 alias -l pu2 {
   if ($sock(pu)) { sockclose pu }
+  .timerpucheck 1 30 pu2
   sockopen pu itemdb-rs.runescape.com 80
 }
 alias -l xcalc {

@@ -1,5 +1,6 @@
 alias max {
 ; $1 = attack
+if (!$1) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
   var %dbhits = $dmg($1,hits)
   var %dbdmg = $gettok($dmg($1, 3),2,44)
   var %dbbonus = $dmg($1, atkbonus)
@@ -23,6 +24,7 @@ alias dmg.ratio {
 ; $2 = max hit
 ; $3 = attack bonus
 ; $4 = bonus toggle
+if (!$4) { putlog Syntax Error: dmg.ratio (1) - $db.safe($1-) | halt }
   var %hits
   var %i = 0
   while (%i < $numtok($1,45)) {
@@ -38,29 +40,27 @@ alias hitdmg {
   ; $3 = hit pattern
   ; $4 = attack bonus
   ; $5 = defense bonus
-  if ($5) {
-    var %acclimit $dmg($1)
-    if ($1 == dh_9) { var %ndmg $dmg(dh,3) }
-    elseif ($1 == dh_10) { var %ndmg $dmg(dh,1) }
-    elseif ($2 <= $gettok(%acclimit,1,44)) { var %ndmg $dmg($1,1) }
-    elseif ($2 <= $gettok(%acclimit,2,44)) { var %ndmg $dmg($1,2) }
-    else { var %ndmg $dmg($1,3) }
-    var %i = 0
-    while (%i < $numtok($3,45)) {
-      inc %i
-      if ($gettok($3,%i,45) == 1) {
-        var %dmg = $rand($gettok(%ndmg,1,44),$calc($gettok(%ndmg,2,44) + $4)))
-        var %dmg = $ceil($calc(%dmg * $5))
-        var %return = %return %dmg
-      }
-      else {
-        var %sdmg = $ceil($calc(%dmg * (1 / $gettok($3,%i,45))))
-        var %return = %return %sdmg
-      }
+  if (!$5) { putlog Syntax Error: hitdmg (1) - $db.safe($1-) | halt }
+  var %acclimit $dmg($1)
+  if ($1 == dh_9) { var %ndmg $dmg(dh,3) }
+  elseif ($1 == dh_10) { var %ndmg $dmg(dh,1) }
+  elseif ($2 <= $gettok(%acclimit,1,44)) { var %ndmg $dmg($1,1) }
+  elseif ($2 <= $gettok(%acclimit,2,44)) { var %ndmg $dmg($1,2) }
+  else { var %ndmg $dmg($1,3) }
+  var %i = 0
+  while (%i < $numtok($3,45)) {
+    inc %i
+    if ($gettok($3,%i,45) == 1) {
+      var %dmg = $rand($gettok(%ndmg,1,44),$calc($gettok(%ndmg,2,44) + $4)))
+      var %dmg = $ceil($calc(%dmg * $5))
+      var %return = %return %dmg
     }
-    return %return
+    else {
+      var %sdmg = $ceil($calc(%dmg * (1 / $gettok($3,%i,45))))
+      var %return = %return %sdmg
+    }
   }
-  return
+  return %return
 }
 
 alias dmg.hload {
@@ -108,6 +108,7 @@ alias dmg.hget {
 alias dmg {
   ; $1 = attack
   ; $2 = value
+  if (!$2) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
   if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,95),$2),$prop)
   if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
   if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)
