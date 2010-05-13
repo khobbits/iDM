@@ -1,4 +1,7 @@
 alias dead {
+  ; $1 = chan
+  ; $2 = looser
+  ; $3 = winner
   if ($hget($1,stake)) {
     db.set user money $3 + $hget($1,stake)
     db.set user money $2 - $hget($1,stake)

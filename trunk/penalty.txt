@@ -990,3 +990,4 @@
 13/5 10:58:59 knalkoen got !enddm'd on #idm oldcash 11999858533 newcash 11939859241
 13/5 12:32:52 b00gy_monsta got !enddm'd on #idm oldcash 8259548239 newcash 8218250498
 13/5 13:41:31 Dassrull quit channel #unam_Killer during a dm oldcash 1176527832 penalty 23530557
+13/5 17:02:28 [FP]Ybsking got !enddm'd on #idm oldcash 40618572244 newcash 40415479383

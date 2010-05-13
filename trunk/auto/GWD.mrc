@@ -165,7 +165,7 @@ alias autoidm.turn {
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1
   if ($hget(%p2,hp) < 1) {
-    dead $1 %p2 $autoidm.acc($2)
+    dead $1 %p2 $autoidm.acc(%nick)
     halt
   }
   if ($specused(%attcmd)) {
