@@ -38,7 +38,7 @@ alias dead {
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
-    userlog drop $3 %sharedrop
+    userlog drop $3 %sharedrop gp
     trackclan WIN %winnerclan %combined
     if ($db.get(clantracker,share,%winnerclan)) {
       var %sql.winnerclan = $db.safe(%winnerclan)
@@ -48,13 +48,13 @@ alias dead {
       unset %sharedrop
     }
     else {
-      userlog drop $3 %combined
+      userlog drop $3 %combined gp
       db.set user money $3 + %combined
       msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
   else {
-    userlog drop $3 %combined
+    userlog drop $3 %combined gp
     db.set user money $3 + %combined
     msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
   }
