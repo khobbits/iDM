@@ -34,7 +34,7 @@ alias dead {
   db.set user wins $3 + 1
   db.set user losses $2 + 1
   userlog win $3 $price(%stake) %winnerclan
-  userlog lose $2 $price(%stake) %looserclan
+  userlog loss $2 $price(%stake) %looserclan
 
 
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
