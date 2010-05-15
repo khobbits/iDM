@@ -14,8 +14,8 @@ alias dead {
     noop $db.exec(%sql, $2, 0, $hget($1,stake), 0, $hget($1,stake))
 
     var %stake $hget($1,stake)
-    userlog winstake $3 $price(%stake)
-    userlog losestake $2 $price(%stake)
+    userlog winstake $3 %stake
+    userlog losestake $2 %stake
 
     db.set user losses $2 + 1
     set -u10 %wait. [ $+ [ $1 ] ] on
