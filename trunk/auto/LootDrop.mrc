@@ -15,9 +15,8 @@ alias dead {
 
     if ($hget($1,stake) >= 1000000000) {
       var %stake $hget($1,stake)
-      var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '2', ?)
-      noop $db.exec(%sql, $3, $address($3,0), $ctime, Won a stake of $price(%stake))
-      noop $db.exec(%sql, $2, $address($2,0), $ctime, Lost a stake of $price(%stake))
+      putlog winstake $3 $price(%stake)
+      putlog losestake $2 $price(%stake)
     }
 
     db.set user losses $2 + 1
@@ -34,11 +33,15 @@ alias dead {
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
+  putlog win $3 $price(%stake) %winnerclan
+  putlog lose $2 $price(%stake) %looserclan
+
 
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
+    putlog drop $3 %sharedrop
     trackclan WIN %winnerclan %combined
     if ($db.get(clantracker,share,%winnerclan)) {
       var %sql.winnerclan = $db.safe(%winnerclan)
@@ -48,6 +51,7 @@ alias dead {
       unset %sharedrop
     }
     else {
+      putlog drop $3 %combined
       db.set user money $3 + %combined
       msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
@@ -82,23 +86,6 @@ on $*:TEXT:/^[!@.]dmclue/Si:#: {
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
 }
 
-OFF $*:TEXT:/^[!@.]solve/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
-  if ($istok($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),2,58),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
-  var %a = $r(1,$lines(clueloot.txt)),%b = $r(1,$lines(clueloot.txt)),%c = $r(1,$lines(clueloot.txt))
-  var %clue1 $gettok($read(clueloot.txt,%a),1,58)
-  var %clue2 $gettok($read(clueloot.txt,%b),1,58)
-  var %clue3 $gettok($read(clueloot.txt,%c),1,58)
-  var %cprice1 $gettok($read(clueloot.txt,%a),2,58)
-  var %cprice2 $gettok($read(clueloot.txt,%b),2,58)
-  var %cprice3 $gettok($read(clueloot.txt,%c),2,58)
-  var %combined $calc(%cprice1 + %cprice2 + %cprice3)
-  notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ %clue1 $+ , $+ %clue2 $+ , $+ %clue3 $+ $s1($chr(93))
-  db.set user money $nick + %combined
-  db.set equip_item clue $nick 0
-}
-
 ON $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
@@ -114,11 +101,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
   db.set equip_item clue $nick 0
-
-  if (%combined >= 100000000) {
-    var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '4', ?)
-    noop $db.exec(%sql, $2, $address($2,0), $ctime, Got a clue worth $price(%combined)))
-  }
+  putlog clue $nick %combined
 }
 
 alias gendrops {

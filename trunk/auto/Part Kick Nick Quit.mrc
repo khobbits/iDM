@@ -145,7 +145,7 @@ alias enddmcheck {
       if (%oldmoney > 100) {
         var %newmoney = $ceil($calc(%oldmoney * 0.02))
         notice $2 You left the channel during a dm, you lose $s2($price(%newmoney)) cash
-        write penalty.txt $timestamp $2 $3 channel $1 during a dm oldcash %oldmoney penalty %newmoney
+        userlog penalty $2 %newmoney
         db.set user money $2 - %newmoney
       }
       db.set user losses $2 + 1
