@@ -15,8 +15,8 @@ alias dead {
 
     if ($hget($1,stake) >= 1000000000) {
       var %stake $hget($1,stake)
-      putlog winstake $3 $price(%stake)
-      putlog losestake $2 $price(%stake)
+      userlog winstake $3 $price(%stake)
+      userlog losestake $2 $price(%stake)
     }
 
     db.set user losses $2 + 1
@@ -33,15 +33,15 @@ alias dead {
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
-  putlog win $3 $price(%stake) %winnerclan
-  putlog lose $2 $price(%stake) %looserclan
+  userlog win $3 $price(%stake) %winnerclan
+  userlog lose $2 $price(%stake) %looserclan
 
 
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
     var %nummember = $numtok($clanmembers(%winnerclan),32)
     var %sharedrop = $floor($calc(%combined / %nummember))
-    putlog drop $3 %sharedrop
+    userlog drop $3 %sharedrop
     trackclan WIN %winnerclan %combined
     if ($db.get(clantracker,share,%winnerclan)) {
       var %sql.winnerclan = $db.safe(%winnerclan)
@@ -51,7 +51,7 @@ alias dead {
       unset %sharedrop
     }
     else {
-      putlog drop $3 %combined
+      userlog drop $3 %combined
       db.set user money $3 + %combined
       msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
@@ -101,7 +101,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
   db.set equip_item clue $nick 0
-  putlog clue $nick %combined
+  userlog clue $nick %combined
 }
 
 alias gendrops {

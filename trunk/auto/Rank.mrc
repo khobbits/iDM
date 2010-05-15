@@ -177,7 +177,7 @@ putlog Error: Not a valid userlog type
 return
 }
 dbcheck
-var %sql = INSERT INTO user_event (user, date, type, data) VALUES (?, ?, ?, ?)
+var %sql = INSERT INTO user_log (user, date, type, data) VALUES (?, ?, ?, ?)
 noop $db.exec(%sql, $2, $ctime, %type, $3-)
 return
 }
