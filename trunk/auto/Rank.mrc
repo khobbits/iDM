@@ -173,7 +173,7 @@ elseif ($1 == clue) {
 var %type = 9
 }
 else {
-putlog Error: Not a valid userlog type
+putlog Error: Not a valid userlog type - $db.safe($1-)
 return
 }
 dbcheck
