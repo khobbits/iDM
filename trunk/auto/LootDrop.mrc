@@ -137,11 +137,7 @@ alias rundrops {
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
 
-
-    if (%price == 0 || %price >= 272600000) {
-      var %sql = INSERT INTO user_event (user, address, date, type, event) VALUES (?, ?, ?, '3', ?)
-      noop $db.exec(%sql, $2, $address($2,0), $ctime, Got %item as drop $iif(%price != 0, worth $price(%price)))
-    }
+    userlog drop $2 %item
 
     if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
