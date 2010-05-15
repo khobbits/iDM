@@ -1048,3 +1048,8 @@
 14/5 21:48:49 tekktrippin got !enddm'd on #tank oldcash 233707545 newcash 232539008
 14/5 22:12:34 Dean- part channel #the_levelers during a dm oldcash 135718897 penalty 2714378
 14/5 22:16:30 _0o0stro0opk_ part channel #tank during a dm oldcash 4659634476 penalty 93192690
+15/5 02:58:18 b00gy_monsta got !enddm'd on #idm oldcash 10214367949 newcash 10163296110
+15/5 04:06:40 cdissuperownage got !enddm'd on #idm oldcash 444272446 newcash 442051084
+15/5 04:48:33 l_beans_l got !enddm'd on #werun18 oldcash 2640126494 newcash 2626925862
+15/5 05:04:33 Omri got !enddm'd on #idm oldcash 1933607382 newcash 1923939346
+15/5 05:07:41 SMIRLD got !enddm'd on #tank oldcash 215396746 newcash 214319763
