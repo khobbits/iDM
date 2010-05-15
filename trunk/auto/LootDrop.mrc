@@ -23,6 +23,8 @@ alias dead {
     cancel $1
     halt
   }
+  userlog win $3 $2
+  userlog loss $2 $3
   var %drops $rundrops($1, $3, $2)
   var %combined $gettok(%drops,1,32)
   var %items $gettok(%drops,2-,32)
@@ -31,9 +33,6 @@ alias dead {
   cancel $1
   db.set user wins $3 + 1
   db.set user losses $2 + 1
-  userlog win $3 $2
-  userlog loss $2 $3
-
 
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
@@ -55,6 +54,7 @@ alias dead {
     }
   }
   else {
+    userlog drop $3 %combined
     db.set user money $3 + %combined
     msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
   }
@@ -137,7 +137,9 @@ alias rundrops {
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
 
-    userlog drop $2 %item
+    if ((%price == 0 || %price > 1000000) && %item != Nothing) {
+      userlog drop $2 %item
+    }
 
     if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
