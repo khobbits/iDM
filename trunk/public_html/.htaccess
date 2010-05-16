@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^u/([^/]+)$ index.php?page=user&user=$1 [L]
+RewriteRule ^u/?$ index.php?page=user [L]
+RewriteRule ^c/(.+)$ index.php?page=clan&clan=$1 [L]
+RewriteRule ^c/?$ index.php?page=clan [QSA,L]
+RewriteRule ^hiscores/? index.php?page=hiscores [L]
+RewriteRule ^drops/? index.php?page=drops [L]
+RewriteRule ^dmstats/? index.php?page=stats [L]
+RewriteRule ^sitems/? index.php?page=sitems [L]
+</IfModule>
