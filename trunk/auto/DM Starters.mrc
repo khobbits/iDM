@@ -208,7 +208,7 @@ alias delaycancel {
   if (%oldmoney > 100) {
     var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
     notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
-    write penalty.txt $timestamp $2 got !enddm'd on $1 oldcash %oldmoney newcash %newmoney
+    userlog penalty $2 %newmoney
     db.set user money $2 %newmoney
   }
   cancel $1
