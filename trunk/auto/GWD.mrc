@@ -110,7 +110,7 @@ alias autoidm.start {
   var %p1 $hget($1,p1)
   if (!%p1) halt
   db.set user indm %p1 1
-  chaninit %p1 %nick $1 $hget($1,sitems) 0
+  chaninit %p1 %nick $1 $hget($1,sitems) 1
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %winloss $winloss(%nick,%p1,$autoidm.acc($2))
   var %winlossp1 $gettok(%winloss,1,45)
