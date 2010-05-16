@@ -129,21 +129,7 @@ on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
 }
 
-on $*:TEXT:/^[!@.]idm(sig|profile)(pic|pics|picture)?/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  tokenize 32 $strip($2)
-  if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  elseif ((*.png !iswm $2) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg }
-  elseif (http://*.*.imageshack.us* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  elseif (? isin $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  else {
-    db.set user image $nick $1
-    var %result Updated profile image, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1)
-  }
-  notice $nick $logo(Signature) %result
-}
-
-on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)?/Si:#: {
+on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   tokenize 32 $strip($2)
   if (http://*.*/* !iswm $1) { var %result Please give a valid link including 'http://' }
@@ -153,3 +139,19 @@ on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)?/Si:#: {
   }
   notice $nick $logo(Signature) %result
 }
+
+
+on $*:TEXT:/^[!@.]idm(sig|profile)(pic|pics|picture)?/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  tokenize 32 $strip($2)
+  if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  elseif ((*.png !iswm $2) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg }
+  elseif (http://*.*.imageshack.us* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  elseif (? isin $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  else {
+    db.set user image $nick $1
+    var %result Updated profile image, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1) - Use !idmsiglink to set a link on this image.
+  }
+  notice $nick $logo(Signature) %result
+}
+
