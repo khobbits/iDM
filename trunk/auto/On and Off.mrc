@@ -134,7 +134,7 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
   tokenize 32 $strip($2)
   if (http://*.*/* !iswm $1) { var %result Please give a valid link including 'http://' }
   else {
-    db.set user image $nick $1
+    db.set user link $nick $1
     var %result Updated profile link, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1)
   }
   notice $nick $logo(Signature) %result
@@ -146,8 +146,8 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   tokenize 32 $strip($2)
   if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
   elseif ((*.png !iswm $1) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg. }
-  elseif (http://*.*.imageshack.us* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  elseif (? isin $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  elseif (http://*.*.imageshack.us* iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  elseif (? isin $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
   else {
     db.set user image $nick $1
     var %result Updated profile image, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1) - Use !idmsiglink to set a link on this image.
