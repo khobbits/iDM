@@ -154,7 +154,7 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   tokenize 32 $strip($2)
   if ((http://*.imageshack.us/* !iswm $1) && (http://*.photobucket.com/* !iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
   elseif ((*.png !iswm $1) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg. }
-  elseif ((http://*.*.imageshack.us* iswm $1) || (http://*.*.photobucket.com* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
+  elseif ((http://*.*.imageshack.us/* iswm $1) || (http://*.*.photobucket.com/* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
   elseif (? isin $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
   else {
     db.set user image $nick $1
