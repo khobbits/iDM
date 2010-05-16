@@ -144,8 +144,8 @@ on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)/Si:#: {
 on $*:TEXT:/^[!@.]idm(sig|profile)(pic|pics|picture)?/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   tokenize 32 $strip($2)
-  if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  elseif ((*.png !iswm $2) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg }
+  if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
+  elseif ((*.png !iswm $2) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg. }
   elseif (http://*.*.imageshack.us* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
   elseif (? isin $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
   else {
