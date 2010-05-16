@@ -129,7 +129,7 @@ on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
 }
 
-on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)/Si:#: {
+on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   tokenize 32 $strip($2)
   if (http://*.*/* !iswm $1) { var %result Please give a valid link including 'http://' }
@@ -141,7 +141,7 @@ on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)/Si:#: {
 }
 
 
-on $*:TEXT:/^[!@.]idm(sig|profile)(pic|pics|picture)?/Si:#: {
+on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   tokenize 32 $strip($2)
   if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
