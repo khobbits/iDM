@@ -1,4 +1,4 @@
-<h1 style="margin-top: 0px;"> <?=htmlentities(strtoupper($userd)); ?> </h1>
+<h2 style="margin-top: 0px;"> <?=htmlentities(strtoupper($userd)); ?> </h2>
 <div>
   <table class="table-user-clean">
   	<tbody>
@@ -55,45 +55,177 @@
   		</tr>
   	</tbody>
   </table>
-  <h2 style="display:none">User Tracking</h2>
-  <table class="table-user" style="display:none">
+  <h2>User Tracking</h2>
+  <table class="table-user">
     <thead>
   		<tr>
   			<th>Data</th>
-  			<th>Last Day</th>
-  			<th>Last Week</th>
-  			<th>Last Month</th>
-  			<th>Ever</th>
+  			<th title="Since midnight">Last Day</th>
+  			
+  			  		<?
+            		 $sql = "(SELECT user, SUM( IF(
+                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
+                          TYPE =2, 1, 0 ) ) AS losses, (
+                          SUM( IF(
+                          TYPE =3,
+                          DATA , 0 ) ) - SUM( IF(
+                          TYPE =4,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =5, IF( LOCATE( ' gp',
+                          DATA ) , SUBSTRING_INDEX(
+                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
+                          TYPE =8,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =9,
+                          DATA , 0 ) )
+                          ) AS money, (
+                          SUM( IF(
+                          TYPE =1, 1, 0 ) ) + SUM( IF(
+                          TYPE =2, 1, 0 ) ) + SUM( IF(
+                          TYPE =3, 1, 0 ) ) + SUM( IF(
+                          TYPE =4, 1, 0 ) )
+                          ) AS dms
+                          FROM `user_log`
+                          WHERE `user` = '$user')";
+                $day = mysql_query($sql);
+                if (!$day || sizeof($day = mysql_fetch_assoc($day)) == 0 || $day['user'] == NULL) {
+                  	$day = array (
+                        'dms' => 0,
+                  			'money' => 0,
+                  			'wins' => 0,
+                        'losses' => 0,
+                        );
+                }
+        		?>
+
+  			<th title="Since midnight on Sunday">Last Week</th>
+  			
+  			  			  		<?
+            		 $end_date = strtotime('sunday');
+            		 $sql2 = "(SELECT user, SUM( IF(
+                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
+                          TYPE =2, 1, 0 ) ) AS losses, (
+                          SUM( IF(
+                          TYPE =3,
+                          DATA , 0 ) ) - SUM( IF(
+                          TYPE =4,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =5, IF( LOCATE( ' gp',
+                          DATA ) , SUBSTRING_INDEX(
+                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
+                          TYPE =8,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =9,
+                          DATA , 0 ) )
+                          ) AS money, (
+                          SUM( IF(
+                          TYPE =1, 1, 0 ) ) + SUM( IF(
+                          TYPE =2, 1, 0 ) ) + SUM( IF(
+                          TYPE =3, 1, 0 ) ) + SUM( IF(
+                          TYPE =4, 1, 0 ) )
+                          ) AS dms
+                          FROM `user_log_archive`
+                          WHERE `date` >= '$end_date'
+                          AND `user` = '$user')";
+                $week = mysql_query($sql2);
+                if (!$week || sizeof($week = mysql_fetch_assoc($week)) == 0 || $week['user'] == NULL) {
+                  	$week = array (
+                        'dms' => 0,
+                  			'money' => 0,
+                  			'wins' => 0,
+                        'losses' => 0,
+                        );
+                }
+        		?>
+
+  			<th title="Since midnight on the 1st">Last Month</th>
+  			
+  			  	<?
+               $end_date = strtotime(date('F')."1");
+               $sql3 = "(SELECT user, SUM( IF(
+                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
+                          TYPE =2, 1, 0 ) ) AS losses, (
+                          SUM( IF(
+                          TYPE =3,
+                          DATA , 0 ) ) - SUM( IF(
+                          TYPE =4,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =5, IF( LOCATE( ' gp',
+                          DATA ) , SUBSTRING_INDEX(
+                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
+                          TYPE =8,
+                          DATA , 0 ) ) + SUM( IF(
+                          TYPE =9,
+                          DATA , 0 ) )
+                          ) AS money, (
+                          SUM( IF(
+                          TYPE =1, 1, 0 ) ) + SUM( IF(
+                          TYPE =2, 1, 0 ) ) + SUM( IF(
+                          TYPE =3, 1, 0 ) ) + SUM( IF(
+                          TYPE =4, 1, 0 ) )
+                          ) AS dms
+                          FROM `user_log_archive`
+                          WHERE `date` >= '$end_date'
+                          AND `user` = '$user')";
+                $month = mysql_query($sql3);
+                if (!$month || sizeof($month = mysql_fetch_assoc($month)) == 0 || $month['user'] == NULL) {
+                  	$month = array (
+                        'dms' => 0,
+                  			'money' => 0,
+                  			'wins' => 0,
+                        'losses' => 0,
+                        );
+                }
+        		?>
+
+  			
+  			<th title="Since records began">Ever</th>
+  			
+  			  		 <?
+               $sql4 = "(SELECT *,(wins + losses) AS dms
+                          FROM `user_log_total`
+                          WHERE `user` = '$user')";
+                $ever = mysql_query($sql4);
+                if (!$ever || sizeof($ever = mysql_fetch_assoc($ever)) == 0 || $ever['user'] == NULL) {
+                  	$ever = array (
+                        'dms' => 0,
+                  			'money' => 0,
+                  			'wins' => 0,
+                        'losses' => 0,
+                        );
+                }
+        		?>
+  			
   		</tr>
   	</thead>
     <tbody>
   		<tr class="odd">
         <td style="width: 20%;">DMs</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
+  			<td style="width: 20%;"><?=$day['dms']?></td>
+  			<td style="width: 20%;"><?=($week['dms']+$day['dms'])?></td>
+  			<td style="width: 20%;"><?=($month['dms']+$day['dms'])?></td>
+  			<td style="width: 20%;"><?=($ever['dms']+$month['dms']+$day['dms'])?></td>
   		</tr>
   		<tr class="even">
         <td style="width: 20%;">Wins</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
+  			<td style="width: 20%;"><?=$day['wins']?></td>
+  			<td style="width: 20%;"><?=($week['wins']+$day['wins'])?></td>
+  			<td style="width: 20%;"><?=($month['wins']+$day['wins'])?></td>
+        <td style="width: 20%;"><?=($ever['wins']+$month['wins']+$day['wins'])?></td>
   		</tr>
   		<tr class="odd">
         <td style="width: 20%;">Losses</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
+  			<td style="width: 20%;"><?=$day['losses']?></td>
+  			<td style="width: 20%;"><?=($week['losses']+$day['losses'])?></td>
+  			<td style="width: 20%;"><?=($month['losses']+$day['losses'])?></td>
+        <td style="width: 20%;"><?=($ever['losses']+$month['losses']+$day['losses'])?></td>
   		</tr>
   		<tr class="even">
         <td style="width: 20%;">Money</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
-  			<td style="width: 20%;">x</td>
+  			<td style="width: 20%;"><?=$day['money']?></td>
+  			<td style="width: 20%;"><?=($week['money']+$day['money'])?></td>
+  			<td style="width: 20%;"><?=($month['money']+$day['money'])?></td>
+        <td style="width: 20%;"><?=($ever['money']+$month['money']+$day['money'])?></td>
   		</tr>
   	</tbody>
   </table>
@@ -104,11 +236,11 @@
   if ($result['image']) {
     if ($result['link']) {
       print '<a href="' . htmlentities($result['link']) . '" class="postlink">
-      <img src="' . htmlentities($result['image']) . '" alt="Sig" width="500px" style="max-height:160px" />
+      <img src="' . htmlentities($result['image']) . '" alt="Sig" width="500px" style="max-height:150px" />
       </a>';
     }
     else {
-      print '<img src="'. htmlentities($result['image']) .'" alt="Sig" width="500px" style="max-height:160px" />';
+      print '<img src="'. htmlentities($result['image']) .'" alt="Sig" width="500px" style="max-height:150px" />';
     }
   }
   ?>
