@@ -131,6 +131,10 @@ on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
 
 on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+   if (!$islogged($nick,$address,3)) {
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
+    halt
+  }
   tokenize 32 $strip($2)
   if (http://*.*/* !iswm $1) { var %result Please give a valid link including 'http://' }
   else {
@@ -143,6 +147,10 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
 
 on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+   if (!$islogged($nick,$address,3)) {
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
+    halt
+  }
   tokenize 32 $strip($2)
   if (http://*.imageshack.us/* !iswm $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
   elseif ((*.png !iswm $1) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg. }
