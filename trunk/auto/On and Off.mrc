@@ -51,8 +51,8 @@ alias enablec {
   if ($1 == -h) {
     var %i 1
     while (%i <= $dmg(list,0)) {
-     if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
-     inc %i
+      if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
+      inc %i
     }
     var %notice %notice Healing attacks are now on in $3 $+ .
   }
@@ -81,8 +81,8 @@ alias disablec {
   if ($1 == -h) {
     var %i 1
     while (%i <= $dmg(list,0)) {
-     if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
-     inc %i
+      if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
+      inc %i
     }
     var %notice %notice Healing attacks are now off.
   }
@@ -152,3 +152,4 @@ on $*:TEXT:/^[!@.]idm(sig|profile)(link|links|hyperlink)?/Si:#: {
     var %result Updated profile link, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1)
   }
   notice $nick $logo(Signature) %result
+}

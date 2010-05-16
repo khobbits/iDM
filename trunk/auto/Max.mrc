@@ -1,10 +1,10 @@
 alias max {
-; $1 = attack
-if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
+  ; $1 = attack
+  if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
   var %dbhits = $dmg($1,hits)
   var %dbdmg = $gettok($dmg($1, 3),2,44)
   var %dbbonus = $dmg($1, atkbonus)
-    
+
   if ($dmg($1,type) == range) {
     ;Normal Voidrange_or_Accumulator Both
     return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,10,%dbbonus)
@@ -20,11 +20,11 @@ if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
 }
 
 alias dmg.ratio {
-; $1 = hit pattern - 1-1-1
-; $2 = max hit
-; $3 = attack bonus
-; $4 = bonus toggle
-if ($4 == $null) { putlog Syntax Error: dmg.ratio (4) - $db.safe($1-) | halt }
+  ; $1 = hit pattern - 1-1-1
+  ; $2 = max hit
+  ; $3 = attack bonus
+  ; $4 = bonus toggle
+  if ($4 == $null) { putlog Syntax Error: dmg.ratio (4) - $db.safe($1-) | halt }
   var %hits
   var %i = 0
   while (%i < $numtok($1,45)) {
@@ -113,7 +113,7 @@ alias dmg {
   if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
   if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)
   return $hget(>weapon,list)
-  
+
 }
 
 alias attackname { return $dmg($1,name) }

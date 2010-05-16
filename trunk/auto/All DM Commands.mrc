@@ -140,7 +140,7 @@ alias damage {
       var %msg %msg and 09HEALING
     }
   }
-var %poisoner $poisoner($3)
+  var %poisoner $poisoner($3)
   if ($gettok(%poisoner,1,32)) {
     var %pois.chance $r(1,$v1)
     if (%pois.chance == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok(%poisoner,2,32) < 8)) {
@@ -163,25 +163,25 @@ var %poisoner $poisoner($3)
   elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
   elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
 
-    if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-      var %extra $iif(%hp2 < 12,$($v1,2),12)
-      dec %hp2 %extra
-      msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
-    }
-    if ($hget($2,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
-      var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
-      inc %hp2 %extraup
-      msgsafe $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2)
-    }
-    elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-      inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
-      msgsafe $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2)
-    }
-    elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-      var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
-      inc %hp2 $floor($calc(%temp.hit / 2))
-      msgsafe $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
-    }
+  if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    var %extra $iif(%hp2 < 12,$($v1,2),12)
+    dec %hp2 %extra
+    msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
+  }
+  if ($hget($2,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
+    var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
+    inc %hp2 %extraup
+    msgsafe $4 $logo(DM) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2)
+  }
+  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
+    msgsafe $4 $logo(DM) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2)
+  }
+  elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+    var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
+    inc %hp2 $floor($calc(%temp.hit / 2))
+    msgsafe $4 $logo(DM) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2)
+  }
 
   if (%hp2 < 1) {
     if (($hget($2,beau)) && ($r(1,50) >= 49) ) {

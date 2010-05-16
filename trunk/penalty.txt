@@ -1090,3 +1090,4 @@
 15/5 22:37:22 `Bry` got !enddm'd on #dm.newbies oldcash 122425507 newcash 121813380
 15/5 23:04:19 `Bry` got !enddm'd on #dm.newbies oldcash 210552902 newcash 209500138
 16/5 00:34:02 Tigga got !enddm'd on #dm.newbies oldcash 1133680239 newcash 1128011838
+16/5 01:56:06 xxcodyxx got !enddm'd on #redundancy oldcash 291152378 newcash 289696617

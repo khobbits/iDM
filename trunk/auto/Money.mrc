@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.]equip/Si:#: {
 }
 
 alias money {
-if ($1 == $null) { putlog Syntax Error: money (1) - $db.safe($1-) | halt }
+  if ($1 == $null) { putlog Syntax Error: money (1) - $db.safe($1-) | halt }
   db.hget >userm user $1
 
   var %money = $hget(>userm,money)
@@ -36,7 +36,7 @@ if ($1 == $null) { putlog Syntax Error: money (1) - $db.safe($1-) | halt }
 }
 
 alias equipment {
-if ($1 == $null) { putlog Syntax Error: equipment (1) - $db.safe($1-) | halt }
+  if ($1 == $null) { putlog Syntax Error: equipment (1) - $db.safe($1-) | halt }
   db.hget >equipit equip_item $1
   db.hget >equipar equip_armour $1
   var %wealth = 0
@@ -112,7 +112,7 @@ alias clan {
 }
 
 alias sitems {
-if ($1 == $null) { putlog Syntax Error: sitems (1) - $db.safe($1-) | halt }
+  if ($1 == $null) { putlog Syntax Error: sitems (1) - $db.safe($1-) | halt }
   db.hget >equips equip_staff $1
 
   if ($hget(>equips,belong)) { var %e %e Bêlong:Blade }
@@ -127,7 +127,7 @@ if ($1 == $null) { putlog Syntax Error: sitems (1) - $db.safe($1-) | halt }
 }
 
 alias pvp {
-if ($1 == $null) { putlog Syntax Error: pvp (1) - $db.safe($1-) | halt }
+  if ($1 == $null) { putlog Syntax Error: pvp (1) - $db.safe($1-) | halt }
   db.hget >equipp equip_pvp $1
 
   if ($hget(>equipp,vspear)) { var %e %e $+(Vesta's:Spear,$chr(91),$s1($v1),$chr(93)) }
