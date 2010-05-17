@@ -147,7 +147,7 @@ alias logcheck {
 ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  tokenize 32 $2 $nick
+  tokenize 32 $iif($2,$2-,$nick)
     var %sql SELECT * FROM user_log WHERE user = $db.safe($1) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($1) ORDER BY date DESC LIMIT 5
     var %res $db.query(%sql)
     while ($db.query_row(%res, >dmlog)) {
