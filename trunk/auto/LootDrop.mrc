@@ -78,8 +78,9 @@ alias trackclan {
 
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($db.get(equip_item,clue,$nick) == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($db.get(clues,question,$db.get(equip_item,clue,$nick))) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
+  var %clueid $db.get(equip_item,clue,$nick)
+  if (%clueid == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($db.get(clues,question,%clueid)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
 }
 
 ON $*:TEXT:/^[!@.]solve/Si:#: {
@@ -152,7 +153,7 @@ alias rundrops {
       elseif (idmnewbie == $2) { noop }
       elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
-      elseif (Clue isin %item) { db.set equip_item clue $2 $r(1,$lines(clue.txt)) }
+      elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1) }
       elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
       elseif (Snow isin %item) { db.set equip_item snow $2 + 1 }
       else {
