@@ -176,7 +176,7 @@ alias userlog {
     putlog Error: Not a valid userlog type - $db.safe($1-)
     return
   }
-  var %append $chr(40) $2 , $ctime , %type , $3- $chr(41)
+  var %append $chr(40) $2 $chr(44) $ctime $chr(44) %type $chr(44) $3- $chr(41)
   putlog DEBUG: %append
   set %userlog $iif(%userlog,%userlog $chr(44)) %append
   if ($len(%userlog) > 2000) { userlog.commit }
