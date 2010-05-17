@@ -153,7 +153,7 @@ alias rundrops {
       elseif (idmnewbie == $2) { noop }
       elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
-      elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1) }
+      elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1)) }
       elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
       elseif (Snow isin %item) { db.set equip_item snow $2 + 1 }
       else {
