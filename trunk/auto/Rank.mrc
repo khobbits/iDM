@@ -176,8 +176,23 @@ alias userlog {
     putlog Error: Not a valid userlog type - $db.safe($1-)
     return
   }
-  dbcheck
-  var %sql = INSERT INTO user_log (user, date, type, data) VALUES (?, ?, ?, ?)
-  noop $db.exec(%sql, $2, $ctime, %type, $3-)
+  var %append ( $2 , $ctime , %type , $3- )
+  set %userlog $iif(%userlog,%userlog $chr(44)) %append
+  if ($len(%userlog) > 2000) { userlog.commit }
+  timercommit 1 120 userlog.commit
+  return
+}
+
+alias userlog.commit {
+  if ($len(%userlog) > 4) {
+    dbcheck
+    var %sql = INSERT INTO user_log (user, date, type, data) VALUES %userlog
+    if ($db.exec(%sql) == 1) {
+      unset %userlog
+    }
+    else {
+      putlog ERROR: userlog commit failed, userlog may need manual cleanup.
+    }
+  }
   return
 }

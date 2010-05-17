@@ -60,34 +60,27 @@
     <thead>
   		<tr>
   			<th>Data</th>
-  			<th title="Since midnight">Last Day</th>
+  			<th title="Everything in the last 24 hours">Last 24 Hours</th>
   			
   			  		<?
-            		 $sql = "(SELECT user, SUM( IF(
-                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
-                          TYPE =2, 1, 0 ) ) AS losses, (
-                          SUM( IF(
-                          TYPE =3,
-                          DATA , 0 ) ) - SUM( IF(
-                          TYPE =4,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =5, IF( LOCATE( ' gp',
-                          DATA ) , SUBSTRING_INDEX(
-                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
-                          TYPE =8,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =9,
-                          DATA , 0 ) )
-                          ) AS money, (
-                          SUM( IF(
-                          TYPE =1, 1, 0 ) ) + SUM( IF(
-                          TYPE =2, 1, 0 ) ) + SUM( IF(
-                          TYPE =3, 1, 0 ) ) + SUM( IF(
-                          TYPE =4, 1, 0 ) )
-                          ) AS dms
+            		 $sql = "(SELECT user,
+                          SUM( IF(TYPE =1, 1, 0) ) AS wins,
+                          SUM( IF(TYPE =2, 1, 0) ) AS losses,
+                          (
+                            SUM( IF(TYPE =3, DATA, 0) )
+                            - SUM( IF(TYPE =4, DATA, 0) )
+                            + SUM( IF(TYPE =5, IF(LOCATE(' gp', DATA), SUBSTRING_INDEX(DATA, ' gp', 1), 0), 0) )
+                            - SUM( IF(TYPE =8, DATA, 0) )
+                            + SUM( IF(TYPE =9, DATA, 0) )
+                          ) AS money,
+                          (
+                            SUM( IF(TYPE =1, 1, 0) )
+                            + SUM( IF(TYPE =2, 1, 0) )
+                          ) AS dms";
+                $sql1 = "$sql
                           FROM `user_log`
                           WHERE `user` = '$user')";
-                $day = mysql_query($sql);
+                $day = mysql_query($sql1);
                 if (!$day || sizeof($day = mysql_fetch_assoc($day)) == 0 || $day['user'] == NULL) {
                   	$day = array (
                         'dms' => 0,
@@ -98,32 +91,11 @@
                 }
         		?>
 
-  			<th title="Since midnight on Sunday">Last Week</th>
+  			<th title="Everything since <?=date('d M',strtotime("-7 days"))?>">Last 7 Days</th>
   			
-  			  			  		<?
-            		 $end_date = strtotime('sunday');
-            		 $sql2 = "(SELECT user, SUM( IF(
-                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
-                          TYPE =2, 1, 0 ) ) AS losses, (
-                          SUM( IF(
-                          TYPE =3,
-                          DATA , 0 ) ) - SUM( IF(
-                          TYPE =4,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =5, IF( LOCATE( ' gp',
-                          DATA ) , SUBSTRING_INDEX(
-                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
-                          TYPE =8,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =9,
-                          DATA , 0 ) )
-                          ) AS money, (
-                          SUM( IF(
-                          TYPE =1, 1, 0 ) ) + SUM( IF(
-                          TYPE =2, 1, 0 ) ) + SUM( IF(
-                          TYPE =3, 1, 0 ) ) + SUM( IF(
-                          TYPE =4, 1, 0 ) )
-                          ) AS dms
+  			 		<?
+            		 $end_date = strtotime('-7 days');
+            		 $sql2 = "$sql
                           FROM `user_log_archive`
                           WHERE `date` >= '$end_date'
                           AND `user` = '$user')";
@@ -136,37 +108,14 @@
                         'losses' => 0,
                         );
                 }
-        		?>
+         		?>
 
-  			<th title="Since midnight on the 1st">Last Month</th>
+  			<th title="Everything since <?=date('d M',strtotime("-1 month"))?>">Last Month</th>
   			
   			  	<?
-               $end_date = strtotime(date('F')."1");
-               $sql3 = "(SELECT user, SUM( IF(
-                          TYPE =1, 1, 0 ) ) AS wins, SUM( IF(
-                          TYPE =2, 1, 0 ) ) AS losses, (
-                          SUM( IF(
-                          TYPE =3,
-                          DATA , 0 ) ) - SUM( IF(
-                          TYPE =4,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =5, IF( LOCATE( ' gp',
-                          DATA ) , SUBSTRING_INDEX(
-                          DATA , ' gp', 1 ) , 0 ) , 0 ) ) - SUM( IF(
-                          TYPE =8,
-                          DATA , 0 ) ) + SUM( IF(
-                          TYPE =9,
-                          DATA , 0 ) )
-                          ) AS money, (
-                          SUM( IF(
-                          TYPE =1, 1, 0 ) ) + SUM( IF(
-                          TYPE =2, 1, 0 ) ) + SUM( IF(
-                          TYPE =3, 1, 0 ) ) + SUM( IF(
-                          TYPE =4, 1, 0 ) )
-                          ) AS dms
+               $sql3 = "$sql
                           FROM `user_log_archive`
-                          WHERE `date` >= '$end_date'
-                          AND `user` = '$user')";
+                          WHERE `user` = '$user')";
                 $month = mysql_query($sql3);
                 if (!$month || sizeof($month = mysql_fetch_assoc($month)) == 0 || $month['user'] == NULL) {
                   	$month = array (
@@ -200,7 +149,7 @@
   	</thead>
     <tbody>
   		<tr class="odd">
-        <td style="width: 20%;">DMs</td>
+        <td style="width: 20%;" title="Number of DM's and Stakes">Total DMs</td>
   			<td style="width: 20%;"><?=$day['dms']?></td>
   			<td style="width: 20%;"><?=($week['dms']+$day['dms'])?></td>
   			<td style="width: 20%;"><?=($month['dms']+$day['dms'])?></td>

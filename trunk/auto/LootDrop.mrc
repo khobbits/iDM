@@ -12,6 +12,8 @@ alias dead {
     var %stake $hget($1,stake)
     userlog winstake $3 %stake
     userlog losestake $2 %stake
+    userlog win $3 $2
+    userlog loss $2 $3
 
     db.set user losses $2 + 1
     set -u10 %wait. [ $+ [ $1 ] ] on
@@ -77,13 +79,13 @@ alias trackclan {
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($db.get(equip_item,clue,$nick) == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),1,58)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($db.get(clues,question,$db.get(equip_item,clue,$nick))) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
 }
 
 ON $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
-  if ($istok($gettok($read(clue.txt,$db.get(equip_item,clue,$nick)),2,58),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
+  if ($istok($db.get(clues,answers,$db.get(equip_item,clue,$nick)),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
   var %combined 0
   var %sql SELECT * FROM drops WHERE chance >= 50 AND chance <= 500 AND disabled = '0' AND price > '1' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
