@@ -177,9 +177,10 @@ alias userlog {
     return
   }
   var %append $chr(40) $2 , $ctime , %type , $3- $chr(41)
+  putlog DEBUG: %append
   set %userlog $iif(%userlog,%userlog $chr(44)) %append
   if ($len(%userlog) > 2000) { userlog.commit }
-  timercommit 1 120 userlog.commit
+  .timercommit 1 120 userlog.commit
   return
 }
 
