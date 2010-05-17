@@ -147,24 +147,13 @@ alias logcheck {
 ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if ($2) {
-    var %sql SELECT * FROM user_event WHERE user = $db.safe($2) ORDER BY date DESC LIMIT 5
+  tokenize 32 $2 $nick
+    var %sql (SELECT * FROM user_log WHERE user = $db.safe($1)) UNION (SELECT * FROM user_log_archive WHERE user = $db.safe($1)) ORDER BY date DESC LIMIT 5
     var %res $db.query(%sql)
     while ($db.query_row(%res, >dmlog)) {
       var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $hget(>dmlog,event) $s2(|)
     }
     db.query_end %res
-    if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($2) has no recent activity
+    if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity
     else $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $left(%dmlog,-2)
-  }
-  else {
-    var %sql SELECT * FROM user_event WHERE user = $db.safe($nick) ORDER BY date DESC LIMIT 5
-    var %res $db.query(%sql)
-    while ($db.query_row(%res, >dmlog)) {
-      var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $hget(>dmlog,event) $s2(|)
-    }
-    db.query_end %res
-    if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($nick) has no recent activity
-    else $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($nick) $left(%dmlog,-2)
-  }
 }
