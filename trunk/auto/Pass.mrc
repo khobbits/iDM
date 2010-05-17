@@ -4,6 +4,7 @@ on *:TEXT:id*:?: msgauth $nick $address $2-
 on *:TEXT:auth*:?: msgauth $nick $address $2-
 
 alias msgauth {
+  if ($1 == -sbnc) return
   if ($update) { notice $1 $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($3) {
     auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
@@ -148,12 +149,12 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   tokenize 32 $iif($2,$2-,$nick)
-    var %sql SELECT * FROM user_log WHERE user = $db.safe($1) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($1) ORDER BY date DESC LIMIT 5
-    var %res $db.query(%sql)
-    while ($db.query_row(%res, >dmlog)) {
-      var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $hget(>dmlog,event) $s2(|)
-    }
-    db.query_end %res
-    if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity
-    else $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $left(%dmlog,-2)
+  var %sql SELECT * FROM user_log WHERE user = $db.safe($1) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($1) ORDER BY date DESC LIMIT 5
+  var %res $db.query(%sql)
+  while ($db.query_row(%res, >dmlog)) {
+    var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $hget(>dmlog,event) $s2(|)
+  }
+  db.query_end %res
+  if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity
+  else $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $left(%dmlog,-2)
 }
