@@ -6,13 +6,13 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
-    else enablec $remove($2-,$chr(32)) $nick #
+    else enablec $remove($2,$chr(32)) $nick #
   }
   elseif ($1 == !off || $1 == .off) {
     if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
-    else disablec $remove($2-,$chr(32)) $nick #
+    else disablec $remove($2,$chr(32)) $nick #
   }
 }
 
