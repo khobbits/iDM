@@ -168,12 +168,23 @@ alias getclanname {
 alias clanmembers {
   ; $1 = Clanname
   if ($1) {
-    var $members
+    var %members
     var %sql = SELECT * FROM `user` WHERE clan = $db.safe($1)
     var %result = $db.query(%sql)
     while ($db.query_row_data(%result,user)) {
       var %members = %members $v1
     }
+    db.query_end %result
+    return %members
+  }
+}
+
+alias clannumbers {
+  ; $1 = Clanname
+  if ($1) {
+    var %sql = SELECT * FROM `user` WHERE clan = $db.safe($1)
+    var %result = $db.query(%sql)
+    var %members = $db.query_num_rows(%result)
     db.query_end %result
     return %members
   }

@@ -34,7 +34,7 @@ alias dead {
 
   if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
   if ((%winnerclan != %looserclan) && (%winnerclan)) {
-    var %nummember = $numtok($clanmembers(%winnerclan),32)
+    var %nummember = $clannumbers(%winnerclan)
     var %sharedrop = $floor($calc(%combined / %nummember))
     userlog drop $3 %sharedrop gp
     trackclan WIN %winnerclan %combined
@@ -85,8 +85,9 @@ on $*:TEXT:/^[!@.]dmclue/Si:#: {
 
 ON $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($db.get(equip_item,clue,$nick) == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
-  if ($istok($db.get(clues,answers,$db.get(equip_item,clue,$nick)),$2,33) != $true) || (!$2) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
+  var %clueno $db.get(equip_item,clue,$nick)
+  if (%clueno == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
+  if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
   var %combined 0
   var %sql SELECT * FROM drops WHERE chance >= 50 AND chance <= 500 AND disabled = '0' AND price > '1' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
