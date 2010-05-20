@@ -39,7 +39,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         }
         db.set equip_pvp %attcmd $nick - 1
       }
-      var %wepitem $isweapon(%wep)
+      var %wepitem $isweapon(%attcmd)
       if (%wepitem !== $false) {
         if (!$hget($nick,%wepitem)) {
           notice $nick You have to unlock this weapon before you can use it.
