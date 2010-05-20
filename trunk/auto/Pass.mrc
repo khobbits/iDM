@@ -152,7 +152,7 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   var %sql SELECT * FROM user_log WHERE user = $db.safe($2) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($2) ORDER BY date DESC LIMIT 8
   var %res $db.query(%sql)
   while ($db.query_row(%res, >dmlog)) {
-    var %dmlog %dmlog $time($hget(>dmlog,date),hh:nn)) - $logtype($hget(>dmlog,type)) $hget(>dmlog,data) $s2(|)
+    var %dmlog %dmlog  $logtype($hget(>dmlog,type),$hget(>dmlog,data)) @ $time($hget(>dmlog,date),hh:nn)) $s2(|)
   }
   db.query_end %res
   if (!%dmlog) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity }
@@ -161,13 +161,13 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
 
 
 alias logtype {
-  if ($1 == 1) return Won DM:
-  elseif ($1 == 2) return Lost DM:
-  elseif ($1 == 3) return Won Stake:
-  elseif ($1 == 4) return Lost Stake:
-  elseif ($1 == 5) return Loot:
-  elseif ($1 == 6) return Bought:
-  elseif ($1 == 7) return Sold:
-  elseif ($1 == 8) return Penalty:
-  else return Clue:
+  if ($1 == 1) return KO'd $2
+  elseif ($1 == 2) return Got KO'd by $2
+  elseif ($1 == 3) return Took money from $2
+  elseif ($1 == 4) return Got robbed by $2
+  elseif ($1 == 5) return Collected $2
+  elseif ($1 == 6) return Bought a $2
+  elseif ($1 == 7) return Sold a $2
+  elseif ($1 == 8) return $2 penalty
+  else return Found $2
 }
