@@ -161,13 +161,13 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
 
 
 alias logtype {
-  if ($1 == 1) return 'Won';
-  elseif ($1 == 2) return 'Lost';
-  elseif ($1 == 3) return 'Win Stake';
-  elseif ($1 == 4) return 'Lose Stake';
-  elseif ($1 == 5) return 'Got drop';
-  elseif ($1 == 6) return 'Bought';
-  elseif ($1 == 7) return 'Sold';
-  elseif ($1 == 8) return 'Penalty';
-  else return 'Clue';
+  if ($1 == 1) return Won DM:
+  elseif ($1 == 2) return Lost DM:
+  elseif ($1 == 3) return Won Stake:
+  elseif ($1 == 4) return Lost Stake:
+  elseif ($1 == 5) return Loot:
+  elseif ($1 == 6) return Bought:
+  elseif ($1 == 7) return Sold:
+  elseif ($1 == 8) return Penalty:
+  else return Clue:
 }
