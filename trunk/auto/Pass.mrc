@@ -152,9 +152,22 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   var %sql SELECT * FROM user_log WHERE user = $db.safe($1) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($1) ORDER BY date DESC LIMIT 5
   var %res $db.query(%sql)
   while ($db.query_row(%res, >dmlog)) {
-    var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $hget(>dmlog,event) $s2(|)
+    var %dmlog %dmlog $time($hget(>dmlog,date),mm/dd/yy)) - $logtype($hget(>dmlog,type)) $hget(>dmlog,data) $s2(|)
   }
   db.query_end %res
-  if (!%dmlog) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity
-  else $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $left(%dmlog,-2)
+  if (!%dmlog) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity }
+  else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $left(%dmlog,-2) }
+}
+
+
+alias logtype {
+	if ($1 == 1) return 'Won ';
+	elseif ($1 == 2) return 'Lost';
+	elseif ($1 == 3) return 'Win Stake';
+	elseif ($1 == 4) return 'Lose Stake';
+	elseif ($1 == 5) return 'Got drop';
+	elseif ($1 == 6) return 'Bought';
+	elseif ($1 == 7) return 'Sold';
+	elseif ($1 == 8) return 'Penalty';
+	else return 'Clue';
 }
