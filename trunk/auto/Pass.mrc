@@ -152,7 +152,7 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   var %sql SELECT * FROM user_log WHERE user = $db.safe($2) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($2) ORDER BY date DESC LIMIT 8
   var %res $db.query(%sql)
   while ($db.query_row(%res, >dmlog)) {
-    var %dmlog %dmlog $time($hget(>dmlog,date),hh:mm)) - $logtype($hget(>dmlog,type)) $hget(>dmlog,data) $s2(|)
+    var %dmlog %dmlog $time($hget(>dmlog,date),hh:nn)) - $logtype($hget(>dmlog,type)) $hget(>dmlog,data) $s2(|)
   }
   db.query_end %res
   if (!%dmlog) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity }
