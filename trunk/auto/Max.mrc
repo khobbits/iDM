@@ -126,7 +126,10 @@ alias doeswhat { return $dmg($1,what) }
 alias effect { return $dmg($1,effect) }
 alias attack { return $iif($dmg($1,name),$true,$false) }
 alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
-alias isweapon { return $iif($dmg($1,item),$true,$false) }
+alias isweapon {
+  var %wep $dmg($1,item)
+  return $iif(%wep,%wep,$false)
+}
 
 
 on $*:TEXT:/^[!@.]max/Si:#: {
