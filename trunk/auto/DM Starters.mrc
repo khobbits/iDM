@@ -207,7 +207,7 @@ alias delaycancel {
   var %oldmoney = $hget($2,money)
   if (%oldmoney > 100) {
     var %newmoney = $ceil($calc(%oldmoney * 0.005))
-    notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
+    notice $2 You got kicked out of a dm, you lose $s2($price(%newmoney)) cash.
     userlog penalty $2 %newmoney
     db.set user money $2 - %newmoney
   }
