@@ -206,10 +206,10 @@ alias delaycancel {
   if (%enddm [ $+ [ $1 ] ] != $2) { return }
   var %oldmoney = $hget($2,money)
   if (%oldmoney > 100) {
-    var %newmoney = $ceil($calc(%oldmoney - (%oldmoney * 0.005)))
+    var %newmoney = $ceil($calc(%oldmoney * 0.005))
     notice $2 You got kicked out of a dm, you lose $s2($price($calc(%oldmoney - %newmoney))) cash.
     userlog penalty $2 %newmoney
-    db.set user money $2 %newmoney
+    db.set user money $2 - %newmoney
   }
   cancel $1
   msgsafe $1 $logo(DM) The DM has ended due to timeout.
