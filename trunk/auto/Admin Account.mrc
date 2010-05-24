@@ -81,7 +81,8 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   if ((?c* iswm $1) || (?r* iswm $1)) {
     db.hget >checkban ilist $2 who time reason
     if ($hget(>checkban,reason)) { notice $nick $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
-    elseif (!$db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
+    elseif ($db.get(user,banned,$2)) { notice $nick $logo(BANNED) User $s2($2) is suspended but with no infomation. | halt }
+    else { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
     if (?r* iswm $1) {
       db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
