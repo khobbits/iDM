@@ -104,6 +104,7 @@ alias equipment {
   }
   if ($hget(>equipit,clue)) { var %e %e Clue:Scroll }
   if ($hget(>equipit,snow)) { var %e %e Snow:Globe }
+  if ($hget(>equipit,corr)) { var %e %e Cutlass:of:Corruption }
   return $s1(Equipment) ( $+ $price(%wealth) $+ ): $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None) 
 }
 
@@ -181,7 +182,7 @@ alias whichitem {
   if ($1 == Belongtome) { return belong }
   if ($1 == Allegra || $1 == Strychnine) { return allegra }
   if ($1 == Beau) { return beau }
-  if ($1 == [PCN]Sct_Snake || $1 == [PCN]Snake`Sleep) { return snake }
+  if ($1 == [PCN]Sct_Snake || $1 == [PCN]Snake`Sleep || $1 == iSnake) { return snake }
   if ($1 == KHobbits) { return kh }
   if ($1 == _Ace_ || $1 == Lucas| || $1 == Satan666 || $1 == Shinn_Gundam || $1 == Aaron``) { return support }
   return 0

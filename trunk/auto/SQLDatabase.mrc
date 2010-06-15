@@ -6,7 +6,7 @@ alias dbcheck {
 
 ; Secures the db from exploits through injection.
 alias db.safe {
-  return $mysql_qt($mysql_real_escape_string(%db,$lower($1-)))
+  return $mysql_qt($mysql_real_escape_string(%db,$strip($lower($1-))))
 }
 
 ; Adds the quotes around a table or column define

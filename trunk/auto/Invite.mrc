@@ -4,13 +4,14 @@ on *:INVITE:#: {
   if (%invig. [ $+ [ # ] ]) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (%inv.spam [ $+ [ $nick ] ]) { halt }
-  if (%part.spam  [ $+ [ $chan ] ]) { notice $nick $logo(ERROR) iDM has parted from $chan less then 60 seconds ago, please wait to re-invite | halt }
+  if ($hget(>invite,#)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
   if ($hget(>blist,reason)) {
     notice $nick $logo(BANNED) Channel has been blacklisted. Reason: $hget(>blist,reason) By: $hget(>blist,who)
     inc -u60 %inv.spam [ $+ [ $nick ] ]
     halt
   }
   sbnc joinbot $chan $nick
+  hadd -mu60 >invite # 1
 }
 
 alias botsonline {

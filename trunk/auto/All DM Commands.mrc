@@ -109,6 +109,9 @@ alias damage {
   }
   var %msg $logo(DM) $s1($1)
 
+  ; Starting value for one hit acheivement
+  var %dmg-dealt %hitdmg
+
   ; ## OVERRIDE
   if (($3 == cbow) && (%cbowspec [ $+ [ $1 ] ])) {
     var %msg %msg 5UNLEASHES a dragon bolt special on $s1($replace($2,$chr(58),$chr(32)))
@@ -150,6 +153,7 @@ alias damage {
   if ($hget($2,poison) >= 1) && (%hp2 >= 1) {
     var %extra $iif(%hp2 < $hget($2,poison),$v1,$v2)
     hdec $2 poison
+    inc %dmg-dealt %extra
     dec %hp2 %extra
     var %msg %msg - 03 $+ %extra $+ 
   }
@@ -165,6 +169,7 @@ alias damage {
 
   if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
     var %extra $iif(%hp2 < 12,$($v1,2),12)
+    inc %dmg-dealt %extra
     dec %hp2 %extra
     msgsafe $4 $logo(DM) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2)
   }
@@ -191,6 +196,8 @@ alias damage {
   }
   hadd $1 hp %hp1
   hadd $2 hp %hp2
+
+  if (%dmg-dealt >= 99) { db.set achievements 1hit $nick 1 }
 }
 
 

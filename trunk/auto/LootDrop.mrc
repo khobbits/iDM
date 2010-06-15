@@ -21,6 +21,7 @@ alias dead {
     cancel $1
     halt
   }
+
   userlog win $3 $2
   userlog loss $2 $3
   var %drops $rundrops($1, $3, $2)
@@ -56,7 +57,8 @@ alias dead {
     db.set user money $3 + %combined
     msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
   }
-  set -u10 %wait. [ $+ [ $1 ] ] on | .timer 1 10 msgsafe $1 $logo(DM) Ready.
+  set -u10 %wait. [ $+ [ $1 ] ] on 
+  .timer 1 10 msgsafe $1 $logo(DM) Ready.
 }
 alias price {
   tokenize 32 $remove($1-,$chr(44))
@@ -88,13 +90,16 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   var %clueno $db.get(equip_item,clue,$nick)
   if (%clueno == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
   if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
-  var %combined 0
-  var %sql SELECT * FROM drops WHERE chance >= 50 AND chance <= 500 AND disabled = '0' AND price > '1' ORDER BY rand() LIMIT 3
+  var %combined 0, %chance $r(100,1000)
+  var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
   while ($db.query_row(%res, >clue)) {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
   }
+
+  if (%item == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
+
   db.query_end %res
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
@@ -113,7 +118,7 @@ alias gendrops {
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
-  var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
+  var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
@@ -148,15 +153,15 @@ alias rundrops {
       elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 | var %colour 03 }
       elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 | var %colour 03 }
       elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 | var %colour 03 }
-      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 }
-      elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 }
-      elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 }
+      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 | db.set achievements $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 1 }
+      elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 | db.set achievements dclaws $2 1 }
+      elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 | db.set achievements mudkip $2 1 }
       elseif (idmnewbie == $2) { noop }
-      elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 }
-      elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 }
+      elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 | db.set achievements mbook $2 1  }
+      elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 | db.set achievements accumulator $2 1 }
       elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1)) }
-      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 }
-      elseif (Snow isin %item) { db.set equip_item snow $2 + 1 }
+      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 | db.set achievements elyisan $2 1 }
+      elseif (Snow isin %item) { db.set equip_item snow $2 + 1 | db.set achievements sdrop $2 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
