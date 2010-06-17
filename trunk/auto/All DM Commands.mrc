@@ -66,7 +66,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
     if (<iDM>* iswm %p2) { autoidm.turn $chan }
     return
   }
-  elseif ($hget($chan) && $hget($nick,$chan) == $chan && $hget($nick,g)) {
+  elseif ($hget($chan) && $hget($nick,chan) == $chan && $hget($nick,g)) {
     gwd.att $nick <gwd> $+ $1 $1 $chan
     return
   }
