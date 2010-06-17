@@ -22,7 +22,7 @@ on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
     else {
       hinc $chan g
       hadd $chan g $+ $hget($chan,g) $nick
-      msgsafe # $logo(GWD) $s1($nick) joined the group to go to $hget(chan,g0) $+ !
+      msgsafe # $logo(GWD) $s1($nick) joined the group to go to $hget($chan,g0) $+ !
       db.set user indm $nick 1
 
     }
@@ -54,8 +54,8 @@ alias gwd.run {
   ; $1 = chan
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %x = 1
-  while (%i < $hget($1,g)) {
-    playerinit $hget($1,g $+ %i) $1
+  while (%i <= $hget($1,g)) {
+    playerinit $hget($1,g $+ %i) $1 1
     hadd $hget($1,g $+ %i) g $hget($1,g0)
   }
   hadd <gwd> $+ $1 hp $dungion.hp($hget($1,g))

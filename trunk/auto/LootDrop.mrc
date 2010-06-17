@@ -160,7 +160,7 @@ alias rundrops {
       elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 | db.set achievements mbook $2 1  }
       elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 | db.set achievements accumulator $2 1 }
       elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1)) }
-      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 | db.set achievements elyisan $2 1 }
+      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 | db.set achievements elshield $2 1 }
       elseif (Snow isin %item) { db.set equip_item snow $2 + 1 | db.set achievements sdrop $2 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
