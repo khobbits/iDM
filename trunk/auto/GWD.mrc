@@ -54,14 +54,15 @@ alias gwd.run {
   ; $1 = chan
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %x = 1
-  while (%i <= $hget($1,g)) {
-    playerinit $hget($1,g $+ %i) $1 1
-    hadd $hget($1,g $+ %i) g $hget($1,g0)
+  while (%x <= $hget($1,g)) {
+    playerinit $hget($1,g $+ %x) $1 1
+    hadd $hget($1,g $+ %x) g $hget($1,g0)
+    inc %x
   }
-  hadd <gwd> $+ $1 hp $dungion.hp($hget($1,g))
-  hadd <gwd> $+ $1 poison 0
-  hadd <gwd> $+ $1 frozen 0
-  hadd <gwd> $+ $1 laststyle 0
+  hadd $1 hp $dungion.hp($hget($1,g))
+  hadd $1 poison 0
+  hadd $1 frozen 0
+  hadd $1 laststyle 0
   hadd $1 gi 1
   msgsafe $1 $logo(GWD) $1 is ready to raid $s1($hget($1,g0)) $+ . Everyone make their attacks, $hget($1,g0) will hit in 30s.
   .timer $+ $1 1 30 gwd.npc $1
