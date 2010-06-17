@@ -45,7 +45,7 @@ alias dungion {
   ; $1 = user input
 
   ;#insert code to differentiate different dungions
-  
+
   return corp
 }
 
@@ -59,11 +59,12 @@ alias dungion.hp {
 alias gwd.run {
   ; $1 = chan
   ; This is triggered at start of game
-  
+
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %x = 1
   while (%x <= $hget($1,g)) {
     ; loop through players and init them
+    msg #idm.dev Added User $hget($1,g $+ %x)
     playerinit $hget($1,g $+ %x) $1 1
     hadd $hget($1,g $+ %x) g $hget($1,g0)
     inc %x
@@ -79,13 +80,13 @@ alias gwd.run {
 alias gwd.npc {
   ; $1 = chan
   ; This is triggered when it is the NPC's Turn
-
+  msg #idm.dev NPC Attack
   ;# Add attack by NPC here
-  
+
   ;# Display damage / round stats?
-  
+
   .timer $+ $1 1 30 gwd.npc $1
-  
+
 }
 
 alias gwd.att {
@@ -93,11 +94,11 @@ alias gwd.att {
   ;2 is person attacked
   ;3 is weapon
   ;4 is chan
-  
+
   ; # Insert code to stop same person attacking twice
-  
+
   ; # Insert code to handle player prereqs (see all dm commands.mrc)
-  
+  msg #idm.dev $1 attacks $2 with $3
   damage $1 $2 $3 $4
 
   gwd.turn $4 $1
@@ -116,6 +117,7 @@ alias gwd.turn {
   }
   if ($hget($1,g) == %y) {
     .timer $+ $4 off
+    msg #idm.dev All Players attacked, NPC turn.
     gwd.npc $4
   }
 }
