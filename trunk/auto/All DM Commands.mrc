@@ -67,7 +67,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
     return
   }
   elseif ($hget($chan) && $hget($nick,chan) == $chan && $hget($nick,g)) {
-    gwd.att $nick <gwd> $+ $chan $1 $chan
+    gwd.att $nick <gwd> $+ $chan %attcmd $chan
     return
   }
 }
