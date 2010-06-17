@@ -30,7 +30,7 @@ on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   else {
     if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
     if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
-    var %dungion $dungion
+    var %dungion $dungion($2-)
     hmake $chan 10
     hadd $chan g0 %dungion
     hadd $chan g1 $nick
@@ -41,35 +41,51 @@ on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   db.set user indm $nick 1
 }
 
-
 alias dungion {
+  ; $1 = user input
+
+  ;#insert code to differentiate different dungions
+  
   return corp
 }
 
+
 alias dungion.hp {
+  ; $1 = number of players
+
   return $calc(200 * $1)
 }
 
 alias gwd.run {
   ; $1 = chan
+  ; This is triggered at start of game
+  
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %x = 1
   while (%x <= $hget($1,g)) {
+    ; loop through players and init them
     playerinit $hget($1,g $+ %x) $1 1
     hadd $hget($1,g $+ %x) g $hget($1,g0)
     inc %x
   }
-  hadd $1 hp $dungion.hp($hget($1,g))
-  hadd $1 poison 0
-  hadd $1 frozen 0
-  hadd $1 laststyle 0
+  ; Innit channel settings
+  playerinit <gwd> $+ $1 $1 0
+  hadd <gwd> $+ $1 hp $dungion.hp($hget($1,g))
   hadd $1 gi 1
   msgsafe $1 $logo(GWD) $1 is ready to raid $s1($hget($1,g0)) $+ . Everyone make their attacks, $hget($1,g0) will hit in 30s.
   .timer $+ $1 1 30 gwd.npc $1
 }
 
 alias gwd.npc {
-  ; add attack by npc here
+  ; $1 = chan
+  ; This is triggered when it is the NPC's Turn
+
+  ;# Add attack by NPC here
+  
+  ;# Display damage / round stats?
+  
+  .timer $+ $1 1 30 gwd.npc $1
+  
 }
 
 alias gwd.att {
@@ -77,11 +93,21 @@ alias gwd.att {
   ;2 is person attacked
   ;3 is weapon
   ;4 is chan
+  
+  ; # Insert code to stop same person attacking twice
+  
+  ; # Insert code to handle player prereqs (see all dm commands.mrc)
+  
+  damage $1 $2 $3 $4
 
   gwd.turn $4 $1
 }
 
 alias gwd.turn {
+  ;1 is chan
+  ;2 is person attacking
+  ; This is just to check if all players have made their turn
+
   hadd $2 turn 1
   var %x = 1
   while (%i < $hget($1,g)) {
@@ -182,6 +208,7 @@ alias autoidm.turn {
 alias autoidm.acc {
   if (<idm>#dm.newbies == $1) return iDMnewbie
   if (<iDM>* iswm $1) return iDM
+  if (<gwd>* iswm $1) return iDMGod
   return $1
 }
 
