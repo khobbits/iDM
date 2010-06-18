@@ -145,6 +145,18 @@ alias logcheck {
   return
 }
 
+on $*:TEXT:/^[!@.]account/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (!$islogged($nick,$address,3)) {
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
+    halt
+  }
+  var %code $md5($ticks $+ $nick)
+  db.set urlmap account %code $nick
+  notice $nick $logo(Account) http://idm-bot.com/account/ $+ %code
+}
+
 ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
