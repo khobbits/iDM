@@ -154,6 +154,7 @@ on $*:TEXT:/^[!@.]account/Si:#: {
   }
   var %code $md5($ticks $+ $nick)
   db.set urlmap account %code $nick
+  db.set urlmap hostmask %code $address($nick,3)
   notice $nick $logo(Account) http://idm-bot.com/account/ $+ %code
 }
 
