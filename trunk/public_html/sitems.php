@@ -12,25 +12,21 @@ function adminlist($item) {
 	}
 }
 ?>
-
+<h1>Staff Items</h1>
 <p>To gain a staff item you need to perform a task worthy of such a gift.<br />
 Each item belongs to a different staff member and each staff member has a different idea of 
 what you have to do to be worthy of receiving their item. <br />
 Keep in mind however each item belongs to the respective admin, 
 and <em>they can grant/remove the right to use their item at will.</em></p>
 
-<p>Most of the staff will trade their items for cookies which are given away for suggestions, bug reports, 
-abuse reports, being helpful, etc. The amount of cookies you will receive can vary, depending on the task. <br />
+<h2>Cookies</h2>
+<p>Most of the staff will give cookies for suggestions, bug reports, abuse reports, being helpful, etc.<br />
+The amount of cookies you will receive can vary, depending on the task. <br />
 For example, accepted feature suggestion can be worth between 25-100 cookies, 
 whereas reporting abuse can reward you with up to 15 cookies.</p>
 
-<p><strong>Known ways to gain an staff item:</strong><br />
-All staff items can be bought for 100 cookies however some can also be obtained through other methods: <br />
-One Eyed Trouser Snake and Beaumerang can be obtained by DMing the respective owner or hanging in their channels.<br />
-Belong Blade can be earned randomly by being in the owner's iDM clan(Team-B) after the clan earns 50b or 25 members.<br />
-Or finally Belong Blade or KHonfound ring can be earned by suggesting a big feature for iDM.</p>
+<p>Staff items can be bought for 100 cookies.</p>
 
-<p>&nbsp;</p>
 <table class="table-sitems">
 <tr>
 <th style="width: 20%;">One Eyed Trouser Snake</td>
@@ -60,3 +56,5 @@ adminlist('allegra');
 <td><?php
 adminlist('support');
 ?></td>
+</tr>
+</table>

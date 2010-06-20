@@ -2,7 +2,7 @@
 
 <h3>Drop System</h3>
 Progress:
-<ul>
+<ul class="no">
 	<li><div class="progressbar"><div class="progressbar-completed" style="width:80%;"></div></div></li>
 </ul>
 
@@ -19,7 +19,7 @@ Infomation:
 
 <h3>Clan Hiscores</h3>
 Progress:
-<ul>
+<ul class="no">
 	<li><div class="progressbar"><div class="progressbar-completed" style="width:5%;"></div></div></li>
 </ul>
 
@@ -35,7 +35,7 @@ Infomation:
 
 <h3>Online Store</h3>
 Progress:
-<ul>
+<ul class="no">
 	<li><div class="progressbar"><div class="progressbar-completed" style="width:0%;"></div></div></li>
 </ul>
 

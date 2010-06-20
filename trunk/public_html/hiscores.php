@@ -31,16 +31,16 @@
 <?php
 
 if(isset($_POST['wins'])) {
-	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY wins DESC limit 500";
+	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY wins DESC limit 200";
 }
 elseif(isset($_POST['losses'])) {
-	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY losses DESC limit 500";
+	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY losses DESC limit 200";
 }
 elseif(isset($_POST['total'])) {
-	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY wins+losses DESC limit 500";
+	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY wins+losses DESC limit 200";
 }
 else {
-	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY money DESC limit 500";
+	$query = "SELECT * FROM user WHERE exclude = '0' AND banned = '0' ORDER BY money DESC limit 200";
 }
 
 $results = mysql_query($query);

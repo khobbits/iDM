@@ -2,6 +2,7 @@
 <table class="table-user">
 	<thead>
 		<tr>
+			<th>Cutlass of Corruption</th>
 			<th>Saradomin Godsword</th>
 			<th>Armadyl Godsword</th>
 			<th>Bandos Godsword</th>
@@ -12,12 +13,13 @@
 	</thead>
   <tbody>
 		<tr>
-			<td style="width: 20%;"><?=valuebool($result ['sgs'])?></td>
-			<td style="width: 16%;"><?=valuebool($result ['ags'])?></td>
-			<td style="width: 16%;"><?=valuebool($result ['bgs'])?></td>
-			<td style="width: 16%;"><?=valuebool($result ['zgs'])?></td>
-			<td style="width: 16%;"><?=valuebool($result ['dclaws'])?></td>
-			<td style="width: 16%;"><?=valuebool($result ['mudkip'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['corr'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['sgs'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['ags'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['bgs'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['zgs'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['dclaws'])?></td>
+			<td style="width: 12%;"><?=valuebool($result ['mudkip'])?></td>
 		</tr>
 	</tbody>
 </table>
@@ -56,7 +58,7 @@
 	</thead>
   <tbody>
 		<tr>
-			<td style="width: 25%;"><?=valuebool($result ['elshield'])?></td>
+			<td style="width: 50%;"><?=valuebool($result ['elshield'])?></td>
 		</tr>
 	</tbody>
 </table>

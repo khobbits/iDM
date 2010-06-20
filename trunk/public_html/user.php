@@ -40,6 +40,8 @@ if ($user == '') {
 			}
 		}
 	}
+	
+	
 	return;
 }
 
@@ -94,6 +96,7 @@ if (!$result || sizeof($result = mysql_fetch_assoc($result)) == 0) {
 			'zgs' => 0,
 			'dclaws' => 0,
 			'snow' => 0,
+			'corr' => 0,
 			'mudkip' => 0,
 			'wealth' => 0,
 			'specpot' => 0,
@@ -129,6 +132,7 @@ if (!$result || sizeof($result = mysql_fetch_assoc($result)) == 0) {
 		<li><a href="#tabs-1">User</a></li>
 		<li><a href="#tabs-2">Weapons</a></li>
 		<li><a href="#tabs-3">Items</a></li>
+		<li><a href="#tabs-4">Achievements</a></li>
 		<li><a href="/ajax/event-log.php?user=<?=$user?>">Recent Activity</a></li>
 
 	</ul>
@@ -145,6 +149,11 @@ if (!$result || sizeof($result = mysql_fetch_assoc($result)) == 0) {
 	<div id="tabs-3">
   <?
     include 'includes/u-item.php';
+  ?>
+	</div>
+	<div id="tabs-4">
+  <?
+    include 'includes/u-achiv.php';
   ?>
 	</div>
 </div>

@@ -150,31 +150,31 @@
     <tbody>
   		<tr class="odd">
         <td style="width: 20%;" title="Number of DM's and Stakes">Total DMs</td>
-  			<td style="width: 20%;"><?=$day['dms']?></td>
-  			<td style="width: 20%;"><?=($week['dms']+$day['dms'])?></td>
-  			<td style="width: 20%;"><?=($month['dms']+$day['dms'])?></td>
-  			<td style="width: 20%;"><?=($ever['dms']+$month['dms']+$day['dms'])?></td>
+  			<td style="width: 20%;"><?=number_format($day['dms'])?></td>
+  			<td style="width: 20%;"><?=number_format($week['dms']+$day['dms'])?></td>
+  			<td style="width: 20%;"><?=number_format($month['dms']+$day['dms'])?></td>
+  			<td style="width: 20%;"><?=number_format($ever['dms']+$month['dms']+$day['dms'])?></td>
   		</tr>
   		<tr class="even">
         <td style="width: 20%;">Wins</td>
-  			<td style="width: 20%;"><?=$day['wins']?></td>
-  			<td style="width: 20%;"><?=($week['wins']+$day['wins'])?></td>
-  			<td style="width: 20%;"><?=($month['wins']+$day['wins'])?></td>
-        <td style="width: 20%;"><?=($ever['wins']+$month['wins']+$day['wins'])?></td>
+  			<td style="width: 20%;"><?=number_format($day['wins'])?></td>
+  			<td style="width: 20%;"><?=number_format($week['wins']+$day['wins'])?></td>
+  			<td style="width: 20%;"><?=number_format($month['wins']+$day['wins'])?></td>
+        <td style="width: 20%;"><?=number_format($ever['wins']+$month['wins']+$day['wins'])?></td>
   		</tr>
   		<tr class="odd">
         <td style="width: 20%;">Losses</td>
-  			<td style="width: 20%;"><?=$day['losses']?></td>
-  			<td style="width: 20%;"><?=($week['losses']+$day['losses'])?></td>
-  			<td style="width: 20%;"><?=($month['losses']+$day['losses'])?></td>
-        <td style="width: 20%;"><?=($ever['losses']+$month['losses']+$day['losses'])?></td>
+  			<td style="width: 20%;"><?=number_format($day['losses'])?></td>
+  			<td style="width: 20%;"><?=number_format($week['losses']+$day['losses'])?></td>
+  			<td style="width: 20%;"><?=number_format($month['losses']+$day['losses'])?></td>
+        <td style="width: 20%;"><?=number_format($ever['losses']+$month['losses']+$day['losses'])?></td>
   		</tr>
   		<tr class="even">
         <td style="width: 20%;">Money</td>
-  			<td style="width: 20%;"><?=$day['money']?></td>
-  			<td style="width: 20%;"><?=($week['money']+$day['money'])?></td>
-  			<td style="width: 20%;"><?=($month['money']+$day['money'])?></td>
-        <td style="width: 20%;"><?=($ever['money']+$month['money']+$day['money'])?></td>
+  			<td style="width: 20%;"><abbr title="<?=number_format($day['money'])?>"><?=n2a($day['money'])?></abbr> gp</td>
+  			<td style="width: 20%;"><abbr title="<?=number_format($week['money']+$day['money'])?>"><?=n2a($week['money']+$day['money'])?></abbr> gp</td>
+  			<td style="width: 20%;"><abbr title="<?=number_format($month['money']+$day['money'])?>"><?=n2a($month['money']+$day['money'])?></abbr> gp</td>
+        <td style="width: 20%;"><abbr title="<?=number_format($ever['money']+$month['money']+$day['money'])?>"><?=n2a($ever['money']+$month['money']+$day['money'])?></abbr> gp</td>
   		</tr>
   	</tbody>
   </table>

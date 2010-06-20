@@ -12,13 +12,16 @@ function init($page) {
 	$pages = array (
 		"stats" => "stats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
 	    "user" => "user.php", "sitems" => "sitems.php", "clan" => "clan.php", "items" => "items.php",
-		"bts" => "bts.php"
+		"bts" => "bts.php", "bot-stats" => "bot-stats.php"
 	);
 
 	if ($page == 1) {
 		return 1;
 	} elseif (isset($pages [$page])) {
 		return $pages [$page];
+	} elseif ($page == 'account') {
+    include 'includes/a-session.php';
+		return 'account.php';
 	} else {
 		include 'includes/news.php';
 		news_init();
@@ -145,8 +148,8 @@ function getrank ($user, $column) {
 function event_type($num) {
 	if ($num == 1) return 'Win';
 	elseif ($num == 2) return 'Loss';
-	elseif ($num == 3) return 'Win Stake';
-	elseif ($num == 4) return 'Lose Stake';
+	elseif ($num == 3) return 'Won Stake';
+	elseif ($num == 4) return 'Lost Stake';
 	elseif ($num == 5) return 'Drop';
 	elseif ($num == 6) return 'Buy';
 	elseif ($num == 7) return 'Sell';
@@ -155,15 +158,15 @@ function event_type($num) {
 }
 
 function event_msg($num, $data) {
-	if ($num == 1) return "Beat $data";
-	elseif ($num == 2) return "Got beaten by $data";
-	elseif ($num == 3) return "Win $data Stake";
-	elseif ($num == 4) return "Lose $data in Stake";
+	if ($num == 1) return 'Defeated <a href="/u/'. urlencode($data) .'">'. htmlentities($data) .'</a>';
+	elseif ($num == 2) return 'Got defeated by <a href="/u/'. urlencode($data) .'">'. htmlentities($data) .'</a>';
+	elseif ($num == 3) return 'Won '. n2a($data) .' in Stake';
+	elseif ($num == 4) return 'Lost '. n2a($data) .' in Stake';
 	elseif ($num == 5) return "Won $data";
 	elseif ($num == 6) return "Bought $data";
 	elseif ($num == 7) return "Sold $data";
-	elseif ($num == 8) return "Recieved a $data penalty";
-	return "Clue scroll dropped $data";
+	elseif ($num == 8) return 'Recieved a '. n2a($data) .' penalty';
+	return 'Clue scroll dropped '. n2a($data);
 }
 
 
@@ -183,12 +186,155 @@ function time_since($date)
 	else return "$seconds secs ago";
 }
 
-
-
 function event_date($time) {
 	$date = date("m/d/y h:i:s", $time);
 	$timesince = time_since($time);
 	return "<abbr title=\"$timesince\">$date</abbr>";
+}
+
+
+function achiv($type, $num) {
+	if ($type == wins) {
+		if ($num > 5000) $rank = 5;
+		elseif ($num >= 3000) $rank = 4;
+		elseif ($num >= 2000) $rank = 3;
+		elseif ($num >= 1000) $rank = 2;
+		elseif ($num >= 500) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == losses) {
+		if ($num > 5000) $rank = 5;
+		elseif ($num >= 3000) $rank = 4;
+		elseif ($num >= 2000) $rank = 3;
+		elseif ($num >= 1000) $rank = 2;
+		elseif ($num >= 500) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == total) {
+		if ($num > 10000) $rank = 5;
+		elseif ($num >= 6000) $rank = 4;
+		elseif ($num >= 4000) $rank = 3;
+		elseif ($num >= 2000) $rank = 2;
+		elseif ($num >= 1000) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == money) {
+		if ($num > 100000000000) $rank = 5;
+		elseif ($num >= 50000000000) $rank = 4;
+		elseif ($num >= 20000000000) $rank = 3;
+		elseif ($num >= 2000000000) $rank = 2;
+		elseif ($num >= 500000000) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == cookies) {
+		if ($num > 250) $rank = 5;
+		elseif ($num >= 200) $rank = 4;
+		elseif ($num >= 150) $rank = 3;
+		elseif ($num >= 100) $rank = 2;
+		elseif ($num >= 50) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == specpots) {
+		if ($num > 250) $rank = 5;
+		elseif ($num >= 200) $rank = 4;
+		elseif ($num >= 150) $rank = 3;
+		elseif ($num >= 100) $rank = 2;
+		elseif ($num >= 50) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == pvp) {
+		if ($num > 1200) $rank = 5;
+		elseif ($num >= 600) $rank = 4;
+		elseif ($num >= 300) $rank = 3;
+		elseif ($num >= 150) $rank = 2;
+		elseif ($num >= 75) $rank = 1;
+		else $rank = "0";
+	}
+	elseif ($type == sitems) {
+		$rank = $num;
+	}
+	return "<div style=\"margin: 5px; background-color: ".aColor($rank)."; border: 1px solid #000000;\">".aNum($type,$rank)."</div>";
+}
+
+function aColor($num) {
+	if ($num == 1) return "#005B7F";
+	elseif ($num == 2) return "#CD0000";
+	elseif ($num == 3) return "#A67D3D";
+	elseif ($num == 4) return "#C0C0C0";
+	elseif ($num == 5) return "#DAA520";
+}
+
+function aCheck($num) {
+	if ($num == 1) return "&#10003";
+	else return "X";
+}
+
+function aNum($type, $num) {
+	if ($type == wins) {
+		if ($num == 5) $anum = "5000+ Achievement";
+		elseif ($num == 4) $anum = "3000+ Achievement";
+		elseif ($num == 3) $anum = "2000+ Achievement";
+		elseif ($num == 2) $anum = "1000+ Achievement";
+		elseif ($num == 1) $anum = "500+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == losses) {
+		if ($num == 5) $anum = "5000+ Achievement";
+		elseif ($num == 4) $anum = "3000+ Achievement";
+		elseif ($num == 3) $anum = "2000+ Achievement";
+		elseif ($num == 2) $anum = "1000+ Achievement";
+		elseif ($num == 1) $anum = "500+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == total) {
+		if ($num == 5) $anum = "10000+ Achievement";
+		elseif ($num == 4) $anum = "6000+ Achievement";
+		elseif ($num == 3) $anum = "4000+ Achievement";
+		elseif ($num == 2) $anum = "2000+ Achievement";
+		elseif ($num == 1) $anum = "1000+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == money) {
+		if ($num == 5) $anum = "100b+ Achievement";
+		elseif ($num == 4) $anum = "50b+ Achievement";
+		elseif ($num == 3) $anum = "20b+ Achievement";
+		elseif ($num == 2) $anum = "2b+ Achievement";
+		elseif ($num == 1) $anum = "500m+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == cookies) {
+		if ($num == 5) $anum = "250+ Achievement";
+		elseif ($num == 4) $anum = "200+ Achievement";
+		elseif ($num == 3) $anum = "150+ Achievement";
+		elseif ($num == 2) $anum = "100+ Achievement";
+		elseif ($num == 1) $anum = "50+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == specpots) {
+		if ($num == 5) $anum = "250+ Achievement";
+		elseif ($num == 4) $anum = "200+ Achievement";
+		elseif ($num == 3) $anum = "150+ Achievement";
+		elseif ($num == 2) $anum = "100+ Achievement";
+		elseif ($num == 1) $anum = "50+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == pvp) {
+		if ($num == 5) $anum = "1200+ Achievement";
+		elseif ($num == 4) $anum = "600+ Achievement";
+		elseif ($num == 3) $anum = "300+ Achievement";
+		elseif ($num == 2) $anum = "150+ Achievement";
+		elseif ($num == 1) $anum = "75+ Achievement";
+		else $anum = "No Achievement";
+	}
+	elseif ($type == sitems) {
+		if ($num == 5) $anum = "5 Staff Items";
+		elseif ($num == 4) $anum = "4 Staff Items";
+		elseif ($num == 3) $anum = "3 Staff Items";
+		elseif ($num == 2) $anum = "2 Staff Items";
+		elseif ($num == 1) $anum = "1 Staff Items";
+		else $anum = "0 Staff Items";
+	}
+	return $anum;
 }
 
 ?>
