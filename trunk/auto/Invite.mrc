@@ -66,23 +66,9 @@ on *:JOIN:#:{
       return
     }
     if (# != #idm && # != #idm.Staff) || ($me == iDM) {
-      var %dmrank $ranks(money,$nick)
-      db.hget >staff admins $address($nick,3)
-      if ($hget(>staff,rank) == 4) {
-        msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick has joined the channel.
-      }
-      elseif ($hget(>staff,rank) == 3) {
-        msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick has joined the channel.
-      }
-      elseif ($hget(>staff,rank) == 2) {
-        msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick has joined the channel.
-      }
-      elseif ($hget(>staff,rank) == 1) {
-        msgsafe # $logo(VIP) $nick has joined the channel.
-      }
-      elseif (%dmrank <= 12) {
-        if ($isbanned($nick)) { halt }
-        msgsafe # $logo(TOP12) $nick is ranked $ord(%dmrank) in the top 12.
+      showtitle $nick $chan
+      if ($hget(>staff,rank) >= 2) {
+        noop
       }
       elseif ((# == #idm.support) || (# == #idm.help)) {
         logcheck $nick $address $chan supportjointitle
@@ -100,26 +86,30 @@ alias supportjointitle {
 }
 
 
-ON $*:TEXT:/^[!@.]title$/Si:#: {
+on $*:TEXT:/^[!@.]title$/Si:#: {
   if (# != #idm && # != #idm.Staff) || ($me == iDM) {
     if ($db.get(user,banned,$nick) == 1) { halt }
-    var %dmrank $ranks(money,$nick)
-    db.hget >staff admins $lower($address($nick,3))
-    if ($hget(>staff,rank) == 4) {
-      msgsafe # $logo(ADMIN) $iif($hget(>staff,title),$v1,Bot Admin) $nick has joined the channel.
-    }
-    elseif ($hget(>staff,rank) == 3) {
-      msgsafe # $logo(SUPPORT) $iif($hget(>staff,title),$v1,Bot Support) $nick has joined the channel.
-    }
-    elseif ($hget(>staff,rank) == 2) {
-      msgsafe # $logo(HELPER) $iif($hget(>staff,title),$v1,Bot Helper) $nick has joined the channel.
-    }
-    elseif ($hget(>staff,rank) == 1) {
-      msgsafe # $logo(VIP) $nick has joined the channel.
-    }
-    elseif (%dmrank <= 12) {
-      msgsafe # $logo(TOP12) $nick is ranked $ord(%dmrank) in the top 12.
-    }
+    showtitle $nick $chan
+  }
+}
+
+alias showtitle {   
+  var %dmrank $ranks(money,$1)
+  db.hget >staff admins $lower($address($1,3))
+  if ($hget(>staff,rank) == 4) {
+    msgsafe $2 $logo(ADMIN) $iif($hget(>staff,title),$v1) $1 has joined the channel.
+  }
+  elseif ($hget(>staff,rank) == 3) {
+    msgsafe $2 $logo(SUPPORT) $iif($hget(>staff,title),$v1) $1 has joined the channel.
+  }
+  elseif ($hget(>staff,rank) == 2) {
+    msgsafe $2 $logo(HELPER) $iif($hget(>staff,title),$v1) $1 has joined the channel.
+  }
+  elseif ($hget(>staff,rank) == 1) {
+    msgsafe $2 $logo(VIP) $iif($hget(>staff,title),$v1) $1 has joined the channel.
+  }
+  elseif (%dmrank <= 12) {
+    msgsafe $2 $logo(TOP12) $1 is ranked $ord(%dmrank) in the top 12.
   }
 }
 
