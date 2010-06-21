@@ -20,6 +20,7 @@ on $*:TEXT:/^[!.]autoidm/Si:#: {
 on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
+    who $chan
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
     db.set admins name $address($2,3) support
