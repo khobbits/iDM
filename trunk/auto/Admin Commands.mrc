@@ -23,6 +23,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff,#idm.support: {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msg $chan $s2($2) has been added to the support staff list with $address($2,3)
     db.set admins name $address($2,3) support
+    db.set admins title $address($2,3) Bot Support
     db.set admins rank $address($2,3) 3
     db.set admins item $address($2,3) Supporter
   }
@@ -33,7 +34,7 @@ on $*:TEXT:/^[!.]addhelper .*/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addhelper <nick> | halt }
     msg $chan $s2($2) has been added to the helper staff list with $address($2,3)
-    db.set admins position $address($2,3) helper
+    db.set admins title $address($2,3) Bot Helper
     db.set admins rank $address($2,3) 2
   }
 }
@@ -43,7 +44,6 @@ on $*:TEXT:/^[!.]addvip .*/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addvip <nick> | halt }
     msg $chan $s2($2) has been added to the vip list with $address($2,3)
-    db.set admins position $address($2,3) vip
     db.set admins rank $address($2,3) 1
   }
 }
