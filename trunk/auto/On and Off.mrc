@@ -3,13 +3,13 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
-    if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
+    if ($hget($chan)) { notice $nick $logo(ERROR) Please end the current DM before you turn on or off weapons | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
     else enablec $remove($2,$chr(32)) $nick #
   }
   elseif ($1 == !off || $1 == .off) {
-    if (%p2 [ $+ [ # ] ]) { notice $nick $logo(ERROR) You can't use this command while people are DMing. | halt }
+    if ($hget($chan)) { notice $nick $logo(ERROR) Please end the current DM before you turn on or off weapons | halt }
     if (!$2) { notice $nick $logo(ERROR) To use !on/off, type $1 attack,attack,attack,etc. Or, you can type $1 -h (heal attacks), $1 -L (list). | halt }
     if ($2 == -L) { notice $nick $displayoff($chan) | halt }
     else disablec $remove($2,$chr(32)) $nick #
@@ -131,7 +131,7 @@ on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
 
 on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-   if (!$islogged($nick,$address,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -147,7 +147,7 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
 
 on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-   if (!$islogged($nick,$address,3)) {
+  if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
@@ -162,4 +162,3 @@ on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
   }
   notice $nick $logo(Signature) %result
 }
-
