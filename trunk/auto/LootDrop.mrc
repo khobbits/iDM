@@ -142,7 +142,7 @@ alias rundrops {
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
 
-    if ((%price == 0 || %price > 1000000) && %item != Nothing) {
+    if ((%price == 0 || %price > 5000000) && %item != Nothing) {
       userlog drop $2 %item
     }
 

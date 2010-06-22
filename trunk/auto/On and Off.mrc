@@ -45,59 +45,61 @@ alias isdisabled {
 }
 
 alias enablec {
-  if ($2 !isop $3) && !($db.get(admins,rank,$address($2,3)) > 2) { halt }
-  tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
-  var %notice
-  if ($1 == -h) {
-    var %i 1
-    while (%i <= $dmg(list,0)) {
-      if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
-      inc %i
+  if ($2 isop $3) || ($db.get(admins,rank,$address($2,3)) > 2) { 
+    tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
+    var %notice
+    if ($1 == -h) {
+      var %i 1
+      while (%i <= $dmg(list,0)) {
+        if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
+        inc %i
+      }
+      var %notice %notice Healing attacks are now on in $3 $+ .
     }
-    var %notice %notice Healing attacks are now on in $3 $+ .
+    elseif (($1 == all) || ($1 == -a)) {
+      db.remove settings $3
+      var %notice %notice All attacks have been turned on in $3 $+ .
+    }
+    elseif ($attack($1)) {
+      db.remove settings $3 setting $1
+      var %notice %notice Enabled $1 in $3
+    }
+    elseif ($1 == staking) {
+      db.remove settings $3 setting $1
+      var %notice %notice Enabled $1 in $3  
+    }
+    else {
+      var %notice Error: Could not find attack to enable.
+    }
+    notice $2 $displayoff($3) %notice
   }
-  elseif (($1 == all) || ($1 == -a)) {
-    db.remove settings $3
-    var %notice %notice All attacks have been turned on in $3 $+ .
-  }
-  elseif ($attack($1)) {
-    db.remove settings $3 setting $1
-    var %notice %notice Enabled $1 in $3
-  }
-  elseif ($1 == staking) {
-    db.remove settings $3 setting $1
-    var %notice %notice Enabled $1 in $3  
-  }
-  else {
-    var %notice Error: Could not find attack to enable.
-  }
-  notice $2 $displayoff($3) %notice
 }
 
 alias disablec {
-  if ($2 !isop $3) && !($db.get(admins,rank,$address($2,3)) <= 2)) { halt }
-  tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
-  var %notice
-  if ($1 == -h) {
-    var %i 1
-    while (%i <= $dmg(list,0)) {
-      if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
-      inc %i
+  if ($2 isop $3) || ($db.get(admins,rank,$address($2,3)) > 2) { 
+    tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
+    var %notice
+    if ($1 == -h) {
+      var %i 1
+      while (%i <= $dmg(list,0)) {
+        if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
+        inc %i
+      }
+      var %notice %notice Healing attacks are now off.
     }
-    var %notice %notice Healing attacks are now off.
+    elseif ($attack($1)) {
+      db.set settings setting $3 $1
+      var %notice %notice Disabled $1 in $3
+    }
+    elseif ($1 == staking) {
+      db.set settings setting $3 $1
+      var %notice %notice Disabled $1 in $3
+    }
+    else {
+      var %notice %notice Error: Could not find attack to disable.
+    }
+    notice $2 $displayoff($3) %notice
   }
-  elseif ($attack($1)) {
-    db.set settings setting $3 $1
-    var %notice %notice Disabled $1 in $3
-  }
-  elseif ($1 == staking) {
-    db.set settings setting $3 $1
-    var %notice %notice Disabled $1 in $3
-  }
-  else {
-    var %notice %notice Error: Could not find attack to disable.
-  }
-  notice $2 $displayoff($3) %notice
 }
 
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
