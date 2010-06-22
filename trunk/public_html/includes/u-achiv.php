@@ -143,5 +143,4 @@ if (!$achiv || sizeof($achiv = mysql_fetch_assoc($achiv)) == 0) {
 		</tr>
 	</table></td>
 </tr></table>
-
 </div>

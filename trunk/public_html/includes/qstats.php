@@ -29,7 +29,7 @@ for ($a = 0; $a < 5; $a++) {
 	$count = number_format(mysql_result($result, $a, "count"));
 	echo "<li title=\"$count\">" . $item . "</li>\n";
 }
-print '</ul><br />
+print '</ul>
 <p>You can hover over most numbers and columns for more info.</p>';
 
 ?>

@@ -36,8 +36,13 @@ function verifySession() {
 	}
 	elseif(isset($_SESSION['code'])) {
 		$sql = "SELECT user, account, time, ip_address,
-							TIMESTAMPDIFF(MINUTE, time, NOW()) AS diff
-					  FROM urlmap WHERE user = '$_SESSION[code]' AND session = '$sessionID' LIMIT 1";
+							TIMESTAMPDIFF(MINUTE, time, NOW()) AS diff, rank
+					  FROM urlmap
+						LEFT JOIN(
+						  SELECT user AS hostmask, rank
+						  FROM admins
+						) a USING(hostmask)
+						WHERE user = '$_SESSION[code]' AND session = '$sessionID' LIMIT 1";
 		$result = mysql_query($sql);
 		if(!$result || mysql_num_rows($result) == 0) {
 		  destroySession();

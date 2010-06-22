@@ -10,9 +10,9 @@ function init($page) {
 	if (!mysql_select_db($dbname)) die("Unable to select database");
 
 	$pages = array (
-		"stats" => "stats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
+		"dmstats" => "dmstats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
 	    "user" => "user.php", "sitems" => "sitems.php", "clan" => "clan.php", "items" => "items.php",
-		"bts" => "bts.php", "bot-stats" => "bot-stats.php"
+		"bts" => "bts.php", "userstats" => "userstats.php", "u-help" => "includes/u-help.php"
 	);
 
 	if ($page == 1) {
@@ -253,20 +253,20 @@ function achiv($type, $num) {
 	elseif ($type == sitems) {
 		$rank = $num;
 	}
-	return "<div style=\"margin: 5px; background-color: ".aColor($rank)."; border: 1px solid #000000;\">".aNum($type,$rank)."</div>";
+	return "<div style=\"margin: 5px; background-color: ".aColor($rank)."; border: 1px solid #000000; color: #000;\">".aNum($type,$rank)."</div>";
 }
 
 function aColor($num) {
-	if ($num == 1) return "#005B7F";
-	elseif ($num == 2) return "#CD0000";
-	elseif ($num == 3) return "#A67D3D";
-	elseif ($num == 4) return "#C0C0C0";
-	elseif ($num == 5) return "#DAA520";
+	if ($num == 1) return "#B5E3B5";
+	elseif ($num == 2) return "#90D590";
+	elseif ($num == 3) return "#649064";
+	elseif ($num == 4) return "#4F724F";
+	elseif ($num == 5) return "#3A543A";
 }
 
 function aCheck($num) {
 	if ($num == 1) return "&#10003";
-	else return "X";
+	else return " ";
 }
 
 function aNum($type, $num) {

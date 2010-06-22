@@ -9,7 +9,7 @@ if ($user == '') { die("No user defined"); }
 
 $query = "(SELECT * FROM user_log WHERE user = '$user')
 UNION (SELECT * FROM user_log_archive WHERE user = '$user')
-ORDER BY date DESC LIMIT 2000";
+ORDER BY date DESC LIMIT 1000";
 $result = mysql_query($query);
 
 if(!$result) { die ("No user found"); }

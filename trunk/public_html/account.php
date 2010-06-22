@@ -23,6 +23,15 @@ if ($session['status'] == TRUE) {
 			case 'search':
 			  include 'includes/a-channelsearch.php';
 			  break;
+			case 'sig':
+			  include 'includes/a-sig.php';
+			  break;
+			case 'cname':
+			  include 'includes/a-username.php';
+			  break;
+			case 'cookie':
+			  include 'includes/a-cookies.php';
+			  break;
 		}
 	}
 	else {

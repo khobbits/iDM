@@ -50,7 +50,7 @@ if (typeof jQuery == 'undefined')
     <div style="padding: 10px;"><? displayContent($page)?></div>
   </div>  <!-- End Content -->
 </div>  <!-- End Container -->
-<p>&copy; 2008-2010 KHobbits - The website and the implementation of the 
+<p align="center">&copy; 2008-2010 KHobbits - The website and the implementation of the 
 concept described within are copyright to KHobbits and the iDM 
 Group.</p>
 </body>

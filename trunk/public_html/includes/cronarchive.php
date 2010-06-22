@@ -73,8 +73,8 @@ function archive_user_log_total () {
 
     // Define the sql to update the tables
     $sql = "INSERT INTO `user_log_total`
-							(SELECT user, (SUM(IF(type=1, 1, 0)) + SUM(IF(type=3, 1, 0))) AS wins,
-								(SUM(IF(type=2, 1, 0)) + SUM(IF(type=4, 1, 0))) AS losses,
+							(SELECT user, SUM(IF(type=1, 1, 0)) AS wins,
+								SUM(IF(type=2, 1, 0)) AS losses,
 								(SUM(IF(type=3, data, 0)) - SUM(IF(type=4, data, 0)) +
 									SUM(IF(type=5, IF(LOCATE(' gp', data), SUBSTRING_INDEX(data, ' gp', 1), 0), 0)) -
 									SUM(IF(type=8, data, 0)) + SUM(IF(type=9, data, 0))
