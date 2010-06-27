@@ -143,6 +143,7 @@ alias damage {
       $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
       var %msg %msg and 09HEALING
     }
+    else { var %heal 0 }
   }
   var %poisoner $poisoner($3)
   if ($gettok(%poisoner,1,32)) {
