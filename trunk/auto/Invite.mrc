@@ -1,17 +1,18 @@
 on *:INVITE:#: {
-  db.hget >blist blist $lower($chan)
   if ($me != iDM) { halt }
-  if (%invig. [ $+ [ # ] ]) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if (%inv.spam [ $+ [ $nick ] ]) { halt }
-  if ($hget(>invite,#)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
+  if ($hget(>invite,$nick)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$nick).unset seconds. | halt }
+  if ($hget(>invite,$chan)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
+  if ($isbanned($nick)) { halt }
+  db.hget >blist blist $lower($chan)
   if ($hget(>blist,reason)) {
     notice $nick $logo(BANNED) Channel has been blacklisted. Reason: $hget(>blist,reason) By: $hget(>blist,who)
     inc -u60 %inv.spam [ $+ [ $nick ] ]
     halt
   }
   sbnc joinbot $chan $nick
-  hadd -mu60 >invite # 1
+  hadd -mu60 >invite $chan 1
+  hadd -mu60 >invite $nick 1
 }
 
 alias botsonline {
@@ -177,7 +178,7 @@ alias bottag {
   else { return $remove($1,idm[,$chr(93)) | halt }
 }
 
-Raw 470:*: {
+raw 470:*: {
   msg #iDM.Staff $logo(Link) I was invited to $3 but was forced into $17
   timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
   db.set blist who $3 AUTO

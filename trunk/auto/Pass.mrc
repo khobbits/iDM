@@ -12,6 +12,7 @@ alias msgauth {
   else {
     auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.
   }
+  if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit #idm.support }
 }
 
 ;## These methods deal with actually logging in and out on command
@@ -161,6 +162,7 @@ on $*:TEXT:/^[!@.]account/Si:#: {
 ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if ($isbanned($nick)) { halt }
   tokenize 32 $1 $iif($2,$2-,$nick)
   var %sql SELECT * FROM user_log WHERE user = $db.safe($2) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($2) ORDER BY date DESC LIMIT 8
   var %res $db.query(%sql)

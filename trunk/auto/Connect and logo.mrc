@@ -71,6 +71,7 @@ alias msgsafe {
 
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($hget($chan,p2)) {
     $iif($left($1,1) == @,msgsafe #,notice $nick) $status($chan)
   }

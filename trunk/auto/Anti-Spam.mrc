@@ -22,19 +22,6 @@ on *:TEXT:*:?:{
   }
 }
 
-on *:INVITE:#: {
-  if ($me != iDM) { halt }
-  if (%invig. [ $+ [ # ] ]) { halt }
-  $iif(%cmdspami. [ $+ [ # ] ],inc %cmdspami. [ $+ [ # ] ],inc -u3 %cmdspami. [ $+ [ # ] ])
-  $iif(%cmdspami. [ $+ [ $nick ] ],inc %cmdspami. [ $+ [ $nick ] ],inc -u3 %cmdspami. [ $+ [ $nick ] ])
-  if (%cmdspami. [ $+ [ # ] ] >= 3) || (%cmdspami. [ $+ [ $nick ] ] >= 3) {
-    msgsafe $secondchan $logo(SPAM) $s1(Invite) spam detected by $s2($nick) $+ . $s1(#) & $s1($nick) added to ignore for three minutes.
-    notice $nick $logo(SPAM) $s1($chan) is now added to ignore for $s2(THREE minutes) due to invite spam.
-    ignore -u180 $nick 3
-    set -u180 %invig. [ $+ [ # ] ] true
-  }
-}
-
 alias ignoresync {
   var %ti $ctime
   .ignore -r
@@ -46,7 +33,7 @@ alias ignoresync {
   }
   db.query_end %result
 
-  var %sql = SELECT * FROM `admins` where `rank` > `4`
+  var %sql = SELECT * FROM `admins` where `rank` > `3`
   var %result = $db.query(%sql)
   while ($db.query_row_data(%result,user)) {
     var %user = $v1

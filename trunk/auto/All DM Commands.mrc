@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!.]\w/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   var %attcmd $right($1,-1)
   if ($hget($chan)) && ($nick == $hget($chan,p1) && ($hget($chan,p2))) {
     var %p2 $hget($chan,p2)
@@ -207,6 +208,16 @@ alias hpbar {
   if ($1 isnum 46-50) return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $left($1,1) $+ 0,04 $+ $right($1,1) $+ 4 $+ $str($chr(46),9) $+ 
   if ($1 < 46) return HP 3,3 $+ $str($chr(58),$ceil($calc( $1 /5)))) $+ 4,4 $+ $str($chr(46),$calc(9 - $ceil($calc( $1 /5))))) $+ 00 $+ $right($chr(32) $+ $iif($1 == 0,KO,$v1),2) $+ 4 $+ $str($chr(46),9) $+ 
   return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $1 $+ 3 $+ $str($chr(58),$ceil($calc(( $1 /5) -11)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /5))))) $+ 
+}
+
+alias hpbar2 {
+  if (-* iswm $1) { tokenize 32 0 }
+  elseif ($1 !isnum 0-500) { tokenize 32 500 }
+  if ($1 isnum 225-250) return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $left($1,1) $+ 0,04 $+ $right($1,2) $+ 4 $+ $str($chr(46),8) $+ 
+  if ($1 isnum 250-275) return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $left($1,2) $+ 0,04 $+ $right($1,1) $+ 4 $+ $str($chr(46),8) $+ 
+  if ($1 < 100) return HP 3,3 $+ $str($chr(58),$ceil($calc( $1 /25)))) $+ 4,4 $+ $str($chr(46),$calc(10 - $ceil($calc( $1 /25))))) $+ 00 $+ $right($chr(32) $+ $iif($1 == 0,KO,$v1) ,2) $+ 4 $+ $str($chr(46),8) $+ 
+  if ($1 < 225) return HP 3,3 $+ $str($chr(58),$ceil($calc( $1 /25)))) $+ 4,4 $+ $str($chr(46),$calc(9 - $ceil($calc( $1 /25))))) $+ 00 $+ $right($chr(32) $+ $iif($1 == 0,KO,$v1) ,3) $+ 4 $+ $str($chr(46),8) $+ 
+  return HP 3,3 $+ $str($chr(58),9) $+ 00 $+ $1 $+ 3 $+ $str($chr(58),$ceil($calc(( $1 /25) -12)))) $+ 4,4 $+ $str($chr(46),$calc(20 - $ceil($calc( $1 /25))))) $+ 
 }
 
 alias accuracy {

@@ -134,6 +134,7 @@ alias isweapon {
 
 on $*:TEXT:/^[!@.]max/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$2) { $iif($left($1,1) == @,msgsafe #,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
   if (!$attack($2)) {
@@ -162,13 +163,24 @@ alias totalhit {
 
 on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if (!$3) { $iif($left($1,1) == @,msgsafe #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
   if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
 
-  var %lowchance = $calc(($gettok($dmg($2),1,44)) /100)
-  var %midchance = $calc(($gettok($dmg($2),2,44) - $gettok($dmg($2),1,44)) /100)
-  var %highchance = $calc((100 - $gettok($dmg($2),2,44)) /100)
+  var %hits $dmg($2,hits)
+  var %targ 1
+  var %i = 1
+  while (%i < $numtok(%hits,45)) {
+    inc %i
+    if ($gettok(%hits,%i,45) == 1) { inc %targ 1 }
+    else { inc %targ $calc(1 / $gettok(%hits,%i,45)))) }
+  }
+  var %targ = $ceil( $calc($3 / %targ) )
+
+  var %lowchance = $calc(($gettok($dmg($2,0),1,44)) /100)
+  var %midchance = $calc(($gettok($dmg($2,0),2,44) - $gettok($dmg($2),1,44)) /100)
+  var %highchance = $calc((100 - $gettok($dmg($2,0),2,44)) /100)
 
   var %lowbot = $gettok($dmg($2, 1),1,44)
   var %lowtop = $gettok($dmg($2, 1),2,44)
@@ -176,18 +188,18 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   var %midtop = $gettok($dmg($2, 2),2,44)
   var %highbot = $gettok($dmg($2, 3),1,44)
   var %hightop = $gettok($dmg($2, 3),2,44)
-
-  if ($3 <=  %lowtop) {
-    if ($3 >= %lowbot) var %lowchance = $calc(((%lowtop - $3 +1) / (%lowtop - %lowbot +1 )) * %lowchance)
+  
+  if (%targ <=  %lowtop) {
+    if (%targ >= %lowbot) var %lowchance = $calc(((%lowtop - %targ +1) / (%lowtop - %lowbot +1 )) * %lowchance)
   }
   else {  var %lowchance = 0 }
-  if ($3 <=  %midtop) {
-    if ($3 >= %midbot) var %midchance = $calc(((%midtop - $3 +1) / (%midtop - %midbot +1 )) * %midchance)
+  if (%targ <=  %midtop) {
+    if (%targ >= %midbot) var %midchance = $calc(((%midtop - %targ +1) / (%midtop - %midbot +1 )) * %midchance)
   }
   else { var %midchance = 0 }
-  if ($3 <= %hightop) {
-    if ($3 >= %highbot) var %highchance = $calc(((%hightop - $3 +1) / (%hightop - %highbot +1 )) * %highchance)
+  if (%targ <= %hightop) {
+    if (%targ >= %highbot) var %highchance = $calc(((%hightop - %targ +1) / (%hightop - %highbot +1 )) * %highchance)
   }
   else { var %highchance = 0 }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) There is a $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $s1($3) or higher each hit without bonuses.  Use !max $2 to check bonuses and special infomation.
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) There is a $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $s1($3 $+ +) without bonuses.  Use !max $2 to check bonuses and special infomation.
 }

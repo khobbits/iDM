@@ -1,4 +1,5 @@
 on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
+  if ($isbanned($nick)) { halt }
   if (# != #idm.dev) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }

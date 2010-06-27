@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!.](on|off).*/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
@@ -104,6 +105,7 @@ alias disablec {
 
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(COMMANDS) $&
     $s2(Account) $chr(91) $+ $s1(!money) $+ , $s1(!equip) $+ , $s1(!top/wtop/ltop N) $+ , $s1(!dmrank nick/N) $+ $chr(93) $&
     $s2(Clan) $chr(91) $+ $s1(!startclan name) $+ , $s1(!addmem/delmem nick) $+ , $s1(!joinclan name) $+ , $s1(!dmclan nick) $+ , $s1(!leaveclan) $+ , $s1(!share on/off) $+ $chr(93) $&
@@ -118,49 +120,18 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
 
 on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's website: $s2(http://idm-bot.com/)
 }
 
 on $*:TEXT:/^[!@.](dm)?rules$/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.idm-bot.com/rules)
 }
 
 on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
-}
-
-on $*:TEXT:/^[!@.](set)?idm(sig|profile)(link|links|hyperlink)/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,$address,3)) {
-    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
-    halt
-  }
-  tokenize 32 $strip($2)
-  if (http://*.*/* !iswm $1) { var %result Please give a valid link including 'http://' }
-  else {
-    db.set user link $nick $1
-    var %result Updated profile link, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1)
-  }
-  notice $nick $logo(Signature) %result
-}
-
-
-on $*:TEXT:/^[!@.](set)?idm(sig|profile)(pic|pics|picture)?/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if (!$islogged($nick,$address,3)) {
-    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
-    halt
-  }
-  tokenize 32 $strip($2)
-  if ((http://*.imageshack.us/* !iswm $1) && (http://*.photobucket.com/* !iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command.  Max size: 500x160.  Large images may be removed. }
-  elseif ((*.png !iswm $1) && (*.jpg !iswm $1)) { var %result To set a profile picture you must give a link to a png or jpg. }
-  elseif ((http://*.*.imageshack.us/* iswm $1) || (http://*.*.photobucket.com/* iswm $1)) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  elseif (? isin $1) { var %result To set a profile picture upload an image to imageshack and use the Direct Link with this command. }
-  else {
-    db.set user image $nick $1
-    var %result Updated profile image, visit your profile at: http://idm-bot.com/u/ $+ $webstrip($nick,1) - Use !idmsiglink to set a link on this image.
-  }
-  notice $nick $logo(Signature) %result
 }

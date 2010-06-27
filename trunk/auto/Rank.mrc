@@ -1,5 +1,6 @@
 on $*:TEXT:/^[!@.]top/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
@@ -11,6 +12,7 @@ on $*:TEXT:/^[!@.]top/Si:#: {
 
 on $*:TEXT:/^[!@.]wtop/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
@@ -21,6 +23,7 @@ on $*:TEXT:/^[!@.]wtop/Si:#: {
 
 on $*:TEXT:/^[!@.]ltop/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
@@ -42,7 +45,7 @@ alias toplist {
   ; $2 = number to show
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
-  var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = 0 AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
+  var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
 
   var %result = $db.query(%sql)
   while ($db.query_row(%result,>row)) {
@@ -61,6 +64,7 @@ alias toplist {
 on $*:TEXT:/^[!@.]dmrank/Si:#: {
   tokenize 32 $1- $nick
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   if ($2 isnum) {
@@ -88,8 +92,24 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
 }
 
 alias isbanned {
-  if ($db.get(user,banned,$1) == 1) return 4 [Account Banned]
+  if ($0 != 1) { putlog Error: missing param $isbanned() }
+  if ($checkisbanned($1) == 1) {
+    hadd -mu120 >banned $1 1
+    return 4 [Account Banned]
+  }
   return
+}
+
+alias checkisbanned {
+  if ($hget(>banned,$1) != $null) { return $v1 }
+  elseif ($db.get(user,banned,$1) == 1) {
+    hadd -mu120 >banned $1 1
+    return 1
+  }
+  else {
+    hadd -mu30 >banned $1 0
+    return 0
+  }
 }
 
 alias acc-stat {
