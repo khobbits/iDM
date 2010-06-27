@@ -33,7 +33,7 @@ alias ignoresync {
   }
   db.query_end %result
 
-  var %sql = SELECT * FROM `admins` where `rank` > `3`
+  var %sql = SELECT * FROM `admins` WHERE `rank` > '4'
   var %result = $db.query(%sql)
   while ($db.query_row_data(%result,user)) {
     var %user = $v1

@@ -85,7 +85,7 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
     else { notice $nick $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
     if (?r* iswm $1) {
-      db.exec UPDATE `user` SET banned = 0 WHERE user = $db.safe($2)
+      db.exec UPDATE `user` SET banned = '0' WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) {
         db.remove ilist $2
         notice $nick Restored account $2 to its original status.
@@ -95,7 +95,7 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   }
   else {
     if (!$3) { notice $nick You need to supply a reason when suspending.  Syntax: !(r)suspend <nick> [reason]. | halt }
-    db.exec UPDATE `user` SET banned = 1 WHERE user = $db.safe($2)
+    db.exec UPDATE `user` SET banned = '1' WHERE user = $db.safe($2)
     if ($mysql_affected_rows(%db) !== -1) {
       db.set ilist who $2 $nick
       db.set ilist reason $2 $3-

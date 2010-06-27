@@ -181,6 +181,11 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
 }
 
 alias whichitem {
+  if ($db.get(admins,name,$address($nick,3))) return $v1
+  else return 0
+}
+
+alias whichitem-old {
   if ($1 == Belongtome) { return belong }
   if ($1 == Allegra || $1 == Strychnine) { return allegra }
   if ($1 == Beau) { return beau }
