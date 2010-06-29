@@ -91,6 +91,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   if ($isbanned($nick)) { halt }
   var %clueno $db.get(equip_item,clue,$nick)
   if (%clueno == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
+  if ($hget($nick)) { notice $nick $logo(ERROR) Please wait till you are out of the DM before you solve your clue. | halt }
   if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
   var %combined 0, %chance $r(100,1000)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3

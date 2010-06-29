@@ -11,7 +11,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
 }
 
 on *:PART:#: {
-  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32)) {
+  if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
@@ -24,7 +24,7 @@ on *:PART:#: {
 }
 
 on *:QUIT: {
-  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32)) {
+  if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
@@ -37,7 +37,7 @@ on *:QUIT: {
 }
 
 on *:KICK:#: {
-  if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.help #idm.support #tank #istake,#,32) && ($knick != $me)) {
+  if ($nick(#,0) < 5) && (!$no-part(#) && ($knick != $me)) {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }

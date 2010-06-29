@@ -61,7 +61,7 @@ on *:JOIN:#:{
     }
   }
   else {
-    if ($nick(#,0) < 5) && (!$istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies,#,32)) {
+    if ($nick(#,0) < 5) && (!$no-part(#)) {
       cancel #
       part # Parting channel. Need 5 or more people to have iDM.
       return
@@ -115,7 +115,7 @@ alias showtitle {
 }
 
 alias limit5 {
-  if ($istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies,$1,32)) { halt }
+  if ($no-part($1)) { halt }
   if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %raw322 [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msgsafe $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %raw322 [ $+ [ $1 ] ]
@@ -128,10 +128,6 @@ alias scanbots {
     if ($istok($botnames,$nick($1,%a),46)) && ($nick($1,%a) != $me) {
       part $1 Bot already in channel. ( $+ $nick($1,%a) $+ )
       halt
-    }
-    if (Gwi[**] iswm $nick($1,%a)) {
-      part $1 $logo(ERROR) Gwi bots have many similiar commands which causes conflicts with iDM so please part Gwi before re-inviting iDM
-      halt 
     }
     inc %a
   }
@@ -183,4 +179,8 @@ raw 470:*: {
   timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
   db.set blist who $3 AUTO
   db.set blist reason $3 Channel $3 linked to $17
+}
+
+alias no-part {
+  if ($istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies #idm.dev,$1,32)) return $true
 }
