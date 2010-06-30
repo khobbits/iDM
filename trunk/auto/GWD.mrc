@@ -146,7 +146,8 @@ alias autoidm.start {
   var %winloss $winloss(%nick,%p1,$autoidm.acc($2))
   var %winlossp1 $gettok(%winloss,1,45)
   var %winlossp2 $gettok(%winloss,2,45)
-  msgsafe $1 $logo(DM) $s1(%nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($hget($1,p1)) gets the first move.
+  var %bonus $ceil($calc( ($hget(%p1,wins) / 1000 ) + ( $hget(%p1,aikills) / 50 ) ))
+  msgsafe $1 $logo(DM) $s1(%nick) %winlossp1 (+ $+ %bonus) has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($hget($1,p1)) gets the first move.
   if ($hget($1,p1) == %nick) autoidm.turn $1
   else { timerc $+ $1 1 60 autoidm.waiting $1 }
 }
