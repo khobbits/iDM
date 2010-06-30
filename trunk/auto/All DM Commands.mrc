@@ -263,6 +263,12 @@ alias hit {
 
   if ($dmg($1,atkbonus) == 0) { var %atk 0 }
   if ($dmg($1,defbonus) == 0) { var %def 1 }
+  
+   if (<iDM>* iswm $2) {
+     var %atkinc $calc( ( $hget($3,wins) / 10000 ) + ( $hget($3,aikills) / 1000 ) )
+     msg #idm.dev calc( ( $hget($3,wins) / 10000 ) + ( $hget($3,aikills) / 1000 ) ) = %atkinc
+     incr %atk %atkinc
+   }
 
   ; ## OVERRIDE
   if ($1 == cbow) && (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }
