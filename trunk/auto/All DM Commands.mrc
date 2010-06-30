@@ -265,8 +265,8 @@ alias hit {
   if ($dmg($1,defbonus) == 0) { var %def 1 }
   
    if (<iDM>* iswm $2) {
-     var %atkinc $calc( ( $hget($3,wins) / 10000 ) + ( $hget($3,aikills) / 1000 ) )
-     msg #idm.dev calc( ( $hget($3,wins) / 10000 ) + ( $hget($3,aikills) / 1000 ) ) = %atkinc
+     var %atkinc $calc( ( $hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 100 ) )
+     msg #idm.dev calc( ( $hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 100 ) ) = %atkinc
      incr %atk %atkinc
    }
 
