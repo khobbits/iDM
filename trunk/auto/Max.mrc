@@ -175,19 +175,18 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }
     else { inc %targets $calc(1 / $gettok(%hits,%i,45)))) }
   }
-  var %target = $ceil( $calc($3 / %targ) ), %lowtop = $dmg($2, 1h), %midtop = $dmg($2, 2h), %hightop = $dmg($2, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
+  var %target = $ceil( $calc($3 / %targets) ), %lowtop = $dmg($2, 1h), %midtop = $dmg($2, 2h), %hightop = $dmg($2, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
   var %lowbchance = $calc(($dmg($2,0l)) /100), %midbchance = $calc(($dmg($2,0h) - $dmg($2,0l)) /100), %highbchance = $calc((100 - $dmg($2,0h)) /100)
   while (%l < 2) {
-    if ((%target <= %lowtop) && (%target >= $dmg($2, 1l))) { var %lowchance = $calc(((%lowtop - %targ +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
-    if ((%target <= %midtop) && (%target >= $dmg($2, 2l))) { var %midchance = $calc(((%midtop - %targ +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
-    if ((%target <= %hightop) && (%target >= $dmg($2, 3l))) { var %highchance = $calc(((%hightop - %targ +1) / (%hightop - $dmg($2, 3l +1 )) * %highbchance) }
-    msg #idm.support debug: $($+(%,hitchance,%l),1) $floor($calc(( %lowchance + %midchance + %highchance) * 100))
-    var $($+(%,hitchance,%l),1) $floor($calc(( %lowchance + %midchance + %highchance) * 100))
+    if ((%target <= %lowtop) && (%target >= $dmg($2, 1l))) { var %lowchance = $calc(((%lowtop - %target +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
+    if ((%target <= %midtop) && (%target >= $dmg($2, 2l))) { var %midchance = $calc(((%midtop - %target +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
+    if ((%target <= %hightop) && (%target >= $dmg($2, 3l))) { var %highchance = $calc(((%hightop - %target +1) / (%hightop - $dmg($2, 3l) +1 )) * %highbchance) }
+    if (%l = 0) var %hitchance0 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
+    if (%l = 1) var %hitchance1 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
     inc %lowtop %atk
     inc %midtop %atk
     inc %hightop %atk
     inc %l
   }
-
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 without).  Use !max $2 for attack details.
 }
