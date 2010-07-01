@@ -116,9 +116,8 @@ alias gwd.npc {
   var %e = $hget($1,players), %x = 1 
   while (%x <= $gettok(%e,0,124)) { 
     var %a %a $gettok(%e,%x,124) $hget($gettok(%e,%x,124),hp)
-    inc %x 
   }
-  msgsafe $1 $logo(HP) %a
+  ;msgsafe $1 $logo(HP) %a
   if ($numtok($hget($1,gwd.turn),124) >= 1) {
     var %p2 $gettok($hget($1,gwd.turn),1,124)
   }
