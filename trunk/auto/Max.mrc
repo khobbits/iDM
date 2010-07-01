@@ -188,5 +188,5 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     inc %hightop %atk
     inc %l
   }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 without).  Use !max $2 for attack details.
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
 }
