@@ -21,7 +21,32 @@ alias dead {
     cancel $1
     halt
   }
+  if ($hget($1,g0)) {
+    userlog win $3 $2
+    userlog loss $2 $3
 
+    var %drops $rundrops($1, $3, $2)
+    var %combined $gettok(%drops,1,32)
+    var %items $gettok(%drops,2-,32)
+    var %g $numtok($hget($1,gwd.alive),124)
+    var %sharedrop $floor($calc(%combined / %g))
+
+    db.set user wins $3 + 1
+    db.set user losses $2 + 1
+    userlog drop $3 %sharedrop gp
+
+    var %a = $hget($1,gwd.alive), %b = 1 
+    while (%b <= $gettok(%a,0,124)) { 
+      db.set user money $gettok(%a,%b,124) + %sharedrop
+      inc %b 
+    }
+
+    msgsafe $1 $logo(KO) $iif(%g == 1,The Solo Team of $s1($gettok($hget($1,gwd.alive),1,124)),The %g surviving team members) $iif(%g != 1,each) received $s2($price(%sharedrop)) in gp. $+($s1([),%items,$s1(])) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwdtime)))),$s1(]))
+    gwdcancel $1
+    set -u10 %wait. [ $+ [ $1 ] ] on 
+    .timer 1 10 msgsafe $1 $logo(GWD) Ready.
+    halt
+  }
   userlog win $3 $2
   userlog loss $2 $3
   var %drops $rundrops($1, $3, $2)
