@@ -100,6 +100,7 @@ alias gwd.run {
   ; Innit channel settings
   playerinit <gwd> $+ $1 $1 0
   hadd <gwd> $+ $1 hp $dungion.hp($numtok($hget($1,players),124))
+  hadd <gwd> $+ $1 mhp $dungion.hp($numtok($hget($1,players),124))
   hadd <gwd> $+ $1 npc 1
   hadd $1 gi 1
   hadd $1 gwdtime $ctime
@@ -117,6 +118,7 @@ alias gwd.npc {
   var %e = $hget($1,players), %x = 1 
   while (%x <= $gettok(%e,0,124)) { 
     var %a %a $gettok(%e,%x,124) $hget($gettok(%e,%x,124),hp)
+    inc %x
   }
   ;msgsafe $1 $logo(HP) %a
   if ($numtok($hget($1,gwd.turn),124) >= 1) {

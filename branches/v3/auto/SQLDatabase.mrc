@@ -214,7 +214,7 @@ alias dbinit {
   var %host = baka.khobbits.co.uk
   var %user = idm
   var %pass = Sp4rh4wk`Gh0$t`
-  var %database = idm
+  var %database = idm_bot
 
   set %db $mysql_connect(%host, %user, %pass)
   if (!%db) {

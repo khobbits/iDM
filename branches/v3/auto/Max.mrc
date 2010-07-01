@@ -125,7 +125,7 @@ alias poisoner { return $dmg($1,poison) $dmg($1,poisonamount) }
 alias freezer { return $dmg($1,freeze) }
 alias healer { return $dmg($1,heal) $dmg($1,healamount) }
 alias splasher { return $dmg($1,splash) }
-alias doeswhat { return $dmg($1,what) }
+alias action { return $dmg($1,what) }
 alias effect { return $dmg($1,effect) }
 alias attack { return $iif($dmg($1,name),$true,$false) }
 alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
