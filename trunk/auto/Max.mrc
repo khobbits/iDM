@@ -178,10 +178,11 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   var %target = $ceil( $calc($3 / %targ) ), %lowtop = $dmg($2, 1h), %midtop = $dmg($2, 2h), %hightop = $dmg($2, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
   var %lowbchance = $calc(($dmg($2,0l)) /100), %midbchance = $calc(($dmg($2,0h) - $dmg($2,0l)) /100), %highbchance = $calc((100 - $dmg($2,0h)) /100)
   while (%l < 2) {
-    if ((%target <=  %lowtop) && (%target >= $dmg($2, 1l))) { var %lowchance = $calc(((%lowtop - %targ +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
-    if ((%target <=  %midtop) && (%target >= $dmg($2, 2l))) { var %midchance = $calc(((%midtop - %targ +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
+    if ((%target <= %lowtop) && (%target >= $dmg($2, 1l))) { var %lowchance = $calc(((%lowtop - %targ +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
+    if ((%target <= %midtop) && (%target >= $dmg($2, 2l))) { var %midchance = $calc(((%midtop - %targ +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
     if ((%target <= %hightop) && (%target >= $dmg($2, 3l))) { var %highchance = $calc(((%hightop - %targ +1) / (%hightop - $dmg($2, 3l +1 )) * %highbchance) }
-    var $+(%,hitchance,%i) $floor($calc(( %lowchance + %midchance + %highchance) * 100))
+    msg #idm.support debug: $($+(%,hitchance,%l),1) $floor($calc(( %lowchance + %midchance + %highchance) * 100))
+    var $($+(%,hitchance,%l),1) $floor($calc(( %lowchance + %midchance + %highchance) * 100))
     inc %lowtop %atk
     inc %midtop %atk
     inc %hightop %atk
