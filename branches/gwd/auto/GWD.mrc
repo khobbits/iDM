@@ -113,6 +113,12 @@ alias gwd.npc {
   ;# Add attack by NPC here
 
   ;choosing a player
+  var %e = $hget($1,players), %x = 1 
+  while (%x <= $gettok(%e,0,124)) { 
+    var %a %a $gettok(%e,%x,124) $hget($gettok(%e,%x,124),hp)
+    inc %x 
+  }
+  msgsafe $1 $logo(HP) %a
   if ($numtok($hget($1,gwd.turn),124) >= 1) {
     var %p2 $gettok($hget($1,gwd.turn),1,124)
   }
@@ -158,7 +164,7 @@ alias gwd.att {
   ;4 is chan
 
   ; # Insert code to stop same person attacking twice
-  if ($1 !isin $hget($4,gwd.turn)) { notice $1 $logo(GWD) You have already attacked | halt }
+  if (!$istok($hget($4,gwd.turn),$1,124)) { notice $1 $logo(GWD) You have already attacked | halt }
   hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,124)
 
   ; # Insert code to handle player prereqs (see all dm commands.mrc)
