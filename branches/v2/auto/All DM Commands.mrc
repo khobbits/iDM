@@ -246,6 +246,17 @@ alias accuracy {
   return 0
 }
 
+alias atkbonus {
+  ;1 is Weapon
+  ;2 is hashtable
+  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,godcape),5,0)) + $iif($hget($2,mbook),5,0)  }
+  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0)) }
+  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))  }
+  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
+
+  return %atk
+}
+
 alias hit {
   ;1 is Weapon
   ;2 is Attacker
@@ -257,17 +268,12 @@ alias hit {
   else { var %acc $r(1,100) }
 
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
-
-  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,godcape),5,0)) + $iif($hget($2,mbook),5,0)  }
-  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0)) }
-  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))  }
-
-  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
+  var %atk $atkbonus($1,$2)
   if ($dmg($1,defbonus) == 0) { var %def 1 }
-  
-   if (<iDM>* iswm $2) {
-     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
-   }
+
+  if (<iDM>* iswm $2) {
+    inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
+  }
 
   ; ## OVERRIDE
   if ($1 == cbow) && (%acc isnum 98-100) && ($hget($2,void) || $hget($2,accumulator)) { set %cbowspec [ $+ [ $2 ] ] 1 | return $r(50,65) }

@@ -2,7 +2,7 @@ alias max {
   ; $1 = attack
   if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
   var %dbhits = $dmg($1,hits)
-  var %dbdmg = $gettok($dmg($1, 3),2,44)
+  var %dbdmg = $dmg($1, 3h)
   var %dbbonus = $dmg($1, atkbonus)
 
   if ($dmg($1,type) == range) {
@@ -41,17 +41,16 @@ alias hitdmg {
   ; $4 = attack bonus
   ; $5 = defense bonus
   if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
-  var %acclimit $dmg($1,0)
-  if ($1 == dh_9) { var %ndmg $dmg(dh,3) }
-  elseif ($1 == dh_10) { var %ndmg $dmg(dh,1) }
-  elseif ($2 <= $gettok(%acclimit,1,44)) { var %ndmg $dmg($1,1) }
-  elseif ($2 <= $gettok(%acclimit,2,44)) { var %ndmg $dmg($1,2) }
-  else { var %ndmg $dmg($1,3) }
+  if ($1 == dh_9) { var %ndmg 3 }
+  elseif ($1 == dh_10) { var %ndmg 1 }
+  elseif ($2 <= $dmg($1,0l)) { var %ndmg 1 }
+  elseif ($2 <= $dmg($1,0h)) { var %ndmg 2 }
+  else { var %ndmg 3 }
   var %i = 0
   while (%i < $numtok($3,45)) {
     inc %i
     if ($gettok($3,%i,45) == 1) {
-      var %dmg = $rand($gettok(%ndmg,1,44),$calc($gettok(%ndmg,2,44) + $4)))
+      var %dmg = $rand($dmg($1,%ndmg $+ l),$calc($dmg($1,%ndmg $+ h) + $4)))
       var %dmg = $ceil($calc(%dmg * $5))
       var %return = %return %dmg
     }
@@ -74,10 +73,14 @@ alias dmg.hload {
     hadd >weapon $hget(>row, weapon) $+ .name $hget(>row, name)
     hadd >weapon $hget(>row, weapon) $+ .item $hget(>row, item)
     hadd >weapon $hget(>row, weapon) $+ .pvp $hget(>row, pvp)
-    hadd >weapon $hget(>row, weapon) $+ .0 $hget(>row, range)
-    hadd >weapon $hget(>row, weapon) $+ .1 $hget(>row, low)
-    hadd >weapon $hget(>row, weapon) $+ .2 $hget(>row, mid)
-    hadd >weapon $hget(>row, weapon) $+ .3 $hget(>row, high)
+    hadd >weapon $hget(>row, weapon) $+ .0l $gettok($hget(>row, range),1,44)
+    hadd >weapon $hget(>row, weapon) $+ .0h $gettok($hget(>row, range),2,44)
+    hadd >weapon $hget(>row, weapon) $+ .1l $gettok($hget(>row, low),1,44)
+    hadd >weapon $hget(>row, weapon) $+ .1h $gettok($hget(>row, low),2,44)
+    hadd >weapon $hget(>row, weapon) $+ .2l $gettok($hget(>row, mid),1,44)
+    hadd >weapon $hget(>row, weapon) $+ .2h $gettok($hget(>row, mid),2,44)
+    hadd >weapon $hget(>row, weapon) $+ .3l $gettok($hget(>row, high),1,44)
+    hadd >weapon $hget(>row, weapon) $+ .3h $gettok($hget(>row, high),2,44)
     hadd >weapon $hget(>row, weapon) $+ .hits $hget(>row, hits)
     hadd >weapon $hget(>row, weapon) $+ .type $hget(>row, type)
     hadd >weapon $hget(>row, weapon) $+ .atkbonus $hget(>row, atkbonus)
@@ -131,7 +134,6 @@ alias isweapon {
   return $iif(%wep,%wep,$false)
 }
 
-
 on $*:TEXT:/^[!@.]max/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
@@ -152,12 +154,10 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   %msg $iif($effect($2),$+($chr(40),$v1,$chr(41)))
 }
 
-alias dmg.breakdown return $s2($gettok($max($1),$2,32)) $iif($totalhit($1,$2),$+($chr(40),$s2($v1),$chr(41)))
+alias dmg.breakdown { return $s2($gettok($max($1),$2,32)) $iif($totalhit($1,$2),$+($chr(40),$s2($v1),$chr(41))) }
 
 alias totalhit {
-  if (- isin $max($1)) {
-    return $calc($gettok($gettok($v2,$2,32),1,45) + $gettok($gettok($v2,$2,32),2,45) + $gettok($gettok($v2,$2,32),3,45) + $gettok($gettok($v2,$2,32),4,45))
-  }
+  if (- isin $max($1)) { return $calc($gettok($gettok($v2,$2,32),1,45) + $gettok($gettok($v2,$2,32),2,45) + $gettok($gettok($v2,$2,32),3,45) + $gettok($gettok($v2,$2,32),4,45)) }
   return $false
 }
 
@@ -168,38 +168,25 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if (!$3) { $iif($left($1,1) == @,msgsafe #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
   if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
 
-  var %hits $dmg($2,hits)
-  var %targ 1
-  var %i = 1
+  db.hget >hitchance equip_armour $nick
+  var %atk = $atkbonus($2,>hitchance), %hits = $dmg($2,hits), %targets = 1, %i = 1, %l = 0
   while (%i < $numtok(%hits,45)) {
     inc %i
-    if ($gettok(%hits,%i,45) == 1) { inc %targ 1 }
-    else { inc %targ $calc(1 / $gettok(%hits,%i,45)))) }
+    if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }
+    else { inc %targets $calc(1 / $gettok(%hits,%i,45)))) }
   }
-  var %targ = $ceil( $calc($3 / %targ) )
-
-  var %lowchance = $calc(($gettok($dmg($2,0),1,44)) /100)
-  var %midchance = $calc(($gettok($dmg($2,0),2,44) - $gettok($dmg($2),1,44)) /100)
-  var %highchance = $calc((100 - $gettok($dmg($2,0),2,44)) /100)
-
-  var %lowbot = $gettok($dmg($2, 1),1,44)
-  var %lowtop = $gettok($dmg($2, 1),2,44)
-  var %midbot = $gettok($dmg($2, 2),1,44)
-  var %midtop = $gettok($dmg($2, 2),2,44)
-  var %highbot = $gettok($dmg($2, 3),1,44)
-  var %hightop = $gettok($dmg($2, 3),2,44)
-  
-  if (%targ <=  %lowtop) {
-    if (%targ >= %lowbot) var %lowchance = $calc(((%lowtop - %targ +1) / (%lowtop - %lowbot +1 )) * %lowchance)
+  var %target = $ceil( $calc($3 / %targets) ), %lowtop = $dmg($2, 1h), %midtop = $dmg($2, 2h), %hightop = $dmg($2, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
+  var %lowbchance = $calc(($dmg($2,0l)) /100), %midbchance = $calc(($dmg($2,0h) - $dmg($2,0l)) /100), %highbchance = $calc((100 - $dmg($2,0h)) /100)
+  while (%l < 2) {
+    if ((%target <= %lowtop) && (%target >= $dmg($2, 1l))) { var %lowchance = $calc(((%lowtop - %target +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
+    if ((%target <= %midtop) && (%target >= $dmg($2, 2l))) { var %midchance = $calc(((%midtop - %target +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
+    if ((%target <= %hightop) && (%target >= $dmg($2, 3l))) { var %highchance = $calc(((%hightop - %target +1) / (%hightop - $dmg($2, 3l) +1 )) * %highbchance) }
+    if (%l = 0) var %hitchance0 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
+    if (%l = 1) var %hitchance1 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
+    inc %lowtop %atk
+    inc %midtop %atk
+    inc %hightop %atk
+    inc %l
   }
-  else {  var %lowchance = 0 }
-  if (%targ <=  %midtop) {
-    if (%targ >= %midbot) var %midchance = $calc(((%midtop - %targ +1) / (%midtop - %midbot +1 )) * %midchance)
-  }
-  else { var %midchance = 0 }
-  if (%targ <= %hightop) {
-    if (%targ >= %highbot) var %highchance = $calc(((%hightop - %targ +1) / (%hightop - %highbot +1 )) * %highchance)
-  }
-  else { var %highchance = 0 }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) There is a $s2($floor($calc(( %lowchance + %midchance + %highchance) * 100)) $+ %) chance of $2 hitting $s1($3 $+ +) without bonuses.  Use !max $2 to check bonuses and special infomation.
+  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
 }
