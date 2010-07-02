@@ -24,7 +24,6 @@ on $*:TEXT:/^[!@.]endgwd/Si:#: {
 }
 on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ($isbanned($nick)) { halt }
-  if (# != #idm.dev) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
@@ -182,14 +181,17 @@ alias gwd.att {
 alias gwd.turn {
   ;1 is chan
   ;2 is person attacking
+
   ; This is just to check if all players have made their turn
   hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,124)
   if ($numtok($hget($1,gwd.turn),124) < 1) {
-    .timer $+ $1 off
+
     ;msg $1 All Players attacked, NPC turn.
-    gwd.npc $1
+    .timer $+ $1 1 5 gwd.npc $1
   }
-  .timer $+ $1 1 30 gwd.npc $1
+  else {
+    .timer $+ $1 1 30 gwd.npc $1
+  }
 }
 
 
