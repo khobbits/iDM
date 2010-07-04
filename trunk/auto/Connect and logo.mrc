@@ -43,7 +43,7 @@ on *:START:.timerAnti-10053 -o 0 60 scon -at1 raw -q ping Anti-10053
 on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
-  ;return $true
+  return $true
   if (%dbfail > 3) { 
     if (!$timer(dbinit)) timerdbinit 0 2 dbinit
     return $true 

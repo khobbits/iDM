@@ -36,6 +36,7 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   if ($db.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $getclanname($2) $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
+  if ($db.get(clantracker,invite,%clanname) == 0) { notice $nick $logo(ERROR) You have set your clan to auto-accept new members, if this isn't right type !dminvite off. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
@@ -52,7 +53,7 @@ on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
   }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !joinclan clan to join. | halt }
-  if (%invite [ $+ [ $nick ] ] != $2 && $2 != Team-B) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
+  if (%invite [ $+ [ $nick ] ] != $2 && $db.get(clantracker,invite,$2) != 0) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
   addclanmember $2 $nick
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]
@@ -110,6 +111,26 @@ on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
   }
 }
 
+on $*:TEXT:/^[!@.]dminvite (on|off)/Si:*: {
+  tokenize 32 $remove($1-,$chr(36),$chr(37))
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if ($isbanned($nick)) { halt }
+  if (!$islogged($nick,$address,3)) {
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
+    halt
+  }
+  var %clanname = $getclanname($nick)
+  if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
+  if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
+  if ($2 == on) { notice $nick $logo(CLAN) The invite only option for $s2(%clanname) has been enabled.
+    db.set clantracker invite %clanname 1
+  }
+  if ($2 == off) { notice $nick $logo(CLAN) The invite only option for $s2(%clanname) has been disabled. Anyone may join your clan now.
+    db.set clantracker invite %clanname 0
+  }
+}
+
 on $*:TEXT:/^[!@.]dmclan/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
@@ -129,7 +150,7 @@ alias claninfo {
   var %cowner $db.get(clantracker,owner,$1)
   var %ci $remtok($clanmembers($1),%cowner,1,32)
   var %tc $numtok(%ci,32) + 1
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ )
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ ) (Invite: $iif($db.get(clantracker,invite,$1),$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {
