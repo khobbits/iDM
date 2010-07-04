@@ -245,9 +245,9 @@ alias accuracy {
 alias atkbonus {
   ;1 is Weapon
   ;2 is hashtable
-  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,void-mage),5,0) + $iif($hget($2,godcape),5,0)) + $iif($hget($2,mbook),5,0)  }
-  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,void),5,0) + $iif($hget($2,accumulator),5,0)) }
-  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),5,0) + $iif($hget($2,bgloves),3,0))  }
+  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,godcape),4,0)) + $iif($hget($2,mbook),4,0)  }
+  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,archer),4,0) + $iif($hget($2,accumulator),4,0)) }
+  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),4,0) + $iif($hget($2,bgloves),4,0))  }
   if ($dmg($1,atkbonus) == 0) { var %atk 0 }
 
   return %atk

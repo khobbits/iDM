@@ -1,5 +1,7 @@
 <?
 
+define ('ADMIN_RANK', 3);
+
 function init($page) {
 	global $dbname, $dbuser, $dbpasswd;
   $dbname = 'idm';

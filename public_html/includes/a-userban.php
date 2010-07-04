@@ -19,35 +19,21 @@ $sql = "SELECT * FROM appeal
 				WHERE user = '$user'
 					AND request_type = 'user'
 					AND ban_date = '$ban->time'
+					AND status='p'
 				ORDER BY request_date DESC";
 $result = mysql_query($sql);
 if($result && mysql_num_rows($result) > 0) {
-	$appeal = mysql_fetch_object($result);
-	switch($appeal->status) {
-	  case -1:
-			$message = 'Your appeal has not been processed yet.  Please check again later.';
-			break;
-		case 0:
-		  $message = 'Your appeal has been denied.';
-		  break;
-		case 1:
-		  $message = 'Your appeal has been accepted.';
-		  break;
-	}
-?>
-<p><?=$message?></p>
-<?php
+	echo "<p>Your appeal has not been processed yet.  Please check again later.</p>";
 	return;
 }
-else {
-	$statement = (isset($_POST['additional']) ? trim($_POST['additional']) : '');
-	if(strlen($statement) == 0) {
-?>
 
-<h1>User Ban Appeal</h1>
+$statement = (isset($_POST['additional']) ? trim($_POST['additional']) : '');
+if(strlen($statement) == 0) {
+?>
+<h2>User Ban Appeal</h2>
 <p>If you have been banned, please fill out the following form.</p>
 <form id="a-userban-form" name="a-userban-form" action="/account/uban/" method="post">
-	<table>
+	<table class="table-stats">
 		<tr>
 			<td>IRC Name:</td>
 			<td><?=$user?></td>
@@ -58,7 +44,7 @@ else {
 		</tr>
 		<tr>
 		  <td>Issued by:</td>
-		  <td><?=$ban->user?></td>
+		  <td><?=$ban->who?></td>
 		</tr>
 		<tr>
 		  <td>Approx. Date:</td>
@@ -72,16 +58,15 @@ else {
 	<input type="submit" value="Submit" />
 </form>
 <?php
-	}
-	else {
-		$statement = mysql_real_escape_string($statement);
-	 	$sql = "INSERT INTO appeal (user, request_type, ban_date, reason, request_date, request)
-	        values ('$user', 'user', '$ban->time', '$ban->reason', NOW(), '$statement')";
+}
+else {
+	$statement = mysql_real_escape_string($statement);
+ 	$sql = "INSERT INTO appeal (user, request_type, ban_date, banned_by, reason, request_date, request)
+        values ('$user', 'user', '$ban->time', '$ban->who', '$ban->reason', NOW(), '$statement')";
 
-		mysql_query($sql);
+	mysql_query($sql);
 ?>
 <p>Your request has been successfully submitted for review.</p>
 <?php
-	}
 }
 ?>

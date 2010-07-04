@@ -33,7 +33,7 @@ while(($row = mysql_fetch_object($result)) != NULL) {
 	});
 });
 </script>
-
+<h2>Channel Ban Lookup</h2>
 <form id='channel-ban-lookup-form' method='post' action='/account/cban/'>
 	<div id="channel-ban-div">
 		<div class="ui-widget">
@@ -62,22 +62,11 @@ if(strlen($channel_name) > 0) {
 	$sql = "SELECT *
 					FROM appeal
 					WHERE request_type='channel' AND channel='$channel_name'
-					  AND ban_date = '$ban->time'
+					  AND ban_date = '$ban->time' AND status='p'
 					ORDER BY request_date DESC";
 	$result = mysql_query($sql);
 	if($result && mysql_num_rows($result) > 0) {
-	  $appeal = mysql_fetch_object($result);
-	  switch($appeal->status) {
-	    case -1:
-	      $message = 'An appeal has already been submitted and is under review.  Please check back later.';
-	      break;
-			case 0:
-			  $message = 'The appeal has been declined.';
-			  break;
-			case 1:
-			  $message = 'The appeal has been accepted.';
-			  break;
-	 	}
+	  $message = 'An appeal has already been submitted and is under review.  Please check back later.';
 ?>
 <p>Channel <em><?=$channel_name?></em> appeal status:<br />
 <ul>
@@ -89,8 +78,8 @@ if(strlen($channel_name) > 0) {
 	
 	// Do we have a statement to process?
 	if(strlen($statement) > 0) {
-		$sql = "INSERT INTO appeal (user, channel, request_type, ban_date, reason, request_date, request)
-		        VALUES ('$user', '$channel_name', 'channel', '$ban->time', '$ban->reason', NOW(), '$statement')";
+		$sql = "INSERT INTO appeal (user, channel, request_type, ban_date, banned_by, reason, request_date, request)
+		        VALUES ('$user', '$channel_name', 'channel', '$ban->time', '$ban->who', '$ban->reason', NOW(), '$statement')";
 		mysql_query($sql);
 
 ?>

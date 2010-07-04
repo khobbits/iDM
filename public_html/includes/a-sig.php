@@ -50,9 +50,9 @@ if(!$result || mysql_num_rows($result) == 0) {
 
 $userData = mysql_fetch_object($result);
 ?>
-<h1>Account Signature Change</h1>
+<h2>Account Signature Change</h2>
 <p>
-	<h3><?=$message?></h3>
+	<strong><?=$message?></strong>
 </p>
 <div id="existing-signature">
 <p>Your current signature is as follows:</p>
@@ -63,7 +63,7 @@ $userData = mysql_fetch_object($result);
 </p>
 </div>
 
-<h2>To change your signature, enter the new urls below</h2>
+<h4>To change your signature, enter the new urls below</h4>
 <form id="sig-change-form" method="post" action="/account/sig/">
 	<table>
 	  <tr>

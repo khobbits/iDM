@@ -11,5 +11,12 @@ echo '<br /><br />';
 archive_user_log_total();
 echo '<br /><br />';
 
+// Define the date range
+$end_date = strtotime('-1 day');
+
+// Remove day-old sessions keys from urlmap
+//$sql = "DELETE FROM urlmap WHERE `time` <= '$end_date'";
+//mysql_query($sql);
+
 mysql_close();
 ?>
