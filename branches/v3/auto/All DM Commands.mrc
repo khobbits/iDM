@@ -200,16 +200,22 @@ alias damage {
 
   if (%dmg-dealt >= 99) { db.set achievements 1hit $nick 1 }
 }
+
 alias hpbar {
   if (-* iswm $1) { tokenize 32 0 99 }
   elseif ($1 !isnum 0-9000) { tokenize 32 99 99 }
   elseif ($2 !isnum 0-9000) { tokenize 32 $1 99 }
-  var %div = $ceil($calc( $2 / 20 )), %pos = $ceil($calc( $1 / %div )), %text = $iif($1 == 0,KO,$1)
-  var %p1 HP 3,3 $+ $str($chr(58),$iif(%pos < 9,%pos,9)) $+ 4,4 $+ $str($chr(46),$calc(9 - %pos))) $+ 
-  var %p2 0, $+ $iif(%pos > 9,03,04) $+ $mid(%text,1,1) $+ 0, $+ $iif(%pos > 10,03,04) $+ $iif($mid(%text,2,1) == $null,$chr(32),$mid(%text,2,1)) $+ 
-  var %p3 0, $+ $iif(%pos > 11,03,04) $+ $iif($mid(%text,3,1) == $null,$chr(32),$mid(%text,3,1)) $+ 0, $+ $iif(%pos > 12,03,04) $+ $iif($mid(%text,4,1) == $null,$chr(32),$mid(%text,4,1)) $+ 
-  var %p4 3,3 $+ $str($chr(58),$calc(%pos -13)) $+ 4,4 $+ $str($chr(46),$iif($calc(20 - %pos) < 8,$v1,7)) $+ 
-  return %p1 $+ %p2 $+ %p3 $+ %p4
+  var %div = $ceil($calc( $2 / 20 )), %pos = $ceil($calc( $1 / %div )), %text = $iif($1 == 0,KO,$1), %ltext $calc(4 - $len(%text))
+  var %p1 HP $setc(3,3) $+ $str($chr(58),$iif(%pos < 9,%pos,9))
+  if (%pos < 9) return %p1 $+ $setc(4,4) $+ $str($chr(46),$calc(9 - %pos)) $+ $setc(00) $+ %text $+ $setc(4) $+ $str($chr(46),$calc(7 + %ltext)) $+ 
+  elseif (%pos == 9) return %p1 $+ $setc(0,04) $+ %text $+ $setc(4,4) $+ $str($chr(46),$calc(7 + %ltext)) $+ 
+  elseif (%pos < $calc(13 - %ltext) ) return %p1 $+ $setc(00) $+ $mid(%text,1,$calc(%pos - 9)) $+ $setc(0,04) $+ $mid(%text,$calc(%pos - 8),$calc(13 - %pos)) $+ $setc(4) $+ $str($chr(46),$calc(7 + %ltext)) $+ 
+  else return %p1 $+ $setc(00) $+ %text $+ $setc(3) $+ $str($chr(58),$calc(%pos -13 + %ltext)) $+ $setc(4,4) $+ $str($chr(46),$calc(20 - %pos)) $+ 
+}
+
+alias setc {
+  if ($2) return  $+ $1 $+ , $+ $2
+  return  $+ $1
 }
 
 alias accuracy {
