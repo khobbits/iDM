@@ -132,66 +132,64 @@ alias damage {
     if (<* !iswm $2) { notice $2 You have been frozen and can't use melee! }
     var %msg %msg and successfully 12FREEZES them
   }
-
-  if ($gettok($healer($3),1,32)) && ($r(1,$v1) == 1) && (%hitdmg != 0) && (%hp1 < 99) {
-    var %healer 1
-    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
-    var %msg %msg and 09HEALING
-  }
-
-  if ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok($poisoner($3),2,32) < 8))) {
-    hadd $2 poison $gettok($poisoner($3),2,32)
-  }
-
-  if ($hget($2,poison) >= 1) && (%hp2 >= 1) {
-    var %extra $iif(%hp2 < $hget($2,poison),$v1,$v2)
-    hdec $2 poison
-    inc %dmg-dealt %extra
-    dec %hp2 %extra
-    var %msg %msg - 03 $+ %extra $+ 
-  }
-
-  if (%healer == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
-  else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
-
-  msgsafe $4 $replace(%msg,<gwd> $+ $4,$hget($4,g0))
-
-  if ($dmg($3,type) == melee) { hadd $1 laststyle melee }
-  elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
-  elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
-
-  if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-    var %extra $iif(%hp2 < 12,$($v1,2),12)
-    inc %dmg-dealt %extra
-    dec %hp2 %extra
-    msgsafe $4 $logo(%logo) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2,%mhp2)
-  }
-  if ($hget($2,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
-    var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
-    inc %hp2 %extraup
-    msgsafe $4 $logo(%logo) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2,%mhp2)
-  }
-  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-    inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
-    msgsafe $4 $logo(%logo) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2,%mhp2)
-  }
-  elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
-    var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
-    inc %hp2 $floor($calc(%temp.hit / 2))
-    msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2,%mhp2)
-  }
-  if (%hp2 < 1) {
-    if (($hget($2,beau)) && ($r(1,50) >= 49) ) {
-      var %hp2 1
-      msgsafe $4 $logo(%logo) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2,%mhp2)
+    if ($gettok($healer($3),1,32)) && ($r(1,$v1) == 1) && (%hitdmg != 0) && (%hp1 < 99) {
+      var %healer 1
+      $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+      var %msg %msg and 09HEALING
     }
+
+    if ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok($poisoner($3),2,32) < 8))) {
+      hadd $2 poison $gettok($poisoner($3),2,32)
+    }
+
+    if ($hget($2,poison) >= 1) && (%hp2 >= 1) {
+      var %extra $iif(%hp2 < $hget($2,poison),$v1,$v2)
+      hdec $2 poison
+      inc %dmg-dealt %extra
+      dec %hp2 %extra
+      var %msg %msg - 03 $+ %extra $+ 
+    }
+
+    if (%healer == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
+    else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
+
+    msgsafe $4 $replace(%msg,<gwd> $+ $4,$hget($4,g0))
+
+    if ($dmg($3,type) == melee) { hadd $1 laststyle melee }
+    elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
+    elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
+
+    if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+      var %extra $iif(%hp2 < 12,$($v1,2),12)
+      inc %dmg-dealt %extra
+      dec %hp2 %extra
+      msgsafe $4 $logo(%logo) $s1($1) whips out their Bêlong Blade and deals $s2(%extra) extra damage. $hpbar(%hp2,%mhp2)
+    }
+    if ($hget($2,allegra)) && ($r(1,100) >= 99) && (%hp2 >= 1) && (%hp2 < 99) {
+      var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
+      inc %hp2 %extraup
+      msgsafe $4 $logo(%logo) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2,%mhp2)
+    }
+    elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+      inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
+      msgsafe $4 $logo(%logo) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2,%mhp2)
+    }
+    elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+      var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
+      inc %hp2 $floor($calc(%temp.hit / 2))
+      msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2,%mhp2)
+    }
+    if (%hp2 < 1) {
+      if (($hget($2,beau)) && ($r(1,50) >= 49) ) {
+        var %hp2 1
+        msgsafe $4 $logo(%logo) $s1($2) $+ 's Bêaumerang brings them back to life, barely. $hpbar(%hp2,%mhp2)
+      }
+    }
+    hadd $1 hp %hp1
+    hadd $2 hp %hp2
+
+    if (%dmg-dealt >= 99) { db.set achievements 1hit $nick 1 }
   }
-  hadd $1 hp %hp1
-  hadd $2 hp %hp2
-
-  if (%dmg-dealt >= 99) { db.set achievements 1hit $nick 1 }
-}
-
 alias hpbar {
   if (-* iswm $1) { tokenize 32 0 99 }
   elseif ($1 !isnum 0-9000) { tokenize 32 99 99 }
