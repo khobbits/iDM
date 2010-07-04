@@ -1,27 +1,3 @@
-alias gwdcancel {
-  if ($1) && ($chr(35) isin $1) {
-    var %e = $hget($1,players), %x = 1 
-    while (%x <= $gettok(%e,0,124)) { 
-      .hfree $gettok(%e,%x,124)
-      db.set user indm $gettok(%e,%x,124) 0
-      inc %x 
-    }
-    if ($hget($hget($1,g0))) hfree $v1
-    if ($hget($1)) hfree $1  
-    .timer $+ $1 off
-    .timerc $+ $1 off
-    .timercw $+ $1 off
-  }
-}
-on $*:TEXT:/^[!@.]endgwd/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($db.get(admins,rank,$address($nick,3)) >= 2) {
-    if (!$hget($chan,players)) { notice $nick There is no GWD. | halt }
-    gwdcancel $chan
-    msgsafe $chan $logo(GWD) The Gwd Team has been canceled by staff.
-    halt
-  }
-}
 on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ($isbanned($nick)) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
@@ -39,17 +15,18 @@ on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
     ; check if player matches current player
     if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
     if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
-    if ($hget($chan,p)) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
+    if ($hget($chan,p) || $hget($chan,p1) || $hget($chan,p2)) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
     if ($hget($chan,gi)) { notice $nick $logo(GWD) There is already a GWD in progress. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
+    if ($numtok($hget($chan,players),44) == 8) { notice $nick $logo(GWD) There are already $s1(8) people on this team. Please wait untill the raid is over. | halt }
     ;check to see if match has already started
     if (1 == 2) { }
     else {
       hinc $chan g
       hadd $chan g $+ $hget($chan,g) $nick
-      hadd $chan players $addtok($hget($chan,players),$nick,124)
-      hadd $chan gwd.alive $addtok($hget($chan,gwd.alive),$nick,124)
-      hadd $chan gwd.turn $addtok($hget($chan,gwd.turn),$nick,124)
-      msgsafe # $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,g0)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,124))
+      hadd $chan players $addtok($hget($chan,players),$nick,44)
+      hadd $chan gwd.alive $addtok($hget($chan,gwd.alive),$nick,44)
+      hadd $chan gwd.turn $addtok($hget($chan,gwd.turn),$nick,44)
+      msgsafe # $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,g0)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,44))
       db.set user indm $nick 1
 
     }
@@ -90,16 +67,16 @@ alias gwd.run {
 
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %e = $hget($1,players), %x = 1
-  while (%x <= $gettok(%e,0,124)) {
+  while (%x <= $gettok(%e,0,44)) {
     ;loop through players and init them
-    playerinit $gettok(%e,%x,124) $1 1
-    hadd $gettok(%e,%x,124) g $hget($1,g0)
+    playerinit $gettok(%e,%x,44) $1 1
+    hadd $gettok(%e,%x,44) g $hget($1,g0)
     inc %x
   }
   ; Innit channel settings
   playerinit <gwd> $+ $1 $1 0
-  hadd <gwd> $+ $1 hp $dungion.hp($numtok($hget($1,players),124))
-  hadd <gwd> $+ $1 mhp $dungion.hp($numtok($hget($1,players),124))
+  hadd <gwd> $+ $1 hp $dungion.hp($numtok($hget($1,players),44))
+  hadd <gwd> $+ $1 mhp $dungion.hp($numtok($hget($1,players),44))
   hadd <gwd> $+ $1 npc 1
   hadd $1 gi 1
   hadd $1 gwdtime $ctime
@@ -113,11 +90,11 @@ alias gwd.npc {
 
   ;# Add attack by NPC here
 
-  if ($numtok($hget($1,gwd.turn),124) >= 1) {
-    var %p2 $gettok($hget($1,gwd.turn),1,124)
+  if ($numtok($hget($1,gwd.turn),44) >= 1) {
+    var %p2 $gettok($hget($1,gwd.turn),1,44)
   }
   else {
-    var %o = $hget($1,gwd.alive), %p2 = $gettok(%o,$r(1,$numtok(%o,124)),124)
+    var %o = $hget($1,gwd.alive), %p2 = $gettok(%o,$r(1,$numtok(%o,44)),44)
   }
   ;hits
   damage <gwd> $+ $1 %p2 $hget($1,g0) $1  
@@ -125,9 +102,9 @@ alias gwd.npc {
   ;# Display damage / round stats?
 
   if ($hget(%p2,hp) < 1) {
-    hadd $1 gwd.alive $remtok($hget($1,gwd.alive),%p2,124)
-    if ($numtok($hget($1,gwd.alive),124) >= 1) {
-      msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed one of the players $+($s1(%p2),.) Players still alive: $s2($numtok($hget($1,gwd.alive),124))
+    hadd $1 gwd.alive $remtok($hget($1,gwd.alive),%p2,44)
+    if ($numtok($hget($1,gwd.alive),44) >= 1) {
+      ;msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed one of the players $+($s1(%p2),.) $s2($numtok($hget($1,gwd.alive),44)) players are still alive: $replace($s1($hget($1,gwd.alive)),$chr(44),$chr(44) $chr(32))
 
       db.set user losses %p2 + 1
 
@@ -158,8 +135,8 @@ alias gwd.att {
   ;4 is chan
 
   ; # Insert code to stop same person attacking twice
-  if (!$istok($hget($4,gwd.turn),$1,124)) { notice $1 $logo(GWD) You have already attacked | halt }
-  hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,124)
+  if (!$istok($hget($4,gwd.turn),$1,44)) { notice $1 $logo(GWD) You have already attacked | halt }
+  hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,44)
 
   ; # Insert code to handle player prereqs (see all dm commands.mrc)
 
@@ -176,11 +153,11 @@ alias gwd.turn {
   ;2 is person attacking
 
   ; This is just to check if all players have made their turn
-  hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,124)
-  if ($numtok($hget($1,gwd.turn),124) < 1) {
+  hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
+  if ($numtok($hget($1,gwd.turn),44) < 1) {
 
     ;msg $1 All Players attacked, NPC turn.
-    .timer $+ $1 1 5 gwd.npc $1
+    .timer $+ $1 1 5 gwd.npc $1 
   }
   else {
     .timer $+ $1 1 30 gwd.npc $1

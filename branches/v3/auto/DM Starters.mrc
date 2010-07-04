@@ -9,7 +9,7 @@ on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
   if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($hget($chan)) && ($hget($chan,p2)) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-
+  if ($hget($chan,g0)) { notice $nick $logo(DM) People are already GWDing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
   if (!$hget($chan)) {
     if (stake isin $1) {
       if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
@@ -155,9 +155,36 @@ alias enddm {
   msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,p1)) $+ 's DM request, and the DM has ended.
   cancel $1
 }
-
+alias gwdcancel {
+  if ($1) && ($chr(35) isin $1) {
+    var %e = $hget($1,players), %x = 1 
+    while (%x <= $gettok(%e,0,44)) { 
+      if ($hget($1,gi)) { .hfree $gettok(%e,%x,44) }
+      db.set user indm $gettok(%e,%x,44) 0
+      inc %x 
+    }
+    if ($hget($hget($1,g0))) hfree $v1
+    if ($hget($1)) hfree $1  
+    .timer $+ $1 off
+    .timerc $+ $1 off
+    .timercw $+ $1 off
+  }
+}
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($hget($chan,g0)) {
+    if ($db.get(admins,rank,$address($nick,3)) >= 2) {
+      if (!$hget($chan,players)) { notice $nick There is no GWD. | halt }
+      gwdcancel $chan
+      msgsafe $chan $logo(GWD) The Gwd Team has been canceled by staff.
+      halt
+    }
+    if (!$hget($chan,gi) && $nick == $gettok($hget($chan,players),1,44)) {
+      msgsafe $chan $logo(GWD) The Gwd Team has been canceled by the Team Leader.
+      gwdcancel $chan
+      halt 
+    }
+  }
   if ($hget($chan,stake)) {
     if ($db.get(admins,rank,$address($nick,3)) >= 3) {
       if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
