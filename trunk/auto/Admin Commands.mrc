@@ -173,6 +173,7 @@ on *:TEXT:!globes:#: {
 on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if (!$db.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
+    hfree $2
     db.set user indm $2 0
     notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
   }

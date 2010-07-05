@@ -71,13 +71,9 @@ alias equipment {
     var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
     inc %wealth $calc($v1 * $gettok($storematch(accumulator),1,32))
   }
-  if ($hget(>equipar,void)) { 
-    var %e %e Void:Ranged $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(void range),1,32))
-  }
-  if ($hget(>equipar,void-mage)) { 
-    var %e %e Void:Mage $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(void mage),1,32))
+  if ($hget(>equipar,archer)) { 
+    var %e %e Archer:Ring $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+    inc %wealth $calc($v1 * $gettok($storematch(archer),1,32))
   }
   if ($hget(>equipar,mbook)) {
     var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 

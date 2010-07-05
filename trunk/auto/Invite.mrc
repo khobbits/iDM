@@ -166,7 +166,7 @@ alias entrymsgsafe {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: Website updated, added tracking log to profiles.
+  return News: LOTS of updates visit http://r.idm-bot.com/v3
 }
 
 alias bottag {
