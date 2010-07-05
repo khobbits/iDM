@@ -6,42 +6,48 @@ on $*:TEXT:/^[!@.]part/Si:#: {
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on
     msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
-    cancel #
+    if ($hget($chan,g0)) { gwdcancel # }
+    else { cancel # }
   }
 }
 
 on *:PART:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    cancel #
+    if ($hget($chan,g0)) { gwdcancel # }
+    else { cancel # }
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
-    cancel #
+    if ($hget($chan,g0)) { gwdcancel # }
+    else { cancel # }
   }
-  if ($hget($chan) && $hget($nick))  {
+  if ($hget($chan) && $hget($nick) || $istok($hget($chan,players),$nick,44))  {
     if ($enddmcheck($chan,$nick,part,$1,$2-)) { return }
   }
 }
 
 on *:QUIT: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    cancel #
+    if ($hget($chan,g0)) { gwdcancel # }
+    else { cancel # }
     part # Parting channel. Need 5 or more people to have iDM.
   }
-  if (!$hget($nick)) { return }
   var %a 1
   while (%a <= $chan(0)) {
-    if ($enddmcheck($chan(%a),$nick,quit,$1,$2-)) { return }
+    if ($hget($chan(%a)) && $hget($nick) || $istok($hget($chan(%a),players),$nick,44))  {
+      if ($enddmcheck($chan(%a),$nick,quit,$1,$2-)) { return }
+    }
     inc %a
   }
 }
 
 on *:KICK:#: {
   if ($nick(#,0) < 5) && (!$no-part(#) && ($knick != $me)) {
-    cancel #
+    if ($hget($chan,g0)) { gwdcancel # }
+    else { cancel # }
     part # Parting channel. Need 5 or more people to have iDM.
   }
-  if ($hget($knick)) && ($hget($chan)) {
+  if ($hget($knick) || $istok($hget($chan,players),$knick,44)) && ($hget($chan)) {
     if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
   if ($knick == $me) {
@@ -53,8 +59,8 @@ on *:KICK:#: {
 
 on *:NICK: {
   var %a = 1
-  if ($hget($nick)) {
-    while (%a <= $chan(0)) {
+  while (%a <= $chan(0)) {
+    if ($hget($nick)) {
       if ($hget($chan(%a),stake)) && (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
         db.set user money $nick - $ceil($calc($hget($chan(%a),stake)) / 2))
         msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($hget($chan(%a),stake)) / 2))) $+ .
@@ -68,26 +74,32 @@ on *:NICK: {
         .timer $+ $chan(%a) off
         halt
       }
-
-      ; if ($nick == $hget($chan(%a),p1)) {
-      ;  db.set user indm $nick 0
-      ;  db.set user indm $newnick 1
-      ;  hadd $chan(%a) p1 $newnick
-      ; }
-      ; if ($nick == $hget($chan(%a),p2)) {
-      ;  db.set user indm $nick 0
-      ;  db.set user indm $newnick 1
-      ;  hadd $chan(%a) p2 $newnick
-      ;}
-      inc %a
     }
+    elseif ($hget($chan(%a),g0) && $istok($hget($chan(%a),players),$nick,44)) {
+      msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
+      gwdcancel $chan(%a)
+      .timer $+ $chan(%a) off
+      halt
+    }
+    ; if ($nick == $hget($chan(%a),p1)) {
+    ;  db.set user indm $nick 0
+    ;  db.set user indm $newnick 1
+    ;  hadd $chan(%a) p1 $newnick
+    ; }
+    ; if ($nick == $hget($chan(%a),p2)) {
+    ;  db.set user indm $nick 0
+    ;  db.set user indm $newnick 1
+    ;  hadd $chan(%a) p2 $newnick
+    ;}
+    inc %a
   }
 }
 
 
 alias waskicked {
   if ($me !ison $1) {
-    cancel $1
+    if ($hget($1,g0)) { gwdcancel $1 }
+    else { cancel $1 }
     .timer $+ $1 off
   }
 }
@@ -137,6 +149,12 @@ alias enddmcheck {
     cancel $1
     .timer $+ $1 off
     return 1
+  }
+  elseif ($hget($1,players)) && ($istok($hget($1,players),$2,44)) {
+    msgsafe $1 $logo(GWD) The GWD has been canceled, because one of the players left.
+    enddmcatch $3 $2 $1 $4 $5-
+    gwdcancel $1
+    .timer $+ $1 off
   }
   elseif ($2 == $hget($1,p1)) || ($2 == $hget($1,p2)) {
     msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.

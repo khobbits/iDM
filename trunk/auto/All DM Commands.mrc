@@ -19,7 +19,9 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
         hdec %p2 poison
         hdec %p2 hp %extra
-        msgsafe # $logo($iif($hget($chan,g0),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for 03 $+ %extra $+  damage. $hpbar($hget(%p2,hp))
+        var %hp2 $hget(%p2,hp)
+        var %mhp2 $iif($hget(<gwd> $+ $chan,mhp) == $null,99,$hget(<gwd> $+ $chan,mhp))
+        msgsafe # $logo($iif($hget($chan,g0),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
       }
       else {
         msgsafe # $logo($iif($hget($chan,g0),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.

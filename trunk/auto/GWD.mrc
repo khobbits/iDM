@@ -81,7 +81,7 @@ alias gwd.run {
   hadd <gwd> $+ $1 npc 1
   hadd $1 gi 1
   hadd $1 gwdtime $ctime
-  msgsafe $1 $logo(GWD) $1 is ready to raid $+($s1($hget($1,g0)),.) Everyone make their attacks, $s1($hget($1,g0)) will hit in $+($s2(30s),.)
+  msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,g0)),.) Everyone make their attacks, $s1($hget($1,g0)) will hit in $+($s2(30s),.)
   .timer $+ $1 1 30 gwd.npc $1
 }
 
@@ -118,6 +118,9 @@ alias gwd.npc {
 
       db.set user losses %p2 + 1
       db.set user wins $autoidm.acc(<gwd> $+ $1) + 1
+
+      var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ 0 $+ ' , ' $+ $tag $+ ' , CURDATE(), '1' ) ON DUPLICATE KEY UPDATE cash = cash + 0 , count = count+1
+      db.exec %sql
 
       set -u10 %wait. [ $+ [ $1 ] ] on
       .timer 1 10 msgsafe $1 $logo(GWD) Ready.    
