@@ -194,7 +194,8 @@ alias damage {
   if ($1 == <gwd> $+ $4) { 
     var %e = $hget($4,players), %x = 1
     while (%x <= $gettok(%e,0,44)) {
-      var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP)
+      if ($gettok(%e,0,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP) }
+      else { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar2($hget($gettok(%e,%x,44),hp)),HP) }
       inc %x
     }
     msgsafe $4 $logo(GWD) HP: %h
@@ -213,6 +214,19 @@ alias hpbar {
   elseif (%pos == 9) return %p1 $+ $setc(0,04) $+ %text $+ $setc(4,4) $+ $str($chr(46),$calc(7 + %ltext)) $+ 
   elseif (%pos < $calc(13 - %ltext) ) return %p1 $+ $setc(00) $+ $mid(%text,1,$calc(%pos - 9)) $+ $setc(0,04) $+ $mid(%text,$calc(%pos - 8),$calc(13 - %pos)) $+ $setc(4) $+ $str($chr(46),$calc(7 + %ltext)) $+ 
   else return %p1 $+ $setc(00) $+ %text $+ $setc(3) $+ $str($chr(58),$calc(%pos -13 + %ltext)) $+ $setc(4,4) $+ $str($chr(46),$calc(20 - %pos)) $+ 
+}
+
+alias hpbar2 {
+  if (-* iswm $1) { tokenize 32 0 99 }
+  elseif ($1 !isnum 0-99) { return $hpbar($1,$2) }
+  elseif ($2 == $null) { tokenize 32 $1 99 }
+  elseif ($2 !isnum 0-99) { return $hpbar($1,$2) }
+  var %div = $ceil($calc( $2 / 11 )), %pos = $ceil($calc( $1 / %div )), %text = $iif($1 == 0,KO,$1), %ltext $calc(2 - $len(%text))
+  var %p1 HP $setc(3,3) $+ $str($chr(58),$iif(%pos < 5,%pos,5))
+  if (%pos < 5) return %p1 $+ $setc(4,4) $+ $str($chr(46),$calc(5 - %pos)) $+ $setc(00) $+ %text $+ $setc(4) $+ $str($chr(46),$calc(4 + %ltext)) $+ 
+  elseif (%pos == 5) return %p1 $+ $setc(0,04) $+ %text $+ $setc(4,4) $+ $str($chr(46),$calc(4 + %ltext)) $+ 
+  elseif (%pos == 6) return %p1 $+ $setc(00) $+ $mid(%text,1,1) $+ $setc(0,04) $+ $mid(%text,2,1) $+ $setc(4) $+ $str($chr(46),$calc(4 + %ltext)) $+ 
+  else return %p1 $+ $setc(00) $+ %text $+ $setc(3) $+ $str($chr(58),$calc(%pos - 7 + %ltext)) $+ $setc(4,4) $+ $str($chr(46),$calc(11 - %pos)) $+ 
 }
 
 alias setc {
