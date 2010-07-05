@@ -6,16 +6,16 @@ alias max {
   var %dbbonus = $dmg($1, atkbonus)
 
   if ($dmg($1,type) == range) {
-    ;Normal Voidrange_or_Accumulator Both
-    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,10,%dbbonus)
+    ;Normal Archer Ring _or_Accumulator Both
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
   }
   elseif ($dmg($1,type) == magic) {
     ;Normal Voidmage_or_MagesBook_or_GodCape Two_Bonuses Three_Bonuses
-    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,10,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,15,%dbbonus)
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
   }
   else {
     ;Normal Barrowgloves Firecape Both
-    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,3,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,5,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
+    return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
   }
 }
 
@@ -148,9 +148,9 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
 
   if ($dmg($2,atkbonus) == 0) { var %msg %msg (No attack bonuses) }
-  elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Void Range or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
-  elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Void Mage or Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) $chr(124) Three bonuses $dmg.breakdown($2,4) }
-  elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves $dmg.breakdown($2,2) $chr(124) Fire cape $dmg.breakdown($2,3) $chr(124) Barrow gloves and Fire cape $dmg.breakdown($2,4) }
+  elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   %msg $iif($effect($2),$+($chr(40),$v1,$chr(41)))
 }
 
