@@ -75,7 +75,7 @@ on *:NICK: {
         halt
       }
     }
-    elseif ($hget($chan(%a),g0) && $istok($hget($chan(%a),players),$nick,44)) {
+    if ($hget($nick) || $hget($chan(%a),g0) && $istok($hget($chan(%a),players),$nick,44)) {
       msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
       gwdcancel $chan(%a)
       .timer $+ $chan(%a) off
