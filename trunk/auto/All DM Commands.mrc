@@ -140,7 +140,7 @@ alias damage {
     var %msg %msg and 09HEALING
   }
 
-  if (!$hget($2,poison)) && ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && ($gettok($poisoner($3),2,32) < 8))) {
+  if ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok($poisoner($3),2,32) < 8))) {
     hadd $2 poison $gettok($poisoner($3),2,32)
   }
 
