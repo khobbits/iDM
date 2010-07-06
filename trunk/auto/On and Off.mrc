@@ -65,7 +65,7 @@ alias enablec {
       db.remove settings $3 setting $1
       var %notice %notice Enabled $1 in $3
     }
-    elseif ($1 == staking) {
+    elseif ($1 == staking) || ($1 == gwd) {
       db.remove settings $3 setting $1
       var %notice %notice Enabled $1 in $3  
     }
@@ -92,7 +92,7 @@ alias disablec {
       db.set settings setting $3 $1
       var %notice %notice Disabled $1 in $3
     }
-    elseif ($1 == staking) {
+    elseif ($1 == staking) || ($1 == gwd) {
       db.set settings setting $3 $1
       var %notice %notice Disabled $1 in $3
     }

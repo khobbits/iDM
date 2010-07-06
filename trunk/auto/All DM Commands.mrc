@@ -140,7 +140,7 @@ alias damage {
     var %msg %msg and 09HEALING
   }
 
-  if ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && (!$hget($2,poison)) && ($gettok($poisoner($3),2,32) < 8))) {
+  if (!$hget($2,poison)) && ($gettok($poisoner($3),1,32)) && (($r(1,$v1) == 1) || (($hget($1,snake)) && ($gettok($poisoner($3),2,32) < 8))) {
     hadd $2 poison $gettok($poisoner($3),2,32)
   }
 
@@ -173,11 +173,11 @@ alias damage {
     inc %hp2 %extraup
     msgsafe $4 $logo(%logo) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2,%mhp2)
   }
-  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
     inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
     msgsafe $4 $logo(%logo) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2,%mhp2)
   }
-  elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
+  elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
     var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
     inc %hp2 $floor($calc(%temp.hit / 2))
     msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2,%mhp2)
@@ -201,7 +201,7 @@ alias damage {
     msgsafe $4 $logo(GWD) HP: %h
   }
 
-  if (%dmg-dealt >= 99) { db.set achievements 1hit $nick 1 }
+  if (%dmg-dealt >= 99) { db.set achievements 1hit $1 1 }
 }
 
 alias hpbar {
@@ -287,7 +287,7 @@ alias hit {
     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
   }
   elseif (<gwd>* iswm $2) {
-    inc %atk $ceil($calc(( $numtok($hget($4,players),124) - 1) * 10 ))
+    inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 10 ))
   }
 
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
