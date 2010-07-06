@@ -33,7 +33,7 @@ elseif($operation && $id) {
 	  $utotal = $utotal->total;
 	}
 
-  if($row->request_type='channel') {
+  if($row->request_type == 'channel') {
 	  $result = mysql_query("SELECT COUNT(id) AS total FROM appeal WHERE channel='$row->channel' AND request_type='channel'");
   	$ctotal = 0;
   	if($result) {
@@ -107,7 +107,7 @@ elseif($operation && $id) {
 								processed_date=NOW()
 							WHERE id=$id";
 			mysql_query($sql);
-			
+
 			if($row->request_type == 'channel') {
 			  $table = 'blist';
 			  $user = $row->channel;
@@ -115,7 +115,7 @@ elseif($operation && $id) {
 			else {
 			  $table = 'ilist';
 			  $user = $row->user;
-				mysql_query("UPDATE user SET banned = 0 WHERE user = '$user'");
+				mysql_query("UPDATE user SET banned = '0' WHERE user = '$user'");
 			}
 			$sql = "DELETE FROM $table WHERE user='$user' AND time='$row->ban_date'";
 			mysql_query($sql);

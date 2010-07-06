@@ -27,8 +27,8 @@ if (typeof jQuery == 'undefined')
     <ul>
     	<li><a href="/">Home</a></li>
     	<li><a href="http://forum.idm-bot.com">Forums</a></li>
-    	<li><a href="http://forum.idm-bot.com/viewtopic.php?f=4&amp;t=4">Rules</a></li>
-    	<li><a href="http://forum.idm-bot.com/viewtopic.php?f=7&amp;t=5">Commands</a></li>
+    	<li><a href="http://r.idm-bot.com/rules">Rules</a></li>
+    	<li><a href="http://r.idm-bot.com/cmd">Commands</a></li>
     	<li><a href="/sitems/">Staff Items</a></li>
     </ul>
     <div class="header">Bot Stats</div>

@@ -1,8 +1,8 @@
 <?php
 
-$prices = array('firecape' => 4000000000, 'bgloves' => 3000000000, 'elshield' => 8000000000, 'void-range' => 500000000, 'accumulator' => 1000000000, 'void-mage' => 800000000, 'mbook' => 1000000000, 'godcape' => 1200000000, 'ags' => 400000000, 'bgs' => 500000000, 'sgs' => 600000000, 'zgs' => 400000000, 'dclaws' => 2500000000, 'mudkip' => 200000000);
+//$prices = array('firecape' => 4000000000, 'bgloves' => 3000000000, 'elshield' => 8000000000, 'void-range' => 500000000, 'accumulator' => 1000000000, 'void-mage' => 800000000, 'mbook' => 1000000000, 'godcape' => 1200000000, 'ags' => 400000000, 'bgs' => 500000000, 'sgs' => 600000000, 'zgs' => 400000000, 'dclaws' => 2500000000, 'mudkip' => 200000000);
 
-$query = "SELECT SUM(firecape) firecape, SUM(bgloves) bgloves, SUM(elshield) elshield, SUM(void) `void-range`, SUM(accumulator) accumulator, SUM(`void-mage`) `void-mage`, SUM(mbook) mbook, SUM(godcape) godcape FROM user,equip_armour WHERE user.user = equip_armour.user AND user.banned = '0' AND user.exclude = '0'";
+$query = "SELECT SUM(firecape) firecape, SUM(bgloves) bgloves, SUM(elshield) elshield, SUM(archer) archer, SUM(accumulator) accumulator, SUM(mbook) mbook, SUM(godcape) godcape FROM user,equip_armour WHERE user.user = equip_armour.user AND user.banned = '0' AND user.exclude = '0'";
 $result = mysql_query($query);
 $armour = mysql_fetch_assoc($result);
 
@@ -23,28 +23,6 @@ $equip = array_merge(array_merge($armour, $item), $pvp);
 $query = "SELECT count(*) users,SUM(money) money,SUM(wins) wins,SUM(losses) losses FROM user WHERE user.banned = '0' AND user.exclude = '0'";
 $result = mysql_query($query);
 $totals = mysql_fetch_assoc($result);
-
-/*$query = "SELECT clan,count(clan) count FROM user WHERE clan != '0' GROUP BY clan ORDER BY count(clan) DESC";
-$result = mysql_query($query);
-$totals['clans'] = mysql_num_rows($result);
-
-$clans = array();
-for ($a = 0; $a < 5; $a++) {
-	$name = mysql_result($result, $a, "clan"); $count = number_format(mysql_result($result, $a, "count"));
-	$clans[$a]['name'] = $name;
-	$clans[$a]['count'] = $count;
-}
-
-$value = 0;
-
-foreach ($equip as $key => $count) {
-    $value += $prices[$key] * $count;
-}
-
-echo $value;*/
-
-
-
 
 print '<h1>Equipment / User Stats</h1>
 <h2>Equipment</h2>
@@ -82,8 +60,7 @@ print '<h1>Equipment / User Stats</h1>
 			<th>Firecape</th>
 			<th>Barrows Gloves</th>
 			<th>Elysian Shield</th>
-			<th>Void Range</th>
-			<th>Void Mage</th>
+			<th>Archer Ring</th>
 			<th>Accumulator</th>
 			<th>Mage Book</th>
 			<th>God Cape</th>
@@ -94,8 +71,7 @@ print '<h1>Equipment / User Stats</h1>
 			<td style="width: 13%;">' . number_format($equip['firecape']) . '</td>
 			<td style="width: 13%;">' . number_format($equip['bgloves']) . '</td>
 			<td style="width: 13%;">' . number_format($equip['elshield']) . '</td>
-			<td style="width: 13%;">' . number_format($equip['void-range']) . '</td>
-			<td style="width: 12%;">' . number_format($equip['void-mage']) . '</td>
+			<td style="width: 13%;">' . number_format($equip['archer']) . '</td>
 			<td style="width: 12%;">' . number_format($equip['accumulator']) . '</td>
 			<td style="width: 12%;">' . number_format($equip['mbook']) . '</td>
 			<td style="width: 12%;">' . number_format($equip['godcape']) . '</td>

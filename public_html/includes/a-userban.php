@@ -65,6 +65,7 @@ else {
         values ('$user', 'user', '$ban->time', '$ban->who', '$ban->reason', NOW(), '$statement')";
 
 	mysql_query($sql);
+	msgsupport("An appeal by $user was submitted for a ban issued by $ban->who on $ban->time");
 ?>
 <p>Your request has been successfully submitted for review.</p>
 <?php

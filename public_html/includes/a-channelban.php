@@ -23,11 +23,11 @@ while(($row = mysql_fetch_object($result)) != NULL) {
 <?php
 }
 ?>
-	$('#channel').autocomplete({
+	$('#channelbox').autocomplete({
 	  source: channels,
-	  minLength: 2,
+	  minLength: 4,
 	  select: function(event, ui) {
-	    $('#channel').val(ui.item.value);
+	    $('#channelbox').val(ui.item.value);
 	    $('#channel-ban-lookup-form').submit();
 	  }
 	});
@@ -38,7 +38,7 @@ while(($row = mysql_fetch_object($result)) != NULL) {
 	<div id="channel-ban-div">
 		<div class="ui-widget">
 		  <label for="channel">Channel Name: </label>
-		  <input name="channel" id="channel" type="text" value="<?=$channel_name?>" />
+		  <input name="channel" id="channelbox" type="text" value="<?=$channel_name?>" width="40" />
 		</div>
 	</div>
 	<br />
@@ -81,6 +81,7 @@ if(strlen($channel_name) > 0) {
 		$sql = "INSERT INTO appeal (user, channel, request_type, ban_date, banned_by, reason, request_date, request)
 		        VALUES ('$user', '$channel_name', 'channel', '$ban->time', '$ban->who', '$ban->reason', NOW(), '$statement')";
 		mysql_query($sql);
+		msgsupport("An appeal by $user was submitted for a ban against $channel_name issued by $ban->who on $ban->time");
 
 ?>
 <p>Your appeal for Channel <em><?=$channel_name?></em> has been submitted for review.</p>

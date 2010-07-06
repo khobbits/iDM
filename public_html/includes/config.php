@@ -4,7 +4,7 @@ define ('ADMIN_RANK', 3);
 
 function init($page) {
 	global $dbname, $dbuser, $dbpasswd;
-  $dbname = 'idm';
+  $dbname = 'idm_bot';
   $dbuser = 'idm';
   $dbpasswd = 'Sp4rh4wk`Gh0$t`';
 
@@ -29,6 +29,22 @@ function init($page) {
 		news_init();
 		return 'news.php';
 	}
+}
+
+function msgchan ($chan,$message) {
+  include_once('bnc/sbnc.php');
+  $sbnc = new SBNC("127.0.0.1", 12000, "admin", 'Sp4rh4wk`Gh0$t`');
+  $result = $sbnc->CallAs('admin', simul, array( 'privmsg ' . $chan . ' :' . $message));
+  $sbnc->Destroy();
+  return var_export($result,true);
+}
+
+function msgsupport ($message) {
+  msgchan('+#idm.support', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
+}
+
+function msgstaff ($message) {
+  msgchan('#idm.staff', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
 }
 
 #    Output easy-to-read numbers
@@ -141,6 +157,30 @@ function getrank ($user, $column) {
 
   $query = mysql_query($sql);
 	
+	while ($row = mysql_fetch_object($query)) {
+	 $rank = ordinalSuffix($row->rank);
+	 return $rank;
+	}
+}
+
+function getrank_old ($user, $column) {
+	$user = mysql_real_escape_string(strtolower($user));
+ 	if ($column == 'total') {
+    $column = '(oldwins+oldlosses) AS total';
+    $match = '((r1.oldwins)+(r1.oldlosses)) < (r2.total)';
+  }
+ 	else {
+    $column = mysql_real_escape_string(strtolower($column));
+    $match = "(r1.{$column} ) < (r2.{$column})";
+  }
+    
+  $sql = "SELECT COUNT(*)+1 AS rank FROM achievements AS r1
+    INNER JOIN (SELECT $column FROM achievements)
+    AS r2 ON $match
+    WHERE r1.user = '$user'";
+
+  $query = mysql_query($sql);
+
 	while ($row = mysql_fetch_object($query)) {
 	 $rank = ordinalSuffix($row->rank);
 	 return $rank;

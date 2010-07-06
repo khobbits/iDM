@@ -32,19 +32,17 @@
 			<th>Firecape</th>
 			<th>God Cape</th>
 			<th>Mage Book</th>
-			<th>Void Range</th>
-			<th>Void Mage</th>
+			<th>Archer Ring</th>
 		</tr>
 	</thead>
   <tbody>
 		<tr>
-  		<td style="width: 14%;"><?=valuebool($result ['accumulator'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['bgloves'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['firecape'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['godcape'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['mbook'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['void'])?></td>
-			<td style="width: 14%;"><?=valuebool($result ['void-mage'])?></td>
+  		<td style="width: 16%;"><?=valuebool($result ['accumulator'])?></td>
+			<td style="width: 16%;"><?=valuebool($result ['bgloves'])?></td>
+			<td style="width: 16%;"><?=valuebool($result ['firecape'])?></td>
+			<td style="width: 16%;"><?=valuebool($result ['godcape'])?></td>
+			<td style="width: 16%;"><?=valuebool($result ['mbook'])?></td>
+			<td style="width: 16%;"><?=valuebool($result ['archer'])?></td>
 		</tr>
 	</tbody>
 </table>

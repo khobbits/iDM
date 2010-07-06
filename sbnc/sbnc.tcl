@@ -23,4 +23,6 @@ source "scripts/nickserv.tcl"
 source "scripts/notice.tcl"
 source "scripts/echo.tcl"
 
+source "scripts/iface.tcl"
+
 source "scripts/idm-stats.tcl"

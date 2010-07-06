@@ -74,9 +74,9 @@ switch($action) {
 			  // Store confirmation
 	      $sql = "UPDATE appeal SET status='p' WHERE id=$id AND status LIKE 'u'";
 	      $result = mysql_query($sql);
-	      
+	      msgsupport("A name change request has been submitted by $user");
 			  // Display confirmation
-				echo "<p>You have successfully confirmed your request.  It is now awaiting staff approval.</p>";
+			  echo "<p>You have successfully confirmed your request.  It is now awaiting staff approval.</p>";
 	  
 	  		// Display cancel option
 	  		displayCancelationForm($id);

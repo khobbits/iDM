@@ -13,9 +13,8 @@ function adminlist($item) {
 }
 ?>
 <h1>Staff Items</h1>
-<p>To gain a staff item you need to perform a task worthy of such a gift.<br />
-Each item belongs to a different staff member and each staff member has a different idea of 
-what you have to do to be worthy of receiving their item. <br />
+<p>Each item belongs to a different staff member with the exception of supporter which all support
+staff have access to.<br />
 Keep in mind however each item belongs to the respective admin, 
 and <em>they can grant/remove the right to use their item at will.</em></p>
 

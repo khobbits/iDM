@@ -1,6 +1,7 @@
 <table width="95%"><tr><td>
 <h1>Overall DM Stats</h1>
 <?php
+
 $date = date('Y/m/d');
 
 $query = "SELECT * FROM loot_player_chan ORDER BY `loot_player_chan`.`SUM(cash)` DESC";

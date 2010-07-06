@@ -7,26 +7,22 @@
 <tr><td><ul>
 
 <?php
-$query = "SELECT * FROM loot_item ORDER BY count DESC";
+$query = "SELECT * FROM loot_item ORDER BY count DESC LIMIT 30";
 $result = mysql_query($query);
 
-for ($a = 0; $a < 30; $a++) {
-	$item = mysql_result($result, $a, "item");
-	$count = number_format(mysql_result($result, $a, "count"));
-	print '<li title=' . $count . '>' . $item . '</li>';
+while ($row = mysql_fetch_object($result)) {
+	print '<li title=' . $row->count . '>' . $row->item . '</li>';
 }
 ?>
 </ul></td>
 <td><ul>
 
 <?php
-$query = "SELECT * FROM loot_item ORDER BY count ASC";
+$query = "SELECT * FROM loot_item ORDER BY count ASC LIMIT 30";
 $result = mysql_query($query);
 
-for ($a = 0; $a < 30; $a++) {
-	$item = mysql_result($result, $a, "item");
-	$count = number_format(mysql_result($result, $a, "count"));
-	print '<li title=' . $count . '>' . $item . '</li>';
+while ($row = mysql_fetch_object($result)) {
+	print '<li title=' . $row->count . '>' . $row->item . '</li>';
 }
 ?>
 </ul></td>
@@ -34,13 +30,11 @@ for ($a = 0; $a < 30; $a++) {
 <td><ul>
 
 <?php
-$query = "SELECT * FROM drops ORDER BY price DESC";
+$query = "SELECT * FROM drops ORDER BY price DESC LIMIT 30";
 $result = mysql_query($query);
 
-for ($a = 0; $a < 30; $a++) {
-	$item = mysql_result($result, $a, "item");
-	$price = number_format(mysql_result($result, $a, "price"));
-	print '<li title=' . $price . '>' . $item . '</li>';
+while ($row = mysql_fetch_object($result)) {
+	print '<li title=' . $row->price . '>' . $row->item . '</li>';
 }
 ?>
 </ul></td>

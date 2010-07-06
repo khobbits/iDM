@@ -29,18 +29,22 @@ if (!$achiv || sizeof($achiv = mysql_fetch_assoc($achiv)) == 0) {
 	);
 }
 
+$oldtotal = $achiv['oldmoney'] + $achiv['oldlosses'] + $achiv['oldwins'];
+$error = 'N/A';
+
 ?>
 
-<h2 style="margin-top: 0px;"> <?=htmlentities(strtoupper($userd)); ?> </h2>
+<h2>Achievements</h2>
 
 <div>
+  <table>
   <table class="table-user">
   	<thead>
   		<tr>
-  			<th>Total DMs</th>
+
+  			<th>Total</th>
   			<th>Wins</th>
   			<th>Losses</th>
-  			<th>Money</th>
   		</tr>
     </thead>
     <tbody>
@@ -48,11 +52,10 @@ if (!$achiv || sizeof($achiv = mysql_fetch_assoc($achiv)) == 0) {
   			<td style="width: 25%;"><?=achiv(total, $totalDMs); ?></td>
   			<td style="width: 25%;"><?=achiv(wins, $result['wins']); ?></td>
   			<td style="width: 25%;"><?=achiv(losses, $result['losses']); ?></td>
-       		<td style="width: 25%;"><?=achiv(money, $result['money']); ?></td>
   		</tr>
   	</tbody>
   </table>
-	<br />
+<br />
   <table class="table-user">
   	<thead>
   		<tr>
@@ -72,7 +75,35 @@ if (!$achiv || sizeof($achiv = mysql_fetch_assoc($achiv)) == 0) {
   </table>
 	<br />
   <table width="97%"><tr>
-	<td valign="top"><table class="table-user">
+		<td valign="top" width="40%"><table class="table-user">
+		<tr>
+			<th colspan="3">iDM v2</th>
+		</tr>
+  		<tr class="even">
+  			<td width="50%">Money</td>
+			<td width="30%"><abbr title="<?=number_format($achiv['oldmoney'], 0, '', ',')?>"><?=n2a($achiv['oldmoney'])?></abbr> gp</td>
+			<td width="20%"><?=$achiv['oldmoney'] ? getrank_old($userd,'oldmoney') : $error ?></td>
+		</tr>
+		<tr class="odd">
+  			<td>Wins</td>
+			<td><?=number_format($achiv['oldwins'], 0, '', ',')?></td>
+			<td><?=$achiv['oldwins'] ? getrank_old($userd,'oldwins') : $error ?></td>
+		</tr>
+		<tr class="even">
+  			<td>Losses</td>
+			<td><?=number_format($achiv['oldlosses'], 0, '', ',')?></td>
+			<td><?=$achiv['oldlosses'] ? getrank_old($userd,'oldlosses') : $error ?></td>
+		</tr>
+		<tr class="odd">
+  			<td>Total Rank</td>
+			<td colspan="2"><?=$oldtotal > 0 ? getrank_old($userd,'total') : $error ?></td>
+		</tr>
+		<tr class="even">
+  			<td>Win/Loss Ratio</td>
+			<td colspan="2"><?=ratiodist($achiv['oldwins'], $achiv['oldlosses'])?></td>
+		</tr>
+	</table></td>
+	<td valign="top" width="30%"><table class="table-user">
 		<tr>
 			<th colspan="2">Special Achievements</th>
 		</tr>
@@ -101,7 +132,7 @@ if (!$achiv || sizeof($achiv = mysql_fetch_assoc($achiv)) == 0) {
 			<td width="25px;"><?=aCheck($sitem); ?></td>
 		</tr>
 	</table></td>
-		<td><table class="table-user">
+		<td valign="top" width="30%"><table class="table-user">
 		<tr>
 			<th colspan="2">Drop Achievements</th>
 		</tr>
