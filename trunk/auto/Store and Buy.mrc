@@ -213,7 +213,7 @@ alias storematch {
     var %fname = Mage's Book
     var %price = 400000000
     var %table = equip_armour
-    var %winreq = 1000
+    var %winreq = 0
   }
   elseif ($2 == accumulator) || ($2 == accum) || ($2 == backpack) {
     var %sname = accumulator
