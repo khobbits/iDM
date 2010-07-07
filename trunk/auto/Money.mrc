@@ -140,11 +140,11 @@ alias pvp {
 
 on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
   if ($db.get(admins,rank,$address($nick,3)) >= 2 && $me == iDM) {
-    var %sql SELECT sum(belong) as belong,sum(allegra) as allegra,sum(beau) as beau,sum(snake) as snake,sum(kh) as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
+    var %sql SELECT sum(belong = '1') as belong,sum(allegra = '1') as allegra,sum(beau = '1') as beau,sum(snake = '1') as snake,sum(kh = '1') as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
     if ($db.query_row(%result,>equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
     db.query_end %result
-    notice $nick $logo(Special Items) Belong Blade: $s2($hget(>equip,belong)) Allergy Pills: $s2($hget(>equip,allegra)) $&
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Special Items) Belong Blade: $s2($hget(>equip,belong)) Allergy Pills: $s2($hget(>equip,allegra)) $&
       Beaumerang: $s2($hget(>equip,beau)) One Eyed Trouser Snake: $s2($hget(>equip,snake)) KHonfound Ring: $s2($hget(>equip,kh)) $&
       The Supporter: $s2($hget(>equip,support))
   }
@@ -157,7 +157,7 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
       var %item $v1
       if ($db.get(equip_staff,%item,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
       db.set equip_staff %item $2 $iif(%item == support,$nick,1)
-      notice $nick $logo(Give-Item) Gave your item to $s2($2)
+      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Give-Item) Gave your item to $s2($2)
     }
     else { return }
   }
@@ -170,7 +170,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
       var %item $v1
       if ($db.get(equip_staff,%item,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       db.set equip_staff %item $2 0
-      notice $nick $logo(Take-Item) Took your item from $s2($2)
+      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Take-Item) Took your item from $s2($2)
     }
     else { return }
   }
@@ -179,16 +179,6 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
 alias whichitem {
   if ($db.get(admins,name,$address($nick,3))) return $v1
   else return 0
-}
-
-alias whichitem-old {
-  if ($1 == Belongtome) { return belong }
-  if ($1 == Allegra || $1 == Strychnine) { return allegra }
-  if ($1 == Beau) { return beau }
-  if ($1 == iSnake) { return snake }
-  if ($1 == KHobbits) { return kh }
-  if ($1 == _Ace_ || $1 == Aaron``) { return support }
-  return 0
 }
 
 alias webstrip {

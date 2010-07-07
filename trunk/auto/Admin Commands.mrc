@@ -1,12 +1,12 @@
-on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
-    notice $nick $s1(Admin commands:) $s2(!addsupport nick, !join bot chan, !rehash, !ignoresync, !amsg, $&
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $s1(Admin commands:) $s2(!addsupport nick, !join bot chan, !rehash, !ignoresync, !amsg, $&
       !(show/rem)dm nick, !define/increase/decrease account item amount !addsupport nick !cookie nick adjust $&
       ) $s1(Support commands:) $s2(!chans, !active, !part chan, !(r)suspend nick !(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan !globes)  $s1(Helper commands:) $s2(!cignore nick/host, !csuspend nick, !cblist chan, !info nick)
   }
 }
 
-on $*:TEXT:/^[!.]autoidm/Si:#: {
+on $*:TEXT:/^[!@.]autoidm/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if ($2 == on) { db.set settings setting $chan timeout | notice $nick $logo(AutoIDM) Disabled Timeout }
     elseif ($2 == off) { db.remove settings $chan setting timeout | notice $nick $logo(AutoIDM) Enabled Timeout }
@@ -17,7 +17,7 @@ on $*:TEXT:/^[!.]autoidm/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.]addsupport .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     who $chan
@@ -30,7 +30,7 @@ on $*:TEXT:/^[!.]addsupport .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.]addhelper .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.]addhelper .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addhelper <nick> | halt }
@@ -40,7 +40,7 @@ on $*:TEXT:/^[!.]addhelper .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.]addvip .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.]addvip .*/Si:#idm.staff,#idm.support: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addvip <nick> | halt }
@@ -49,18 +49,18 @@ on $*:TEXT:/^[!.]addvip .*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.]part .*/Si:#: {
+on $*:TEXT:/^[!@.]part .*/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if ($left($2,1) == $chr(35)) && ($me ison $2) {
       part $2 Part requested by Bot Staff - $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93)))
-      notice $nick I have parted $2
+      $iif($left($1,1) == @,msgsafe #,notice $nick) I have parted $2
     }
   }
 }
 
-on $*:TEXT:/^[!.]chans$/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]chans$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
-    notice $nick I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
+    $iif($left($1,1) == @,msgsafe #,notice $nick) I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
 }
 alias chans {
@@ -106,7 +106,7 @@ alias listdmchan {
   return $iif(%b,$v1,none)
 }
 
-on $*:TEXT:/^[!.]join .*/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]join .*/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
@@ -118,14 +118,14 @@ on $*:TEXT:/^[!.]join .*/Si:#idm.staff: {
   }
 }
 
-on $*:TEXT:/^[!.]rehash$/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]rehash$/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     rehash.run 0
   }
 }
 
-on $*:TEXT:/^[!.]ignoresync$/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]ignoresync$/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     ignoresync.run 0
@@ -157,25 +157,12 @@ on *:TEXT:!whois*:#iDM.Staff,#iDM.Support: {
   }
 }
 
-on *:TEXT:!globes:#: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 2) {
-    if ($me == idm) { 
-      var %i 0
-      var %sql = SELECT * FROM `equip_item` WHERE snow >= 1
-      var %result = $db.query(%sql)
-      var %i = $db.query_num_rows(%result)
-      db.query_end %result
-      msg $chan $logo(Snow Globes) %i have been dropped.
-    }
-  }
-}
-
-on $*:TEXT:/^[!.`](rem|rmv|no)dm/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:#idm.staff,#idm.support: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if (!$db.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
     hfree $2
     db.set user indm $2 0
-    notice $nick $logo(REM-DM) $s1($2) is no longer DMing.
+    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(REM-DM) $s1($2) is no longer DMing.
   }
 }
 
@@ -222,7 +209,7 @@ alias ignoreinfo {
   }
 }
 
-oN $*:TEXT:/^[!.]hax/Si:#: {
+oN $*:TEXT:/^[!@.]hax/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
     var %user $iif($2, $2, $nick)
