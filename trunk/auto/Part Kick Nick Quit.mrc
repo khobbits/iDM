@@ -76,6 +76,18 @@ on *:NICK: {
       }
     }
     if ($hget($nick) || $hget($chan(%a),g0) && $istok($hget($chan(%a),players),$nick,44)) {
+      hadd $chan(%a) gwd.alive $remtok($hget($chan(%a),gwd.alive),$nick,44)
+      if ($numtok($hget($chan(%a),gwd.alive),44) >= 1) {
+        msgsafe $chan(%a) $logo(GWD) $s1($nick) their GWD raid has come to an end because they changed names.
+
+        db.set user losses $nick + 1
+        hadd $chan(%a) players $remtok($hget($chan(%a),players),$nick,44)
+        hadd $chan(%a) gwd.turn $remtok($hget($chan(%a),gwd.turn),$nick,44)
+        db.set user indm $nick 0
+        .hfree $nick
+
+        halt
+      }
       msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
       gwdcancel $chan(%a)
       .timer $+ $chan(%a) off
@@ -151,10 +163,22 @@ alias enddmcheck {
     return 1
   }
   elseif ($hget($1,players)) && ($istok($hget($1,players),$2,44)) {
-    msgsafe $1 $logo(GWD) The GWD has been canceled, because one of the players left.
-    enddmcatch $3 $2 $1 $4 $5-
+    hadd $1 gwd.alive $remtok($hget($1,gwd.alive),$2,44)
+    if ($numtok($hget($1,gwd.alive),44) >= 1) {
+      msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
+
+      db.set user losses $2 + 1
+      hadd $1 players $remtok($hget($1,players),$2,44)
+      hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
+      db.set user indm $2 0
+      .hfree $2
+
+      halt
+    }
+    msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.    
     gwdcancel $1
     .timer $+ $1 off
+    enddmcatch $3 $2 $1 $4 $5-
   }
   elseif ($2 == $hget($1,p1)) || ($2 == $hget($1,p2)) {
     msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.
