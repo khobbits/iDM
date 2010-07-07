@@ -128,12 +128,11 @@ on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
 }
 
 alias cmdfetch {
-  var %output, %i 1
+  var %i 1
   while ($dmg(list,%i)) {
-    if (($dmg(list,%i).item != npc) && ($dmg(list,%i).pvp == $1)) { var %output $iif(%output,%output $+ $chr(32)) $+ $hget(>row,weapon) }
+    if (($dmg(list,%i).item != npc) && ($dmg(list,%i).pvp == $1)) { var %output $iif(%output,%output $+ $chr(32)) $+ $dmg(list,%i) }
     inc %i
   }
-  db.query_end %result
   return %output
 }
 
