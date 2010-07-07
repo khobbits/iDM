@@ -25,7 +25,7 @@ alias dead {
     userlog win $3 $2
     userlog loss $2 $3
 
-    var %drops $rundrops($1, $3, $2)
+    var %drops $rundrops($1, $3, $2, 1)
     var %combined $gettok(%drops,1,32)
     var %items $gettok(%drops,2-,32)
     var %g $numtok($hget($1,gwd.alive),44)
@@ -138,15 +138,17 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
 alias gendrops {
   ; $1 User
   ; $2 Otheruser
+  ; $3 GWD?
   if ($2 == $null) { putlog Syntax Error: gendrops (2) - $db.safe($1-) | halt }
   var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,910)
   if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
   var %oldchance %chance
 
-  var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2)
+  var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
+  if ($3) var %windiff 1.5, %limit $iif($rand(1,10) == 1,6,5)
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
-  var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT $iif($rand(1,10) == 1,4,3)
+  var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
@@ -159,8 +161,9 @@ alias rundrops {
   ; $1 $chan
   ; $2 User
   ; $3 Otheruser
+  ; $4 GWD?
   if ($3 == $null) { putlog Syntax Error: rundrops (3) - $db.safe($1-) | halt }
-  var %drops $gendrops($2,$3), %disprice 0, %display, %wealth 0, %i 1
+  var %drops $gendrops($2,$3,$4), %disprice 0, %display, %wealth 0, %i 1
   var %chance $gettok(%drops,1,32)
   var %drops $gettok(%drops,2-,32)
   if ($db.get(equip_item,wealth,$2) != 0) var %wealth 1
