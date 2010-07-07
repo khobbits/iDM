@@ -122,8 +122,7 @@ alias cmdfetch {
   var %result $db.query(%sql)
   var %output
   while ($db.query_row(%result,>row)) {
-      var %output $iif(%output,%output $+ $chr(32)) $+ $hget(>row,weapon)
-    }
+    var %output $iif(%output,%output $+ $chr(32)) $+ $hget(>row,weapon)
   }
   db.query_end %result
   return %output
