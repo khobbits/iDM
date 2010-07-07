@@ -100,6 +100,7 @@ alias playerinit {
   dbcheck
   if ($3 == $null) { putlog Syntax Error: playerinit (3) - $db.safe($1-) | halt }
   var %nick $autoidm.acc($1)
+  db.set user indm %nick 1
   var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) 
   if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
   var %sql %sql WHERE user = $db.safe(%nick)
