@@ -107,11 +107,11 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   var %prefix $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(COMMANDS)
-  var %account !money !equip !account !top/wtop/ltop-N !dmrank-name/N
-  var %clan !startclan-name !addmem/delmem-nick !joinclan-name !dmclan-nick !leaveclan !share-on/off
-  var %items !buy/sell-item !store !dmclue !solve-answer
-  var %misc !on/off-att !max-att !hitchance-att-dmg
-  var %control !dm-[noadmin] !stake-[amount] !gwd !enddm !status
+  var %account money equip account top/wtop/ltop-N dmrank-name/N
+  var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
+  var %items buy/sell-item store dmclue solve-answer
+  var %misc on/off-att !max-att hitchance-att-dmg
+  var %control dm-[noadmin] stake-[amount] gwd enddm status
   var %attack $cmdfetch(0), %pvp $cmdfetch(1)
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc)
   %prefix $cmdformat(Control,%control) $cmdformat(Attack,%attack) $cmdformat(PVP,%pvp)
@@ -131,10 +131,20 @@ alias cmdfetch {
 alias cmdformat {
   var %i 1
   while (%i <= $numtok($2,32)) {
-    var %cmds $iif(%cmds,%cmds $+ $chr(32)) $+ $s1($gettok($2,%i,32)) $+ $chr(44)
+    var %cmds $iif(%cmds,%cmds $+ $chr(32)) $+ $s1($cmdsplit($gettok($2,%i,32)) $+ $chr(44)
     inc %i
   }
   return $s2($1) $chr(91) $+ %cmds $+ $chr(93)
+}
+
+alias cmdsplit {
+  var %i 1
+  while (%i <= $numtok($2,45)) {
+    if(!%cmds) { var %cmds $gettok($1,%i,45) }
+    else { var %cmds %cmds $gettok($1,%i,45) }
+    inc %i
+  }
+  return %cmds
 }
 
 on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
