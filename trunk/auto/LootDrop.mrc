@@ -29,7 +29,8 @@ alias dead {
     var %combined $gettok(%drops,1,32)
     var %items $gettok(%drops,2-,32)
     var %g $numtok($hget($1,gwd.alive),44)
-    var %sharedrop $floor($calc(%combined / %g))
+    ;var %sharedrop $floor($calc(%combined / %g))
+    var %sharedrop $floor(%combined)
 
     db.set user losses $2 + 1
     userlog drop $3 %sharedrop gp
@@ -146,7 +147,7 @@ alias gendrops {
 
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
-  if ($3) var %windiff 1.5, %limit $iif($rand(1,10) == 1,6,5)
+  if ($3) var %windiff 1.5, %limit $calc(%limit + 1)
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)
