@@ -112,9 +112,9 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   var %items buy/sell-item store dmclue solve-answer
   var %misc on/off-att !max-att hitchance-att-dmg
   var %control dm-[noadmin] stake-[amount] gwd enddm status
-  var %attack $cmdfetch(0), %pvp $cmdfetch(1)
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
-  %prefix $cmdformat(Attack,%attack) $cmdformat(PVP,%pvp)
+  %prefix $cmdformat(Magic,$cmdfetch(magic)) $cmdformat(Range,$cmdfetch(range)) $cmdformat(Melee,$cmdfetch(melee)) $cmdformat(PVP,$cmdfetch(pvp))
+
 }
 
 on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
@@ -130,7 +130,7 @@ on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
 alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
-    if (($dmg(list,%i).item != npc) && ($dmg(list,%i).pvp == $1)) { var %output $iif(%output,%output $+ $chr(32)) $+ $dmg(list,%i) }
+    if (($dmg(list,%i).item != npc)  && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) { var %output $iif(%output,%output $+ $chr(32)) $+ $dmg(list,%i) }
     inc %i
   }
   return %output
