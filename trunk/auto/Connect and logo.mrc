@@ -1,15 +1,17 @@
 alias logo { return $+($s2,[,$s1,$$1-,$iif(%ver,- $+ $v1),,$s2,],) }
 
-alias c1 return 03
-alias c2 return 07
+alias cs1 return 3
+alias cs1 return 3
+alias c1 return 03
+alias c2 return 07
 
 alias s1 {
-  if ($1 === $null) return $c1
-  return $+($c1,$1-,) 
+  if ($1 === $null) return  $+ $c1
+  return $+(,$iif($left($1,1) isnum,$c1,$cs1),$1-,) 
 }
 alias s2 { 
-  if ($1 === $null) return $c2
-  return $+($c2,$1-,) 
+  if ($1 === $null) return  $+ $c2
+  return $+(,$iif($left($1,1) isnum,$c2,$cs2),$1-,) 
 }
 
 alias tag { return $iif($len($me) != 7,Hub,$mid($me,5,2)) }
