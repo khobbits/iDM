@@ -117,12 +117,20 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   %prefix $cmdformat(Attack,%attack) $cmdformat(PVP,%pvp)
 }
 
+on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
+  if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
+   var %prefix $iif($left($1,1) == @,msgsafe #,notice $nick)
+   var %admin addsupport-nick join-bot-chan rehash ignoresync amsg (show/rem)dm-nick define/increase/decrease-account-item-amount addsupport-nick cookie-nick-adjust
+   var %support chans active part-chan (r)suspend-nick (r)ignore-nick/host (r)blist-chan viewitems (give/take)item-nick whois-chan
+   var %helper cignore-nick/host csuspend-nick cblist-chan !info-nick
+   %prefix $cmdformat(Admin,%admin) $cmdformat(support,%support) $cmdformat(helper,%helper)
+  }
+}
+
 alias cmdfetch {
-  var %sql SELECT `weapon` FROM `weapon` WHERE `item` != 'npc' AND `pvp` = ' $+ $1 $+ '
-  var %result $db.query(%sql)
-  var %output
-  while ($db.query_row(%result,>row)) {
-    var %output $iif(%output,%output $+ $chr(32)) $+ $hget(>row,weapon)
+  var %output, %i 1
+  while ($dmg(list,%i)) {
+    if (($dmg(list,%i).item != npc) && ($dmg(list,%i).pvp == $1)) { var %output $iif(%output,%output $+ $chr(32)) $+ $hget(>row,weapon) }
   }
   db.query_end %result
   return %output
