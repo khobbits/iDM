@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ($isbanned($nick)) { halt }
-  if ($me != iDM) { halt }
+  ;if ($me != iDM) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
