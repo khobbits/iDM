@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ($isbanned($nick)) { halt }
-  ;if ($me != iDM) { halt }
+  if ($me != iDM) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
@@ -108,6 +108,10 @@ alias gwd.npc {
       ;msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed one of the players $+($s1(%p2),.) $s2($numtok($hget($1,gwd.alive),44)) players are still alive: $replace($s1($hget($1,gwd.alive)),$chr(44),$chr(44) $chr(32))
 
       db.set user losses %p2 + 1
+      hadd $1 players $remtok($hget($1,players),%p2,44)
+      hadd $1 gwd.turn $remtok($hget($1,gwd.turn),%p2,44)
+      db.set user indm %p2 0
+      .hfree %p2
 
       hadd $1 gwd.turn $hget($1,gwd.alive)
       .timer $+ $1 1 30 gwd.npc $1
