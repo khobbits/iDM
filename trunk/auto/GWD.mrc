@@ -107,6 +107,7 @@ alias gwd.npc {
     if ($numtok($hget($1,gwd.alive),44) >= 1) {
       ;msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed one of the players $+($s1(%p2),.) $s2($numtok($hget($1,gwd.alive),44)) players are still alive: $replace($s1($hget($1,gwd.alive)),$chr(44),$chr(44) $chr(32))
 
+      userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses %p2 + 1
       hadd $1 players $remtok($hget($1,players),%p2,44)
       hadd $1 gwd.turn $remtok($hget($1,gwd.turn),%p2,44)
@@ -120,6 +121,8 @@ alias gwd.npc {
     else {
       msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwdtime)))),$s1(]))
 
+      userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
+      userlog win $autoidm.acc(<gwd> $+ $1) %p2
       db.set user losses %p2 + 1
       db.set user wins $autoidm.acc(<gwd> $+ $1) + 1
 

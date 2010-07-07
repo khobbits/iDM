@@ -22,7 +22,6 @@ alias dead {
     halt
   }
   if ($hget($1,g0)) {
-    userlog win $3 $2
     userlog loss $2 $3
 
     var %drops $rundrops($1, $3, $2, 1)
@@ -39,6 +38,7 @@ alias dead {
     while (%b <= $gettok(%a,0,44)) { 
       db.set user money $gettok(%a,%b,44) + %sharedrop
       db.set user wins $gettok(%a,%b,44) + 1
+      userlog win $gettok(%a,%b,44) $2
       inc %b 
     }
 
