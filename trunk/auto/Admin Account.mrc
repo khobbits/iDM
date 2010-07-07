@@ -105,15 +105,6 @@ on $*:TEXT:/^[!.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
   }
 }
 
-on $*:TEXT:/^[!.]rename.*/Si:#idm.staff: {
-  if ($me != iDM) { return }
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    if (!$3) { notice $nick To use the rename command, type !rename oldnick newnick. | halt }
-    if ($renamenick($2,$3,$nick)) { notice $nick Renamed account $2 to $3 }
-    else { notice $nick Renaming account $2 failed as $3 already exists (if this is an error you could try using !delete on one of the accounts)  }
-  }
-}
-
 on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
@@ -122,25 +113,6 @@ on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
     if ($deletenick($2,$nick)) { notice $nick Deleted account $2 }
     else { notice $nick Couldn't find account $2 }
   }
-}
-
-alias renamenick {
-  if ($3) { var %target = notice $3 $logo(RENAME) }
-  else { var %target = echo -s RENAME $1 to $2 - }
-  db.exec UPDATE `user` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  if ($mysql_affected_rows(%db) === -1) { return 0 }
-  var %target = %target Updated Rows: $mysql_affected_rows(%db) user;
-  db.exec UPDATE `equip_item` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  var %target = %target $mysql_affected_rows(%db) equip_item;
-  db.exec UPDATE `equip_pvp` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  var %target = %target $mysql_affected_rows(%db) equip_pvp;
-  db.exec UPDATE `equip_armour` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  var %target = %target $mysql_affected_rows(%db) equip_armour;
-  db.exec UPDATE `equip_staff` SET user = $db.safe($2) WHERE user = $db.safe($1)
-  var %target = %target $mysql_affected_rows(%db) equip_staff;
-  db.exec UPDATE `clantracker` SET owner = $db.safe($2) WHERE owner = $db.safe($1)
-  %target $mysql_affected_rows(%db) clans.
-  return 1
 }
 
 alias deletenick {

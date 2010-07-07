@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.]admin$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     notice $nick $s1(Admin commands:) $s2(!addsupport nick, !join bot chan, !rehash, !ignoresync, !amsg, $&
-      !(show/rem)dm nick, !define/increase/decrease account item amount !rename oldnick newnick !addsupport nick !cookie nick adjust $&
+      !(show/rem)dm nick, !define/increase/decrease account item amount !addsupport nick !cookie nick adjust $&
       ) $s1(Support commands:) $s2(!chans, !active, !part chan, !(r)suspend nick !(r)ignore nick/host, !(r)blist chan, !viewitems !(give/take)item nick !whois chan !globes)  $s1(Helper commands:) $s2(!cignore nick/host, !csuspend nick, !cblist chan, !info nick)
   }
 }
