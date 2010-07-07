@@ -32,13 +32,13 @@ alias dead {
     var %sharedrop $floor(%combined)
 
     db.set user losses $2 + 1
-    userlog drop $3 %sharedrop gp
 
     var %a = $hget($1,gwd.alive), %b = 1 
-    while (%b <= $gettok(%a,0,44)) { 
+    while (%b <= $gettok(%a,0,44)) {
       db.set user money $gettok(%a,%b,44) + %sharedrop
       db.set user wins $gettok(%a,%b,44) + 1
       userlog win $gettok(%a,%b,44) $2
+      userlog drop $gettok(%a,%b,44) %sharedrop gp
       inc %b 
     }
 
