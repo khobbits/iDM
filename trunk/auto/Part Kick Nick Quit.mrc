@@ -61,14 +61,19 @@ on *:NICK: {
   var %a = 1
   while (%a <= $chan(0)) {
     if ($hget($nick)) {
+      var %user $iif($nick == $hget($chan(%a),p1),$hget($chan(%a),p2),$hget($chan(%a),p1))
       if ($hget($chan(%a),stake)) && (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
         db.set user money $nick - $ceil($calc($hget($chan(%a),stake)) / 2))
+        userlog loss $nick %user
+        userlog win %user $nick 
         msgsafe $chan(%a) $logo(DM) The stake has been canceled, because one of the players changed their nick. $s1($nick) has lost $s2($price($ceil($calc($hget($chan(%a),stake)) / 2))) $+ .
         cancel $chan(%a)
         .timer $+ $chan(%a) off
         halt
       }
       elseif (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
+        userlog loss $nick %user
+        userlog win %user $nick 
         msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
         cancel $chan(%a)
         .timer $+ $chan(%a) off
@@ -80,6 +85,7 @@ on *:NICK: {
       if ($numtok($hget($chan(%a),gwd.alive),44) >= 1) {
         msgsafe $chan(%a) $logo(GWD) $s1($nick) their GWD raid has come to an end because they changed names.
 
+        userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
         db.set user losses $nick + 1
         hadd $chan(%a) players $remtok($hget($chan(%a),players),$nick,44)
         hadd $chan(%a) gwd.turn $remtok($hget($chan(%a),gwd.turn),$nick,44)
@@ -89,6 +95,8 @@ on *:NICK: {
         halt
       }
       msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
+      userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
+      userlog wins $autoidm.acc(<gwd> $+ $chan(%a)) $nick
       gwdcancel $chan(%a)
       .timer $+ $chan(%a) off
       halt
@@ -156,6 +164,9 @@ alias enddmcheck {
   ; $4- = string
   if ($hget($1,p2)) && ($hget($1,stake)) && (($hget($1,p1) == $2) || ($hget($1,p2) == $2) && ($3 == part)) {
     db.set user money $2 - $ceil($calc($hget($1,stake) / 2) )
+    var %user $iif($2 == $hget($1,p1),$hget($1,p2),$hget($1,p1))
+    userlog loss $2 %user
+    userlog win %user $2 
     msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($2) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
     notice $2 You left the channel during a stake, you loose $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
     cancel $1
@@ -167,6 +178,7 @@ alias enddmcheck {
     if ($numtok($hget($1,gwd.alive),44) >= 1) {
       msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
 
+      userlog loss $2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses $2 + 1
       hadd $1 players $remtok($hget($1,players),$2,44)
       hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
@@ -175,12 +187,17 @@ alias enddmcheck {
 
       halt
     }
-    msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.    
+    msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.
+    userlog loss $2 $autoidm.acc(<gwd> $+ $1)
+    userlog wins $autoidm.acc(<gwd> $+ $1) $2    
     gwdcancel $1
     .timer $+ $1 off
     enddmcatch $3 $2 $1 $4 $5-
   }
   elseif ($2 == $hget($1,p1)) || ($2 == $hget($1,p2)) {
+    var %user $iif($2 == $hget($1,p1),$hget($1,p2),$hget($1,p1))
+    userlog loss $2 %user
+    userlog win %user $2 
     msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.
     if ($enddmcatch($3,$2,$1,$4,$5-) == 1) && ($hget($1,p2)) {
       var %oldmoney = $hget($2,money)
