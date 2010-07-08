@@ -104,6 +104,7 @@ alias checkisbanned {
   if ($hget(>banned,$1) != $null) { return $v1 }
   elseif ($db.get(user,banned,$1) == 1) {
     hadd -mu120 >banned $1 1
+    notice $1 This account has been banned, if you need assistance visit #idm.support.  You can appeal any bans using !account.
     return 1
   }
   else {
