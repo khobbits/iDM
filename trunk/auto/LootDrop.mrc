@@ -24,7 +24,8 @@ alias dead {
   if ($hget($1,g0)) {
     userlog loss $2 $3
 
-    var %drops $rundrops($1, $3, $2, 1)
+    var %p $hget($1,players)
+    var %drops $rundrops($1, $gettok(%p,$r(1,$numtok(%p,44)),44), $2, 1)
     var %combined $gettok(%drops,1,32)
     var %items $gettok(%drops,2-,32)
     var %g $numtok($hget($1,gwd.alive),44)
@@ -197,6 +198,7 @@ alias rundrops {
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
+      if ($4) { notice $2 $logo(GWD) Congratulations $2 on your07 %item $+ ! }
     }
     else { var %disprice $calc(%disprice + %price) }
     var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1
