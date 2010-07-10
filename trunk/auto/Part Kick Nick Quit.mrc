@@ -6,20 +6,17 @@ on $*:TEXT:/^[!@.]part/Si:#: {
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on
     msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
-    if ($hget($chan,g0)) { gwdcancel # }
-    else { cancel # }
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
   }
 }
 
 on *:PART:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    if ($hget($chan,g0)) { gwdcancel # }
-    else { cancel # }
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
-    if ($hget($chan,g0)) { gwdcancel # }
-    else { cancel # }
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
   }
   if ($hget($chan) && $hget($nick) || $istok($hget($chan,players),$nick,44))  {
     if ($enddmcheck($chan,$nick,part,$1,$2-)) { return }
@@ -28,8 +25,7 @@ on *:PART:#: {
 
 on *:QUIT: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    if ($hget($chan,g0)) { gwdcancel # }
-    else { cancel # }
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
     part # Parting channel. Need 5 or more people to have iDM.
   }
   var %a 1
@@ -43,15 +39,15 @@ on *:QUIT: {
 
 on *:KICK:#: {
   if ($nick(#,0) < 5) && (!$no-part(#) && ($knick != $me)) {
-    if ($hget($chan,g0)) { gwdcancel # }
-    else { cancel # }
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($hget($knick) || $istok($hget($chan,players),$knick,44)) && ($hget($chan)) {
     if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
   if ($knick == $me) {
-    .timer 1 15 waskicked #
+    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    ;.timer 1 15 waskicked #
     if (. !isin $nick) { msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
     elseif (shroudbnc !isin $nick) { join # | msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
   }

@@ -81,7 +81,7 @@ alias gwd.run {
   hadd <gwd> $+ $1 npc 1
   hadd $1 gi 1
   hadd $1 gwdtime $ctime
-  msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,g0)),.) Everyone make their attacks, $s1($hget($1,g0)) will hit in $+($s2(30s),.)
+  msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,g0)),.) Everyone make their attacks, $s1($hget($1,g0)) will hit in $+($s2(30 seconds),.)
   .timer $+ $1 1 30 gwd.npc $1
 }
 
