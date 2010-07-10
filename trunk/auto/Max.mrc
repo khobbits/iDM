@@ -62,6 +62,17 @@ alias hitdmg {
   return %return
 }
 
+alias attack { return $iif($dmg($1,name),$true,$false) }
+alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
+alias isweapon {
+  var %wep $dmg($1,item)
+  return $iif(%wep,%wep,$false)
+}
+alias specused { return $calc($dmg($1,spec) * 25) }
+alias poisoner { return $dmg($1,poison) $dmg($1,poisonamount) }
+alias freezer { return $dmg($1,freeze) }
+alias healer { return $dmg($1,heal) $dmg($1,healamount) }
+
 alias dmg.hload {
   if ($hget(>weapon)) { hfree >weapon }
   hmake >weapon 50
@@ -119,19 +130,59 @@ alias dmg {
 
 }
 
-alias attackname { return $dmg($1,name) }
-alias specused { return $calc($dmg($1,spec) * 25) }
-alias poisoner { return $dmg($1,poison) $dmg($1,poisonamount) }
-alias freezer { return $dmg($1,freeze) }
-alias healer { return $dmg($1,heal) $dmg($1,healamount) }
-alias splasher { return $dmg($1,splash) }
-alias action { return $dmg($1,what) }
-alias effect { return $dmg($1,effect) }
-alias attack { return $iif($dmg($1,name),$true,$false) }
-alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
-alias isweapon {
-  var %wep $dmg($1,item)
-  return $iif(%wep,%wep,$false)
+alias accuracy {
+  ;1 is Attack
+  ;2 is Attackee
+  if ($istok(melee mage range,$hget($2,laststyle),32)) {
+    if ($dmg($1,type) == melee) {
+      if ($hget($2,laststyle) == melee) return 0
+      elseif ($hget($2,laststyle) == mage) return -1
+      elseif ($hget($2,laststyle) == range) return 1
+    }
+    elseif ($dmg($1,type) == magic) {
+      if ($hget($2,laststyle) == melee) return 1
+      elseif ($hget($2,laststyle) == mage) return 0
+      elseif ($hget($2,laststyle) == range) return -1
+    }
+    elseif ($dmg($1,type) == range) {
+      if ($hget($2,laststyle) == melee) return -1
+      elseif ($hget($2,laststyle) == mage) return 1
+      elseif ($hget($2,laststyle) == range) return 0
+    }
+  }
+  return 0
+}
+
+alias atkbonus {
+  ;1 is Weapon
+  ;2 is hashtable
+  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,godcape),4,0)) + $iif($hget($2,mbook),4,0)  }
+  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,archer),4,0) + $iif($hget($2,accumulator),4,0)) }
+  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),4,0) + $iif($hget($2,bgloves),4,0))  }
+  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
+  return %atk
+}
+
+alias hit {
+  ;1 is Weapon
+  ;2 is Attacker
+  ;3 is Attackee
+  ;4 is Chan
+  if ($4 == $null) { putlog Syntax Error: hit (4) - $db.safe($1-) | halt }
+  if ($accuracy($1,$3) == -1) { var %acc $r(1,80) }
+  elseif ($accuracy($1,$3) == 1) { var %acc $r(15,100) }
+  else { var %acc $r(1,100) }
+  var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
+  var %atk $atkbonus($1,$2)
+  if ($dmg($1,defbonus) == 0) { var %def 1 }
+
+  if (<iDM>* iswm $2) {
+    inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
+  }
+  elseif (<gwd>* iswm $2) {
+    inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 6 ))
+  }
+  return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }
 
 on $*:TEXT:/^[!@.]max/Si:#: {
@@ -151,7 +202,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
-  %msg $iif($effect($2),$+($chr(40),$v1,$chr(41)))
+  %msg $iif($dmg($2,effect),$+($chr(40),$v1,$chr(41)))
 }
 
 alias dmg.breakdown { return $s2($gettok($max($1),$2,32)) $iif($totalhit($1,$2),$+($chr(40),$s2($v1),$chr(41))) }

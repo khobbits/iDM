@@ -198,7 +198,7 @@ alias rundrops {
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
-      if ($4) { notice $2 $logo(GWD) Congratulations $2 on your07 %item $+ ! }
+      if ($4) { notice $2 $logo(GWD) Congratulations $2 on your $s2(%item) $+ ! }
     }
     else { var %disprice $calc(%disprice + %price) }
     var %sql = INSERT INTO loot_item (`item`, `count`) VALUES ( $db.safe(%item) , '1' ) ON DUPLICATE KEY UPDATE count = count+1

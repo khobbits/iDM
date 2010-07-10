@@ -46,10 +46,15 @@ on *:KICK:#: {
     if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
   if ($knick == $me) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
-    ;.timer 1 15 waskicked #
-    if (. !isin $nick) { msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- }
-    elseif (shroudbnc !isin $nick) { join # | msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1- }
+    if (. !isin $nick) {
+      $iif($hget($chan,g0),gwdcancel #,cancel #) 
+      msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- 
+    }
+    elseif (shroudbnc !isin $nick) { 
+      .timer 1 10 waskicked #
+      join # 
+      msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1-
+    }
   }
 }
 
@@ -114,8 +119,7 @@ on *:NICK: {
 
 alias waskicked {
   if ($me !ison $1) {
-    if ($hget($1,g0)) { gwdcancel $1 }
-    else { cancel $1 }
+    $iif($hget($chan,g0),gwdcancel #,cancel #) 
     .timer $+ $1 off
   }
 }

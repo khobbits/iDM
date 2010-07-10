@@ -125,8 +125,8 @@ alias damage {
   }
   ; Starting value for one hit acheivement
   var %dmg-dealt %hitdmg
-  var %msg $logo(%logo) $s1($1) $replace($action($3),$eval(%p2%,0),$s1($replace($2,$chr(58),$chr(32))),$eval(%attack%,0),$attackname($3))
-  if (($splasher($3)) && (%hitdmg == 0)) { var %msg %msg and splashed }
+  var %msg $logo(%logo) $s1($1) $replace($dmg($3,what),$eval(%p2%,0),$s1($replace($2,$chr(58),$chr(32))),$eval(%attack%,0),$dmg($3,name))
+  if (($dmg($3,splash)) && (%hitdmg == 0)) { var %msg %msg and splashed }
   else { var %msg %msg hitting %hitshow }
 
   if ($freezer($3) && ($r(1,$v1) == 1) && (%hitdmg >= 1)) {
@@ -198,7 +198,7 @@ alias damage {
       else { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar2($hget($gettok(%e,%x,44),hp)),HP) }
       inc %x
     }
-    msgsafe $4 $logo(GWD) HP: %h
+    notice $hget($4,players) $logo(GWD) HP: %h
   }
 
   if (%dmg-dealt >= 99) { db.set achievements 1hit $1 1 }
@@ -232,63 +232,4 @@ alias hpbar2 {
 alias setc {
   if ($2) return  $+ $1 $+ , $+ $2
   return  $+ $1
-}
-
-alias accuracy {
-  ;1 is Attack
-  ;2 is Attackee
-  if ($istok(melee mage range,$hget($2,laststyle),32)) {
-
-    if ($dmg($1,type) == melee) {
-      if ($hget($2,laststyle) == melee) return 0
-      elseif ($hget($2,laststyle) == mage) return -1
-      elseif ($hget($2,laststyle) == range) return 1
-    }
-    elseif ($dmg($1,type) == magic) {
-      if ($hget($2,laststyle) == melee) return 1
-      elseif ($hget($2,laststyle) == mage) return 0
-      elseif ($hget($2,laststyle) == range) return -1
-    }
-    elseif ($dmg($1,type) == range) {
-      if ($hget($2,laststyle) == melee) return -1
-      elseif ($hget($2,laststyle) == mage) return 1
-      elseif ($hget($2,laststyle) == range) return 0
-    }
-  }
-  return 0
-}
-
-alias atkbonus {
-  ;1 is Weapon
-  ;2 is hashtable
-  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,godcape),4,0)) + $iif($hget($2,mbook),4,0)  }
-  elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,archer),4,0) + $iif($hget($2,accumulator),4,0)) }
-  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),4,0) + $iif($hget($2,bgloves),4,0))  }
-  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
-
-  return %atk
-}
-
-alias hit {
-  ;1 is Weapon
-  ;2 is Attacker
-  ;3 is Attackee
-  ;4 is Chan
-  if ($4 == $null) { putlog Syntax Error: hit (4) - $db.safe($1-) | halt }
-  if ($accuracy($1,$3) == -1) { var %acc $r(1,80) }
-  elseif ($accuracy($1,$3) == 1) { var %acc $r(15,100) }
-  else { var %acc $r(1,100) }
-
-  var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
-  var %atk $atkbonus($1,$2)
-  if ($dmg($1,defbonus) == 0) { var %def 1 }
-
-  if (<iDM>* iswm $2) {
-    inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
-  }
-  elseif (<gwd>* iswm $2) {
-    inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 5 ))
-  }
-
-  return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }
