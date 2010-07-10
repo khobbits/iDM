@@ -2,6 +2,7 @@ on $*:TEXT:/^[!@.](gwd)\b/Si:#: {
   if ($isbanned($nick)) { halt }
   if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($nick == idmgod) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
 
