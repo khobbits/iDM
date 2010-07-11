@@ -35,7 +35,7 @@ alias gwd.npc {
     var %p2 $gettok($hget($1,gwd.turn),1,44)
   }
   else {
-    var %o = $hget($1,players), %p2 = $gettok(%o,$r(1,$numtok(%o,44)),44)
+    var %o = $hget($1,players), %p2 = $gettok(%o,$r(1,$numtok($hget($1,players),44)),44)
   }
   ;hits
   damage <gwd> $+ $1 %p2 $hget($1,gwd.npc) $1  
@@ -80,18 +80,13 @@ alias gwd.att {
     dead $4 $2 $1
     halt 
   }
-  gwd.turn $4 $1
-}
 
-alias gwd.turn {
-  ;1 is chan
-  ;2 is person attacking
-  hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
-  if ($numtok($hget($1,gwd.turn),44) < 1) {
-    .timer $+ $1 1 5 gwd.npc $1
+  hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,44)
+  if ($numtok($hget($4,gwd.turn),44) < 1) {
+    .timer $+ $4 1 5 gwd.npc $4
   }
   else {
-    .timer $+ $1 1 30 gwd.npc $1
+    .timer $+ $4 1 30 gwd.npc $4
   }
 }
 

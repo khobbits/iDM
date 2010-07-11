@@ -178,7 +178,7 @@ alias hit {
     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
   }
   elseif (<gwd>* iswm $2) {
-    inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 6 ))
+    inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 5 ))
   }
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }

@@ -124,10 +124,9 @@ alias gendrops {
   if ($2 == $null) { putlog Syntax Error: gendrops (2) - $db.safe($1-) | halt }
   var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,910)
   if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
-  var %oldchance %chance
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
-  if ($3) var %windiff 1.5, %limit $calc(%limit + 1)
+  if ($3) var %windiff 1.2, %limit $calc(%limit + 1)
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)
