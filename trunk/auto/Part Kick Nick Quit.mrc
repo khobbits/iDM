@@ -87,7 +87,7 @@ on *:NICK: {
         msgsafe $chan(%a) $logo(GWD) $s1($nick) their GWD raid has come to an end because they changed names.
         userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
         db.set user losses $nick + 1
-        pcancel $nick
+        pcancel $chan(%a) $nick
         halt
       }
       msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick.
@@ -163,7 +163,7 @@ alias enddmcheck {
       msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
       userlog loss $2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses $2 + 1
-      pcancel $2
+      pcancel $1 $2
       halt
     }
     msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.

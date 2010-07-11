@@ -43,7 +43,7 @@ alias gwd.npcatt {
     if ($numtok($hget($1,players),44) > 1) {
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses %p2 + 1
-      pcancel %2
+      pcancel $1 %p2
       hadd $1 gwd.turn $hget($1,players)
       .timer $+ $1 1 30 gwd.npcatt $1
     }

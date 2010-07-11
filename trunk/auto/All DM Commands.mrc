@@ -153,7 +153,7 @@ alias damage {
     var %msg %msg - 03 $+ %extra $+ 
   }
 
-  if (%healer == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
+  if (%healer == 1) { var %msg %msg $+ . $s1($replace($autoidm.nick($2),$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($autoidm.nick($1),$chr(58),$chr(32))) $hpbar(%hp1) }
   else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
   msgsafe $4 %msg
 
