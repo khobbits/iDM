@@ -21,7 +21,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         hdec %p2 hp %extra
         var %hp2 $hget(%p2,hp)
         var %mhp2 $iif($hget(<gwd> $+ $chan,mhp) == $null,99,$hget(<gwd> $+ $chan,mhp))
-        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
+        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1($autoidm.nick(%p2)) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
       }
       else {
         msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
@@ -32,8 +32,8 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         notice $nick $logo(ERROR) You can't use a melee based attack on Armadyl.
         halt
       }
-      if ($dmg($1,spec) > $hget($nick,sp)) {
-        notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
+      if ($dmg(%attcmd,spec) > $hget($nick,sp)) {
+        notice $nick $logo(ERROR) You need $s1($specused(%attcmd) $+ $chr(37)) spec to use this weapon.
         halt
       }
       if ($isdisabled($chan,%attcmd)) {
@@ -83,6 +83,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       hadd $chan p1 %p2
       hadd $chan p2 $nick
     }
+    else { gwd.turn $nick $chan }
     if (<iDM>* iswm %p2) { autoidm.turn $chan }
     return
   }

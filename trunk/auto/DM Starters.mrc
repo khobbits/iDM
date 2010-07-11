@@ -29,7 +29,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
     elseif ($hget($chan,gwd.npc)) {
       join.dm $chan $nick
       msgsafe $chan $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,gwd.npc)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,44))
-      .timer $+ $1 1 30 gwd.init $chan
+      .timer $+ $chan 1 30 gwd.init $chan
     }
     else {
       var %p1 $hget($chan,players)
@@ -52,10 +52,10 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
     }
     elseif (gwd isin $1) {
       if ($isdisabled($chan,gwd) === 1) { notice $nick $logo(ERROR) Godwars raiding in this channel has been disabled. | halt }
-      hadd -m $chan gwd.npc $gwd.npc($1)
+      hadd -m $chan gwd.npc $gwd.npc($2)
       join.dm $chan $nick
       msgsafe $chan $logo(GWD) $s1($nick) $winloss($nick) is gathering a group to go to $s1($hget($chan,gwd.npc)) $+ ! You have $s2(30 seconds) to join.
-      .timer $+ $1 1 30 gwd.init $chan
+      .timer $+ $chan 1 30 gwd.init $chan
     }
     else {
       join.dm $chan $nick

@@ -5,7 +5,7 @@ alias gwd.npc {
 
 alias gwd.hp {
   ; $1 = number of players
-  return $calc(200 * $1)
+  return $calc(( 100 * $1 ) + ( 50 * $ceil($calc( $1 ^ 1.6 ) ) ) )
 }
 
 alias gwd.init {
@@ -73,20 +73,22 @@ alias gwd.att {
   ;3 is weapon
   ;4 is chan
   if (!$istok($hget($4,gwd.turn),$1,44)) { notice $1 $logo(GWD) You have already attacked | halt }
-  hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,44)
-
   damage $1 $2 $3 $4
   if ($hget($2,hp) < 1) { 
     dead $4 $2 $1
     halt 
   }
+}
 
-  hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,44)
-  if ($numtok($hget($4,gwd.turn),44) < 1) {
-    .timer $+ $4 1 5 gwd.npcatt $4
+alias gwd.turn {
+  ;1 is person attacking
+  ;2 is chan
+  hadd $2 gwd.turn $remtok($hget($2,gwd.turn),$1,44)
+  if ($numtok($hget($2,gwd.turn),44) < 1) {
+    .timer $+ $2 1 5 gwd.npcatt $2
   }
   else {
-    .timer $+ $4 1 30 gwd.npcatt $4
+    .timer $+ $2 1 30 gwd.npcatt $2
   }
 }
 
