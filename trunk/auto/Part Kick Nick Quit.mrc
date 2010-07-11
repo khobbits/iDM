@@ -6,17 +6,17 @@ on $*:TEXT:/^[!@.]part/Si:#: {
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on
     msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    cancel #
   }
 }
 
 on *:PART:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    cancel #
   }
   if ($hget($chan) && $hget($nick) || $istok($hget($chan,players),$nick,44))  {
     if ($enddmcheck($chan,$nick,part,$1,$2-)) { return }
@@ -25,7 +25,7 @@ on *:PART:#: {
 
 on *:QUIT: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
   var %a 1
@@ -39,7 +39,7 @@ on *:QUIT: {
 
 on *:KICK:#: {
   if ($nick(#,0) < 5) && (!$no-part(#) && ($knick != $me)) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #)
+    cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($hget($knick) || $istok($hget($chan,players),$knick,44)) && ($hget($chan)) {
@@ -47,7 +47,7 @@ on *:KICK:#: {
   }
   if ($knick == $me) {
     if (. !isin $nick) {
-      $iif($hget($chan,g0),gwdcancel #,cancel #) 
+      cancel #
       msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- 
     }
     elseif (shroudbnc !isin $nick) { 
@@ -75,43 +75,27 @@ on *:NICK: {
       elseif (($nick == $hget($chan(%a),p1)) || ($nick == $hget($chan(%a),p2))) {
         userlog loss $nick %user
         userlog win %user $nick 
-        msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
+        msgsafe $chan(%a) $logo(DM) The DM has been canceled, because one of the players changed their nick.
         cancel $chan(%a)
         .timer $+ $chan(%a) off
         halt
       }
     }
-    if ($hget($nick) || $hget($chan(%a),g0) && $istok($hget($chan(%a),players),$nick,44)) {
+    if ($hget($nick) || $hget($chan(%a),gwd.npc) && $istok($hget($chan(%a),players),$nick,44)) {
       hadd $chan(%a) gwd.alive $remtok($hget($chan(%a),gwd.alive),$nick,44)
-      if ($numtok($hget($chan(%a),gwd.alive),44) >= 1) {
+      if ($numtok($hget($chan(%a),players),44) >= 1) {
         msgsafe $chan(%a) $logo(GWD) $s1($nick) their GWD raid has come to an end because they changed names.
-
         userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
         db.set user losses $nick + 1
-        hadd $chan(%a) players $remtok($hget($chan(%a),players),$nick,44)
-        hadd $chan(%a) gwd.turn $remtok($hget($chan(%a),gwd.turn),$nick,44)
-        db.set user indm $nick 0
-        .hfree $nick
-
+        pcancel $nick
         halt
       }
-      msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick. Penalties will be enforced soon.
+      msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick.
       userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
       userlog wins $autoidm.acc(<gwd> $+ $chan(%a)) $nick
-      gwdcancel $chan(%a)
-      .timer $+ $chan(%a) off
+      cancel $chan(%a)
       halt
     }
-    ; if ($nick == $hget($chan(%a),p1)) {
-    ;  db.set user indm $nick 0
-    ;  db.set user indm $newnick 1
-    ;  hadd $chan(%a) p1 $newnick
-    ; }
-    ; if ($nick == $hget($chan(%a),p2)) {
-    ;  db.set user indm $nick 0
-    ;  db.set user indm $newnick 1
-    ;  hadd $chan(%a) p2 $newnick
-    ;}
     inc %a
   }
 }
@@ -119,7 +103,7 @@ on *:NICK: {
 
 alias waskicked {
   if ($me !ison $1) {
-    $iif($hget($chan,g0),gwdcancel #,cancel #) 
+    $iif($hget($chan,gwd.npc),gwdcancel #,cancel #) 
     .timer $+ $1 off
   }
 }
@@ -130,7 +114,7 @@ alias enddmcatch {
   ; $3 = chan
   ; $4 = string/offender
   ; $5- = string
-  if ($hget($3,p2)) {
+  if ($numtok($hget($3,players),44) > 1) {
     goto $1
     :part
     var %action = parted $3 with reason " $+ $iif($4-,$4-,N/A) $+ "
@@ -174,23 +158,18 @@ alias enddmcheck {
     return 1
   }
   elseif ($hget($1,players)) && ($istok($hget($1,players),$2,44)) {
-    hadd $1 gwd.alive $remtok($hget($1,gwd.alive),$2,44)
-    if ($numtok($hget($1,gwd.alive),44) >= 1) {
+    hadd $1 players $remtok($hget($1,players),$2,44)
+    if ($numtok($hget($1,players),44) >= 1) {
       msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
-
       userlog loss $2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses $2 + 1
-      hadd $1 players $remtok($hget($1,players),$2,44)
-      hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
-      db.set user indm $2 0
-      .hfree $2
-
+      pcancel $2
       halt
     }
     msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.
     userlog loss $2 $autoidm.acc(<gwd> $+ $1)
-    userlog wins $autoidm.acc(<gwd> $+ $1) $2    
-    gwdcancel $1
+    userlog win $autoidm.acc(<gwd> $+ $1) $2
+    cancel $1
     .timer $+ $1 off
     enddmcatch $3 $2 $1 $4 $5-
   }

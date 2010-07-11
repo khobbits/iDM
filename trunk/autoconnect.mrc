@@ -18,10 +18,10 @@ on *:start: {
 
 alias loadbot {
   if ($1 == 0) {
-    timer 1 15 run "mirc.exe" -Auto2
-    timer 1 30 run "mirc.exe" -Auto3
-    timer 1 45 run "mirc.exe" -Auto4
-    timer 1 60 run "mirc.exe" -Auto5
+    .timer 1 15 run "mirc.exe" -Auto2
+    .timer 1 30 run "mirc.exe" -Auto3
+    .timer 1 45 run "mirc.exe" -Auto4
+    .timer 1 60 run "mirc.exe" -Auto5
   }
   if ($1 == 1 || $1 == 0) {
     echo -a loading bot1

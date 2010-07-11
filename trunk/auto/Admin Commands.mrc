@@ -174,7 +174,7 @@ alias ignoreinfo {
     if ($address($2,2)) { tokenize 32 $1 $v1 }
     else { 
       hostcallback 0 $1 ignoreinfo $1 ~host~ %replytype 
-      timer $+ ignoreinfo $+ $1 1 10 ignoreinfo $1 Host!Not@Found %replytype
+      .timer $+ ignoreinfo $+ $1 1 10 ignoreinfo $1 Host!Not@Found %replytype
       halt 
     }
   }

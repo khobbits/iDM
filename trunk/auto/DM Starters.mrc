@@ -1,79 +1,76 @@
-on $*:TEXT:/^[!.](dm|stake)\b/Si:#: {
-  if ((# == #idm.Support) || (# == #idm.help)) && ($nick !isop $chan) { halt }
+on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
+  if (# == #idm.Support) && ($nick !isop $chan) { halt }
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
+  if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($nick == idmgod) { halt }
-  if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
-  if ($hget($chan)) && (($nick == $hget($chan,p1)) || ($nick == $hget($chan,p2))) { halt }
+  if ($hget($chan)) && ($istok($hget($chan,players),$nick,44)) { halt }
   if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($hget($chan)) && ($hget($chan,p2)) { notice $nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-  if ($hget($chan,g0)) { notice $nick $logo(DM) People are already GWDing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
-  if (!$hget($chan)) {
-    if (stake isin $1) {
-      if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
-      var %money = $db.get(user,money,$nick)
-      if ($2 == max) { var %stake $maxstake(%money) }
-      else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
-      if (!%stake) { notice $nick Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
-      if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(10000)) $+ . | halt }     
-      if (%stake < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
-      if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
-      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
-      hmake $chan 10
-      hadd $chan p1 $nick
-      hadd $chan stake %stake
-      hadd $chan sitems 0
-      .timer $+ # 1 30 enddm #
+  if ($hget($chan,gwd.time)) { notice $nick $logo(DM) People are already GWDing in this channel. | inc -u8 %dm.spam [ $+ [ $nick ] ] | halt }
+  if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
+  else { var %sitems 1 }
+  if ($hget($chan)) {
+    if ($numtok($hget($chan,players),44) == 8) { notice $nick $logo(GWD) There are already $s1(8) people on this team. Please wait untill the raid is over. | halt }
+    if (($hget($chan,stake)) && (stake !isin $1)) { notice $nick There is currently a stake, please type !stake to accept the challenge. | halt }
+    if ($hget($chan,stake)) {
+      var %p1 $hget($chan,players)
+      checkhosts $nick %p1
+      var %stake $checkmoney($nick,$2)
+      if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by %p1 $+ . To accept, type !stake. | halt }
+      join.dm $chan $nick
+      init.chan %p1 $nick $chan 0 0 $hget($chan,stake)
+      var %winloss $winloss($nick,%p1,$chan)
+      msgsafe $chan $logo(DM) $s1($nick) $gettok(%winloss,1,45) has accepted $s1(%p1) $+ 's $gettok(%winloss,2,45) stake of $s1($price($hget($chan,stake))) $+ . $s1($hget($chan,p1)) gets the first move.
+    }
+    elseif ($hget($chan,gwd.npc)) {
+      join.dm $chan $nick
+      msgsafe $chan $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,gwd.npc)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,44))
+      .timer $+ $1 1 30 gwd.init $1
     }
     else {
-      msgsafe # $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(40 seconds) to accept.
-      hmake $chan 10
-      hadd $chan p1 $nick
-      if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
-      else { var %sitems 1 }
-      hadd $chan sitems %sitems
-      .timer $+ # 1 40 autoidm.run #
+      var %p1 $hget($chan,players)
+      checkhosts $nick %p1
+      join.dm $chan $nick
+      init.chan %p1 $nick $chan $hget($chan,sitems) %sitems $hget($chan,stake)
+      var %winloss $winloss($nick,%p1,$chan)
+      msgsafe $chan $logo(DM) $s1($nick) $gettok(%winloss,1,45) has accepted $s1(%p1) $+ 's $gettok(%winloss,2,45) DM $+ . $s1($hget($chan,p1)) gets the first move.
     }
-    hmake $nick 10
-    db.set user indm $nick 1
   }
   else {
-    if ($address($hget($chan,p1),2) == $address($nick,2)) && ($len($address($nick,2)) > 3 && $len($address($hget($chan,p1),2)) > 3) {
-      msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
-      inc -u5 %dm.spam [ $+ [ $nick ] ]
-      halt
+    if (stake isin $1) {
+      if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
+      var %stake $checkmoney($nick,$2)
+      if (!%stake) { notice $chan Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
+      hadd $chan stake %stake
+      join.dm $chan $nick
+      msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
+      .timer $+ $chan 1 30 enddm $chan
     }
-    if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
-    else { var %sitems 1 }
-    if (stake isin $1) && ($hget($chan,stake)) {
-      var %money = $db.get(user,money,$nick)
-      if ($2 == max) { var %stake $maxstake(%money) }
-      elseif (!$2) { var %stake $hget($chan,stake) }
-      else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
-      if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by $hget($chan,p1) $+ . To accept, type !stake. | halt }
-      if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
-      var %msg stake of $s1($price($hget($chan,stake)))
-      var %sitems 0
+    elseif (gwd isin $1) {
+      if ($isdisabled($chan,gwd) === 1) { notice $nick $logo(ERROR) Godwars raiding in this channel has been disabled. | halt }
+      hadd -m $chan gwd.npc $gwd.npc($1)
+      join.dm $chan $nick
+      msgsafe $chan $logo(GWD) $s1($nick) $winloss($nick) is gathering a group to go to $s1($hget($chan,gwd.npc)) $+ ! You have $s2(30 seconds) to join.
+      .timer $+ $1 1 30 gwd.init $1
     }
-    elseif ($hget($chan,stake)) { notice $Nick There is currently a stake, please type !stake to accept the challenge. | halt }
-    var %p1 $hget($chan,p1)
-    chaninit %p1 $nick $chan $hget($chan,sitems) %sitems $iif($hget($chan,stake),$hget($chan,stake))
-    var %winloss $winloss($nick,%p1,$chan)
-    var %winlossp1 $gettok(%winloss,1,45)
-    var %winlossp2 $gettok(%winloss,2,45)
-    msgsafe $chan $logo(DM) $s1($nick) %winlossp1 has accepted $s1(%p1) $+ 's %winlossp2 $iif(%msg,$v1,DM) $+ . $s1($hget($chan,p1)) gets the first move.
-    .timer $+ # off
-    set -u25 %enddm [ $+ [ $chan ] ] 0
-    db.set user indm $nick 1
+    else {
+      join.dm $chan $nick
+      msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(40 seconds) to accept.
+      .timer $+ $chan 1 40 autoidm.run $chan
+    }
   }
 }
 
-alias maxstake return $ceil($calc( $1 ^ 0.84 ))
+alias join.dm {
+  hadd -m $1 players $addtok($hget($1,players),$2,44)
+  db.set user indm $2 1
+}
 
-alias chaninit {
+alias init.chan {
   ; $1 = player1
   ; $2 = player2
   ; $3 = chan
@@ -86,15 +83,16 @@ alias chaninit {
   if ($hget($2)) hfree $2
   if ($hget($3)) hfree $3
   hmake $3 10
+  hadd $3 players $addtok($1,$2,44)
   if (%turn == 1) { hadd $3 p1 $1 | hadd $3 p2 $2 }
   else { hadd $3 p1 $2 | hadd $3 p2 $1 }
   if ($6) hadd $3 stake $6
-  playerinit $1 $3 $4
-  playerinit $2 $3 $5
-
+  init.player $1 $3 $4
+  init.player $2 $3 $5
+  .timer $+ $3 off
 }
 
-alias playerinit {
+alias init.player {
   ; $1 = player
   ; $2 = chan
   ; $3 = sitems
@@ -102,7 +100,7 @@ alias playerinit {
   if ($3 == $null) { putlog Syntax Error: playerinit (3) - $db.safe($1-) | halt }
   var %nick $autoidm.acc($1)
   db.set user indm %nick 1
-  var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) 
+  var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user)
   if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
   var %sql %sql WHERE user = $db.safe(%nick)
   var %result = $db.query(%sql)
@@ -115,6 +113,26 @@ alias playerinit {
   hadd $1 frozen 0
   hadd $1 laststyle 0
   hadd $1 sitems $3
+}
+
+alias checkmoney {
+  var %money = $db.get(user,money,$1)
+  if ($2 == max) { var %stake $maxstake(%money) }
+  else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
+  if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(10000)) $+ . | halt }
+  if (%stake < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
+  if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
+  return %stake
+}
+
+alias maxstake return $ceil($calc( $1 ^ 0.84 ))
+
+alias checkhosts {
+    if ($address($1,2) == $address($2,2)) && ($len($address($1,2)) > 3) {
+      msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
+      inc -u5 %dm.spam [ $+ [ $1 ] ]
+      halt
+    }
 }
 
 alias winloss {
@@ -134,21 +152,25 @@ alias winloss {
     db.hget >winloss user $1 wins losses
     var %p1win $hget(>winloss,wins)
     var %p1loss $hget(>winloss,losses)
-    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93)) 
+    var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
     return %p1
   }
 }
 
+alias pcancel {
+  db.set user indm $2 0
+  if ($hget($2)) hfree $2
+  hadd $1 players $remtok($hget($1,players),$2,44)
+  hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
+}
+
 alias cancel {
   if ($1) && ($chr(35) isin $1) {
-    if ($hget($1,p1)) db.set user indm $hget($1,p1) 0 
-    if ($hget($hget($1,p1))) hfree $v1
-    if ($hget($1,p2)) db.set user indm $hget($1,p2) 0
-    if ($hget($hget($1,p2))) hfree $v1
-    if ($hget($1)) hfree $1
-    .timer $+ $1 off
-    .timerc $+ $1 off
-    .timercw $+ $1 off
+   while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
+   hfree $1
+   .timer $+ $1 off
+   .timerc $+ $1 off
+   .timercw $+ $1 off
   }
 }
 
@@ -157,73 +179,51 @@ alias enddm {
   msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,p1)) $+ 's DM request, and the DM has ended.
   cancel $1
 }
-alias gwdcancel {
-  if ($1) && ($chr(35) isin $1) {
-    var %e = $hget($1,players), %x = 1 
-    while (%x <= $gettok(%e,0,44)) { 
-      if ($hget($1,gi)) { .hfree $gettok(%e,%x,44) }
-      db.set user indm $gettok(%e,%x,44) 0
-      inc %x 
-    }
-    if ($hget($hget($1,g0))) hfree $v1
-    if ($hget($1)) hfree $1  
-    .timer $+ $1 off
-    .timerc $+ $1 off
-    .timercw $+ $1 off
-  }
-}
+
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($hget($chan,g0)) {
+  if ($hget($chan,gwd.npc)) {
     if ($db.get(admins,rank,$address($nick,3)) >= 2) {
-      if (!$hget($chan,players)) { notice $nick There is no GWD. | halt }
-      gwdcancel $chan
+      cancel $chan
       msgsafe $chan $logo(GWD) The Gwd Team has been canceled by staff.
-      halt
     }
-    if (!$hget($chan,gi) && $nick == $gettok($hget($chan,players),1,44)) {
+    elseif (!$hget($chan,gwd.time) && $nick == $gettok($hget($chan,players),1,44)) {
       msgsafe $chan $logo(GWD) The Gwd Team has been canceled by the Team Leader.
-      gwdcancel $chan
-      halt 
+      cancel $chan
     }
   }
-  if ($hget($chan,stake)) {
-    if ($db.get(admins,rank,$address($nick,3)) >= 3) {
-      if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
+  elseif ($hget($chan,stake)) {
+    if ($db.get(admins,rank,$address($nick,3)) >= 2) {
       cancel $chan
       msgsafe $chan $logo(DM) The DM has been canceled by staff.
-      halt
     }
     elseif (!$hget($chan,p2)) {
       cancel $chan
       msgsafe $chan $logo(DM) The stake has been canceled.
     }
-    else { notice $nick This is a stake, you cannot end stakes! | halt }
+    else { notice $nick This is a stake, you cannot end stakes! }
   }
-  if ($db.get(admins,rank,$address($nick,3)) >= 2) {
-    if (!$hget($chan,p1)) { notice $nick There is no DM. | halt }
-    cancel $chan
-    msgsafe $chan $logo(DM) The DM has been canceled by staff.
-    halt
+  elseif ($db.get(admins,rank,$address($nick,3)) >= 2) {
+    if (!$hget($chan)) { notice $nick There is no DM. }
+    else {
+      msgsafe $chan $logo(DM) The DM has been canceled by staff.
+      cancel $chan
+    }
   }
   elseif (($nick == $hget($chan,p2))) {
     var %othernick = $hget($chan,p1)
     if (%enddm [ $+ [ $chan ] ] == 0) {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
-      halt
     }
-    notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
-    set %enddm [ $+ [ $chan ] ] %othernick
-    timercw $+ $chan 1 20 delaycancelw $chan %othernick
-    timerc $+ $chan 1 40 delaycancel $chan %othernick
-
+    else {
+      notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
+      set %enddm [ $+ [ $chan ] ] %othernick
+      .timercw $+ $chan 1 20 delaycancelw $chan %othernick
+      .timerc $+ $chan 1 40 delaycancel $chan %othernick
+    }
   }
   elseif ($nick == $hget($chan,p1)) {
-    if (%enddm [ $+ [ $chan ] ] == $nick) {
-      cancel $chan
-      msgsafe $chan $logo(DM) The DM was ended on agreement.
-    }
-    elseif ($hget($chan,p2)) { notice $nick You can only end the dm on the other players turn. }
+    if ($hget($chan,p2)) { notice $nick You can only end the dm on the other players turn. }
     else {
       cancel $chan
       msgsafe $chan $logo(DM) The DM has been canceled.

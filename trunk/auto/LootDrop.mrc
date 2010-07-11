@@ -3,38 +3,27 @@ alias dead {
   ; $2 = looser
   ; $3 = winner
   if ($3 == $null) { putlog Syntax Error: dead (3) - $db.safe($1-) | halt }
+  db.set user losses $autoidm.acc($2) + 1
+  userlog loss $autoidm.acc($2) $3
+
   if ($hget($1,stake)) {
     db.set user money $3 + $hget($1,stake)
     db.set user money $2 - $hget($1,stake)
     .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ .
     db.set user wins $3 + 1
-
     var %stake $hget($1,stake)
     userlog winstake $3 %stake
     userlog losestake $2 %stake
     userlog win $3 $2
-    userlog loss $2 $3
-
-    db.set user losses $2 + 1
-    set -u10 %wait. [ $+ [ $1 ] ] on
-    .timer 1 10 msgsafe $1 $logo(DM) Ready.
-    cancel $1
-    halt
   }
-  if ($hget($1,g0)) {
-    userlog loss $2 $3
-
+  if ($hget($1,gwd.time)) {
     var %p $hget($1,players)
     var %drops $rundrops($1, $gettok(%p,$r(1,$numtok(%p,44)),44), $2, 1)
     var %combined $gettok(%drops,1,32)
     var %items $gettok(%drops,2-,32)
-    var %g $numtok($hget($1,gwd.alive),44)
-    ;var %sharedrop $floor($calc(%combined / %g))
+    var %g $numtok($hget($1,players),44)
     var %sharedrop $floor(%combined)
-
-    db.set user losses $2 + 1
-
-    var %a = $hget($1,gwd.alive), %b = 1 
+    var %a = $hget($1,players), %b = 1
     while (%b <= $gettok(%a,0,44)) {
       db.set user money $gettok(%a,%b,44) + %sharedrop
       db.set user wins $gettok(%a,%b,44) + 1
@@ -42,36 +31,34 @@ alias dead {
       userlog drop $gettok(%a,%b,44) %sharedrop gp
       inc %b 
     }
-
-    msgsafe $1 $logo(KO) $iif(%g == 1,The Solo Team of $s1($gettok($hget($1,gwd.alive),1,44)),The %g surviving team members) $iif(%g != 1,each) received $s2($price(%sharedrop)) in gp. $+($s1([),%items,$s1(])) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwdtime)))),$s1(]))
-    gwdcancel $1
-    set -u10 %wait. [ $+ [ $1 ] ] on 
-    .timer 1 10 msgsafe $1 $logo(GWD) Ready.
-    halt
+    msgsafe $1 $logo(KO) $iif(%g == 1,The Solo Team of $s1($gettok($hget($1,players),1,44)),The %g surviving team members) $iif(%g != 1,each) received $s2($price(%sharedrop)) in gp. $+($s1([),%items,$s1(])) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwdtime)))),$s1(]))
   }
-  userlog win $3 $2
-  userlog loss $2 $3
-  var %drops $rundrops($1, $3, $2)
-  var %combined $gettok(%drops,1,32)
-  var %items $gettok(%drops,2-,32)
-  var %winnerclan = $hget($3,clan)
-  var %looserclan = $hget($2,clan)
-  cancel $1
-  db.set user wins $3 + 1
-  db.set user losses $2 + 1
-
-  if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
-  if ((%winnerclan != %looserclan) && (%winnerclan)) {
-    var %nummember = $clannumbers(%winnerclan)
-    var %sharedrop = $floor($calc(%combined / %nummember))
-    userlog drop $3 %sharedrop gp
-    trackclan WIN %winnerclan %combined
-    if ($db.get(clantracker,share,%winnerclan)) {
-      var %sql.winnerclan = $db.safe(%winnerclan)
-      var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
-      db.exec %sql
-      msgsafe $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
-      unset %sharedrop
+  else {
+    userlog win $3 $2
+    var %drops $rundrops($1, $3, $2)
+    var %combined $gettok(%drops,1,32)
+    var %items $gettok(%drops,2-,32)
+    var %winnerclan = $hget($3,clan)
+    var %looserclan = $hget($2,clan)
+    db.set user wins $3 + 1
+    if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
+    if ((%winnerclan != %looserclan) && (%winnerclan)) {
+      var %nummember = $clannumbers(%winnerclan)
+      var %sharedrop = $floor($calc(%combined / %nummember))
+      userlog drop $3 %sharedrop gp
+      trackclan WIN %winnerclan %combined
+      if ($db.get(clantracker,share,%winnerclan)) {
+        var %sql.winnerclan = $db.safe(%winnerclan)
+        var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
+        db.exec %sql
+        msgsafe $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+        unset %sharedrop
+      }
+      else {
+        userlog drop $3 %combined gp
+        db.set user money $3 + %combined
+        msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+      }
     }
     else {
       userlog drop $3 %combined gp
@@ -79,14 +66,11 @@ alias dead {
       msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
-  else {
-    userlog drop $3 %combined gp
-    db.set user money $3 + %combined
-    msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
-  }
-  set -u10 %wait. [ $+ [ $1 ] ] on 
-  .timer 1 10 msgsafe $1 $logo(DM) Ready.
+  cancel $1
+  set -u10 %wait. [ $+ [ $1 ] ] on
+  .timer 1 10 msgsafe $1 $logo(iDM) Ready.
 }
+
 alias price {
   tokenize 32 $remove($1-,$chr(44))
   if ($1 isnum) {
@@ -100,9 +84,7 @@ alias trackclan {
     db.set clantracker wins $2 + 1
     db.set clantracker money $2 + $3
   }
-  if ($1 == lose) {
-    db.set clantracker losses $2 + 1
-  }
+  if ($1 == lose) { db.set clantracker losses $2 + 1 }
 }
 
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
@@ -127,9 +109,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
   }
-
   if (%item == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
-
   db.query_end %res
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
@@ -145,7 +125,6 @@ alias gendrops {
   var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,910)
   if ($db.get(equip_item,wealth,$1) != 0) var %chance $calc(%chance * 1.1)
   var %oldchance %chance
-
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if ($3) var %windiff 1.5, %limit $calc(%limit + 1)
@@ -169,16 +148,13 @@ alias rundrops {
   var %chance $gettok(%drops,1,32)
   var %drops $gettok(%drops,2-,32)
   if ($db.get(equip_item,wealth,$2) != 0) var %wealth 1
-
   while (%i <= $numtok(%drops,58) ) {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
     var %colour 0
-
     if ((%price == 0 || %price > 5000000) && %item != Nothing) {
       userlog drop $2 %item
     }
-
     if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
       if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 | var %colour 03 }
@@ -206,9 +182,7 @@ alias rundrops {
     var %display %display $iif(%colour, $+ %colour) $+ %item $+ $iif(%colour,) $+ $chr(44)
     inc %i
   }
-
   var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ %disprice $+ ' , ' $+ $tag $+ ' , CURDATE(), '1' ) ON DUPLICATE KEY UPDATE cash = cash + %disprice , count = count+1
   db.exec %sql
-
   return %disprice $left(%display,-1)
 }

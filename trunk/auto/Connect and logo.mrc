@@ -20,14 +20,14 @@ on *:CONNECT: {
   if ($me == iDM[OFF]) { nick iDM | mnick iDM }
   join #idm.staff
   if (%botnum != $null) {
-    timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
+    .timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
   }
   mode $me +pB
   mysql_close %db
   unsetall
   botrefresh
   echo -s 4Connected.
-  timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
+  .timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
 }
 
 alias botrefresh {
@@ -75,16 +75,15 @@ alias msgsafe {
 on $*:TEXT:/^[!@.]status/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($hget($chan,g0)) {
-    if ($hget($chan,gi)) {
+  if ($hget($chan,gwd.npc)) {
+    if ($hget($chan,gwd.time)) {
       $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(GWD-STATUS) $status($chan)
     }
     else {
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(GWD-STATUS) $s1($gettok($hget($chan,players),1,44)) is waiting for a team for $s1($hget($chan,g0)) $+ . Join now by typing !gwd $+ .
+      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(GWD-STATUS) $s1($gettok($hget($chan,players),1,44)) is waiting for a team for $s1($hget($chan,gwd.npc)) $+ . Join now by typing !gwd $+ .
     }
-    halt
   }
-  if ($hget($chan,p2)) {
+  elseif ($hget($chan,p2)) {
     $iif($left($1,1) == @,msgsafe #,notice $nick) $status($chan)
   }
   elseif ($hget($chan,p1)) {
@@ -96,15 +95,15 @@ on $*:TEXT:/^[!@.]status/Si:#: {
 }
 
 alias status {
-  if ($hget($chan,g0)) {
-    var %e = $hget($1,players), %x = 1, %m = $hget($chan,g0)
+  if ($hget($chan,gwd.time)) {
+    var %e = $hget($1,players), %x = 1, %m = $hget($chan,gwd.npc)
     while (%x <= $gettok(%e,0,44)) {
       var %o $gettok(%e,%x,44)
       var %hp %hp $s1(%o) $s2($hget(%o,hp))
       var %sp %sp $s1(%o)) $s2($iif($hget(%o,sp) < 1,0,$gettok(25 50 75 100,$hget(%o,sp),32)) $+ $chr(37)))
       inc %x
     }
-    return Monster: $s1(%m) HP: $s1(%m) $s2($hget(<gwd> $+ $chan,hp)) %hp Special Bar: %sp
+    return HP: $s1(%m) $s2($hget(<gwd> $+ $chan,hp)) %hp Special Bar: %sp
   }
   else {
     var %p1 = $hget($1,p1), %p2 = $hget($1,p2)

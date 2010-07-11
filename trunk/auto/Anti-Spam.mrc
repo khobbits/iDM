@@ -56,6 +56,6 @@ alias ignoresync.run {
   if (%botnum == $null) { msgsafe #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
     msgsafe #idm.staff $logo(IgnoreSync) Running ignore sync script in 5 seconds.
-    timer -m 1 5000 ignoresync
+    .timer -m 1 5000 ignoresync
   }
 }

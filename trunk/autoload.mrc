@@ -11,7 +11,7 @@ alias rehash {
     unload -nrs " $+ $script(%i) $+ "
   }
   privmsg #idm.staff Unloaded scripts - Script took $calc($ctime - %t) seconds.
-  timer 1 1 rehash.cont
+  .timer 1 1 rehash.cont
 }
 
 alias rehash.load {
@@ -36,7 +36,7 @@ alias rehash.run {
   if (%botnum == $null) { privmsg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
     privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
-    timer -m 1 5000 rehash
+    .timer -m 1 5000 rehash
   }
 }
 

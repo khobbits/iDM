@@ -4,7 +4,6 @@ alias max {
   var %dbhits = $dmg($1,hits)
   var %dbdmg = $dmg($1, 3h)
   var %dbbonus = $dmg($1, atkbonus)
-
   if ($dmg($1,type) == range) {
     ;Normal Archer Ring _or_Accumulator Both
     return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
@@ -175,7 +174,6 @@ alias hit {
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
   var %atk $atkbonus($1,$2)
   if ($dmg($1,defbonus) == 0) { var %def 1 }
-
   if (<iDM>* iswm $2) {
     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
   }
@@ -197,8 +195,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   if (!$max($2)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
   var %msg $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
-
-  if ($dmg($2,atkbonus) == 0) { var %msg %msg (No attack bonuses) }
+  if ($dmg($2,atkbonus) == 0) { var %msg %msg (No $dmg($2,type) attack bonuses) }
   elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
@@ -216,7 +213,7 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if (!$3) { $iif($left($1,1) == @,msgsafe #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
+  if ((!$3) || ($3 !isnum 0-999)) { $iif($left($1,1) == @,msgsafe #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
   if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
 
   db.hget >hitchance equip_armour $nick

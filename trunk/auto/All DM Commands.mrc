@@ -2,7 +2,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
   if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   var %attcmd $right($1,-1)
-  if ($hget($chan,g0) && $findtok($hget($chan,gwd.alive),$nick,44)) || ($nick == $hget($chan,p1) && $hget($chan,p2)) && ($hget($chan) && $hget($nick,chan) == $chan) {
+  if ($hget($chan,gwd.time) && $findtok($hget($chan,players),$nick,44)) || ($nick == $hget($chan,p1) && $hget($chan,p2)) && ($hget($chan) && $hget($nick,chan) == $chan) {
     if ($hget($chan,p1) && $nick == $hget($chan,p1) && $hget($chan,p2)) { 
       var %p2 $hget($chan,p2)
     }
@@ -21,18 +21,18 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         hdec %p2 hp %extra
         var %hp2 $hget(%p2,hp)
         var %mhp2 $iif($hget(<gwd> $+ $chan,mhp) == $null,99,$hget(<gwd> $+ $chan,mhp))
-        msgsafe # $logo($iif($hget($chan,g0),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
+        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1(%p2) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
       }
       else {
-        msgsafe # $logo($iif($hget($chan,g0),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
+        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
       }
     }
     elseif ($attack(%attcmd)) {
-      if ($hget($chan,g0) == armadyl && $dmg(%attcmd,type) == melee) {
+      if ($hget($chan,gwd.npc) == armadyl && $dmg(%attcmd,type) == melee) {
         notice $nick $logo(ERROR) You can't use a melee based attack on Armadyl.
         halt
       }
-      if ($calc($specused($right($1,-1)) /25) > $hget($nick,sp)) {
+      if ($dmg($1,spec) > $hget($nick,sp)) {
         notice $nick $logo(ERROR) You need $s1($specused($right($1,-1)) $+ $chr(37)) spec to use this weapon.
         halt
       }
@@ -61,24 +61,24 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       .timercw $+ $chan off
       .timerc $+ $chan off
       set -u25 %enddm [ $+ [ $chan ] ] 0
-      if ($hget($chan,g0)) {
+      if ($hget($chan,gwd.time)) {
         gwd.att $nick <gwd> $+ $chan %attcmd $chan
       }
-      elseif (!$hget($chan,g0)) {
+      elseif (!$hget($chan,gwd.time)) {
         damage $nick %p2 %attcmd #
       }
     }
     else { halt }
-    if ($hget(%p2,hp) < 1) && (!$hget($chan,g0)) {
+    if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
       if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
-      dead $chan $autoidm.acc(%p2) $nick
+      dead $chan %p2 $nick
       halt
     }
     if ($specused(%attcmd)) {
-      hdec $nick sp $calc($specused(%attcmd) /25)
+      hdec $nick sp $dmg(%attcmd,spec)
       notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$gettok(25 50 75 100,$hget($nick,sp),32)) $+ $chr(37)
     }
-    if (!$hget($chan,g0)) {
+    if (!$hget($chan,gwd.time)) {
       hadd $nick frozen 0
       hadd $chan p1 %p2
       hadd $chan p2 $nick
@@ -96,13 +96,12 @@ alias damage {
   var %hp1 $hget($1,hp)
   var %hp2 $hget($2,hp)
   var %mhp2 $iif($hget($2,mhp) == $null,99,$hget($2,mhp))
-  var %logo $iif($hget($4,g0),GWD,DM)
+  var %logo $iif($hget($4,gwd.time),GWD,DM)
   if ($3 == dh) {
     if (%hp1 < 10) { var %hit $hit(dh_9,$1,$2,$4) }
     else { var %hit $hit(dh_10,$1,$2,$4) }
   }
   else { var %hit $hit($3,$1,$2,$4) }
-
   var %i = 1
   var %hitshow
   while (%i <= $numtok(%hit,32)) {
@@ -125,14 +124,16 @@ alias damage {
   }
   ; Starting value for one hit acheivement
   var %dmg-dealt %hitdmg
-  var %msg $logo(%logo) $s1($1) $replace($dmg($3,what),$eval(%p2%,0),$s1($replace($2,$chr(58),$chr(32))),$eval(%attack%,0),$dmg($3,name))
+  var %msg $logo(%logo) $s1($autoidm.nick($1)) $replace($dmg($3,what),$eval(%p2%,0),$s1($replace($autoidm.nick($2),$chr(58),$chr(32))),$eval(%attack%,0),$dmg($3,name))
   if (($dmg($3,splash)) && (%hitdmg == 0)) { var %msg %msg and splashed }
   else { var %msg %msg hitting %hitshow }
 
   if ($freezer($3) && ($r(1,$v1) == 1) && (%hitdmg >= 1)) {
     hadd $2 frozen 1
-    if (<* !iswm $2) { notice $2 You have been frozen and can't use melee! }
-    var %msg %msg and successfully 12FREEZES them
+    if (<* !iswm $2) {
+      notice $2 You have been frozen and can't use melee!
+      var %msg %msg and successfully 12FREEZES them
+    }
   }
   if ($gettok($healer($3),1,32)) && ($r(1,$v1) == 1) && (%hitdmg != 0) && (%hp1 < 99) {
     var %healer 1
@@ -151,12 +152,10 @@ alias damage {
     dec %hp2 %extra
     var %msg %msg - 03 $+ %extra $+ 
   }
-  if ($1 != <gwd> $+ $4) {
-    if (%healer == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
-    else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
-  }
 
-  msgsafe $4 $replace(%msg,<gwd> $+ $4,$hget($4,g0))
+  if (%healer == 1) { var %msg %msg $+ . $s1($replace($2,$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($1,$chr(58),$chr(32))) $hpbar(%hp1) }
+  else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
+  msgsafe $4 %msg
 
   if ($dmg($3,type) == melee) { hadd $1 laststyle melee }
   elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
@@ -180,7 +179,7 @@ alias damage {
   elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
     var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
     inc %hp2 $floor($calc(%temp.hit / 2))
-    msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($1) $+ 's attacks. $hpbar(%hp2,%mhp2)
+    msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($autoidm.nick($1)) $+ 's attacks. $hpbar(%hp2,%mhp2)
   }
   if (%hp2 < 1) {
     if (($hget($2,beau)) && ($r(1,50) >= 49) ) {
@@ -191,7 +190,7 @@ alias damage {
   hadd $1 hp %hp1
   hadd $2 hp %hp2
 
-  if ($1 == <gwd> $+ $4) { 
+  if (<gwd isin $1) { 
     var %e = $hget($4,players), %x = 1
     while (%x <= $gettok(%e,0,44)) {
       if ($gettok(%e,0,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP) }

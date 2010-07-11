@@ -62,7 +62,7 @@ raw 475:*: { if (%checkban [ $+ [ $2 ] ]) {
 }
 raw 470:*: {
   msg #iDM.Staff $logo(Link) I was invited to $3 but was forced into $17
-  timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
+  .timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
   db.set blist who $3 AUTO
   db.set blist reason $3 Channel $3 linked to $17
 }
