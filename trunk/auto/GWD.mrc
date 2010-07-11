@@ -48,7 +48,7 @@ alias gwd.npcatt {
       .timer $+ $1 1 30 gwd.npcatt $1
     }
     else {
-      msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwd.time)))),$s1(]))
+      msgsafe $1 $logo(KO) $s1($autoidm.nick(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwd.time)))),$s1(]))
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       userlog win $autoidm.acc(<gwd> $+ $1) $1
       db.set user losses %p2 + 1
