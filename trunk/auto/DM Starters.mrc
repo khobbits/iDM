@@ -29,7 +29,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
     elseif ($hget($chan,gwd.npc)) {
       join.dm $chan $nick
       msgsafe $chan $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,gwd.npc)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,44))
-      .timer $+ $1 1 30 gwd.init $1
+      .timer $+ $1 1 30 gwd.init $chan
     }
     else {
       var %p1 $hget($chan,players)
@@ -55,10 +55,11 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
       hadd -m $chan gwd.npc $gwd.npc($1)
       join.dm $chan $nick
       msgsafe $chan $logo(GWD) $s1($nick) $winloss($nick) is gathering a group to go to $s1($hget($chan,gwd.npc)) $+ ! You have $s2(30 seconds) to join.
-      .timer $+ $1 1 30 gwd.init $1
+      .timer $+ $1 1 30 gwd.init $chan
     }
     else {
       join.dm $chan $nick
+      hadd $chan sitems %sitems
       msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has requested a DM! You have $s2(40 seconds) to accept.
       .timer $+ $chan 1 40 autoidm.run $chan
     }
@@ -77,7 +78,7 @@ alias init.chan {
   ; $4 = player1 sitems
   ; $5 = player2 sitems
   ; ?$6? = stake amount
-  if ($5 == $null) { putlog Syntax Error: chaninit (5) - $db.safe($1-) | halt }
+  if ($5 == $null) { putlog Syntax Error: init.chan (5) - $db.safe($1-) | halt }
   var %turn $r(1,2)
   if ($hget($1)) hfree $1
   if ($hget($2)) hfree $2
@@ -97,7 +98,7 @@ alias init.player {
   ; $2 = chan
   ; $3 = sitems
   dbcheck
-  if ($3 == $null) { putlog Syntax Error: playerinit (3) - $db.safe($1-) | halt }
+  if ($3 == $null) { putlog Syntax Error: init.player (3) - $db.safe($1-) | halt }
   var %nick $autoidm.acc($1)
   db.set user indm %nick 1
   var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user)
@@ -158,6 +159,7 @@ alias winloss {
 }
 
 alias pcancel {
+  if ($2 == $null) { putlog Syntax Error: pcancel (2) - $db.safe($1-) | halt }
   db.set user indm $2 0
   if ($hget($2)) hfree $2
   hadd $1 players $remtok($hget($1,players),$2,44)
@@ -165,6 +167,7 @@ alias pcancel {
 }
 
 alias cancel {
+  if ($1 == $null) { putlog Syntax Error: cancel (1) - $db.safe($1-) | halt }
   if ($1) && ($chr(35) isin $1) {
    while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
    hfree $1

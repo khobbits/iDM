@@ -190,16 +190,15 @@ alias damage {
   hadd $1 hp %hp1
   hadd $2 hp %hp2
 
-  if (<gwd isin $1) { 
-    var %e = $hget($4,players), %x = 1
-    while (%x <= $gettok(%e,0,44)) {
-      if ($gettok(%e,0,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP) }
+  var %e = $hget($4,players), %x = 1
+  if ((<gwd isin $1) && ($numtok(%e,44) > 1))  {
+    while (%x <= $numtok(%e,44)) {
+      if ($numtok(%e,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP) }
       else { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar2($hget($gettok(%e,%x,44),hp)),HP) }
       inc %x
     }
     notice $hget($4,players) $logo(GWD) HP: %h
   }
-
   if (%dmg-dealt >= 99) { db.set achievements 1hit $1 1 }
 }
 

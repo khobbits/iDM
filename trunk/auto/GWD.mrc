@@ -16,39 +16,39 @@ alias gwd.init {
   var %e = $hget($1,players), %x = 1
   while (%x <= $gettok(%e,0,44)) {
     ;loop through players and init them
-    playerinit $gettok(%e,%x,44) $1 1
+    init.player $gettok(%e,%x,44) $1 1
     hadd $gettok(%e,%x,44) g $hget($1,gwd.npc)
     inc %x
   }
-  playerinit <gwd> $+ $1 $1 0
+  init.player <gwd> $+ $1 $1 0
   hadd <gwd> $+ $1 hp $gwd.hp($numtok($hget($1,players),44))
   hadd <gwd> $+ $1 mhp $gwd.hp($numtok($hget($1,players),44))
   hadd <gwd> $+ $1 npc 1
   hadd $1 gwd.time $ctime
   msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,gwd.npc)),.) Everyone make their attacks, $s1($hget($1,gwd.npc)) will hit in $+($s2(30 seconds),.)
-  .timer $+ $1 1 30 gwd.npc $1
+  .timer $+ $1 1 30 gwd.npcatt $1
 }
 
-alias gwd.npc {
+alias gwd.npcatt {
   ; $1 = chan
   if ($numtok($hget($1,gwd.turn),44) >= 1) {
     var %p2 $gettok($hget($1,gwd.turn),1,44)
   }
   else {
-    var %o = $hget($1,players), %p2 = $gettok(%o,$r(1,$numtok($hget($1,players),44)),44)
+    var %p2 = $gettok($hget($1,players),$r(1,$numtok($hget($1,players),44)),44)
   }
   ;hits
-  damage <gwd> $+ $1 %p2 $hget($1,gwd.npc) $1  
+  damage <gwd> $+ $1 %p2 $hget($1,gwd.npc) $1
   if ($hget(%p2,hp) < 1) {
     if ($numtok($hget($1,players),44) > 1) {
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       db.set user losses %p2 + 1
       pcancel %2
       hadd $1 gwd.turn $hget($1,players)
-      .timer $+ $1 1 30 gwd.npc $1
+      .timer $+ $1 1 30 gwd.npcatt $1
     }
     else {
-      msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwdtime)))),$s1(]))
+      msgsafe $1 $logo(KO) $s1($autoidm.acc(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwd.time)))),$s1(]))
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       userlog win $autoidm.acc(<gwd> $+ $1) $1
       db.set user losses %p2 + 1
@@ -63,7 +63,7 @@ alias gwd.npc {
   }
   else {
     hadd $1 gwd.turn $hget($1,players)
-    .timer $+ $1 1 30 gwd.npc $1
+    .timer $+ $1 1 30 gwd.npcatt $1
   }
 }
 
@@ -83,10 +83,10 @@ alias gwd.att {
 
   hadd $4 gwd.turn $remtok($hget($4,gwd.turn),$1,44)
   if ($numtok($hget($4,gwd.turn),44) < 1) {
-    .timer $+ $4 1 5 gwd.npc $4
+    .timer $+ $4 1 5 gwd.npcatt $4
   }
   else {
-    .timer $+ $4 1 30 gwd.npc $4
+    .timer $+ $4 1 30 gwd.npcatt $4
   }
 }
 
@@ -100,7 +100,7 @@ alias autoidm.acc {
 alias autoidm.nick {
   if (<idm>#dm.newbies == $1) return iDMnewbie
   if (<iDM>* iswm $1) return iDM
-  if (<gwd>* iswm $1) return $hget($chan,gwd.npc)
+  if (<gwd>* iswm $1) return $hget($right($1,-5),gwd.npc)
   return $1
 }
 
@@ -120,16 +120,15 @@ alias autoidm.start {
   var %nick $lower(<idm> $+ $1)
   var %p1 $hget($1,players)
   if (!%p1) halt
-  db.set user indm %p1 1
-  chaninit %p1 %nick $1 $hget($1,sitems) 1
+  init.chan %p1 %nick $1 $hget($1,sitems) 1
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %winloss $winloss(%nick,%p1,$2)
   var %winlossp1 $gettok(%winloss,1,45)
   var %winlossp2 $gettok(%winloss,2,45)
   var %bonus $ceil($calc( ($hget(%p1,wins) / 1000 ) + ( $hget(%p1,aikills) / 50 ) ))
-  msgsafe $1 $logo(DM) $s1(%nick) %winlossp1 (+ $+ %bonus $+ ) has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($hget($1,p1)) gets the first move.
+  msgsafe $1 $logo(DM) $s1($autoidm.nick(%nick)) %winlossp1 (+ $+ %bonus $+ ) has accepted $s1(%p1) $+ 's %winlossp2 DM. $s1($autoidm.nick($hget($1,p1))) gets the first move.
   if ($hget($1,p1) == %nick) autoidm.turn $1
-  else { timerc $+ $1 1 60 autoidm.waiting $1 }
+  else { .timerc $+ $1 1 60 autoidm.waiting $1 }
 }
 
 alias autoidm.turn {
@@ -177,7 +176,7 @@ alias autoidm.turn {
   set -u25 %enddm [ $+ [ $1 ] ] 0
   damage %nick %p2 %attcmd $1
   if ($hget(%p2,hp) < 1) {
-    dead $1 %p2 $autoidm.acc(%nick)
+    dead $1 %p2 %nick
     halt
   }
   if ($specused(%attcmd)) {
