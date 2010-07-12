@@ -181,7 +181,7 @@ alias cancel {
 
 alias enddm {
   if ($hget($1,p2)) { halt }
-  msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,p1)) $+ 's DM request, and the DM has ended.
+  msgsafe $1 $logo(DM) Nobody has accepted $s1($hget($1,players)) $+ 's DM request, and the DM has ended.
   cancel $1
 }
 
