@@ -29,7 +29,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
     elseif ($hget($chan,gwd.npc)) {
       join.dm $chan $nick
       msgsafe $chan $logo(GWD) $s1($nick) joined the group to go to $+($s1($hget($chan,gwd.npc)),!) You've joined as $s2(Player $findtok($hget($chan,players),$nick,1,44))
-      .timer $+ $chan 1 30 gwd.init $chan
+      if ($timer($chan).secs < 10) .timer $+ $chan 1 30 gwd.init $chan
     }
     else {
       var %p1 $hget($chan,players)
