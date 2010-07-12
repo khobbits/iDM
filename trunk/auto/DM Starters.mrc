@@ -226,11 +226,11 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
   }
   elseif ($nick == $hget($chan,p1)) {
-    if ($hget($chan,p2)) { notice $nick You can only end the dm on the other players turn. }
-    else {
-      cancel $chan
-      msgsafe $chan $logo(DM) The DM has been canceled.
-    }
+    notice $nick You can only end the dm on the other players turn.
+  }
+  elseif ($nick == $hget($chan,players)) {
+    cancel $chan
+    msgsafe $chan $logo(DM) The DM has been canceled.
   }
 }
 
