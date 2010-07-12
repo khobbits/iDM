@@ -2,7 +2,7 @@
 
 on *:INVITE:#: {
   if ($me != iDM) { halt }
-  if (($chr(40) isin #) || ($chr(41) isin #) || ($chr(36) isin #)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(26) | halt }
+  if (($chr(40) isin #) || ($chr(41) isin #) || ($chr(36) isin #)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(36) | halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($hget(>invite,$nick)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$nick).unset seconds. | halt }
   if ($hget(>invite,$chan)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
