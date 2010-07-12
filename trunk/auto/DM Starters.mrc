@@ -162,15 +162,17 @@ alias pcancel {
   if ($2 == $null) { putlog Syntax Error: pcancel (2) - $db.safe($1-) | halt }
   db.set user indm $2 0
   if ($hget($2)) hfree $2
-  hadd $1 players $remtok($hget($1,players),$2,44)
-  hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
+  if ($hget($1)) {
+    hadd $1 players $remtok($hget($1,players),$2,44)
+    hadd $1 gwd.turn $remtok($hget($1,gwd.turn),$2,44)
+  }
 }
 
 alias cancel {
   if ($1 == $null) { putlog Syntax Error: cancel (1) - $db.safe($1-) | halt }
   if ($1) && ($chr(35) isin $1) {
    while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
-   hfree $1
+   if ($hget($1)) hfree $1
    .timer $+ $1 off
    .timerc $+ $1 off
    .timercw $+ $1 off
