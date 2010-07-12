@@ -157,41 +157,42 @@ alias enddmcheck {
     .timer $+ $1 off
     return 1
   }
-  elseif ($2 == $hget($1,p1)) || ($2 == $hget($1,p2)) {
-    var %user $iif($2 == $hget($1,p1),$hget($1,p2),$hget($1,p1))
-    userlog loss $2 %user
-    userlog win %user $2 
-    msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.
-    if ($enddmcatch($3,$2,$1,$4,$5-) == 1) && ($hget($1,p2)) {
-      var %oldmoney = $hget($2,money)
-      if (%oldmoney > 100) {
-        var %newmoney = $ceil($calc(%oldmoney * 0.02))
-        notice $2 You left the channel during a dm, you lose $s2($price(%newmoney)) cash
-        userlog penalty $2 %newmoney
-        db.set user money $2 - %newmoney
-      }
-      db.set user losses $2 + 1
-    }
-    cancel $1
-    .timer $+ $1 off
-    return 1
-  }
   elseif ($hget($1,players)) && ($istok($hget($1,players),$2,44)) {
-    hadd $1 players $remtok($hget($1,players),$2,44)
-    if ($numtok($hget($1,players),44) >= 1) {
-      msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
+    if ($hget($1,gwd.npc)) {
+      if ($numtok($hget($1,players),44) >= 2) {
+        msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
+        userlog loss $2 $autoidm.acc(<gwd> $+ $1)
+        db.set user losses $2 + 1
+        pcancel $1 $2
+        return 1
+      }
+      msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.
       userlog loss $2 $autoidm.acc(<gwd> $+ $1)
-      db.set user losses $2 + 1
-      pcancel $1 $2
+      userlog win $autoidm.acc(<gwd> $+ $1) $2
+      cancel $1
+      .timer $+ $1 off
+      enddmcatch $3 $2 $1 $4 $5-
       return 1
     }
-    msgsafe $1 $logo(GWD) The GWD has been canceled, because the last players left.
-    userlog loss $2 $autoidm.acc(<gwd> $+ $1)
-    userlog win $autoidm.acc(<gwd> $+ $1) $2
-    cancel $1
-    .timer $+ $1 off
-    enddmcatch $3 $2 $1 $4 $5-
-    return 1
+    else {
+      var %user $iif($2 == $hget($1,p1),$hget($1,p2),$hget($1,p1))
+      userlog loss $2 %user
+      userlog win %user $2
+      msgsafe $1 $logo(DM) The DM has been canceled, because one of the players left.
+      if ($enddmcatch($3,$2,$1,$4,$5-) == 1) && ($hget($1,p2)) {
+        var %oldmoney = $hget($2,money)
+        if (%oldmoney > 100) {
+          var %newmoney = $ceil($calc(%oldmoney * 0.02))
+          notice $2 You left the channel during a dm, you lose $s2($price(%newmoney)) cash
+          userlog penalty $2 %newmoney
+          db.set user money $2 - %newmoney
+        }
+        db.set user losses $2 + 1
+      }
+      cancel $1
+      .timer $+ $1 off
+      return 1
+    }
   }
   return 0
 }
