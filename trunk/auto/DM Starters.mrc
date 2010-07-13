@@ -19,7 +19,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
     if ($hget($chan,stake)) {
       var %p1 $hget($chan,players)
       checkhosts $nick %p1
-      var %stake $checkmoney($nick,$2)
+      var %stake $checkmoney($nick,$2,$hget($chan,stake))
       if (%stake < $hget($chan,stake)) { notice $nick A wager of $s2($price($hget($chan,stake))) has already been risked by %p1 $+ . To accept, type !stake. | halt }
       join.dm $chan $nick
       init.chan %p1 $nick $chan 0 0 $hget($chan,stake)
@@ -43,8 +43,8 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
   else {
     if (stake isin $1) {
       if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
-      var %stake $checkmoney($nick,$2), %money $db.get(user,money,$nick)
-      if (!%stake) { notice $nick $logo(ERROR) Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
+      var %stake $checkmoney($nick,$2)
+      if (!%stake) { notice $nick $logo(ERROR) Please enter an amount between $s1($price(10000)) and $s1($price($maxstake($db.get(user,money,$nick)))) $+ . (!stake 150M) | halt }
       join.dm $chan $nick
       hadd $chan stake %stake
       msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
@@ -120,7 +120,7 @@ alias checkmoney {
   var %money = $db.get(user,money,$1)
   if ($2 == max) { var %stake $maxstake(%money) }
   else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
-  if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(10000)) $+ . | halt }
+  if (%money < 60000) { notice $nick You can't stake until you have $s1($price(60000)) $+ . | halt }
   if (%stake < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
   if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
   if (%money < $hget($chan,stake)) { notice $nick You cannot stake $s2($price($hget($chan,stake))) $+ . Your max stake is $s2($price($maxstake(%money))) $+ . | halt }
