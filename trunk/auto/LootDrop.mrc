@@ -68,7 +68,7 @@ alias dead {
   }
   cancel $1
   set -u10 %wait. [ $+ [ $1 ] ] on
-  .timer 1 10 msgsafe $1 $logo(iDM) Ready.
+  .timer 1 10 msgsafe $1 $logo(DM) Ready.
 }
 
 alias price {
