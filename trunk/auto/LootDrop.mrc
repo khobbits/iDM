@@ -16,7 +16,7 @@ alias dead {
     userlog losestake $2 %stake
     userlog win $3 $2
   }
-  if ($hget($1,gwd.time)) {
+  elseif ($hget($1,gwd.time)) {
     var %p $hget($1,players)
     var %drops $rundrops($1, $gettok(%p,$r(1,$numtok(%p,44)),44), $2, 1)
     var %combined $gettok(%drops,1,32)

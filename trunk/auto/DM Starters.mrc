@@ -43,10 +43,10 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
   else {
     if (stake isin $1) {
       if ($isdisabled($chan,staking) === 1) { notice $nick $logo(ERROR) Staking in this channel has been disabled. | halt }
-      var %stake $checkmoney($nick,$2)
-      if (!%stake) { notice $chan Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
-      hadd $chan stake %stake
+      var %stake $checkmoney($nick,$2), %money $db.get(user,money,$nick)
+      if (!%stake) { notice $nick $logo(ERROR) Please enter an amount between $s1($price(10000)) and $s1($price($maxstake(%money))) $+ . (!stake 150M) | halt }
       join.dm $chan $nick
+      hadd $chan stake %stake
       msgsafe $chan $logo(DM) $s1($nick) $winloss($nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
       .timer $+ $chan 1 30 enddm $chan
     }
@@ -123,17 +123,18 @@ alias checkmoney {
   if ($maxstake(%money) < 10000) { notice $nick You can't stake until you have $s1($price(10000)) $+ . | halt }
   if (%stake < 10000) { notice $nick The minimum stake is $s1($price(10000)) $+ . | halt }
   if (%stake > $maxstake(%money)) { notice $nick Your maximum stake is only $s1($price($maxstake(%money))) $+ . | halt }
+  if (%money < $hget($chan,stake)) { notice $nick You cannot stake $s2($price($hget($chan,stake))) $+ . Your max stake is $s2($price($maxstake(%money))) $+ . | halt }
   return %stake
 }
 
 alias maxstake return $ceil($calc( $1 ^ 0.84 ))
 
 alias checkhosts {
-    if ($address($1,2) == $address($2,2)) && ($len($address($1,2)) > 3) {
-      msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
-      inc -u5 %dm.spam [ $+ [ $1 ] ]
-      halt
-    }
+  if ($address($1,2) == $address($2,2)) && ($len($address($1,2)) > 3) {
+    msgsafe # $logo(ERROR) We no longer allow two players on the same hostmask to DM each other.  You are free to DM others. If you have recieved this error as a mistake please drop by #idm.Support.
+    inc -u5 %dm.spam [ $+ [ $1 ] ]
+    halt
+  }
 }
 
 alias winloss {
@@ -171,11 +172,11 @@ alias pcancel {
 alias cancel {
   if ($1 == $null) { putlog Syntax Error: cancel (1) - $db.safe($1-) | halt }
   if ($1) && ($chr(35) isin $1) {
-   while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
-   if ($hget($1)) hfree $1
-   .timer $+ $1 off
-   .timerc $+ $1 off
-   .timercw $+ $1 off
+    while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
+    if ($hget($1)) hfree $1
+    .timer $+ $1 off
+    .timerc $+ $1 off
+    .timercw $+ $1 off
   }
 }
 
