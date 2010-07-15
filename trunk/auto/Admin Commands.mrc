@@ -205,7 +205,7 @@ oN $*:TEXT:/^[!@.]hax/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
     var %user $iif($2, $2, $nick)
-    if ($hget($chan,p1) == %user || $hget($chan,p2) == %user) {
+    if ($istok($hget($chan,players),%user,44)) {
       hadd %user hp 500
       hadd %user mhp 500
       hadd %user sp 64
