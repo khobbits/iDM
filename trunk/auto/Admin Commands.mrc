@@ -206,7 +206,8 @@ oN $*:TEXT:/^[!@.]hax/Si:#: {
     if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
     var %user $iif($2, $2, $nick)
     if ($hget($chan,p1) == %user || $hget($chan,p2) == %user) {
-      hadd %user hp 300
+      hadd %user hp 500
+      hadd %user mhp 500
       hadd %user sp 64
       msg # $logo(Hax) HP and Special hax has been turned on for %user
     }
