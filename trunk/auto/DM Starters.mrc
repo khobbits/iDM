@@ -109,6 +109,7 @@ alias init.player {
   db.query_end %result
   hadd $1 chan $2
   hadd $1 hp 99
+  hadd $1 mhp 99
   hadd $1 sp 4
   hadd $1 poison 0
   hadd $1 frozen 0

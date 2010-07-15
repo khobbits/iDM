@@ -19,9 +19,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
         hdec %p2 poison
         hdec %p2 hp %extra
-        var %hp2 $hget(%p2,hp)
-        var %mhp2 $iif($hget(<gwd> $+ $chan,mhp) == $null,99,$hget(<gwd> $+ $chan,mhp))
-        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1($autoidm.nick(%p2)) for $s1(%extra) damage. $hpbar(%hp2,%mhp2)
+        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1($autoidm.nick(%p2)) for $s1(%extra) damage. $hpbar($hget(%p2,hp),$hget(%p2,mhp))
       }
       else {
         msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
@@ -96,7 +94,8 @@ alias damage {
   if ($4 == $null) { putlog Syntax Error: damage (4) - $db.safe($1-) | halt }
   var %hp1 $hget($1,hp)
   var %hp2 $hget($2,hp)
-  var %mhp2 $iif($hget($2,mhp) == $null,99,$hget($2,mhp))
+  var %mhp1 $hget($1,mhp)
+  var %mhp2 $hget($2,mhp)
   var %logo $iif($hget($4,gwd.time),GWD,DM)
   if ($3 == dh) {
     if (%hp1 < 10) { var %hit $hit(dh_9,$1,$2,$4) }
@@ -154,7 +153,7 @@ alias damage {
     var %msg %msg - 03 $+ %extra $+ 
   }
 
-  if (%healer == 1) { var %msg %msg $+ . $s1($replace($autoidm.nick($2),$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($autoidm.nick($1),$chr(58),$chr(32))) $hpbar(%hp1) }
+  if (%healer == 1) { var %msg %msg $+ . $s1($replace($autoidm.nick($2),$chr(58),$chr(32))) $hpbar(%hp2,%mhp2) - $s1($replace($autoidm.nick($1),$chr(58),$chr(32))) $hpbar(%hp1,%mhp1) }
   else { var %msg %msg $+ . $hpbar(%hp2,%mhp2) }
   msgsafe $4 %msg
 
@@ -194,8 +193,8 @@ alias damage {
   var %e = $hget($4,players), %x = 1
   if ((<gwd isin $1) && ($numtok(%e,44) > 1))  {
     while (%x <= $numtok(%e,44)) {
-      if ($numtok(%e,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp)),HP) }
-      else { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar2($hget($gettok(%e,%x,44),hp)),HP) }
+      if ($numtok(%e,44) < 5) { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar($hget($gettok(%e,%x,44),hp),$hget($gettok(%e,%x,44),mhp)),HP) }
+      else { var %h %h $s1($gettok(%e,%x,44)) $remove($hpbar2($hget($gettok(%e,%x,44),hp),$hget($gettok(%e,%x,44),mhp)),HP) }
       inc %x
     }
     notice $hget($4,players) $logo(GWD) HP: %h
