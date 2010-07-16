@@ -4,7 +4,7 @@ alias dead {
   ; $3 = winner
   if ($3 == $null) { putlog Syntax Error: dead (3) - $db.safe($1-) | halt }
   db.set user losses $autoidm.acc($2) + 1
-  userlog loss $autoidm.acc($2) $3
+  userlog loss $autoidm.acc($2) $autoidm.acc($3)
 
   if ($hget($1,stake)) {
     db.set user money $3 + $hget($1,stake)
@@ -34,18 +34,18 @@ alias dead {
     msgsafe $1 $logo(KO) $iif(%g == 1,The Solo Team of $s1($gettok($hget($1,players),1,44)),The %g surviving team members) $iif(%g != 1,each) received $s2($price(%sharedrop)) in gp. $+($s1([),%items,$s1(])) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwd.time)))),$s1(]))
   }
   else {
-    userlog win $3 $2
-    var %drops $rundrops($1, $3, $2)
+    userlog win $autoidm.acc($3) $autoidm.acc($2)
+    var %drops $rundrops($1, $autoidm.acc($3), $autoidm.acc($2))
     var %combined $gettok(%drops,1,32)
     var %items $gettok(%drops,2-,32)
-    var %winnerclan = $hget($3,clan)
-    var %looserclan = $hget($2,clan)
-    db.set user wins $3 + 1
+    var %winnerclan = $hget($autoidm.acc($3),clan)
+    var %looserclan = $hget($autoidm.acc($2),clan)
+    db.set user wins $autoidm.acc($3) + 1
     if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
     if ((%winnerclan != %looserclan) && (%winnerclan)) {
       var %nummember = $clannumbers(%winnerclan)
       var %sharedrop = $floor($calc(%combined / %nummember))
-      userlog drop $3 %sharedrop gp
+      userlog drop $autoidm.acc($3) %sharedrop gp
       trackclan WIN %winnerclan %combined
       if ($db.get(clantracker,share,%winnerclan)) {
         var %sql.winnerclan = $db.safe(%winnerclan)
@@ -55,15 +55,15 @@ alias dead {
         unset %sharedrop
       }
       else {
-        userlog drop $3 %combined gp
-        db.set user money $3 + %combined
-        msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+        userlog drop $autoidm.acc($3) %combined gp
+        db.set user money $autoidm.acc($3) + %combined
+        msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
       }
     }
     else {
-      userlog drop $3 %combined gp
-      db.set user money $3 + %combined
-      msgsafe $1 $logo(KO) $s1($3) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+      userlog drop $autoidm.acc($3) %combined gp
+      db.set user money $autoidm.acc($3) + %combined
+      msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
   cancel $1

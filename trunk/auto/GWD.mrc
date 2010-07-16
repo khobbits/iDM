@@ -151,15 +151,13 @@ alias autoidm.turn {
     else var %attcmd smoke
   }
   elseif ($hget(%p2,laststyle) == mage) {
-    if ($1 == #dm.newbies) { var %attcmd onyx }
-    elseif ((%spec >= 3) && ($hget(%p2,poison) >= 1)) var %attcmd dbow
+    if ((%spec >= 3) && ($hget(%p2,poison) >= 1)) var %attcmd dbow
     elseif ((%spec >= 1) && (%hp > 50)) var %attcmd mjavelin
     else var %attcmd onyx
   }
   elseif ($hget(%p2,laststyle) == range) || ($hget(%p2,laststyle) == pot) {
     if ($hget(%nick,frozen)) var %attcmd onyx
     elseif ((!$hget(%p2,poison)) && (%spec >= 1) && (%hp2 > 50)) var %attcmd dds
-    elseif ($1 == #dm.newbies) { var %attcmd guth }
     elseif (%spec >= 3) {
       if ((%hp >= 50) || (%hp2 < 30)) var %attcmd dhally
       else var %attcmd sgs
