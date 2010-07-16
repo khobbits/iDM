@@ -46,7 +46,7 @@ on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
   if ($chan == #idm.staff) { return $false }
-  if (%disabled) { return $false }
+  if (%disable == 1) { return $true }
   if (%dbfail > 3) { 
     if (!$timer(dbinit)) timerdbinit 0 2 dbinit
     return $true 
