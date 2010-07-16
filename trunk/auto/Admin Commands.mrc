@@ -53,14 +53,14 @@ on $*:TEXT:/^[!@.]part .*/Si:#: {
 on $*:TEXT:/^[!@.]disable$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     set %disable 1
-    msg $chan ! $logo(DISABLE) iDM disabled !
+    msg $chan -= [DISABLE] iDM disabled =-
   }
 }
 
 on $*:TEXT:/^[!@.]enable$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     unset %disable
-    msg $chan ! $logo(DISABLE) iDM renabled !
+    msg $chan -= [DISABLE] iDM renabled =-
   }
 }
 
