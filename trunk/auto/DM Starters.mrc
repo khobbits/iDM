@@ -162,7 +162,7 @@ alias winloss {
 
 alias pcancel {
   if ($2 == $null) { putlog Syntax Error: pcancel (2) - $db.safe($1-) | halt }
-  db.set user indm $2 0
+  db.set user indm $autoidm.acc($2) 0
   if ($hget($2)) hfree $2
   if ($hget($1)) {
     hadd $1 players $remtok($hget($1,players),$2,44)
@@ -197,6 +197,10 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     elseif (!$hget($chan,gwd.time) && $nick == $gettok($hget($chan,players),1,44)) {
       msgsafe $chan $logo(GWD) The Gwd Team has been canceled by the Team Leader.
       cancel $chan
+    }
+    elseif (!$hget($chan,gwd.time) && $istok($hget($chan,players),$nick,44)) {
+      msgsafe $chan $logo(GWD) $s1($2) runs away from the GWD, too scared to even start.
+      pcancel $chan $nick
     }
   }
   elseif ($hget($chan,stake)) {
