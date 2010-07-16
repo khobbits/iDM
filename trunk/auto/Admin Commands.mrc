@@ -50,6 +50,21 @@ on $*:TEXT:/^[!@.]part .*/Si:#: {
   }
 }
 
+on $*:TEXT:/^[!@.]disable$/Si:#idm.staff: {
+  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+    set %disable 1
+    msg $chan $logo(DISABLE) iDM disabled
+  }
+}
+
+on $*:TEXT:/^[!@.]enable$/Si:#idm.staff: {
+  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+    unset %disable
+    msg $chan $logo(DISABLE) iDM renabled
+  }
+}
+
+
 on $*:TEXT:/^[!@.]chans$/Si:#idm.staff: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     $iif($left($1,1) == @,msgsafe #,notice $nick) I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
