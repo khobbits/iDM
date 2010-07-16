@@ -199,7 +199,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       cancel $chan
     }
     elseif (!$hget($chan,gwd.time) && $istok($hget($chan,players),$nick,44)) {
-      msgsafe $chan $logo(GWD) $s1($2) runs away from the GWD, too scared to even start.
+      msgsafe $chan $logo(GWD) $s1($nick) runs away from the GWD, too scared to even start.
       pcancel $chan $nick
     }
   }
