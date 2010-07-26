@@ -128,14 +128,14 @@ on $*:TEXT:/^[!@.]join .*/Si:#idm.staff: {
 on $*:TEXT:/^[!@.]rehash$/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    rehash.run 0
+    rehash.run 1
   }
 }
 
 on $*:TEXT:/^[!@.]ignoresync$/Si:#idm.staff: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    ignoresync.run 0
+    ignoresync.run 1
   }
 }
 
