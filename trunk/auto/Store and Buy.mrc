@@ -150,7 +150,7 @@ alias storematch {
     var %fname = Barrow Gloves
     var %price = 1500000000
     var %table = equip_armour
-    var %winreq = 1000
+    var %winreq = 0
   }
   elseif ($2 == dclaws) || ($2- == Dragon Claws) {
     var %sname = dclaws

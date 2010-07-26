@@ -83,7 +83,7 @@ on *:NICK: {
     }
     if ($hget($nick) || $hget($chan(%a),gwd.npc) && $istok($hget($chan(%a),players),$nick,44)) {
       hadd $chan(%a) gwd.alive $remtok($hget($chan(%a),gwd.alive),$nick,44)
-      if ($numtok($hget($chan(%a),players),44) >= 1) {
+      if ($numtok($hget($chan(%a),players),44) > 1) {
         msgsafe $chan(%a) $logo(GWD) $s1($nick) their GWD raid has come to an end because they changed names.
         userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
         db.set user losses $nick + 1
@@ -92,7 +92,7 @@ on *:NICK: {
       }
       msgsafe $chan(%a) $logo(GWD) The GWD has been canceled, because one of the players changed their nick.
       userlog loss $nick $autoidm.acc(<gwd> $+ $chan(%a))
-      userlog wins $autoidm.acc(<gwd> $+ $chan(%a)) $nick
+      userlog win $autoidm.acc(<gwd> $+ $chan(%a)) $nick
       cancel $chan(%a)
       halt
     }
