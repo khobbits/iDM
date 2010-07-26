@@ -77,19 +77,19 @@ alias dupeclient {
     set -u30 %dupe 1
     sbnc tcl putlog {perform dupeclient SYNACK}
   }
-  else { {
-      set -u30 %dupe 1
-      sbnc tcl putlog {perform dupeclient SYN}
-    }
+  else {
+    set -u30 %dupe 1
+    sbnc tcl putlog {perform dupeclient SYN}
   }
+}
 
 
-  alias numlines {
-    var %i 0
-    var %lines 0
-    while (%i < $script(0)) {
-      inc %i 
-      inc %lines $lines($script(%i))
-    }
-    echo -a %lines
+alias numlines {
+  var %i 0
+  var %lines 0
+  while (%i < $script(0)) {
+    inc %i 
+    inc %lines $lines($script(%i))
   }
+  echo -a %lines
+}
