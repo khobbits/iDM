@@ -63,7 +63,7 @@ on *:TEXT:perform *:?: {
 
 on *:TEXT:Another client logged in*:?: { if (($nick == -sbnc) && ($address == bouncer@shroudbnc.info)) { dupeclient } }
 alias dupeclient {
-  if ($1 == SYN) {
+  if ($1 == SYNACK) {
     var %botnum $botnum
     if (%botnum == $null) {
       quit DupeClient ACK
@@ -73,19 +73,23 @@ alias dupeclient {
       sbnc tcl putlog {perform quit DupeClient ACK}
     }
   }
-  else {
+  elseif ($1 == SYN) {
     set -u30 %dupe 1
-    sbnc tcl putlog {perform sbnc tcl putlog {perform dupeclient SYN}}
+    sbnc tcl putlog {perform dupeclient SYNACK}
   }
-}
+  else { {
+      set -u30 %dupe 1
+      sbnc tcl putlog {perform dupeclient SYN}
+    }
+  }
 
 
-alias numlines {
-  var %i 0
-  var %lines 0
-  while (%i < $script(0)) {
-    inc %i 
-    inc %lines $lines($script(%i))
+  alias numlines {
+    var %i 0
+    var %lines 0
+    while (%i < $script(0)) {
+      inc %i 
+      inc %lines $lines($script(%i))
+    }
+    echo -a %lines
   }
-  echo -a %lines
-}
