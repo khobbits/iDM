@@ -14,7 +14,7 @@ function init($page) {
 	$pages = array (
 		"dmstats" => "dmstats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
 	    "user" => "user.php", "sitems" => "sitems.php", "clan" => "clan.php", "items" => "items.php",
-		"bts" => "bts.php", "userstats" => "userstats.php", "u-help" => "includes/u-help.php"
+		"bts" => "bts.php", "userstats" => "userstats.php", "help" => "help.php"
 	);
 
 	if ($page == 1) {
@@ -31,20 +31,20 @@ function init($page) {
 	}
 }
 
-function msgchan ($chan,$message) {
+function msgchan ($chan, $type, $message) {
   include_once('bnc/sbnc.php');
   $sbnc = new SBNC("127.0.0.1", 12000, "admin", 'Sp4rh4wk`Gh0$t`');
-  $result = $sbnc->CallAs('admin', simul, array( 'privmsg ' . $chan . ' :' . $message));
+  $result = $sbnc->CallAs('admin', simul, array( $type . ' ' . $chan . ' :' . $message));
   $sbnc->Destroy();
   return var_export($result,true);
 }
 
 function msgsupport ($message) {
-  msgchan('+#idm.support', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
+  msgchan('+#idm.support', 'notice', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
 }
 
 function msgstaff ($message) {
-  msgchan('#idm.staff', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
+  msgchan('#idm.staff', 'privmsg', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
 }
 
 #    Output easy-to-read numbers

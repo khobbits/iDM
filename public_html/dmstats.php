@@ -1,5 +1,6 @@
 <table width="95%"><tr><td>
 <h1>Overall DM Stats</h1>
+
 <?php
 
 $date = date('Y/m/d');
@@ -13,6 +14,8 @@ $average = round($tMoney / $tDM);
 
 print '<h3><strong>Total DMs:</strong> ' . number_format($tDM) . ' <strong>Total Cash:</strong> <abbr title="'. number_format($tMoney) .'">' . n2a($tMoney) .
 '</abbr> <strong>Average:</strong> <abbr title="'. number_format($average) .'">' . n2a($average) . '</abbr></h3>';
+
+print '<h4>We reset all statistics and accounts on 4th July 2010, if you include this data iDM has seen ' .  number_format($tDM + 6307076) . ' death matches.</h4>';
 ?>
 
 <table class="table-stats">

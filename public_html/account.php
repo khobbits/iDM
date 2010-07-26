@@ -4,7 +4,8 @@ define ('ADMIN_RANK', 3);
 $session = verifySession();
 echo $session['message'];
 if ($session['status'] == TRUE) {
-	$user = $session['session']->account;
+  $htmluser = htmlspecialchars($session['session']->account);
+	$user = mysql_real_escape_string($session['session']->account);
 ?>
 
 <h1><a href="/account/" title="Back to main page">iDM Account Management...</a></h1>
@@ -85,10 +86,10 @@ if ($session['status'] == TRUE) {
   </ul>
 	<div id="tabs-1">
 <h2>Account Management</h2>
-<p>Welcome <?=$user?></p>
-<p>From this account management panel you will be able to edit user details and appeal an user or channel ban.</p>
-<p></p>
-<p>Please select an option below:</p>
+<p>Welcome <?=$htmluser?>!</p>
+<p>This is the account management panel, from here you will be able to edit your user details, buy equipment from the store, purchase admin items if your lucky enough to be awarded cookies, and appeal an user or channel bans.</p>
+<p>The results for any appeals or requests will be displayed on the 'History' tab.</p>
+<p>Begin by selecting an option below:</p>
 <ul>
   <li><h3>Change account details</h3>
     <ul>
@@ -99,7 +100,7 @@ if ($session['status'] == TRUE) {
 
 	<li><h3>Visit iDM Shop</h3>
 	  <ul>
-	    <li><a href="#tab-1">Shop</a></li>
+	    <li><a href="#tabs-1">Shop</a></li>
 	    <li><a href="/account/cookie/">Cookie store</a></li>
 		</ul>
 	</li>
@@ -118,7 +119,7 @@ if ($session['status'] == TRUE) {
 <?
 		$result = mysql_query("SELECT * FROM appeal WHERE request_type IN ('user', 'channel') AND user='$user' ORDER BY id DESC");
 		if(!$result || mysql_num_rows($result) == 0) {
-		  echo "<p>You have no ban history.</p>";
+		  echo "<p>You have no appeal history.</p>";
 		}
 		else {
 ?>
@@ -275,7 +276,7 @@ if ($session['status'] == TRUE) {
 	  <ul>
 	    <li><a href="/account/hstat/">Top Cheat High Ratio</a></li>
 	    <li><a href="/account/lstat/">Top Cheat Low Ratio</a></li>
-	    <li><a href="/account/istat/">Idle Staff</a></li>
+	    <li><a href="/account/istat/">Idle Admin Items</a></li>
 		</ul>
 	</li>
 	</ul>

@@ -16,4 +16,5 @@ RewriteRule ^drops/? index.php?page=drops [L]
 RewriteRule ^dmstats/? index.php?page=dmstats [L]
 RewriteRule ^userstats/? index.php?page=userstats [L]
 RewriteRule ^sitems/? index.php?page=sitems [L]
+RewriteRule ^help/? index.php?page=help [L]
 </IfModule>

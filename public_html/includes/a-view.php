@@ -19,6 +19,7 @@ if(!$result || mysql_num_rows($result) == 0) {
 
 $row = mysql_fetch_object($result);
 ?>
+<h2>Appeal Details</h2>
 <table>
 	<tbody>
 <?php
@@ -35,8 +36,19 @@ switch($row->request_type) {
 		    $table[] = array('Status: ', 'Pending staff approval');
 		    break;
 			case 'a':
-			  $table[] = array('Status: ', 'Ban appeal accepted');
+
+        $sql = "SELECT * FROM ilist WHERE user='$user' AND time='$row->ban_date' AND expires > 1 LIMIT 1";
+        $result = mysql_query($sql);
+        if(!$result || mysql_num_rows($result) == 0) {
+          $table[] = array('Status: ', 'Ban appeal accepted');
+        }
+        else {
+            $currentban = mysql_fetch_object($result);
+            $table[] = array('Status: ', 'Ban appeal accepted, ban yet to expire.');
+            $table[] = array('Ban Expires: ', $currentban->expires);
+        }
 			  $table[] = array('Processed by: ', $row->processed_by);
+        $table[] = array('Explanation: ', $row->explanation ? $row->explanation : 'None given');
 			  break;
 			case 'd':
 			  $table[] = array('Status: ', 'Ban appeal denied');
@@ -60,6 +72,7 @@ switch($row->request_type) {
 			case 'a':
 			  $table[] = array('Status: ', 'Ban appeal accepted');
 			  $table[] = array('Processed by: ', $row->processed_by);
+        $table[] = array('Explanation: ', $row->explanation ? $row->explanation : 'None given');
 			  break;
 			case 'd':
 			  $table[] = array('Status: ', 'Ban appeal denied');
@@ -110,11 +123,11 @@ switch($row->request_type) {
 
 $index = 1;
 foreach($table as $ptr) {
-	$class = ($index++ % 2 == 1) ? 'class="odd"' : 'class="even"';
+$class = ($index++ % 2 == 1) ? 'class="odd"' : 'class="even"';
 ?>
-		<tr <?=$class?>>
-		  <td><?=$ptr[0]?></td>
-		  <td><?=$ptr[1]?></td>
+		<tr>
+		  <td class="view-header"><?=$ptr[0]?></td>
+		  <td class="view-details"><?=$ptr[1]?></td>
 		</tr>
 <?php
 }

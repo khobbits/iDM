@@ -165,6 +165,17 @@ proc khtclq {nick host hand chan arg} {
 	catch {eval $arg} result
 }
 
+package require mysqltcl
+proc mysqlq {query} {
+  set dbname "idm_bot"
+  set dbuser "idm"
+  set dbpasswd {Sp4rh4wk`Gh0$t`}
+  set db [::mysql::connect -user $dbuser -password $dbpasswd -db $dbname]
+  set result [::mysql::sel $db $query -list]
+  return $result
+}
+
+
 setctx admin
 
 putserv "privmsg #idm.staff Loaded BNC Script tcl.tcl"

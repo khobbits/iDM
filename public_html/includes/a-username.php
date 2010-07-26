@@ -114,7 +114,7 @@ switch($action) {
 	    return;
 		}
 		
-		displayChangeForm($user, 'name');
+		displayChangeForm($htmluser, 'name');
 }
 	
 function displayChangeForm($name, $action) {
@@ -123,12 +123,12 @@ function displayChangeForm($name, $action) {
 	<input type="hidden" name="action" value="<?=$action?>" />
 	<table>
 	  <tr>
-	    <td>Current Name:</td>
-	    <td><?=$name?></td>
+	    <td class="view-header">Current Name:</td>
+	    <td class="view-detail"><?=$name?></td>
 		</tr>
 		<tr>
-		  <td>Requested Name:</td>
-			<td><input type="text" name="value" /></td>
+		  <td class="view-header">Requested Name:</td>
+			<td class="view-detail"><input type="text" name="value" /></td>
 		</tr>
 	</table>
 	<br />
@@ -206,12 +206,12 @@ function displayConfirmationForm($request) {
 	<input type="hidden" name="id" value="<?=$request->id?>" />
 	<table>
 		<tr>
-			<td>Current Name:</td>
-			<td><?=$request->user?></td>
+			<td class="view-header">Current Name:</td>
+			<td class="view-detail"><?=$request->user?></td>
 		</tr>
 		<tr>
-			<td>Requested Name:</td>
-			<td><?=$request->request?></td>
+			<td class="view-header">Requested Name:</td>
+			<td class="view-detail"><?=$request->request?></td>
 		</tr>
 	</table>
 	<p>
@@ -250,12 +250,12 @@ function checkChangeStatus($name) {
 <form id="name-change-confirmation" method="post" action="/account/cname/">
 		<table>
 	  <tr>
-	    <td>Current Name:</td>
-	    <td><?=$change->user?></td>
+	    <td class="view-header">Current Name:</td>
+	    <td class="view-detail"><?=$change->user?></td>
 		</tr>
 		<tr>
-		  <td>Requested Name:</td>
-			<td><?=$change->request?></td>
+		  <td class="view-header">Requested Name:</td>
+			<td class="view-detail"><?=$change->request?></td>
 		</tr>
 	</table>
  	<p>

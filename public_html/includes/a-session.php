@@ -26,7 +26,7 @@ function verifySession() {
 							ip_address = '$_SERVER[REMOTE_ADDR]'
 						WHERE user = '$code'";
 		mysql_query($sql);
-		if($sessionData->diff > 20) {
+		if($sessionData->diff > 40) {
 		  destroySession();
 	    return array('status' => FALSE, 'message' => 'Invalid Access Code');
 		}
@@ -56,8 +56,8 @@ function verifySession() {
 		    destroySession();
 		    return array('status' => FALSE, 'message' => 'Invalid IP Address');
 		 }
-		 // verify access within 15 minutes
-		 elseif($session->diff > 15) {
+		 // verify access within 30 minutes
+		 elseif($session->diff > 30) {
 		  destroySession();
 	    return array('status' => FALSE, 'message' => 'Session Timeout');
 		}

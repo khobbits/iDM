@@ -43,6 +43,9 @@ global idmbind
 	} elseif {[regexp -all {^(other)} $command] == 1} {
 		set target [bncotherlist]
 		regsub -all "^(other)" $command {} com
+  } elseif {[regexp -all {^(all)} $command] == 1} {
+		set target [bncuserlist]
+		regsub -all "^(all)" $command {} com
 	} else {
 		set com [lindex [split $command {-}] 0]
 		if {[lsearch -nocase [bncuserlist] $com] != -1} {

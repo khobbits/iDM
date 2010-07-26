@@ -5,7 +5,7 @@ if($session['status'] == FALSE) {
 	return;
 }
 
-if($session['session']->rank <= ADMIN_RANK) {
+if($session['session']->rank < ADMIN_RANK) {
 	echo "Invalid page access";
 	return;
 }
@@ -19,16 +19,28 @@ else {
 	$name = isset($_POST['name']) ? trim($_POST['name']) : '';
 }
 
+?>
+
+<h2>Account History</a>
+
+<?
+
 if($name) {
 	$name = mysql_real_escape_string($name);
 	$table = array();
 	$isChannel = FALSE;
+
+  ?>
+
+  <h3>Ban history for <a href="http://idm-bot.com/u/<?=rawurlencode($name)?>" target="_blank"><?=$name?></a></h3>
+
+  <?
 	
 	// Is this a channel?
 	if(strpos($name, '#') === FALSE) {
 	  $sql = "(SELECT user, time AS ban_date, who AS banned_by, reason,
-							'' AS request_date, '' AS processed_by, '' AS processed_date,
-							'' AS explanation, '' AS status
+							expires AS request_date, '' AS processed_by, '' AS processed_date,
+							'[Ban Currently Active]' AS explanation, '' AS status
 						FROM ilist WHERE user='$name')
 						UNION
 						(SELECT user, ban_date, banned_by, reason, request_date,
@@ -43,8 +55,8 @@ if($name) {
 	else {
 	  $isChannel = TRUE;
 	  $sql = "(SELECT '' AS user, user AS channel, time AS ban_date,
-							who AS banned_by, reason, '' AS request_date, '' AS processed_by,
-							'' AS processed_date, '' AS explanation, '' AS status
+							who AS banned_by, reason, expires AS request_date, '' AS processed_by,
+							'' AS processed_date, '[Ban Currently Active]' AS explanation, '' AS status
 						FROM blist WHERE user='$name')
 						UNION
 						(SELECT user, channel, ban_date, banned_by, reason, request_date,
@@ -62,7 +74,6 @@ if($name) {
 	}
 	else {
 ?>
-<h2>Ban history for <?=$name?></h2>
 <br />
 <table class="table-stats">
 	<thead>
@@ -122,8 +133,12 @@ if($name) {
 ?>
 	</tbody>
 </table>
+
 <?php
-	}
+}
+?>
+  <hr />
+<?
 }
 // Retrieve a list of all bans in the db
 $sql = "(SELECT DISTINCT(user) FROM blist)

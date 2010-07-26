@@ -5,7 +5,7 @@ if($session['status'] == FALSE) {
 	return;
 }
 
-if($session['session']->rank <= ADMIN_RANK) {
+if($session['session']->rank < ADMIN_RANK) {
 	echo "Invalid page access";
 	return;
 }
@@ -52,43 +52,54 @@ elseif($operation && $id) {
     		if($row->channel) {
     ?>
     	<tr>
-    	  <td>Channel:</td>
-        <td><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->channel)?>" target="_blank"><?=$row->channel?> (<?=$ctotal?> items in history)</a> </td>
+    	  <td class="view-header">Channel:</td>
+        <td class="view-detail"><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->channel)?>" target="_blank"><?=$row->channel?> (<?=$ctotal?> items in history)</a> </td>
     	</tr>
     <?php
     		}
     ?>
     	<tr>
-    	  <td>User:</td>
-    		<td><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->user)?>" target="_blank"><?=$row->user?> (<?=$utotal?> items in history)</a> </td>
+    	  <td class="view-header">User:</td>
+    		<td class="view-detail"><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->user)?>" target="_blank"><?=$row->user?> (<?=$utotal?> items in history)</a> </td>
     	</tr>
     	<tr>
-    	  <td>Ban Date:</td>
-    	  <td><?=$row->ban_date?></td>
+    	  <td class="view-header">Ban Date:</td>
+    	  <td class="view-detail"><?=$row->ban_date?></td>
     	</tr>
     	<tr>
-    	  <td>Banned By:</td>
-    	  <td><?=$row->banned_by?></td>
+    	  <td class="view-header">Banned By:</td>
+    	  <td class="view-detail"><?=$row->banned_by?></td>
     	</tr>
     	<tr>
-    	  <td>Reason:</td>
-    	  <td><?=$row->reason?></td>
+    	  <td class="view-header">Reason:</td>
+    	  <td class="view-detail"><?=$row->reason?></td>
     	</tr>
     	<tr>
-    	  <td>Appeal Date:</td>
-    	  <td><?=$row->request_date?></td>
+    	  <td class="view-header">Appeal Date:</td>
+    	  <td class="view-detail"><?=$row->request_date?></td>
     	</tr>
     	<tr>
-    	  <td>Statement:</td>
-    	  <td><?=$row->request?></td>
+    	  <td class="view-header">Statement:</td>
+    	  <td class="view-detail"><?=$row->request?></td>
     	</tr>
     </table>
-    <p>If necessary, please provide a reason for the denial.</p>
+    <p>If you wish you can leave a reason or statement for the user to read.</p>
     <p>
     <div class="appeal-operation">
     	<form method="post" action="/account/bappeal/">
-    	  <textarea name="explanation"></textarea>
-    		<input type="hidden" name="id" value="<?=$row->id?>" />
+    	  <textarea class="ban-statement" rows="5" cols="50" name="explanation"></textarea>
+    		<input type="hidden" name="id" value="<?=$row->id?>" /><br />
+        Unban when: <select name="expires">
+          <option value="0" selected="selected">ASAP</option>
+          <option value="1">1 Hour</option>
+          <option value="2">2 Hours</option>
+          <option value="6">6 Hours</option>
+          <option value="12">12 Hours</option>
+          <option value="24">1 Day</option>
+          <option value="48">2 Days</option>
+          <option value="72">3 Days</option>
+          <option value="168">7 Days</option>
+        </select>
     		<br />
     		<br />
     		<input type="submit" name="operation" value="Approve" />
@@ -101,7 +112,9 @@ elseif($operation && $id) {
 
 		  break;
 		case 'approve':
-		  $explanation = isset($_POST['explanation']) ? mysql_real_escape_string(trim($_POST['explanation'])) : '';
+    $explanation = isset($_POST['explanation']) ? mysql_real_escape_string(trim($_POST['explanation'])) : '';
+    $expires = isset($_POST['expires']) ? mysql_real_escape_string(trim($_POST['expires'])) : '0';
+    if (!is_numeric($expires)) { $expires = 0; }
 		  $sql = "UPDATE appeal SET status='a',
 								explanation='$explanation', processed_by='$user',
 								processed_date=NOW()
@@ -115,10 +128,16 @@ elseif($operation && $id) {
 			else {
 			  $table = 'ilist';
 			  $user = $row->user;
-				mysql_query("UPDATE user SET banned = '0' WHERE user = '$user'");
+        if ($expires == "0") { mysql_query("UPDATE user SET banned = '0' WHERE user = '$user'"); }
 			}
-			$sql = "DELETE FROM $table WHERE user='$user' AND time='$row->ban_date'";
-			mysql_query($sql);
+      if ($expires == "0") {
+        $sql = "DELETE FROM $table WHERE user='$user' AND time='$row->ban_date'";
+			  mysql_query($sql);
+      }
+      else {
+        $sql = "UPDATE $table SET expires=DATE_ADD(now(), interval $expires hour) WHERE user='$user' AND time='$row->ban_date'";
+        mysql_query($sql);
+      }
 			echo "The ban appeal has been successfully approved.";
 			break;
 		case 'deny':
@@ -206,11 +225,12 @@ if(!$result || mysql_num_rows($result) == 0) {
 }
 else {
 ?>
-<table  class="table-user">
+<table class="table-user">
 	<thead>
 	  <tr>
 		  <th>Channel</th>
 		  <th>Ban Date</th>
+		  <th>Banned By</th>
 		  <th>Reason</th>
 		  <th>Appeal Date</th>
 		  <th>Appealed By</th>
@@ -232,6 +252,7 @@ else {
 	  <tr <?=$class?>>
 	    <td><?=$row->channel?></td>
 	    <td><?=$row->ban_date?></td>
+	    <td><?=$row->banned_by?></td>
 	    <td><?=$reason?></td>
 	    <td><?=$row->request_date?></td>
 	    <td><?=$row->user?></td>

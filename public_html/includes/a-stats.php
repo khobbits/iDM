@@ -5,7 +5,7 @@ if($session['status'] == FALSE) {
 	return;
 }
 
-if($session['session']->rank <= ADMIN_RANK || !isset($statType)) {
+if($session['session']->rank < ADMIN_RANK || !isset($statType)) {
 	echo "Invalid page access";
 	return;
 }
@@ -18,7 +18,13 @@ switch($statType) {
 	  displayLowStats();
 		return;
 	case 'idle':
-	  displayIdleStats();
+	  displayIdleStats('support');
+	  displayIdleStats('allegra');
+	  displayIdleStats('beau');
+	  displayIdleStats('belong');
+	  displayIdleStats('kh');
+	  displayIdleStats('snake');
+	  displayIdleStats('cookies');
 	  return;
  }
  
@@ -108,16 +114,23 @@ function displayLowStats() {
 <?php
 }
 
-function displayIdleStats() {
-  $sql = "SELECT * FROM _IDLE_STAFF ORDER BY login LIMIT 0, 20";
+function displayIdleStats( $who ) {
+  $sql = "SELECT * FROM _IDLE_STAFF WHERE $who != '0' ORDER BY login LIMIT 0, 20";
 	$result = mysql_query($sql);
 ?>
-<h2>Top 10 Idle Staff</h2>
+<h2>Top 20 idle users with <?=$who?></h2>
 <table class="table-stats">
 	<thead>
 	  <tr>
 	    <th>User</th>
 	    <th>Last Login</th>
+	    <th>allegra</th>
+		  <th>beau</th>
+		  <th>belong</th>
+		  <th>kh</th>
+		  <th>snake</th>
+		  <th>support</th>
+		  <th>cookies</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -129,6 +142,13 @@ function displayIdleStats() {
 		<tr <?=$class?>>
 		  <td><?=$row->user?></td>
 		  <td><?=date('Y-m-d G:i:s', $row->login)?></td>
+		  <td><?=$row->allegra?></td>
+		  <td><?=$row->beau?></td>
+		  <td><?=$row->belong?></td>
+		  <td><?=$row->kh?></td>
+		  <td><?=$row->snake?></td>
+		  <td><?=$row->support?></td>
+		  <td><?=$row->cookies?></td>
 		</tr>
 <?php
 	}

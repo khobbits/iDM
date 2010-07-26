@@ -4,7 +4,7 @@ if($session['status'] == FALSE) {
 	return;
 }
 
-if($session['session']->rank <= ADMIN_RANK) {
+if($session['session']->rank < ADMIN_RANK) {
 	echo "Invalid page access";
 	return;
 }
@@ -99,8 +99,10 @@ else {
 	  $class = ($index++ % 2 == 1) ? 'class="odd"' : 'class="even"';
 ?>
 		<tr <?=$class?>>
-		  <td><?=$row->user?></td>
-		  <td><?=$row->request?></td>
+		  <td><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->user)?>" target="_blank">
+      <?=$row->user?></a></td>
+		  <td><a href="http://idm-bot.com/account/history/<?=rawurlencode($row->request)?>" target="_blank">
+      <?=$row->request?></a></td>
 		  <td><?=$row->request_date?></td>
 		  <td>
 		    <form method="post" action="/account/nchange/">

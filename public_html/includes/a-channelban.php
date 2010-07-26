@@ -93,28 +93,28 @@ if(strlen($channel_name) > 0) {
 	<input type="hidden" name="channel" value="<?=$channel_name?>" />
 	<table>
 	  <tr>
-	    <td>IRC Name:</td>
-	    <td><?=$user?></td>
+	    <td class="view-header">IRC Name:</td>
+	    <td class="view-detail"><?=$htmluser?></td>
 		</tr>
 		<tr>
-		  <td>Channel:</td>
-			<td><?=$channel_name?></td>
+		  <td class="view-header">Channel:</td>
+			<td class="view-detail"><?=$channel_name?></td>
 		</tr>
 		<tr>
-		  <td>Reason:</td>
-		  <td><?=$ban->reason?></td>
+		  <td class="view-header">Reason:</td>
+		  <td class="view-detail"><?=$ban->reason?></td>
 		</tr>
 		<tr>
-		  <td>Issued By:</td>
-		  <td><?=$ban->who?></td>
+		  <td class="view-header">Issued By:</td>
+		  <td class="view-detail"><?=$ban->who?></td>
 		</tr>
 		<tr>
-		  <td>Approx. Date:</td>
-		  <td><?=$ban->time?></td>
+		  <td class="view-header">Approx. Date:</td>
+		  <td class="view-detail"><?=$ban->time?></td>
 		</tr>
 	</table>
 	<p>Please provide a statement to admins.<br />
-	  <textarea name="statement"></textarea>
+	  <textarea name="statement" class="ban-statement" cols="50" rows="5"></textarea>
 	</p>
 	<br />
 	<input type="submit" value="Submit" />

@@ -87,7 +87,7 @@ proc sbnc:noticemirror {client parameters} {
 				putclient ":$serv 461 $botnick NOTICE :Not enough parameters"
 			} else {
 				setctx $otherctx
-				if {[queuesize all] > 1} {
+				if {[queuesize all] > 0} {
 					sbnc:lowestnotice
 				}
 				putserv "NOTICE $chan :[lindex $parameters 2]"
@@ -111,7 +111,7 @@ proc sbnc:noticemirror {client parameters} {
 					setctx $client
 				}
 			} elseif {[string equal -nocase "#idm" $chan] || [string equal -nocase "#istake" $chan] || [string equal -nocase "#tank" $chan] || [string equal -nocase "#idm.elites" $chan] || [string equal -nocase "#dm.newbies" $chan] || [string equal -nocase "#we.dm" $chan]} {
-				if {([string first {[DM] Ready.} [stripcodes c [lindex $parameters 2]]] != -1) && ([info exists putmodem($chan)] == 1)} {
+				if {(([string first {[DM] Ready.} [stripcodes c [lindex $parameters 2]]] != -1) || ([string first {[GWD] Ready.} [stripcodes c [lindex $parameters 2]]] != -1)) && ([info exists putmodem($chan)] == 1)} {
 					setctx stats
 					if {[info exists putmodem(dis,$chan)]} {
 						unset putmodem(dis,$chan)
@@ -368,7 +368,7 @@ proc bload {} {
 }
 
 proc sbnc:botjoin {chan who} {
-			foreach bot [bncbotlist] {
+			foreach bot [bncidmlist] {
 				setctx $bot
 				if {[botonchan $chan] == 1} {
 					sbnc:lowestnotice
@@ -425,6 +425,16 @@ proc bncbotlist {} {
 	set ctx [getctx]
 	foreach x [bncuserlist] {
 		if {([string first "idmc" $x] == -1) && ([string first "idmn" $x] == -1) && ([string first "idm" $x] != -1)} {
+			lappend list "$x"
+		}
+	}
+	return $list
+}
+
+proc bncidmlist {} {
+	set ctx [getctx]
+	foreach x [bncuserlist] {
+		if {([string first "idmn" $x] == -1) && ([string first "idm" $x] != -1)} {
 			lappend list "$x"
 		}
 	}

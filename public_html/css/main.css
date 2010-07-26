@@ -11,6 +11,10 @@ a:link,a:visited,a:hover,a:active {
 	text-decoration: none;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 #header {
 	width: 100%;
 	text-align: center;
@@ -208,4 +212,32 @@ ul.user-stats {
 
 .account-operation {
 	display: inline;
+}
+
+/* Styles for the store */
+.cart-qty {
+	width: 20px;
+}
+
+div#current_balance {
+	display: inline;
+}
+
+/* Styles for the view history tab */
+td.view-header {
+  width: 100px;
+  font-weight: bold;
+  font-size: 1.1em;
+  vertical-align: top;
+  padding: 5px;
+}
+
+td.view-details {
+  height: 100%;
+  padding: 5px;
+}
+
+/* Styles for ban statements */
+textarea.ban-statement {
+
 }
