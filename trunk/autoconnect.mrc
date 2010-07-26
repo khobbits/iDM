@@ -4,7 +4,7 @@ on *:start: {
     loadbot 0
   }
   elseif (*-Auto* iswm $cmdline) {
-    set %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+    set %botnum $botnum
     echo -s This bot was started by autostart. Bot %botnum
     loadbot %botnum
   }
@@ -14,6 +14,13 @@ on *:start: {
   }
   ddeserver off
   ;dll scripts\medit.dll Load
+}
+
+alias botnum {
+  var %botnum $right($matchtok($cmdline,-Auto,1,32),1)
+  if (*-Startup* iswm $cmdline) { var %botnum 1 }
+  if (%botnum == $null) { return }
+  return %botnum
 }
 
 alias loadbot {
