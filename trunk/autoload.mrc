@@ -69,6 +69,7 @@ alias dupeclient {
       quit DupeClient ACK
     }
     else {
+      set -u30 %dupe 1
       sbnc tcl putlog {perform quit DupeClient ACK}
     }
   }
