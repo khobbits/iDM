@@ -221,10 +221,10 @@ oN $*:TEXT:/^[!@.]hax/Si:#: {
     if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
     var %user $iif($2, $2, $nick)
     if ($istok($hget($chan,players),%user,44)) {
-      hadd %user hp 500
-      hadd %user mhp 500
-      hadd %user sp 64
-      msg # $logo(Hax) HP and Special hax has been turned on for %user
+      hadd %user hp 400
+      hadd %user mhp 400
+      hadd %user sp 16
+      msg # $logo(Hax) %user now has 400HP and 400% special.
     }
     else { notice $nick $logo(ERROR) $1 are currently not in a DM on this channel }
   }

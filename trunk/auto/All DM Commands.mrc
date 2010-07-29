@@ -135,9 +135,9 @@ alias damage {
       var %msg %msg and successfully 12FREEZES them
     }
   }
-  if ($gettok($healer($3),1,32)) && ($r(1,$v1) == 1) && (%hitdmg != 0) && (%hp1 < 99) {
+  if ($gettok($healer($3),1,32)) && ($r(1,$v1) == 1) && (%hitdmg != 0) && (%hp1 < %mhp1) {
     var %healer 1
-    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > 99,set %hp1 99,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
     var %msg %msg and 09HEALING
   }
 
