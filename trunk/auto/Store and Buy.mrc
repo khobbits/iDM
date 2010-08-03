@@ -5,7 +5,7 @@ on $*:TEXT:/^[!@.]store/Si:#: {
   $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STORE) $&
     $s1(Archer Ring) (+4 to ranged attacks) ( $+ $s2($storeprice(archer)) $+ ) - $&
     $s1(Fire Cape) (+4 to melee attacks) ( $+ $s2($storeprice(fire cape)) $+ ) - $&
-    $s1(Barrows Gloves) (+4 to melee attacks) ( $+ $+($s2($storeprice(barrows gloves)) $+ ) - $&
+    $s1(Barrows Gloves) (+4 to melee attacks) ( $+ $s2($storeprice(barrows gloves)) $+ ) - $&
     $s1(Mage's Book) (+4 to mage attacks) ( $+ $s2($storeprice(mage book)) $+ ) - $&
     $s1(God Cape) (+4 to mage attacks) ( $+ $s2($storeprice(godcape)) $+ ) - $&
     $s1(Accumulator) (+4 to range attacks) ( $+ $s2($storeprice(accumulator)) $+ )
