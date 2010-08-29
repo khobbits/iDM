@@ -153,7 +153,7 @@ on $*:TEXT:/^[!@.](store|buy|sell)/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-  notice $1 $logo(Store) You can buy and sell items in the '!account panel': $accounturl($nick)
+  notice $nick $logo(Store) You can buy and sell items in the '!account panel': $accounturl($nick)
 }
 
 on $*:TEXT:/^[!@.]account/Si:#: {
@@ -163,7 +163,7 @@ on $*:TEXT:/^[!@.]account/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-  notice $1 $logo(Account) $accounturl($nick)
+  notice $nick $logo(Account) $accounturl($nick)
 }
 
 alias accounturl {
