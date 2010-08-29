@@ -146,6 +146,16 @@ alias logcheck {
   return
 }
 
+on $*:TEXT:/^[!@.](store|buy|sell)/Si:#: {
+  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (!$islogged($nick,$address,3)) {
+    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
+    halt
+  }
+  notice $1 $logo(Store) You can buy and sell items in the '!account panel': $accounturl($nick)
+}
+
 on $*:TEXT:/^[!@.]account/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
@@ -153,10 +163,14 @@ on $*:TEXT:/^[!@.]account/Si:#: {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
     halt
   }
-  var %code $md5($ticks $+ $nick)
-  db.set urlmap account %code $nick
-  db.set urlmap hostmask %code $address($nick,3)
-  notice $nick $logo(Account) http://idm-bot.com/account/ $+ %code
+  notice $1 $logo(Account) $accounturl($nick)
+}
+
+alias accounturl {
+  var %code $md5($ticks $+ $1)
+  db.set urlmap account %code $1
+  db.set urlmap hostmask %code $address($1,3)
+  return http://idm-bot.com/account/ $+ %code
 }
 
 ON $*:TEXT:/^[!@.]dmlog/Si:#: {
