@@ -64,7 +64,7 @@ alias store {
   ; ?$2? = value
   if ($1 == $null) { putlog Syntax Error: store (1) - $db.safe($1-) | halt }
   if (!$hget(>store)) { store.hload }
-  if (($prop) && ($2 isnum)) return $hget(>store,($hget(>store, $gettok($1,1,95) $+ . $+ $2) $+ . $+ $prop)
+  if (($prop) && ($2 isnum)) return $hget(>store,$hget(>store, $gettok($1,1,95) $+ . $+ $2) $+ . $+ $prop)
   if ($2 != $null) return $hget(>store, $gettok($1,1,95) $+ . $+ $2)
   if (($1 != $null) && ($1 != list)) return $iif($hget(>store, $gettok($1,1,95) $+ .name),1,0)
   return $hget(>store,list)
