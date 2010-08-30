@@ -157,8 +157,8 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff,#idm.support: {
     else { goto error }
     var %table = user
     if ($isweapon($3) != 0) {
-      var %table = $gettok($v1,3,32)
-      var %item = $gettok($v1,2,32)
+      var %table = $gettok($3,3,32)
+      var %item = $gettok($3,2,32)
     }
     elseif ($ispvp($3)) {
       var %table = equip_pvp
