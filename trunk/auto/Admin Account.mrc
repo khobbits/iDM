@@ -137,13 +137,13 @@ alias deletenick {
   return 1
 }
 
-On $*:TEXT:/^[!@.]cookie .*/Si:#idm,#idm.staff,#idm.support: {
+On $*:TEXT:/^[!@.]cookie .*/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM && $2) {
     tokenize 32 $1- 1
     if ($3 isnum) {
       db.set equip_staff cookies $2 + $3
       var %cookies $db.get(equip_staff, cookies, $2)
-      msg $chan $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s)
+      msg $chan,#idm.staff $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s)
     }
   }
 }
