@@ -58,6 +58,7 @@ alias hitdmg {
       var %return = %return %sdmg
     }
   }
+  putlog Debug: $1- %return
   return %return
 }
 
