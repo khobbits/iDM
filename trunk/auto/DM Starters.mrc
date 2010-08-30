@@ -68,6 +68,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
 
 alias join.dm {
   hadd -m $1 players $addtok($hget($1,players),$2,44)
+  hadd -m $2 account $2
   db.set user indm $2 1
 }
 
@@ -107,6 +108,7 @@ alias init.player {
   var %result = $db.query(%sql)
   if ($db.query_row(%result,$1) === $null) { echo -a Error: Failure to find player. }
   db.query_end %result
+  hadd $1 account $1
   hadd $1 chan $2
   hadd $1 hp 99
   hadd $1 mhp 99

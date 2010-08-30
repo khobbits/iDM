@@ -165,34 +165,15 @@ alias userlog {
   ; $1 = type
   ; $2 = nick
   ; $3 = info
-
-  if ($1 == win) {
-    var %type = 1
-  }
-  elseif ($1 == loss) {
-    var %type = 2
-  }
-  elseif ($1 == winstake) {
-    var %type = 3
-  }
-  elseif ($1 == losestake) {
-    var %type = 4
-  }
-  elseif ($1 == drop) {
-    var %type = 5
-  }
-  elseif ($1 == buy) {
-    var %type = 6
-  }
-  elseif ($1 == sell) {
-    var %type = 7
-  }
-  elseif ($1 == penalty) {
-    var %type = 8
-  }
-  elseif ($1 == clue) {
-    var %type = 9
-  }
+  if ($1 == win) { var %type = 1 }
+  elseif ($1 == loss) { var %type = 2 }
+  elseif ($1 == winstake) { var %type = 3 }
+  elseif ($1 == losestake) { var %type = 4 }
+  elseif ($1 == drop) { var %type = 5 }
+  elseif ($1 == buy) { var %type = 6 }
+  elseif ($1 == sell) { var %type = 7 }
+  elseif ($1 == penalty) { var %type = 8 }
+  elseif ($1 == clue) { var %type = 9 }
   else {
     putlog Error: Not a valid userlog type - $db.safe($1-)
     return
@@ -208,12 +189,8 @@ alias userlog.commit {
   if ($len(%userlog) > 4) {
     dbcheck
     var %sql = INSERT INTO user_log (user, date, type, data) VALUES %userlog
-    if ($db.exec(%sql) == 1) {
-      unset %userlog
-    }
-    else {
-      putlog ERROR: userlog commit failed, userlog may need manual cleanup.
-    }
+    if ($db.exec(%sql) == 1) { unset %userlog }
+    else { putlog ERROR: userlog commit failed, userlog may need manual cleanup. }
   }
   return
 }
