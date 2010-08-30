@@ -124,7 +124,7 @@ alias enddmcheck {
   ; $2 = nick
   ; $3 = event
   ; $4- = string
-  if ($istok($1,players),$2,44)) {
+  if ($istok($hget($1,players),$2,44)) {
     ; Is it a GWD?
     if ($hget($1,gwd.npc)) {
       var %user $autoidm.acc(<gwd> $+ $1)
