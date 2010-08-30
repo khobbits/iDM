@@ -87,9 +87,9 @@ alias equipment {
       inc %wealth $calc($v1 * %price)
     }
   }
-  if ($hget(>equipit,clue)) { var %e %e Clue:Scroll }
-  if ($hget(>equipit,snow)) { var %e %e Snow:Globe }
-  if ($hget(>equipit,corr)) { var %e %e Cutlass:of:Corruption }
+  if ($hget(>equip_item,clue)) { var %e %e Clue:Scroll }
+  if ($hget(>equip_item,snow)) { var %e %e Snow:Globe }
+  if ($hget(>equip_item,corr)) { var %e %e Cutlass:of:Corruption }
   return $s1(Equipment) ( $+ $price(%wealth) $+ ): $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None) 
 }
 
