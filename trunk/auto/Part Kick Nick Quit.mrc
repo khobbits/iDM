@@ -68,7 +68,9 @@ on *:NICK: {
         hsave $nick renamenick.hash
         hmake $newnick $hget($nick).size
         hfree $nick
+        db.set user indm $nick 0
         hload $newnick renamenick.hash
+        db.set user indm $newnick 1
       }
       if ($enddmcheck($chan(%a),$newnick,nick,$nick,$1-)) { return }
     }
