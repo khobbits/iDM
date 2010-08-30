@@ -58,7 +58,7 @@ alias hitdmg {
       var %return = %return %sdmg
     }
   }
-  putlog Debug: $1- %return
+  if (%debuga == $me) putlog Debug: Attack: $1 Accuracy: $2 Hit pattern: $3 Attack Bonus: $4 Defense Bonus: $5 Min Damage: $dmg($1,%ndmg $+ l) Max Damage: $dmg($1,%ndmg $+ h) Actual Damage %return
   return %return
 }
 
@@ -181,6 +181,7 @@ alias hit {
   elseif (<gwd>* iswm $2) {
     inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 5 ))
   }
+  if (%debuga == $me) putlog Debug: Weapon $1 Attacker: $2 Attackee: $3 Chan: $5 Accuracy bonus: $accuracy($1,$3)
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }
 
