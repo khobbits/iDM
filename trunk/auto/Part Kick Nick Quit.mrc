@@ -136,7 +136,7 @@ alias enddmcheck {
         msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
         userlog loss $hget($2,account) %user
         db.set user losses $hget($2,account) + 1
-        pcancel $1 $hget($2,account)
+        pcancel $1 $2
         ; Match continues without the player
         return 1
       }
