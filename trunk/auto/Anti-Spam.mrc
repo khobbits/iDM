@@ -40,8 +40,8 @@ alias ignoresync {
     if (@ isin %user) { .ignore -x %user }
   }
   db.query_end %result
-  if ($hget(>weapon)) { hfree >weapon }
-  msgsafe $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list. (Also refreshed weapon cache.)
+  botrefresh
+  msgsafe $secondchan $logo(IgnoreSync) Ignore list synced with server, script took $calc($ctime - %ti) seconds to re-download server ignore list. (Also refreshed db cache.)
   var %botnum $botnum
   inc %botnum
   putlog perform ignoresync.run %botnum

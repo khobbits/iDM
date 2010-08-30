@@ -156,7 +156,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff,#idm.support: {
     elseif (?define iswm $1) { var %sign = }
     else { goto error }
     var %table = user
-    if ($storematch($3) != 0) {
+    if ($isweapon($3) != 0) {
       var %table = $gettok($v1,3,32)
       var %item = $gettok($v1,2,32)
     }

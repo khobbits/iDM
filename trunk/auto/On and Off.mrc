@@ -109,7 +109,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   var %prefix $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(COMMANDS)
   var %account money equip account top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
-  var %items buy/sell-item store dmclue solve-answer
+  var %items dmclue solve-answer
   var %misc on/off-att !max-att hitchance-att-dmg
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)

@@ -37,68 +37,55 @@ alias money {
   return $s1(Money) $+ : $iif(%money,$s2($bytes($v1,bd)) $+ gp ( $+ %rank $+ ),$s2(0) $+ gp) $iif($maxstake(%money),$s1(Max Stake) $+ : $s2($price($maxstake(%money)))) $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,bd)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,bd)),$s2(0)) %ratio
 }
 
+alias store.hload {
+  if ($hget(>store)) { hfree >store }
+  hmake >store 10
+  var %sql SELECT * FROM sale_item
+  var %res $db.query(%sql)
+  var %i 0
+  while ($db.query_row(%res, >row)) {
+    inc %i
+    hadd >store $hget(>row, item) $+ .name $hget(>row, name)
+    hadd >store $hget(>row, item) $+ .table $hget(>row, table)
+    hadd >store $hget(>row, item) $+ .buy $hget(>row, purchase_price)
+    hadd >store $hget(>row, item) $+ .sell $hget(>row, sell_price)
+    hadd >store $hget(>row, item) $+ .status $hget(>row, status)
+    hadd >store $hget(>row, item) $+ .wins $hget(>row, required_wins)
+    hadd >store list. $+ %i $hget(>row, item)
+    var %list $iif(%list,%list $+ $chr(44)) $+ $hget(>row, item)
+  }
+  hadd >store list %list
+  hadd >store list.0 %i
+  mysql_free %res
+}
+
+alias store {
+  ; $1 = item
+  ; ?$2? = value
+  if ($1 == $null) { putlog Syntax Error: store (1) - $db.safe($1-) | halt }
+  if (!$hget(>store)) { store.hload }
+  if (($prop) && ($2 isnum)) return $hget(>store,($hget(>store, $gettok($1,1,95) $+ . $+ $2) $+ . $+ $prop)
+  if ($2 != $null) return $hget(>store, $gettok($1,1,95) $+ . $+ $2)
+  if (($1 != $null) && ($1 != list)) return $iif($hget(>store, $gettok($1,1,95) $+ .name),1,0)
+  return $hget(>store,list)
+}
+
 alias equipment {
   if ($1 == $null) { putlog Syntax Error: equipment (1) - $db.safe($1-) | halt }
-  db.hget >equipit equip_item $1
-  db.hget >equipar equip_armour $1
+  db.hget >equip_item equip_item $1
+  db.hget >equip_armour equip_armour $1
   var %wealth = 0
-
-  if ($hget(>equipit,ags)) { 
-    var %e %e AGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(ags),1,32))
-  }
-  if ($hget(>equipit,bgs)) {
-    var %e %e BGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(bgs),1,32))
-  }
-  if ($hget(>equipit,sgs)) { 
-    var %e %e SGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(sgs),1,32))
-  }
-  if ($hget(>equipit,zgs)) { 
-    var %e %e ZGS $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(zgs),1,32))
-  }
-  if ($hget(>equipit,dclaws)) { 
-    var %e %e Dragon:Claws $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(dclaws),1,32))
-  }
-  if ($hget(>equipit,mudkip)) {
-    var %e %e Mudkip $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(mudkip),1,32))
-  }
-  if ($hget(>equipar,accumulator)) { 
-    var %e %e Accumulator $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(accumulator),1,32))
-  }
-  if ($hget(>equipar,archer)) { 
-    var %e %e Archer:Ring $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(archer),1,32))
-  }
-  if ($hget(>equipar,mbook)) {
-    var %e %e Mage's:Book $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(mage book),1,32))
-  }
-  if ($hget(>equipar,godcape)) { 
-    var %e %e God:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(godcape),1,32))
-  }
-  if ($hget(>equipar,bgloves)) {
-    var %e %e Barrow:Gloves $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(barrows gloves),1,32))
-  }
-  if ($hget(>equipar,firecape)) { 
-    var %e %e Fire:Cape $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
-    inc %wealth $calc($v1 * $gettok($storematch(firecape),1,32))
-  }
-  if ($hget(>equipar,elshield)) {
-    var %e %e Elysian:Shield $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(elysian),1,32))
-  }
-
-  if ($hget(>equipit,wealth)) { 
-    var %e %e Wealth $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) 
-    inc %wealth $calc($v1 * $gettok($storematch(wealth),1,32))
+  var %i 1
+  while ($store(list,%i)) {
+    var %wep $store(list,%i)
+    var %sname $store(list,%i).sname
+    var %table $store(list,%i).table
+    var %price $store(list,%i).sell
+    inc %i
+    if ($hget(> $+ %table,%wep)) {
+      var %e %e %sname $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41)))
+      inc %wealth $calc($v1 * %price)
+    }
   }
   if ($hget(>equipit,clue)) { var %e %e Clue:Scroll }
   if ($hget(>equipit,snow)) { var %e %e Snow:Globe }
