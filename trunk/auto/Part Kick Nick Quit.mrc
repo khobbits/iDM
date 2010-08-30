@@ -148,7 +148,7 @@ alias enddmcheck {
       ; Is it a stake?
       if ($hget($1,stake)) {
         db.set user money $hget($2,account) - $ceil($calc($hget($1,stake) / 2) )
-        msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($2) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
+        msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($hget($2,account)) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
         notice $2 You left the channel during a stake, you loose $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
       }
       else {
