@@ -15,12 +15,7 @@ alias msgauth {
   if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit #idm.support }
 }
 
-;## These methods deal with actually logging in and out on command
-
-;alias unauth {
-;  if (!$1) { putlog Syntax Error: unauth <nickname> - $1- | halt }
-;  db.set user login $1 0
-;}
+;## These methods deal with actually logging in
 
 alias auth {
   if (!$3) { putlog Syntax Error: auth <nickname> <address> <command> - $1- | halt }
