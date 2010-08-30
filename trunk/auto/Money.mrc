@@ -46,6 +46,7 @@ alias store.hload {
   while ($db.query_row(%res, >row)) {
     inc %i
     hadd >store $hget(>row, item) $+ .name $hget(>row, name)
+    hadd >store $hget(>row, item) $+ .sname $hget(>row, sname)
     hadd >store $hget(>row, item) $+ .table $hget(>row, table)
     hadd >store $hget(>row, item) $+ .buy $hget(>row, purchase_price)
     hadd >store $hget(>row, item) $+ .sell $hget(>row, sell_price)
