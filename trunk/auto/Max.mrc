@@ -181,7 +181,7 @@ alias hit {
   elseif (<gwd>* iswm $2) {
     inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 5 ))
   }
-  if (%debuga == $me) putlog Debug: Weapon: $1 Attacker: $2 Attackee: $3 Chan: $5 Accuracy bonus: $accuracy($1,$3) Accuracy: %acc
+  if (%debuga == $me) putlog Debug: Weapon: $1 Attacker: $2 Attackee: $3 Chan: $4 Accuracy bonus: $accuracy($1,$3) Accuracy: %acc
   return $hitdmg($1,%acc,$dmg($1,hits),%atk,%def)
 }
 
