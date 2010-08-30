@@ -102,7 +102,7 @@ alias enddmcatch {
     else { goto qfail  }
     :kick
     var %action = was kicked from $3 by $4 for " $+ $5- $+ "
-    if ($3 == $4) { goto pass }
+    if ($2 == $4) { goto pass }
     else { goto fail }
     :nick
     var %action = changed nickname in $3 from $4
