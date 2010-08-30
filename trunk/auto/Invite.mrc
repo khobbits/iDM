@@ -155,7 +155,7 @@ alias showtitle {
   elseif ($hget(>staff,rank) == 1) {
     msgsafe $2 $logo(VIP) $iif($hget(>staff,title),$v1) $1 has joined the channel.
   }
-  elseif (%dmrank <= 12) {
+  elseif ((%dmrank <= 12) && ($db.get(user,banned,$nick) == 0)) {
     msgsafe $2 $logo(TOP12) $1 is ranked $ord(%dmrank) in the top 12.
   }
 }
