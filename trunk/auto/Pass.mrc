@@ -6,6 +6,7 @@ on *:TEXT:auth*:?: msgauth $nick $address $2-
 alias msgauth {
   if ($1 == -sbnc) return
   if ($update) { notice $1 $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  unset %idm.nsattempt. [ $+ [ $1 ] ]
   if ($3) {
     logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
   }
