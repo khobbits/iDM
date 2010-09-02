@@ -5,7 +5,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
   if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($nick == idmgod) { halt }
-  if (!$islogged($nick,$address,3)) {  notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
+  if (!$islogged($nick,$address,3)) { notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id) | halt }
   if ($hget($chan)) && ($istok($hget($chan,players),$nick,44)) { halt }
   if ($hget($nick)) { notice $nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
   if ($db.get(user,indm,$nick)) { notice $nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ $nick ] ] | halt }
