@@ -25,10 +25,9 @@ alias auth {
 }
 
 alias auth_success {
-  if (!$3) { putlog Syntax Error: auth_success <nickname> <address> <command> - $1- | halt }
+  if (!$1) { putlog Syntax Error: auth_success <nickname> [address] - $1- | halt }
   db.set user login $1 $ctime
-  db.set user address $1 $2
-  $3-
+  if ($2) db.set user address $1 $2
 }
 
 ;## This does the catching of the notice
@@ -37,7 +36,9 @@ on *:notice:*:?: {
   if ($nick == nickserv) && ($1 == STATUS) {
     if (%idm.nsfail. [ $+ [ $2 ] ] != $null) {
       if ($3 == 3) {
-        %idm.nscheck. [ $+ [ $2 ] ]
+        tokenize 32 %idm.nscheck. [ $+ [ $2 ] ]
+        auth_success $2 $3
+        $1-
       }
       elseif ($3 == 0) {
         if (%idm.nsfail0. [ $+ [ $2 ] ] != $null) {
@@ -50,6 +51,7 @@ on *:notice:*:?: {
       else {
         %idm.nsfail. [ $+ [ $2 ] ]
       }
+      ; Warn could be overwitten by above tokenize
       .unset %idm.nscheck. [ $+ [ $2 ] ]
       .unset %idm.nsfail. [ $+ [ $2 ] ]
       .unset %idm.nsfail0. [ $+ [ $2 ] ]
@@ -63,42 +65,36 @@ alias islogged {
   ; $1 = nickname
   ; $2 = address
   ; $3 = [optional] if user is not logged, should auth be attempted
-  ; 0/null = no attempt - Script just returns 1 or 0 from logged in
-  ; 1 = silent login attempt - Script returns 1 or 0 from logged in + if fail it attempts slient login
-  ; 2 = login attempt - Script returns 1 if logged in, 0 if not logged in, tries to log user in and gives user feedback
-  ; 3 = login attempt - Script returns 1 if logged in, halt if not logged in, 0 if login not attempted, tries to log user in and gives user feedback
+  ; 0 = Script returns either 1 or 0, the user is either logged in or not.
+  ; 1 = Script returns either 1 or 0, script triggers a silent login attempt, user is not notified.
+  ; 2 = Script returns either 1 or 0, script triggers a login attempt, user is notified.
+  ; 3 = Script returns either 1 or 0, script triggers a login attempt, user is notified, halts further script execution if user is not logged in.
   if (!$2) { putlog Syntax Error: islogged <nickname> <address> [option] - $1- | halt }
 
   db.hget >islogged user $1 login address
-
   var %login $hget(>islogged,login)
   var %address $hget(>islogged,address)
 
   var %threshold $calc($ctime - (60*240))
   if ((%address == $2) && (%login > %threshold)) {
-    db.set user login $1 $ctime
+    auth_success $1
     return 1
   }
 
   var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
   var %threshold $calc($ctime - (60))
   if (%nsattempt > %threshold) { return 0 }
-
   if (!$3) { return 0 }
-
-  set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
   if ($3 == 1) {
-    set %idm.nscheck. [ $+ [ $1 ] ] noop
+    set %idm.nsattempt. [ $+ [ $1 ] ] $ctime
+    set %idm.nscheck. [ $+ [ $1 ] ] noop $1 $2
     set %idm.nsfail. [ $+ [ $1 ] ] noop
+    set %idm.nsfail0. [ $+ [ $1 ] ] noop
     ns status $1
     return 0
   }
 
-  set %idm.nscheck. [ $+ [ $1 ] ] auth_success $1 $2 notice $1 Nickserv authentication accepted, you should now be logged in.
-  set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Before you can use this feature you need to be identifed to nickserv.  Type "/msg $me id" to check your account.
-  set %idm.nsfail0. [ $+ [ $1 ] ] notice $1 To use iDM you need to have a nickname registered with nickserv.  To register type: /nickserv register and follow the instructions.
-  ns status $1
-
+  logcheck $1 $2 notice $1 Nickserv authentication accepted, you should now be logged in.
   if ($3 == 3) { halt }
   return 0
 }
@@ -106,25 +102,21 @@ alias islogged {
 alias logcheck {
   ; $1 = nickname
   ; $2 = address
-  ; $3 = channel
-  ; $4- = command to call on success
-  ; [optional] create a $4.fail to catch a failed auth
-  ; [optional] create a $4.fail0 to catch an unreged failed auth
-  if (!$4) { putlog Syntax Error: /logcheck <nickname> <address> <channel> <command on success>  | halt }
+  ; $3- = command to call on success
+  ; [optional] create a $3.fail to catch a failed auth, default error message if not supplied
+  ; [optional] create a $3.fail0 to catch an unreged failed auth, default error message if not supplied
+  if (!$3) { putlog Syntax Error: /logcheck <nickname> <address> <command on success>  | halt }
 
   if ($islogged($1,$2,0) == 1) {
-    $4 $1 $2 $3 $5-
+    $3 $1 $2 $4-
     return
   }
 
-  var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
-  var %threshold $calc($ctime - (60))
-
-  set %idm.nscheck. [ $+ [ $1 ] ] auth_success $1 $2 $4 $1 $2 $3 $5-
-  if ($isalias($4 $+ .fail)) {
-    set %idm.nsfail. [ $+ [ $1 ] ] $4 $+ .fail $1 $2 $3 $5-
-    if ($isalias($4 $+ .fail0)) {
-      set %idm.nsfail0. [ $+ [ $1 ] ] $4 $+ .fail0 $1 $2 $3 $5-
+  set %idm.nscheck. [ $+ [ $1 ] ] $3 $1 $2 $4-
+  if ($isalias($3 $+ .fail)) {
+    set %idm.nsfail. [ $+ [ $1 ] ] $3 $+ .fail $1 $2 $4-
+    if ($isalias($3 $+ .fail0)) {
+      set %idm.nsfail0. [ $+ [ $1 ] ] $3 $+ .fail0 $1 $2 $4-
     }
   }
   else {
@@ -132,6 +124,8 @@ alias logcheck {
     set %idm.nsfail0. [ $+ [ $1 ] ] notice $1 To use iDM you need to have a nickname registered with nickserv.  To register type: /nickserv register and follow the instruction.
   }
 
+  var %nsattempt = %idm.nsattempt. [ $+ [ $1 ] ]
+  var %threshold $calc($ctime - (60))
   if (%nsattempt > %threshold) {
     %idm.nsfail. [ $+ [ $1 ] ]
     return
@@ -141,24 +135,15 @@ alias logcheck {
   return
 }
 
-on $*:TEXT:/^[!@.](store|buy|sell)/Si:#: {
+on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if (!$islogged($nick,$address,3)) {
-    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
-    halt
-  }
-  notice $nick $logo(Store) You can buy and sell items in the '!account panel': $accounturl($nick)
+  if (account isin $1) { logcheck $nick $address accountlink $logo(Account) }
+  else { logcheck $nick $address accountlink $logo(Store) You can buy and sell items in the !account panel: }
 }
 
-on $*:TEXT:/^[!@.]account/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if (!$islogged($nick,$address,3)) {
-    notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
-    halt
-  }
-  notice $nick $logo(Account) $accounturl($nick)
+alias accountlink {
+  notice $1 $3- $accounturl($1)
 }
 
 alias accounturl {
@@ -168,7 +153,7 @@ alias accounturl {
   return http://idm-bot.com/account/ $+ %code
 }
 
-ON $*:TEXT:/^[!@.]dmlog/Si:#: {
+on $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
@@ -182,7 +167,6 @@ ON $*:TEXT:/^[!@.]dmlog/Si:#: {
   if (!%dmlog) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity }
   else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $left(%dmlog,-2) }
 }
-
 
 alias logtype {
   if ($1 == 1) return KO'd $2

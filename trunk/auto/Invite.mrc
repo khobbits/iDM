@@ -118,17 +118,17 @@ on *:JOIN:#:{
         noop
       }
       elseif ((# == #idm.support) || (# == #idm.help)) {
-        logcheck $nick $address $chan supportjointitle
+        logcheck $nick $address supportjointitle
       }
     } 
   }
 }
 
-alias supportjointitle.fail supportjointitle $1 $2 $3 4NOT IDENTIFIED
-alias supportjointitle.fail0 supportjointitle $1 $2 $3 4NOT REGISTERED
+alias supportjointitle.fail supportjointitle $1 $2 4NOT IDENTIFIED
+alias supportjointitle.fail0 supportjointitle $1 $2 4NOT REGISTERED
 alias supportjointitle {
   db.hget >userinfo user $1
-  msg +#idm.support $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $4-
+  msg +#idm.support $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $3-
   ignoreinfo $1 $1 msg +#idm.support $logo(Acc-Info)
 }
 
