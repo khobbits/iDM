@@ -7,22 +7,17 @@ alias msgauth {
   if ($1 == -sbnc) return
   if ($update) { notice $1 $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($3) {
-    auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
+    logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
   }
   else {
-    auth $1 $2 notice $1 Nickserv authentication accepted, you are now logged in.
+    logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.
   }
   if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit #idm.support }
 }
 
-;## These methods deal with actually logging in
+;## This method deals with actually logging in
 
-alias auth {
-  if (!$3) { putlog Syntax Error: auth <nickname> <address> <command> - $1- | halt }
-  if ($islogged($1,$2,3) == 1) {
-    $3-
-  }
-}
+alias notice1 { notice $1 $3- }
 
 alias auth_success {
   if (!$1) { putlog Syntax Error: auth_success <nickname> [address] - $1- | halt }
@@ -94,7 +89,7 @@ alias islogged {
     return 0
   }
 
-  logcheck $1 $2 notice $1 Nickserv authentication accepted, you should now be logged in.
+  logcheck $1 $2 notice1 $1 Nickserv authentication accepted, you should now be logged in.
   if ($3 == 3) { halt }
   return 0
 }
@@ -142,9 +137,7 @@ on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
   else { logcheck $nick $address accountlink $logo(Store) You can buy and sell items in the !account panel: }
 }
 
-alias accountlink {
-  notice $1 $3- $accounturl($1)
-}
+alias accountlink { notice $1 $3- $accounturl($1) }
 
 alias accounturl {
   var %code $md5($ticks $+ $1)
