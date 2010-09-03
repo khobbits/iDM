@@ -1,35 +1,16 @@
-on $*:TEXT:/^[!@.]top/Si:#: {
+on $*:TEXT:/^[!@.](w|l)?top/Si:#: {
   if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
-  var %output $toplist(money,$2,1)
+  if (w isin $1) { var %table wins }
+  elseif (l isin $1) { var %table losses }
+  else { var %table money }
+  var %output $toplist(%table,$2,1)
 
-  %display $logo(TOP Money) Total DM's: $s2($bytes($totalwins,bd)) %output
-}
-
-on $*:TEXT:/^[!@.]wtop/Si:#: {
-  if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
-  if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
-  tokenize 32 $1- 12
-  if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
-  var %output $toplist(wins,$2)
-  %display $logo(TOP Wins) Total DM's: $s2($bytes($totalwins,bd)) %output
-}
-
-on $*:TEXT:/^[!@.]ltop/Si:#: {
-  if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
-  if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
-  tokenize 32 $1- 12
-  if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !wtop 12 | halt }
-  var %output $toplist(losses,$2)
-  %display $logo(TOP Losses) Total DM's: $s2($bytes($totalwins,bd)) %output
+  %display $logo(TOP %table) Total DM's: $s2($bytes($totalwins,bd)) %output
 }
 
 alias totalwins {
@@ -46,16 +27,14 @@ alias toplist {
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
   var %sql = SELECT user, $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
-
   var %result = $db.query(%sql)
+
   while ($db.query_row(%result,>row)) {
     inc %i
-    if ($3 == 1) {
-      %output = %output $chr(124) %i $+ . $s1($hget(>row,user)) $s2($price($hget(>row,$1)))
-    }
-    else {
-      %output = %output $chr(124) %i $+ . $s1($hget(>row,user)) $s2($bytes($hget(>row,$1),db))
-    }
+    %output = %output $chr(124) %i $+ . $s1($hget(>row,user))
+
+    if ($3 == 1) { %output = %output $s2($price($hget(>row,$1))) }
+    else { %output = %output $s2($bytes($hget(>row,$1),db)) }
   }
   db.query_end %result
   return %output
