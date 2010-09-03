@@ -56,6 +56,10 @@ on *:KICK:#: {
       join # 
       msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1-
     }
+    else {
+      .timer 1 60 waskicked #
+    }
+  }
   }
 }
 
@@ -80,7 +84,7 @@ on *:NICK: {
 
 alias waskicked {
   if ($me !ison $1) {
-    $iif($hget($chan,gwd.npc),gwdcancel #,cancel #) 
+    cancel $1
     .timer $+ $1 off
   }
 }
