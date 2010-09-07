@@ -98,6 +98,7 @@ alias sitems {
   if ($hget(>equips,beau)) { var %e %e Bêaumerang }
   if ($hget(>equips,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($hget(>equips,kh)) { var %e %e KHonfound:Ring }
+  if ($hget(>equips,satan)) { var %e %e Satanic:Thingy }
   if ($hget(>equips,support)) { var %e %e The:Supporter }
   if ($hget(>equips,cookies)) { var %e %e Cookies( $+ $v1 $+ ) }
 
