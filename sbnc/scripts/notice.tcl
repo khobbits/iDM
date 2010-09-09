@@ -353,9 +353,9 @@ set load2 ""
 	setctx $ctx
 	if {$load2 != "" && $load != ""} {
 		return "[lsort -integer -index 1 $load] {- -} [lsort -integer -index 1 $load2]"
-	} elseif {$load == ""} {
+	} elseif {$load == "" && $load2 != ""} {
 		return "[lsort -integer -index 1 $load2]"
-	} elseif {$load2 == ""} {
+	} elseif {$load2 == "" && $load != ""} {
 		return "[lsort -integer -index 1 $load]"
 	} else {
 		return "{- -}"
@@ -381,6 +381,8 @@ proc sbnc:botjoin {chan who} {
 			set botpicked [lindex [lindex $botload 0] 0]
 			if {$botpicked == "-"} {
 				putserv "privmsg #idm.staff :\00307\[\00303Load\00307\]\00304 All bots are offline \00304>\00303 $who\00304:\00303$chan"
+				sbnc:lowestnotice
+				putserv "notice $who \00307\[\00303Invite\00307\]\003 All the invite bots are offline, check in #iDM for bot status."
 				return
 			}
 			putserv "privmsg #idm.staff :\00307\[\00303Load\00307\]\003 [string map -nocase "$botpicked \00303$botpicked\003" [join [string toupper $botload]]] \00303>\00303 $who\00304:\00303$chan"
