@@ -18,7 +18,7 @@ on *:PART:#: {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
   }
-  if ($nick == $me) && (!%rjoinch. [ $+ [ $me ] ]) { cancel # }
+  if ($nick == $me) { cancel # }
   if ($istok($hget($chan,players),$nick,44))  {
     if ($enddmcheck($chan,$nick,part,$1,$2-)) { return }
   }
@@ -39,12 +39,9 @@ on *:QUIT: {
 }
 
 on *:KICK:#: {
-  if ($nick(#,0) < 5) && (!$no-part(#) && ($knick != $me)) {
+  if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
-  }
-  if ($istok($hget($chan,players),$knick,44)) {
-    if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
   if ($knick == $me) {
     if (. !isin $nick) {
@@ -60,6 +57,8 @@ on *:KICK:#: {
       .timer 1 60 waskicked #
     }
   }
+  if ($istok($hget($chan,players),$knick,44)) {
+    if ($enddmcheck($chan,$knick,kick,$nick,$1-)) { return }
   }
 }
 

@@ -175,6 +175,7 @@ alias pcancel {
 alias cancel {
   if ($1 == $null) { putlog Syntax Error: cancel (1) - $db.safe($1-) | halt }
   if ($1) && ($chr(35) isin $1) {
+    if ($hget($1,gwd.time)) { pcancel $1 <gwd> $+ $chan }
     while ($gettok($hget($1,players),1,44)) { pcancel $1 $v1 }
     if ($hget($1)) hfree $1
     .timer $+ $1 off
