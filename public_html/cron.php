@@ -18,6 +18,12 @@ $sql = "DELETE FROM urlmap WHERE `time` <= DATE_sub(now(), interval 12 hour)";
 mysql_query($sql);
 echo '<br /><br />';
 
+// Remove channel logs older than 24 hours
+$date = time() - (24 * 60 * 60);
+$sql = "DELETE FROM chan_log WHERE `date` <= '$date')";
+mysql_query($sql);
+echo '<br /><br />';
+
 // Remove bans that have expired
 delete_ban_user();
 echo '<br /><br />';

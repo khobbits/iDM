@@ -1,3 +1,12 @@
+setctx admin
+
+bind pubm -|- "*!*" bindinput
+
+foreach user [bncidmlist] {
+  setctx $user
+   bind pubm -|- "*" cspy
+}
+
 foreach user [bncuserlist] {
 	setctx $user
 	bind msgm -|- "*" zspy
@@ -10,9 +19,27 @@ proc zspy {nick userhost handle text} {
 	putmainlog "\00307\[\00303PrivMsg:[getctx]\00307\] \00304<$nick>\003 $text"
 }
 
-setctx admin
+proc cspy {nick userhost handle chan text} {
+	package require mysqltcl
+  if {([getctx] != "idmHub") && ([onchan [getbncuser "idmHub" nick] $chan] == 1)} { return }
+	if [catch {::mysql::connect -user {idm} -db {idm_bot} -password {Sp4rh4wk`Gh0$t`}} m] {
+		putmainlog "The database connection could not be established - $m"
+		return
+	}
+	set chan [::mysql::escape $m $chan]
+  set date [clock seconds]
+  set bot [::mysql::escape $m [getctx]]
+  set nick [::mysql::escape $m $nick]
+	set text [::mysql::escape $m $text]
 
-bind pubm -|- "*!*" bindinput
+	catch {::mysql::exec $m "INSERT INTO chan_log (`chan`, `date`, `bot`, `nick`, `text`) VALUES ('$chan', '$date', '$bot', '$nick', '$text')"} irows
+	if {$irows != 1} {
+		putmainlog "Chan Log: Insert for $chan failed - $irows"
+	}
+ 	::mysql::close $m
+}
+
+setctx admin
 
 proc bindinput {nick userhost handle chan text} {
 	if {![string equal -nocase "#idm.staff" $chan] && ![string equal -nocase "#idm.support" $chan]} {

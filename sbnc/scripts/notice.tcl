@@ -22,7 +22,6 @@ proc sbnc:jumpend {} {
   if {[sbnc:jumpnext] != 0} {
     utimer 1 sbnc:jumpend
   } else {
-    putmainlog "No more users to jump"
     utimer 120 sbnc:jumpend
   }
 }
