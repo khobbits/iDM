@@ -2,7 +2,10 @@
 define ('ADMIN_RANK', 3);
 
 $session = verifySession();
-echo $session['message'];
+if ($session['message']) {
+  if ($session['noerror'] != TRUE) { echo '<h2>Error:</h2>'; }
+  echo '<h3>' . $session['message'] . '</h3>';
+}
 if ($session['status'] == TRUE) {
   $htmluser = htmlspecialchars($session['session']->account);
 	$user = mysql_real_escape_string($session['session']->account);
@@ -60,6 +63,9 @@ if ($session['status'] == TRUE) {
 			  $statType = 'idle';
 				include 'includes/a-stats.php';
 				break;
+ 			case 'clog':
+				include 'includes/a-log.php';
+				break;
 			default:
 			  echo "<p>Page not found.</p>";
 			  break;
@@ -100,7 +106,7 @@ if ($session['status'] == TRUE) {
 
 	<li><h3>Visit iDM Shop</h3>
 	  <ul>
-	    <li><a href="#tabs-1">Shop</a></li>
+	    <li><a href="/account/shop/">Shop</a></li>
 	    <li><a href="/account/cookie/">Cookie store</a></li>
 		</ul>
 	</li>
@@ -277,6 +283,11 @@ if ($session['status'] == TRUE) {
 	    <li><a href="/account/hstat/">Top Cheat High Ratio</a></li>
 	    <li><a href="/account/lstat/">Top Cheat Low Ratio</a></li>
 	    <li><a href="/account/istat/">Idle Admin Items</a></li>
+		</ul>
+	</li>
+  	<li><h3>Log viewer</h3>
+	  <ul>
+	    <li><a href="/account/clog/">Channel Logs</a></li>
 		</ul>
 	</li>
 	</ul>

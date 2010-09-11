@@ -43,14 +43,14 @@ if (typeof jQuery == 'undefined')
     	<li><a href="/u/">User</a></li>
     	<li><a href="/c/">Clan</a></li>
     </ul>
-    <div class="headerend">&nbsp;</div>
+    <div class="headerend" style="height: 2px">&nbsp;</div>
     <div><? displayQuickStats()?></div>
   </div> <!-- End Sidebar -->
   <div id="content">
-    <div style="padding: 10px;"><? displayContent($page)?></div>
+    <div style="padding: 0px;"><? displayContent($page)?></div>
   </div>  <!-- End Content -->
 </div>  <!-- End Container -->
-<p align="center">&copy; 2008-2010 KHobbits - The website and the implementation of the 
+<p align="center">&copy; 2008-<?=date('Y', time())?> KHobbits - The website and the implementation of the
 concept described within are copyright to KHobbits and the iDM 
 Group.</p>
 </body>

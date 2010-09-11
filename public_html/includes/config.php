@@ -14,7 +14,7 @@ function init($page) {
 	$pages = array (
 		"dmstats" => "dmstats.php", "drops" => "drops.php", "hiscores" => "hiscores.php",
 	    "user" => "user.php", "sitems" => "sitems.php", "clan" => "clan.php", "items" => "items.php",
-		"bts" => "bts.php", "userstats" => "userstats.php", "help" => "help.php"
+		"bts" => "bts.php", "userstats" => "userstats.php", "help" => "help.php", "suggest" => "suggest.php"
 	);
 
 	if ($page == 1) {
@@ -22,7 +22,7 @@ function init($page) {
 	} elseif (isset($pages [$page])) {
 		return $pages [$page];
 	} elseif ($page == 'account') {
-    include 'includes/a-session.php';
+    include_once 'includes/a-session.php';
 		return 'account.php';
 	} else {
 		include 'includes/news.php';
@@ -33,18 +33,41 @@ function init($page) {
 
 function msgchan ($chan, $type, $message) {
   include_once('bnc/sbnc.php');
-  $sbnc = new SBNC("127.0.0.1", 12000, "admin", 'Sp4rh4wk`Gh0$t`');
+  $sbnc = new SBNC("127.0.0.1", 12000, "admin", 'Sp4rh4wk`Ec1ip$3`');
   $result = $sbnc->CallAs('admin', simul, array( $type . ' ' . $chan . ' :' . $message));
   $sbnc->Destroy();
   return var_export($result,true);
 }
 
 function msgsupport ($message) {
-  msgchan('+#idm.support', 'notice', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
+  msgchan('+#idm.support', 'notice', chr(03) . '7<' . chr(03) . '3Website' . chr(03) . '7>' . chr(03) . ' ' . $message);
 }
 
 function msgstaff ($message) {
-  msgchan('#idm.staff', 'privmsg', chr(03) . '7[' . chr(03) . '3Website' . chr(03) . '7]' . chr(03) . ' ' . $message);
+  msgchan('#idm.staff', 'privmsg', chr(03) . '7<' . chr(03) . '3Website' . chr(03) . '7>' . chr(03) . ' ' . $message);
+}
+
+function userlog ($user, $type, $data) {
+  $sql = sprintf("INSERT INTO user_log (user, date, type, data) VALUES ('%s','%s','%s','%s')",
+                  $user,
+                  time(),
+                  typemap($type),
+                  mysql_real_escape_string($data));
+  $result = mysql_query($sql);
+  return $result;
+}
+
+function typemap ($type) {
+  if ($type == win) return 1;
+  if ($type == loss) return 2;
+  if ($type == winstake) return 3;
+  if ($type == losestake) return 4;
+  if ($type == drop) return 5;
+  if ($type == buy) return 6;
+  if ($type == sell) return 7;
+  if ($type == penalty) return 8;
+  if ($type == clue) return 9;
+  return;
 }
 
 #    Output easy-to-read numbers
