@@ -108,8 +108,8 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   while ($db.query_row(%res, >clue)) {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
+    if ($hget(>clue, item) == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
   }
-  if (%item == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
   db.query_end %res
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
   db.set user money $nick + %combined
