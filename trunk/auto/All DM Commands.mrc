@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!.]\w/Si:#: {
-  if (# == #iDM || # == #iDM.Staff) && ($me != iDM) { halt }
+  if (# == #iDM || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   var %attcmd $right($1,-1)
   if ($hget($chan,gwd.time) && $findtok($hget($chan,players),$nick,44)) || ($nick == $hget($chan,p1) && $hget($chan,p2)) && ($hget($chan) && $hget($nick,chan) == $chan) {
@@ -19,10 +19,10 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
         hdec %p2 poison
         hdec %p2 hp %extra
-        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1($autoidm.nick(%p2)) for $s1(%extra) damage. $hpbar($hget(%p2,hp),$hget(%p2,mhp))
+        msgsafe $chan $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.  Poison hit $s1($autoidm.nick(%p2)) for $s1(%extra) damage. $hpbar($hget(%p2,hp),$hget(%p2,mhp))
       }
       else {
-        msgsafe # $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
+        msgsafe $chan $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
       }
     }
     elseif ($attack(%attcmd)) {

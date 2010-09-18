@@ -1,24 +1,24 @@
-on *:text:!geupdate*:#idm.staff: {
+on *:text:!geupdate*:$staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-    if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+    if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+    if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
     if ($hget(>geupdate)) { 
       if ($2 == stop) {
-        msgsafe #idm.staff $logo(GE UPDATE) Update stopped. - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
+        msgsafe $staffchan $logo(GE UPDATE) Update stopped. - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
         hfree >geupdate
         sockclose pu
         .timerpu2 off
       }
       else {
-        msgsafe #idm.staff $logo(GE UPDATE) Update is in progress. Status: $hget(>geupdate,id) $+ / $+ $hget(>geupdate,max) - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
+        msgsafe $staffchan $logo(GE UPDATE) Update is in progress. Status: $hget(>geupdate,id) $+ / $+ $hget(>geupdate,max) - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
       }
     }
     elseif ($2 == start) {
       geupdate
-      msgsafe #idm.staff $logo(GE UPDATE) Loot update started ( $+ $time(hh:nn:ss) $+ ).
+      msgsafe $staffchan $logo(GE UPDATE) Loot update started ( $+ $time(hh:nn:ss) $+ ).
     }
     else {
-      msgsafe #idm.staff $logo(GE UPDATE) Update is not in progress. Syntax !geupdate [start|stop]
+      msgsafe $staffchan $logo(GE UPDATE) Update is not in progress. Syntax !geupdate [start|stop]
     }
   }
 }
@@ -43,14 +43,14 @@ on *:sockopen:pu:{
   else { 
     sockclose pu
     .timerpucheck off
-    msgsafe #idm.staff $logo(GE UPDATE) Price Update Completed. Duration: $duration($calc($ctime - $hget(>geupdate,t)))
+    msgsafe $staffchan $logo(GE UPDATE) Price Update Completed. Duration: $duration($calc($ctime - $hget(>geupdate,t)))
     hfree >geupdate
   }
 }
 on *:SOCKREAD:pu:{
   if ($sockerr) {
     sockclose pu
-    msgsafe #idm.staff $logo(GE UPDATE) Error: Socket failed
+    msgsafe $staffchan $logo(GE UPDATE) Error: Socket failed
     halt
   }
   var %ge
@@ -77,7 +77,7 @@ on *:SOCKREAD:pu:{
     sockclose pu
     hinc >geupdate id 1
     .timerpu2 1 3 pu2 
-    msgsafe #idm.staff $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
+    msgsafe $staffchan $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
   }
 }
 on *:sockclose:pu: {

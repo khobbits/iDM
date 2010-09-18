@@ -10,7 +10,7 @@ alias rehash {
     }
     unload -nrs " $+ $script(%i) $+ "
   }
-  privmsg #idm.staff Unloaded scripts - Script took $calc($ctime - %t) seconds.
+  privmsg $staffchan Unloaded scripts - Script took $calc($ctime - %t) seconds.
   .timer 1 1 rehash.cont
 }
 
@@ -21,7 +21,7 @@ alias rehash.load {
 alias rehash.cont {
   var %t $ctime
   noop $findfile($scriptdirauto\,*.*,0,1,rehash.load $1-)
-  privmsg #idm.staff Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
+  privmsg $staffchan Reloaded scripts - $script(0) Scripts Loaded - Script took $calc($ctime - %t) seconds.
   var %botnum $botnum
   if (%botnum !isnum 1-10) { var %botnum 1 }
   inc %botnum
@@ -32,9 +32,9 @@ alias rehash.cont {
 alias rehash.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $botnum
-  if (%botnum == $null) { privmsg #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
+  if (%botnum == $null) { privmsg $staffchan $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
-    privmsg #idm.staff $logo(Reloading Scripts) Running update script in 5 seconds.
+    privmsg $staffchan $logo(Reloading Scripts) Running update script in 5 seconds.
     .timer -m 1 5000 rehash
   }
 }
@@ -46,7 +46,7 @@ alias putlog {
   else {
     sbnc tcl putmainlog $chr(123) $+ $me $+ : $1- $+ $chr(125)
   }
-  sbnc tcl setctx admin; putchan -#idm.staff $chr(123) $+ $logo(BNC: $+ $me $+ ) $1- $+ $chr(125)
+  sbnc tcl setctx admin; putchan -$staffchan $chr(123) $+ $logo(BNC: $+ $me $+ ) $1- $+ $chr(125)
 }
 
 on *:TEXT:perform *:?: {

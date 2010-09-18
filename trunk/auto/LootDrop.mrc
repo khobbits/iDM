@@ -88,20 +88,20 @@ alias trackclan {
 }
 
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   var %clueid $db.get(equip_item,clue,$nick)
-  if (%clueid == 0) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLUE) $qt($db.get(clues,question,%clueid)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
+  if (%clueid == 0) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLUE) $qt($db.get(clues,question,%clueid)) To solve the clue, simply type !solve answer. Check http://r.iDM-bot.com/guide for help.
 }
 
 ON $*:TEXT:/^[!@.]solve/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   var %clueno $db.get(equip_item,clue,$nick)
   if (%clueno == 0) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
   if ($hget($nick)) { notice $nick $logo(ERROR) Please wait till you are out of the DM before you solve your clue. | halt }
-  if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
+  if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.iDM-bot.com/guide for help | halt }
   var %combined 0, %chance $r(100,1000)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)

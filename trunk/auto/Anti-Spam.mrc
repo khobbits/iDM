@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!@.]((end)?dm|stake|top|dmclue|solve|money|status|buy|sell|store|suggest|eat|vspear|vlong|statius|mjavelin|on|off|whip|dds|gmaul|guth|cbow|dbow|dh|[bsaz]gs|ice|blood|surf|d(claws|scim|mace|long|hally)|specpot|(start|add|join|dm)clan|leave|share)(\s\S+)?$/S:#:{
-  if ($chan == #idm.staff) { halt }
+  if ($chan == $staffchan) { halt }
   if (# == #idm) && ($me != iDM) { halt }
   $iif(%cmdspam. [ $+ [ $nick ] ],inc %cmdspam. [ $+ [ $nick ] ],inc -u4 %cmdspam. [ $+ [ $nick ] ])
   if (%cmdspam. [ $+ [ $nick ] ] >= 6) {
@@ -50,9 +50,9 @@ alias ignoresync {
 alias ignoresync.run {
   if ($cid != $scon(1)) { halt }
   var %botnum $botnum
-  if (%botnum == $null) { msgsafe #idm.staff $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
+  if (%botnum == $null) { msgsafe $staffchan $logo(Error) This bot doesn't have a instance number, it wasn't auto started, halting update. }
   if ($1 == %botnum) {
-    msgsafe #idm.staff $logo(IgnoreSync) Running ignore sync script in 5 seconds.
+    msgsafe $staffchan $logo(IgnoreSync) Running ignore sync script in 5 seconds.
     .timer -m 1 5000 ignoresync
   }
 }

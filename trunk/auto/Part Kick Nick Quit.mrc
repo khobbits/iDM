@@ -1,11 +1,11 @@
 on $*:TEXT:/^[!@.]part/Si:#: {
-  if (# == #idm) || (# == #idm.Staff) { return }
+  if (# == #idm) || (# == $staffchan) { return }
   if ($2 != $me) { return }
   if ($db.get(admins,rank,$address($nick,3)) >= 2) {
     if (%part.spam [ $+ [ # ] ]) { return }
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on
-    msgsafe #idm.staff $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
+    msgsafe $staffchan $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
     cancel #
   }
   else {
@@ -46,12 +46,12 @@ on *:KICK:#: {
   if ($knick == $me) {
     if (. !isin $nick) {
       cancel #
-      msgsafe #idm.staff $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- 
+      msgsafe $staffchan $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- 
     }
     elseif (shroudbnc !isin $nick) { 
       .timer 1 10 waskicked #
       join # 
-      msgsafe #idm.staff $logo(REJOINING) I was kicked from $chan by $nick - $1-
+      msgsafe $staffchan $logo(REJOINING) I was kicked from $chan by $nick - $1-
     }
     else {
       .timer 1 60 waskicked #
@@ -114,10 +114,10 @@ alias enddmcatch {
     reseterror
     goto fail
     :pass
-    msgsafe #idm.staff $logo(ENDDM) $2 %action *
+    msgsafe $staffchan $logo(ENDDM) $2 %action *
     return 1
     :fail
-    msgsafe #idm.staff $logo(ENDDM) $2 %action
+    msgsafe $staffchan $logo(ENDDM) $2 %action
     return 0
     :qfail
     return 0

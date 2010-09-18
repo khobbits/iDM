@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:$staffchan,$supportchan: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
   if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)bl <channel> [reason] | halt }
@@ -7,23 +7,23 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:#idm.staff,#idm.support: {
     if (!$2) { notice $nick Syntax !(c|r)bl <channel> | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
       db.hget >checkban blist $2 who time reason
-      if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
-      else { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) Channel $s2($2) is $s2(not) banned. | halt }
+      if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
+      else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Channel $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.remove blist $2
-        $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) Channel $2 has been removed from blist
+        $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Channel $2 has been removed from blist
       }
     }
     else {
       if (!$3) { notice $nick Syntax !bl <channel> <reason> | halt }
       db.set blist who $2 $nick
       db.set blist reason $2 $3-
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) Channel $2 has been added to blist
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Channel $2 has been added to blist
     }
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:$staffchan,$supportchan: {
   if ($me != iDM) { halt }
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   putlog perform banman $nick $chan $1 $iif($2-,$2-,$nick)
@@ -74,23 +74,23 @@ raw 302:*: {
   }
 }
 
-on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
+on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:$staffchan,$supportchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
   if ((?c* iswm $1) || (?r* iswm $1)) {
     db.hget >checkban ilist $2 who time reason
-    if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
-    elseif ($db.get(user,banned,$2)) { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) User $s2($2) is suspended but with no infomation. | halt }
-    else { $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
+    if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
+    elseif ($db.get(user,banned,$2)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) User $s2($2) is suspended but with no infomation. | halt }
+    else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
     if (?r* iswm $1) {
       db.exec UPDATE `user` SET banned = '0' WHERE user = $db.safe($2)
       if ($mysql_affected_rows(%db) !== -1) {
         db.remove ilist $2
-        $iif($left($1,1) == @,msgsafe #,notice $nick) Restored account $2 to its original status.
+        $iif($left($1,1) == @,msgsafe $chan,notice $nick) Restored account $2 to its original status.
       }
-      else { $iif($left($1,1) == @,msgsafe #,notice $nick) Couldn't find account $2 }
+      else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Couldn't find account $2 }
     }
   }
   else {
@@ -99,13 +99,13 @@ on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:#idm.staff,#idm.support: {
     if ($mysql_affected_rows(%db) !== -1) {
       db.set ilist who $2 $nick
       db.set ilist reason $2 $3-
-      $iif($left($1,1) == @,msgsafe #,notice $nick) Removed account $2 from the top scores - $3- .
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) Removed account $2 from the top scores - $3- .
     }
-    else { $iif($left($1,1) == @,msgsafe #,notice $nick) Couldn't find account $2 }
+    else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Couldn't find account $2 }
   }
 }
 
-on $*:TEXT:/^[!.]delete.*/Si:#idm.staff: {
+on $*:TEXT:/^[!.]delete.*/Si:$staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (!$2) { notice $nick To use the delete command, type !delete nick | halt }
@@ -143,12 +143,12 @@ On $*:TEXT:/^[!@.]cookie .*/Si:#: {
     if ($3 isnum) {
       db.set equip_staff cookies $2 + $3
       var %cookies $db.get(equip_staff, cookies, $2)
-      msg $chan $+ ,#idm.staff $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s) ( $+ $nick $+ )
+      msgsafe $chan $+ ,$staffchan $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s) ( $+ $nick $+ )
     }
   }
 }
 
-On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff,#idm.support: {
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:$staffchan,$supportchan: {
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if ($4 !isnum) { goto error }
     if (?increase iswm $1) { var %sign + }
@@ -178,7 +178,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.Staff,#idm.support: {
     else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin/cookies + !store items. | halt }
     if (%sign == =) { db.set %table %item $2 $4 }
     else { db.set %table %item $2 %sign $4 }
-    msg $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
+    msgsafe $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
     return
     :error
     notice $nick Syntax !define/increase/decrease <account> <item> <amount>

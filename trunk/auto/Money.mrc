@@ -1,18 +1,18 @@
 on $*:TEXT:/^[!@.]money/Si:#: {
   tokenize 32 $1- $nick
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $acc-stat($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $money($2) $clan($2) $s1(Profile) $+ : http://iDM-bot.com/u/ $+ $webstrip($2,1) 
 }
 
 on $*:TEXT:/^[!@.]equip/Si:#: {
   tokenize 32 $1- $nick
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $acc-stat($2) $equipment($2) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$2),$v1,0)
-  if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe #,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $equipment($2) $s1(Spec Pots) $+ : $iif($db.get(equip_item,specpot,$2),$v1,0)
+  if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
 }
 
 alias money {
@@ -118,39 +118,39 @@ alias pvp {
 }
 
 
-on $*:TEXT:/^[!@.]ViewItems$/Si:#idm.Staff,#idm.support: {
+on $*:TEXT:/^[!@.]ViewItems$/Si:$staffchan,$supportchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 2 && $me == iDM) {
     var %sql SELECT sum(belong = '1') as belong,sum(allegra = '1') as allegra,sum(beau = '1') as beau,sum(snake = '1') as snake,sum(kh = '1') as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
     if ($db.query_row(%result,>equip) === $null) { echo -s Error fetching Staff items totals. - %sql }
     db.query_end %result
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Special Items) Belong Blade: $s2($hget(>equip,belong)) Allergy Pills: $s2($hget(>equip,allegra)) $&
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Special Items) Belong Blade: $s2($hget(>equip,belong)) Allergy Pills: $s2($hget(>equip,allegra)) $&
       Beaumerang: $s2($hget(>equip,beau)) One Eyed Trouser Snake: $s2($hget(>equip,snake)) KHonfound Ring: $s2($hget(>equip,kh)) $&
       The Supporter: $s2($hget(>equip,support))
   }
 }
 
-on $*:TEXT:/^[!@.]GiveItem .*/Si:#idm.Staff: {
+on $*:TEXT:/^[!@.]GiveItem .*/Si:$staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
       var %item $v1
       if ($db.get(equip_staff,%item,$2) == 1) { notice $nick $logo(ERROR) $nick $2 already has your item | halt }
       db.set equip_staff %item $2 $iif(%item == support,$nick,1)
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Give-Item) Gave your item to $s2($2)
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Give-Item) Gave your item to $s2($2)
     }
     else { return }
   }
 }
 
-On $*:TEXT:/^[!@.]TakeItem .*/Si:#idm.Staff: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:$staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
       var %item $v1
       if ($db.get(equip_staff,%item,$2) == 0) { notice $nick $logo(ERROR) $nick $2 doesn't have your item | halt }
       db.set equip_staff %item $2 0
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(Take-Item) Took your item from $s2($2)
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Take-Item) Took your item from $s2($2)
     }
     else { return }
   }

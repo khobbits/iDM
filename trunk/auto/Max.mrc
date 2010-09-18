@@ -186,16 +186,16 @@ alias hit {
 }
 
 on $*:TEXT:/^[!@.]max/Si:#: {
-  if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm) || (# == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if (!$2) { $iif($left($1,1) == @,msgsafe #,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  if (!$2) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
   if (!$attack($2)) {
     notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
     halt
   }
   if (!$max($2)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
-  var %msg $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
+  var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
   if ($dmg($2,atkbonus) == 0) { var %msg %msg (No $dmg($2,type) attack bonuses) }
   elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
@@ -212,10 +212,10 @@ alias totalhit {
 }
 
 on $*:TEXT:/^[!@.]hitchance/Si:#: {
-  if (# == #idm) || (# == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm) || (# == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if ((!$3) || ($3 !isnum 0-999)) { $iif($left($1,1) == @,msgsafe #,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  if ((!$3) || ($3 !isnum 0-999)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
   if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
 
   db.hget >hitchance equip_armour $nick
@@ -241,5 +241,5 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     inc %hightop %atk
     inc %l
   }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
 }

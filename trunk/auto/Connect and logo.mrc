@@ -55,8 +55,20 @@ alias update {
   return $false
 }
 
+alias staffchan {
+  return #idm.Staff
+}
+
+alias supportchan {
+  return #iDM.support
+}
+
 alias secondchan {
   return #idm.Staff
+}
+
+alias thirdchan {
+  return +#idm.support
 }
 
 on *:DISCONNECT: {
@@ -74,24 +86,24 @@ alias msgsafe {
 }
 
 on $*:TEXT:/^[!@.]status/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   if ($hget($chan,gwd.npc)) {
     if ($hget($chan,gwd.time)) {
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(GWD-STATUS) $status($chan)
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(GWD-STATUS) $status($chan)
     }
     else {
-      $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(GWD-STATUS) $s1($gettok($hget($chan,players),1,44)) is waiting for a team for $s1($hget($chan,gwd.npc)) $+ . Join now by typing !gwd $+ .
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(GWD-STATUS) $s1($gettok($hget($chan,players),1,44)) is waiting for a team for $s1($hget($chan,gwd.npc)) $+ . Join now by typing !gwd $+ .
     }
   }
   elseif ($hget($chan,p2)) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $status($chan)
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $status($chan)
   }
   elseif ($hget($chan,p1)) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STATUS) $s1($hget($chan,p1)) is waiting for someone to DM in $lower($chan) $+ .
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(STATUS) $s1($hget($chan,p1)) is waiting for someone to DM in $lower($chan) $+ .
   }
   else {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(STATUS) There is no DM/GWD in $lower($chan) $+ .
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(STATUS) There is no DM/GWD in $lower($chan) $+ .
   }
 }
 

@@ -5,7 +5,7 @@ on *:TEXT:auth*:?: msgauth $nick $address $2-
 
 alias msgauth {
   if ($1 == -sbnc) return
-  if ($update) { notice $1 $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if ($update) { notice $1 $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   unset %idm.nsattempt. [ $+ [ $1 ] ]
   if ($3) {
     logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.  We now use nickserv for accounts, so your password is no longer needed.
@@ -13,7 +13,7 @@ alias msgauth {
   else {
     logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.
   }
-  if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit #idm.support }
+  if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit $supportchan }
 }
 
 ;## This method deals with actually logging in
@@ -98,7 +98,7 @@ alias islogged {
 alias logcheck {
   ; $1 = nickname
   ; $2 = address
-  ; $3- = command to call on success
+  ; $3- = command to call on success called as <command> <nickname> <address> [$4-]
   ; [optional] create a $3.fail to catch a failed auth, default error message if not supplied
   ; [optional] create a $3.fail0 to catch an unreged failed auth, default error message if not supplied
   if (!$3) { putlog Syntax Error: /logcheck <nickname> <address> <command on success>  | halt }
@@ -116,7 +116,7 @@ alias logcheck {
     }
   }
   else {
-    set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Before you can use this feature you need to be identifed to nickserv.  Type "/msg $me id" to check your account.
+    set %idm.nsfail. [ $+ [ $1 ] ] notice $1 Before you can use this feature you need to be identifed to nickserv.  Type "/msg $me id" to recheck your account.
     set %idm.nsfail0. [ $+ [ $1 ] ] notice $1 To use iDM you need to have a nickname registered with nickserv.  To register type: /nickserv register and follow the instruction.
   }
 
@@ -132,8 +132,8 @@ alias logcheck {
 }
 
 on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if (account isin $1) { logcheck $nick $address accountlink $logo(Account) }
   else { logcheck $nick $address accountlink $logo(Store) You can buy and sell items in the !account panel: }
 }
@@ -148,7 +148,7 @@ alias accounturl {
 }
 
 on $*:TEXT:/^[!@.]dmlog/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   tokenize 32 $1 $iif($2,$2-,$nick)

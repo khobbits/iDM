@@ -2,8 +2,8 @@
 
 on $*:TEXT:/^[!@.]delmem(ber)?.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -23,8 +23,8 @@ on $*:TEXT:/^[!@.]delmem(ber)?.*/Si:*: {
 
 on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -44,8 +44,8 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
 
 on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -61,8 +61,8 @@ on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
 
 on $*:TEXT:/^[!@.](start|create)clan.*/Si:*: {
   tokenize 32 $strip($remove($1-,$chr(36),$chr(37)))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -77,8 +77,8 @@ on $*:TEXT:/^[!@.](start|create)clan.*/Si:*: {
 
 on $*:TEXT:/^[!@.]leaveclan/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -93,8 +93,8 @@ on $*:TEXT:/^[!@.]leaveclan/Si:*: {
 
 on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -113,8 +113,8 @@ on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
 
 on $*:TEXT:/^[!@.]dminvite (on|off)/Si:*: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$islogged($nick,$address,3)) {
     notice $nick You have to login before you can use this command. (To check your auth type: /msg $me id)
@@ -132,15 +132,15 @@ on $*:TEXT:/^[!@.]dminvite (on|off)/Si:*: {
 }
 
 on $*:TEXT:/^[!@.]dmclan/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($isbanned($nick)) { halt }
   if (!$2) { var %nick = $nick }
   else { var %nick = $2 }
   var %clan = $getclanname(%nick)
   if ((!%clan) && ($clanmembers($2))) { var %clan = $2 }
   if (%clan) {
-    $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Clan Profile) $+ : $s2(http://idm-bot.com/c/ $+ $webstrip(%clan,1)) 
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLAN) $claninfo(%clan) $clanstats(%clan) $s1(Clan Profile) $+ : $s2(http://iDM-bot.com/c/ $+ $webstrip(%clan,1)) 
     halt
   }
   notice $nick $logo(ERROR) %nick is not in a clan and there is no clan named %nick $+ .

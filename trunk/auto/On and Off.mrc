@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!.](on|off).*/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($1 == !on || $1 == .on) {
     if ($hget($chan)) { notice $nick $logo(ERROR) Please end the current DM before you turn on or off weapons | halt }
@@ -19,7 +19,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
 
 on *:JOIN:#: {
   if ($nick != $me) {
-    if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+    if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
     var %output = $displayoff($chan,1)
     if (%output) { notice $nick %output }
   }
@@ -31,8 +31,9 @@ alias displayoff {
   var %result $db.query(%sql)
   var %output
   while ($db.query_row(%result,>row)) {
-    if (!%output) { var %output $hget(>row,setting) }
-    else { var %output %output $+ $chr(44) $hget(>row,setting)
+    if (($2 != 1) || ($hget(>row,setting) != timeout)) {
+      if (!%output) { var %output $hget(>row,setting) }
+      else { var %output %output $+ $chr(44) $hget(>row,setting) }
     }
   }
   db.query_end %result
@@ -104,9 +105,9 @@ alias disablec {
 }
 
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  var %prefix $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(COMMANDS)
+  var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(COMMANDS)
   var %account money equip account top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
   var %items dmclue solve-answer
@@ -117,9 +118,9 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
 
 }
 
-on $*:TEXT:/^[!@.]admin$/Si:#idm.staff: {
+on $*:TEXT:/^[!@.]admin$/Si:$staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
-    var %prefix $iif($left($1,1) == @,msgsafe #,notice $nick)
+    var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick)
     var %admin addsupport-nick join-bot-chan rehash ignoresync amsg (show/rem)dm-nick define/increase/decrease-account-item-amount addsupport-nick cookie-nick-adjust
     var %support chans active part-chan (r)suspend-nick (r)ignore-nick/host (r)blist-chan viewitems (give/take)item-nick whois-chan
     var %helper cignore-nick/host csuspend-nick cblist-chan !info-nick
@@ -156,19 +157,19 @@ alias cmdsplit {
 }
 
 on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's website: $s2(http://idm-bot.com/)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's website: $s2(http://iDM-bot.com/)
 }
 
 on $*:TEXT:/^[!@.](dm)?rules$/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.idm-bot.com/rules)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.iDM-bot.com/rules)
 }
 
 on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
-  if (# == #idm || # == #idm.Staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe #,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.iDM-bot.com)
 }

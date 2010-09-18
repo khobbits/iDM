@@ -3,7 +3,7 @@
 on *:INVITE:#: {
   if ($me != iDM) { halt }
   if (($chr(40) isin #) || ($chr(41) isin #) || ($chr(36) isin #)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(36) | halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($hget(>invite,$nick)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$nick).unset seconds. | halt }
   if ($hget(>invite,$chan)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
   if ($isbanned($nick)) { halt }
@@ -45,7 +45,7 @@ raw 322:*:{
       set %dolist [ $+ [ $2 ] ] %dolist [ $+ [ $2 ] ] on
       join $2
       idmstaff invite $2 $gettok(%dolist [ $+ [ $2 ] ],1,32) 
-      $+(.timer,$2) 1 1 msg $2 $entrymsgsafe($2,$gettok(%dolist [ $+ [ $2 ] ],1,32))
+      $+(.timer,$2) 1 1 msgsafe $2 $entrymsgsafe($2,$gettok(%dolist [ $+ [ $2 ] ],1,32))
     }
   }
 }
@@ -62,7 +62,7 @@ raw 475:*: { if (%checkban [ $+ [ $2 ] ]) {
   }
 }
 raw 470:*: {
-  msg #iDM.Staff $logo(Link) I was invited to $3 but was forced into $17
+  msgsafe $staffchan $logo(Link) I was invited to $3 but was forced into $17
   .timer 1 3 /part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
   db.set blist who $3 AUTO
   db.set blist reason $3 Channel $3 linked to $17
@@ -77,7 +77,7 @@ alias limit5 {
 }
 
 alias scanbots {
-  if (# == #idm || # == #idm.Staff) { halt }
+  if (# == #idm || # == $staffchan) { halt }
   var %a 1
   while (%a <= $nick($1,0)) {
     if ($istok($botnames,$nick($1,%a),46)) && ($nick($1,%a) != $me) {
@@ -95,7 +95,7 @@ on *:JOIN:#:{
       unset %forcedj. [ $+ [ # ] ]
     }
     else {
-      if (# != #idm && # != #idm.Staff) {
+      if (# != #idm && # != $staffchan) {
         if (u isincs $chan(#).mode) {
           part # You currently have +u set you need to remove it before I will join
         }
@@ -112,12 +112,12 @@ on *:JOIN:#:{
       part # Parting channel. Need 5 or more people to have iDM.
       return
     }
-    if (# != #idm && # != #idm.Staff) || ($me == iDM) {
+    if (# != #idm && # != $staffchan) || ($me == iDM) {
       showtitle $nick $chan
       if ($hget(>staff,rank) >= 2) {
         noop
       }
-      elseif ((# == #idm.support) || (# == #idm.help)) {
+      elseif ((# == $supportchan) || (# == #idm.help)) {
         logcheck $nick $address supportjointitle
       }
     } 
@@ -128,13 +128,13 @@ alias supportjointitle.fail supportjointitle $1 $2 4NOT IDENTIFIED
 alias supportjointitle.fail0 supportjointitle $1 $2 4NOT REGISTERED
 alias supportjointitle {
   db.hget >userinfo user $1
-  msg +#idm.support $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $3-
-  ignoreinfo $1 $1 msg +#idm.support $logo(Acc-Info)
+  msg $thirdchan $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $3-
+  ignoreinfo $1 $1 msg $thirdchan $logo(Acc-Info)
 }
 
 
 on $*:TEXT:/^[!@.]title$/Si:#: {
-  if (# != #idm && # != #idm.Staff) || ($me == iDM) {
+  if (# != #idm && # != $staffchan) || ($me == iDM) {
     if ($db.get(user,banned,$nick) == 1) { halt }
     showtitle $nick $chan
   }
@@ -164,10 +164,10 @@ alias showtitle {
 alias idmstaff { if ($1 == invite) { msgsafe $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
 
 alias entrymsgsafe {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
 }
 alias botnews {
-  return News: LOTS of updates visit http://r.idm-bot.com/v3
+  return News: LOTS of updates visit http://r.iDM-bot.com/v3
 }
 
 alias bottag {
@@ -177,5 +177,5 @@ alias bottag {
 }
 
 alias no-part {
-  if ($istok(#idm #idm.staff #idm.support #idm.help #tank #istake #idm.elites #dm.newbies #idm.dev #idm.gwd,$1,32)) return $true
+  if ($istok(#idm $staffchan $supportchan #tank #istake #idm.elites #dm.newbies #idm.dev #idm.gwd,$1,32)) return $true
 }

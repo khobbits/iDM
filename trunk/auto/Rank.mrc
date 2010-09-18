@@ -1,8 +1,8 @@
 on $*:TEXT:/^[!@.](w|l)?top/Si:#: {
-  if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  var %display = $iif(@* iswm $1,msgsafe $chan,notice $nick)
   tokenize 32 $1- 12
   if ($2 !isnum 1-12) { %display $logo(ERROR) The maximum number of users you can lookup is 12. Syntax: !top 12 | halt }
   if (w isin $1) { var %table wins }
@@ -42,10 +42,10 @@ alias toplist {
 
 on $*:TEXT:/^[!@.]dmrank/Si:#: {
   tokenize 32 $1- $nick
-  if (# == #idm || # == #idm.staff) && ($me != iDM) { halt }
+  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  var %display = $iif(@* iswm $1,msgsafe #,notice $nick)
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  var %display = $iif(@* iswm $1,msgsafe $chan,notice $nick)
   if ($2 isnum) {
     var %money = $ranks(money,$2)
     var %wins = $ranks(wins,$2)
@@ -83,7 +83,7 @@ alias checkisbanned {
   if ($hget(>banned,$1) != $null) { return $v1 }
   elseif ($db.get(user,banned,$1) == 1) {
     hadd -mu120 >banned $1 1
-    notice $1 This account has been banned, if you need assistance visit #idm.support.  You can appeal any bans using !account.
+    notice $1 This account has been banned, if you need assistance visit $supportchan $+ .  You can appeal any bans using !account.
     return 1
   }
   else {
