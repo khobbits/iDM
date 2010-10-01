@@ -56,7 +56,7 @@ alias update {
 }
 
 alias staffchan {
-  return #idm.Staff
+  return #idm.staff
 }
 
 alias supportchan {
@@ -64,7 +64,7 @@ alias supportchan {
 }
 
 alias secondchan {
-  return #idm.Staff
+  return #idm.staff
 }
 
 alias thirdchan {

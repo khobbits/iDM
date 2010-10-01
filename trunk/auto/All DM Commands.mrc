@@ -10,6 +10,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       var %p2 <gwd> $+ $chan
     }
     if (%attcmd == specpot) {
+      if ($hget($chan,gwd.time)) { notice $nick Specpots are currently disabled for GWD | halt }
       if (!$hget($nick,specpot)) { notice $nick You don't have any specpots. | halt }
       if ($hget($nick,sp) == 4) { notice $nick You already have a full special bar. | halt }
       hadd $nick sp 4
