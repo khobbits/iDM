@@ -1,4 +1,4 @@
-on *:text:!geupdate*:$staffchan: {
+on *:text:!geupdate*:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
     if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }

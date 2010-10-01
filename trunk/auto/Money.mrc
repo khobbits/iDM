@@ -118,7 +118,7 @@ alias pvp {
 }
 
 
-on $*:TEXT:/^[!@.]ViewItems$/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.]ViewItems$/Si:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) >= 2 && $me == iDM) {
     var %sql SELECT sum(belong = '1') as belong,sum(allegra = '1') as allegra,sum(beau = '1') as beau,sum(snake = '1') as snake,sum(kh = '1') as kh,sum(if(support = '0',0,1)) as support FROM `equip_staff`
     var %result = $db.query(%sql)
@@ -130,7 +130,7 @@ on $*:TEXT:/^[!@.]ViewItems$/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]GiveItem .*/Si:$staffchan: {
+on $*:TEXT:/^[!@.]GiveItem .*/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {
@@ -143,7 +143,7 @@ on $*:TEXT:/^[!@.]GiveItem .*/Si:$staffchan: {
   }
 }
 
-On $*:TEXT:/^[!@.]TakeItem .*/Si:$staffchan: {
+On $*:TEXT:/^[!@.]TakeItem .*/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     if (!$2) { notice You need to include a name you want to give your item too. }
     elseif ($whichitem($nick)) {

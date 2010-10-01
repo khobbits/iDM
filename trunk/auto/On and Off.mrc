@@ -118,7 +118,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
 
 }
 
-on $*:TEXT:/^[!@.]admin$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]admin$/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick)
     var %admin addsupport-nick join-bot-chan rehash ignoresync amsg (show/rem)dm-nick define/increase/decrease-account-item-amount addsupport-nick cookie-nick-adjust
