@@ -36,8 +36,8 @@ alias botrefresh {
   if ($hget(>store)) { hfree >store }
   echo -s 4Clearing active dms
   db.clear user indm
-  var %staffchan $staffchan
-  var %staffchans $staffchan $+ , $+ $supportchan
+  set %staffchan $staffchan
+  set %staffchans $staffchan $+ , $+ $supportchan
 }
 
 alias pingo {
