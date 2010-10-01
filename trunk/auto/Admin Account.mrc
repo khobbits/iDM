@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
   if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)bl <channel> [reason] | halt }
@@ -23,7 +23,7 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:%staffchans: {
   if ($me != iDM) { halt }
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   putlog perform banman $nick $chan $1 $iif($2-,$2-,$nick)
@@ -74,7 +74,7 @@ raw 302:*: {
   }
 }
 
-on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:%staffchans: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
   if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
@@ -105,7 +105,7 @@ on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!.]delete.*/Si:$staffchan: {
+on $*:TEXT:/^[!.]delete.*/Si:%staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (!$2) { notice $nick To use the delete command, type !delete nick | halt }
@@ -148,7 +148,7 @@ On $*:TEXT:/^[!@.]cookie .*/Si:#: {
   }
 }
 
-On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:$staffchan,$supportchan: {
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if ($4 !isnum) { goto error }
     if (?increase iswm $1) { var %sign + }

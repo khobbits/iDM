@@ -9,7 +9,7 @@ on $*:TEXT:/^[!@.]autoidm/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!@.]addsupport .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.]addsupport .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     who $chan
@@ -22,7 +22,7 @@ on $*:TEXT:/^[!@.]addsupport .*/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]addhelper .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.]addhelper .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addhelper <nick> | halt }
@@ -32,7 +32,7 @@ on $*:TEXT:/^[!@.]addhelper .*/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]addvip .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.]addvip .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addvip <nick> | halt }
@@ -50,14 +50,14 @@ on $*:TEXT:/^[!@.]part .*/Si:#: {
   }
 }
 
-on $*:TEXT:/^[!@.]disable$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]disable$/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     set %disable 1
     msgsafe $chan -=DISABLE=- iDM disabled
   }
 }
 
-on $*:TEXT:/^[!@.]enable$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]enable$/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     unset %disable
     msgsafe $chan -=DISABLE=- iDM renabled
@@ -65,7 +65,7 @@ on $*:TEXT:/^[!@.]enable$/Si:$staffchan: {
 }
 
 
-on $*:TEXT:/^[!@.]chans$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]chans$/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     $iif($left($1,1) == @,msgsafe $chan,notice $nick) I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
@@ -82,7 +82,7 @@ alias chans {
   $iif($isid,return,echo -a) %b
 }
 
-on $*:TEXT:/^[!.@]active$/Si:$staffchan: {
+on $*:TEXT:/^[!.@]active$/Si:%staffchan: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if ($scon(1) != $cid ) halt
     var %x 1
@@ -113,7 +113,7 @@ alias listdmchan {
   return $iif(%b,$v1,none)
 }
 
-on $*:TEXT:/^[!@.]join .*/Si:$staffchan: {
+on $*:TEXT:/^[!@.]join .*/Si:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
@@ -125,21 +125,21 @@ on $*:TEXT:/^[!@.]join .*/Si:$staffchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]rehash$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]rehash$/Si:%staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     rehash.run 1
   }
 }
 
-on $*:TEXT:/^[!@.]ignoresync$/Si:$staffchan: {
+on $*:TEXT:/^[!@.]ignoresync$/Si:%staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     ignoresync.run 1
   }
 }
 
-on *:TEXT:!amsg*:$staffchan: {
+on *:TEXT:!amsg*:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (!$2) { notice $nick Syntax: !amsg 03message | halt }
     if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
@@ -154,7 +154,7 @@ on *:TEXT:!amsg*:$staffchan: {
   }
 }
 
-on *:TEXT:!whois*:$staffchan,$supportchan: {
+on *:TEXT:!whois*:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if (!$2) { if ($me == idm ) { notice $nick Please specify a channel } | halt }
     if ($me ison $2) {
@@ -164,7 +164,7 @@ on *:TEXT:!whois*:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:%staffchans: {
   if ($db.get(admins,rank,$address($nick,3)) >= 3) {
     if (!$db.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
     db.set user indm $2 0
@@ -173,7 +173,7 @@ on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:$staffchan,$supportchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]info .*/Si:$staffchan,$supportchan: {
+on $*:TEXT:/^[!@.]info .*/Si:%staffchans: {
   if ($me == iDM) {
     if ($db.get(admins,rank,$address($nick,3)) >= 2)  {
       db.hget >userinfo user $$2
