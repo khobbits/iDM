@@ -164,7 +164,7 @@ alias showtitle {
 alias idmstaff { if ($1 == invite) { msgsafe $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
 
 alias entrymsgsafe {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) An op must type !part $me to part me. Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
 }
 alias botnews {
   return News: LOTS of updates visit http://r.iDM-bot.com/v3
