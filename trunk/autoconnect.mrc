@@ -1,7 +1,7 @@
 on *:start: {
   if (*-Startup* iswm $cmdline) {
     echo -s This bot was started by systemreboot.
-    loadbot 0
+    loadbot 1
   }
   elseif (*-Auto* iswm $cmdline) {
     set %botnum $botnum
@@ -24,13 +24,11 @@ alias botnum {
 }
 
 alias loadbot {
-  if ($1 == 0) {
+  if ($1 == 1) {
     .timer 1 15 run "mirc.exe" -Auto2
     .timer 1 30 run "mirc.exe" -Auto3
     .timer 1 45 run "mirc.exe" -Auto4
     .timer 1 60 run "mirc.exe" -Auto5
-  }
-  if ($1 == 1 || $1 == 0) {
     echo -a loading bot1
     load -rv scripts\bot1var.ini
     mnick iDM
