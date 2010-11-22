@@ -46,7 +46,7 @@ alias putlog {
   else {
     sbnc tcl putmainlog $chr(123) $+ $me $+ : $1- $+ $chr(125)
   }
-  sbnc tcl setctx admin; putchan -$staffchan $chr(123) $+ $logo(BNC: $+ $me $+ ) $1- $+ $chr(125)
+  sbnc tcl setctx admin; putchan - $+ $staffchan $chr(123) $+ $logo(BNC: $+ $me $+ ) $1- $+ $chr(125)
 }
 
 on *:TEXT:perform *:?: {

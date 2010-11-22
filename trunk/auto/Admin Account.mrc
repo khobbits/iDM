@@ -143,7 +143,7 @@ On $*:TEXT:/^[!@.]cookie .*/Si:#: {
     if ($3 isnum) {
       db.set equip_staff cookies $2 + $3
       var %cookies $db.get(equip_staff, cookies, $2)
-      msgsafe $chan $+ ,$staffchan $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s) ( $+ $nick $+ )
+      msgsafe $chan $+ , $+ $staffchan $logo(Cookies) User $2 now has %cookies cookie $+ $iif(%cookies != 1,s) ( $+ $nick $+ )
     }
   }
 }
