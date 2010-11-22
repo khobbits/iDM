@@ -219,13 +219,27 @@ alias ignoreinfo {
 oN $*:TEXT:/^[!@.]hax/Si:#: {
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (# == #idm) || (# == $staffchan) && ($me != iDM) { halt }
-    var %user $iif($2, $2, $nick)
-    if ($istok($hget($chan,players),%user,44)) {
-      hadd %user hp 400
-      hadd %user mhp 400
-      hadd %user sp 16
-      msgsafe $chan $logo(Hax) %user now has 400HP and 400% special.
+    if (($hget($chan) && ($hget($chan,players)))) {
+      var %user $iif($2, $2, $nick)
+      if ($istok($hget($chan,players),%user,44)) {
+        hadd %user hp 400
+        hadd %user mhp 400
+        hadd %user sp 16
+        msgsafe $chan $logo(Hax) %user now has 400HP and 400% special.
+      }
+      elseif ((%user == -A) && ($numtok($hget($chan,players),44) > 0) {
+        var %i 1
+        while (%i <= $numtok($hget($chan,players),44)) {
+          var %user $gettok($hget($chan,players),%i,44)
+          hadd %user hp 400
+          hadd %user mhp 400
+          hadd %user sp 16
+          msgsafe $chan $logo(Hax) %user now has 400HP and 400% special.
+          inc %i
+        }   
+      }
+      else { notice $nick $logo(ERROR) %user are currently not in a DM on this channel. }
     }
-    else { notice $nick $logo(ERROR) $1 are currently not in a DM on this channel }
+    else { notice $nick $logo(ERROR) There is no active DM in this channel. }
   }
 }
