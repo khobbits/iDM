@@ -227,7 +227,7 @@ oN $*:TEXT:/^[!@.]hax/Si:#: {
         hadd %user sp 16
         msgsafe $chan $logo(Hax) %user now has 400HP and 400% special.
       }
-      elseif ((%user == -A) && ($numtok($hget($chan,players),44) > 0) {
+      elseif ((%user == -A) && ($numtok($hget($chan,players),44) > 0)) {
         var %i 1
         while (%i <= $numtok($hget($chan,players),44)) {
           var %user $gettok($hget($chan,players),%i,44)
