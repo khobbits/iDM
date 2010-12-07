@@ -93,14 +93,14 @@ alias gwd.turn {
 }
 
 alias autoidm.acc {
-  if (<idm>#dm.newbies == $1) return iDMnewbie
+  if (<idm>#idm.newbies == $1) return iDMnewbie
   if (<iDM>* iswm $1) return iDM
   if (<gwd>* iswm $1) return iDMGod
   return $1
 }
 
 alias autoidm.nick {
-  if (<iDM>#dm.newbies == $1) return iDMnewbie
+  if (<iDM>#idm.newbies == $1) return iDMnewbie
   if (<iDM>* iswm $1) return iDM
   if (<gwd>* iswm $1) return $hget($right($1,-5),gwd.npc)
   return $1
@@ -143,7 +143,7 @@ alias autoidm.turn {
   if (%hp2 <= 15) var %attcmd surf
   elseif ((%hp <= 9) && (%hp2 <= 50)) var %attcmd dh
   elseif ($hget(%p2,laststyle) == melee) {
-    if ($1 == #dm.newbies) { var %attcmd blood }
+    if ($1 == #idm.newbies) { var %attcmd blood }
     elseif ($hget(%p2,poison) >= 1) || (%hp < 60) {
       if ((%hp >= 70) && (%spec >= 3) && (!$hget(%nick,frozen))) var %attcmd dclaws
       else var %attcmd blood
@@ -170,7 +170,7 @@ alias autoidm.turn {
     else var %attcmd guth
   }
   else {
-    if ($1 == #dm.newbies) { var %attcmd smoke }
+    if ($1 == #idm.newbies) { var %attcmd smoke }
     else { var %attcmd mjavelin }
   }
   set -u25 %enddm [ $+ [ $1 ] ] 0

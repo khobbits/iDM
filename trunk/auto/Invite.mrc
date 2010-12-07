@@ -177,5 +177,5 @@ alias bottag {
 }
 
 alias no-part {
-  if ($istok(#idm $staffchan $supportchan #tank #istake #idm.elites #dm.newbies #idm.dev #idm.gwd,$1,32)) return $true
+  if ($istok(#idm $staffchan $supportchan #tank #istake #idm.elites #idm.newbies #idm.dev #idm.gwd,$1,32)) return $true
 }
