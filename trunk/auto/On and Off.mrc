@@ -143,7 +143,6 @@ alias cmdfetch {
 }
 
 alias showattack {
-msg #idm.staff =-= $1 - $2 
      if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
      if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
      if ($hget($2,$1)) { return $true }
