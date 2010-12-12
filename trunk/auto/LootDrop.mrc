@@ -131,7 +131,7 @@ alias gendrops {
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if ($3) var %windiff 1.2, %limit $calc(%limit + 1)
-  dblog Gendrop: users: $1 / $2  chance: %chance - windiff: %windiff - chance: $iif (%windiff > 1,$calc(%chance * %windiff),%chance) 
+  dblog Gendrop: users: $1 / $2  chance: %chance - windiff: %windiff - chance: $iif(%windiff > 1,$calc(%chance * %windiff),%chance) 
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)
