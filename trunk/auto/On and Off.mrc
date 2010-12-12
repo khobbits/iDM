@@ -139,7 +139,8 @@ alias cmdfetch {
     }
     inc %i
   }
-  return $s2($1) $chr(91) $+ %output $+ $chr(93)
+  if (%output) { return $s2($1) $chr(91) $+ %output $+ $chr(93) }
+  return
 }
 
 alias showattack {
