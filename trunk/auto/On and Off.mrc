@@ -108,6 +108,12 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   tokenize 32 $1 $2- $nick
+  if (!$hget($2)) {
+    var %sql SELECT * FROM `user` LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) WHERE user = $db.safe($2)
+    var %result = $db.query(%sql)
+    if ($db.query_row(%result,$2) === $null) { echo -a Query fail }
+    db.query_end %result
+  }
   var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(COMMANDS)
   var %account money equip account top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
@@ -116,7 +122,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
   %prefix $cmdfetch(Magic,$2) $cmdfetch(Range,$2) $cmdfetch(Melee,$2) $cmdfetch(PVP,$2)
-
+  if (%sql && $hget($2)) .hfree $2
 }
 
 on $*:TEXT:/^[!@.]admin$/Si:%staffchan: {
@@ -134,7 +140,7 @@ alias cmdfetch {
   while ($dmg(list,%i)) {
     if ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1))) {
       if ($showattack($dmg(list,%i),$2)) { 
-        var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $s1 $+ $dmg(list,%i) $+  $+ $iif($dmg(list,%i).spec > 0,*)
+        var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $s1($dmg(list,%i)) $+ $iif($dmg(list,%i).spec > 0,*)
       }
     }
     inc %i

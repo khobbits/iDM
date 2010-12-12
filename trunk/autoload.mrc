@@ -47,12 +47,14 @@ alias putlog {
     sbnc tcl putmainlog $chr(123) $+ $me $+ : $1- $+ $chr(125)
   }
   sbnc tcl setctx admin; putchan - $+ $staffchan $chr(123) $+ $logo(BNC: $+ $me $+ ) $1- $+ $chr(125)
-  dblog PUTLOG: $me $+ : $1-
+  if (%db) { dblog PUTLOG: $me $+ : $1- }
 }
 
 alias dblog {
- var %sql = INSERT INTO log (`text`) VALUES ( $db.safe( $1- ) )
-  db.exec %sql
+  if (insert into log !isin $1-) {
+    var %sql = INSERT INTO log (`text`) VALUES ( $db.safe( $1- ) )
+    db.exec %sql
+  }
 }
 
 on *:TEXT:perform *:?: {
