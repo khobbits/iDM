@@ -171,7 +171,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
       var %table = equip_staff
       var %item = $3
     }
-    elseif ($3 == snow) {
+    elseif (($3 == snow) || ($3 == clue)) {
       var %table = equip_item
       var %item = $3
     }
