@@ -133,7 +133,7 @@ alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
     if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) {
-      if ($showattack($dmg(list,%i)),$2) { 
+      if ($showattack($dmg(list,%i),$2)) { 
         var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $iif($dmg(list,%i).spec == 0,$s1,$s2) $+ $dmg(list,%i) $+ 
       }
     }
@@ -143,6 +143,7 @@ alias cmdfetch {
 }
 
 alias showattack {
+msg #idm.staff =-= $1 - $2 
      if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
      if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
      if ($hget($2,$1)) { return $true }
