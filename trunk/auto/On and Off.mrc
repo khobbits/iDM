@@ -107,6 +107,7 @@ alias disablec {
 on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
+  tokenize 32 $1 $2- $nick
   var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(COMMANDS)
   var %account money equip account top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
@@ -114,7 +115,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   var %misc on/off-att !max-att hitchance-att-dmg
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
-  %prefix $cmdfetch(Magic) $cmdfetch(Range) $cmdfetch(Melee) $cmdfetch(PVP)
+  %prefix $cmdfetch(Magic,$2) $cmdfetch(Range,$2) $cmdfetch(Melee,$2) $cmdfetch(PVP,$2)
 
 }
 
@@ -131,12 +132,21 @@ on $*:TEXT:/^[!@.]admin$/Si:%staffchan: {
 alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
-    if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) { 
-      var %output $iif(%output,%output $+ $chr(32)) $+ $iif($dmg(list,%i).item == $null,$iif($dmg(list,%i).spec > 0,$s1),$s2) $+ $dmg(list,%i) $+ 
+    if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) {
+      if ($showattack($dmg(list,%i)),$2) { 
+        var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $iif($dmg(list,%i).spec == 0,$s1,$s2) $+ $dmg(list,%i) $+ 
+      }
     }
     inc %i
   }
   return $s2($1) $chr(91) $+ %output $+ $chr(93)
+}
+
+alias showattack {
+     if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
+     if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
+     if ($hget($2,$1)) { return $true }
+     return $false
 }
 
 alias cmdformat {
