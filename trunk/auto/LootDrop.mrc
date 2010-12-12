@@ -103,12 +103,16 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   if ($hget($nick)) { notice $nick $logo(ERROR) Please wait till you are out of the DM before you solve your clue. | halt }
   if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.iDM-bot.com/guide for help | halt }
   var %combined 0, %chance $r(100,1000)
+  dblog Cluedrop: user: $nick chance: %chance
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
   while ($db.query_row(%res, >clue)) {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
     if ($hget(>clue, item) == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
+    elseif (%price == 0 || %price == 1) { 
+      putlog DROP ERROR: Drop not found matching: %item
+    }
   }
   db.query_end %res
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
@@ -127,6 +131,7 @@ alias gendrops {
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if ($3) var %windiff 1.2, %limit $calc(%limit + 1)
+  dblog Gendrop: users: $1 / $2  chance: %chance - windiff: %windiff - chance: $iif (%windiff > 1,$calc(%chance * %windiff),%chance) 
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)
@@ -143,10 +148,9 @@ alias rundrops {
   ; $3 Otheruser
   ; $4 GWD?
   if ($3 == $null) { putlog Syntax Error: rundrops (3) - $db.safe($1-) | halt }
-  var %drops $gendrops($2,$3,$4), %disprice 0, %display, %wealth 0, %i 1
+  var %drops $gendrops($2,$3,$4), %disprice 0, %display, %i 1
   var %chance $gettok(%drops,1,32)
   var %drops $gettok(%drops,2-,32)
-  if ($db.get(equip_item,wealth,$2) != 0) var %wealth 1
   while (%i <= $numtok(%drops,58) ) {
     var %item $gettok($gettok(%drops,%i,58),1,46)
     var %price $gettok($gettok(%drops,%i,58),2,46)
