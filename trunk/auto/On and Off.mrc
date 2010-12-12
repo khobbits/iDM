@@ -132,7 +132,7 @@ alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
     if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) { 
-      var %output $iif(%output,%output $+ $chr(32)) $+ $iif($dmg(list,%i).spec > 0,$s1,$s2) $+ $dmg(list,%i) $+ 
+      var %output $iif(%output,%output $+ $chr(32)) $+ $iif($dmg(list,%i).item == $null,$iif($dmg(list,%i).spec > 0,$s1),$s2) $+ $dmg(list,%i) $+ 
     }
     inc %i
   }
