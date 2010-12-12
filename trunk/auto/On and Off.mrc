@@ -122,7 +122,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
   %prefix $cmdfetch(Magic,$2) $cmdfetch(Range,$2) $cmdfetch(Melee,$2) $cmdfetch(PVP,$2)
-  if (%sql && $hget($2)) .hfree $2
+  if ((%sql) && ($hget($2))) { .hfree $2 }
 }
 
 on $*:TEXT:/^[!@.]admin$/Si:%staffchan: {
