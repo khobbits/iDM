@@ -144,11 +144,11 @@ alias cmdfetch {
 }
 
 alias showattack {
-     if (($dmg($1,item) == admin) && (!$hget($2))) { return $false }  
-     if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
-     if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
-     if ($hget($2,$1)) { return $true }
-     return $false
+  if (($dmg($1,item) == admin) && (!$hget($2))) { return $false }  
+  if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
+  if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
+  if ($hget($2,$isweapon($1))) { return $true }
+  return $false
 }
 
 alias cmdformat {
