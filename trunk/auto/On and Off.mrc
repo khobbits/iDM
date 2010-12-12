@@ -104,7 +104,7 @@ alias disablec {
   }
 }
 
-on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
+on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   tokenize 32 $1 $2- $nick
