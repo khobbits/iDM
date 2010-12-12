@@ -1,7 +1,7 @@
 alias logo { return $+($s2,[,$s1,$$1-,$iif(%ver,- $+ $v1),,$s2,],) }
 
 alias cs1 return 3
-alias cs1 return 3
+alias cs2 return 7
 alias c1 return 03
 alias c2 return 07
 

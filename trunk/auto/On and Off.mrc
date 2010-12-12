@@ -114,7 +114,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?$/Si:#: {
   var %misc on/off-att !max-att hitchance-att-dmg
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
-  %prefix $cmdformat(Magic,$cmdfetch(magic)) $cmdformat(Range,$cmdfetch(range)) $cmdformat(Melee,$cmdfetch(melee)) $cmdformat(PVP,$cmdfetch(pvp))
+  %prefix $cmdfetch(Magic) $cmdfetch(Range) $cmdfetch(Melee) $cmdfetch(PVP)
 
 }
 
@@ -131,10 +131,12 @@ on $*:TEXT:/^[!@.]admin$/Si:%staffchan: {
 alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
-    if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) { var %output $iif(%output,%output $+ $chr(32)) $+ $dmg(list,%i) }
+    if (($dmg(list,%i).item != admin) && ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1)))) { 
+      var %output $iif(%output,%output $+ $chr(32)) $+ $iif($dmg(list,%i).spec > 0,$s1,$s2) $+ $dmg(list,%i) $+ 
+    }
     inc %i
   }
-  return %output
+  return $s2($1) $chr(91) $+ %output $+ $chr(93)
 }
 
 alias cmdformat {
