@@ -109,7 +109,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   while ($db.query_row(%res, >clue)) {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
-    if ($hget(>clue, item) == Cutlass of Corruption) { db.set equip_item corr $nick + 1 }
+    if ($hget(>clue, item) == Cutlass of Corruption) { db.set equip_item corr $nick + 1 | db.set achievements corr $nick 1 }
     elseif (%price == 0 || %price == 1) { 
       putlog DROP ERROR: Drop not found matching: %item
     }
