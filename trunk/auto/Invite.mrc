@@ -4,6 +4,37 @@ on *:INVITE:#: {
   if ($me != iDM) { halt }
   if (($chr(40) isin #) || ($chr(41) isin #) || ($chr(36) isin #)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(36) | halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  invitebot $chan $nick
+}  
+
+on *:TEXT:!INVITE*:?: {
+  if ($me != iDM) { halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  if (!$2) { notice $nick $logo(ERROR) Syntax: !invite <channel> | halt }
+  if ($chr(35)  $+ * !iswm $2) { notice $nick $logo(ERROR) Syntax: !invite <channel> | halt }
+  if (($chr(40) isin $2) || ($chr(41) isin $2) || ($chr(36) isin $2) || ($chr(44) isin $2)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(36) | halt }
+  invitebot $strip($2) $nick
+}
+
+alias invitebot {
+  if ($hget(>invite,$2)) { notice $2 $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$2).unset seconds. | halt }
+  if ($hget(>invite,$1)) { notice $2 $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$1).unset seconds. | halt }
+  if ($isbanned($2)) { halt }
+  db.hget >blist blist $lower($1)
+  if ($hget(>blist,reason)) {
+    notice $2 $logo(BANNED) Channel has been blacklisted. Reason: $hget(>blist,reason) By: $hget(>blist,who)
+    inc -u60 %inv.spam [ $+ [ $2 ] ]
+    halt
+  }
+  sbnc joinbot $1 $2
+  hadd -mu60 >invite $1 1
+  hadd -mu60 >invite $2 1
+}
+
+on *:INVITE:#: {
+  if ($me != iDM) { halt }
+  if (($chr(40) isin #) || ($chr(41) isin #) || ($chr(36) isin #)) { notice $nick $logo(ERROR) Sorry but we don't accept invites to channels containing: $chr(40) $chr(41) $chr(36) | halt }
+  if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ($hget(>invite,$nick)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$nick).unset seconds. | halt }
   if ($hget(>invite,$chan)) { notice $nick $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,#).unset seconds. | halt }
   if ($isbanned($nick)) { halt }
