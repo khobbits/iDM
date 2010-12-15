@@ -103,7 +103,6 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
   if ($hget($nick)) { notice $nick $logo(ERROR) Please wait till you are out of the DM before you solve your clue. | halt }
   if ((!$2) || ($istok($db.get(clues,answers,%clueno),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.iDM-bot.com/guide for help | halt }
   var %combined 0, %chance $r(100,1000)
-  dblog Cluedrop: user: $nick chance: %chance
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
   while ($db.query_row(%res, >clue)) {
@@ -131,7 +130,6 @@ alias gendrops {
   var %winner $db.get(user,wins,$1), %looser $db.get(user,wins,$2), %limit $iif($rand(1,10) == 1,4,3)
   if ($2) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if ($3) var %windiff 1.2, %limit $calc(%limit + 1)
-  dblog Gendrop: users: $1 / $2 - chance: %chance - windiff: %windiff - chance: $iif(%windiff > 1,$calc(%chance * %windiff),%chance) 
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
   var %res $db.query(%sql)

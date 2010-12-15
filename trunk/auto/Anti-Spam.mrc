@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.]((end)?dm|stake|top|dmclue|solve|money|status|buy|sell|store|suggest|eat|vspear|vlong|statius|mjavelin|on|off|whip|dds|gmaul|guth|cbow|dbow|dh|[bsaz]gs|ice|blood|surf|d(claws|scim|mace|long|hally)|specpot|(start|add|join|dm)clan|leave|share)(\s\S+)?$/S:#:{
+on $*:TEXT:/^[!@.]((end)?dm|command(s)?|dmcommand(s)?|stake|gwd|account|(.)?top|dmrank|dmclue|solve|money|equip(ment)?|status|max|hitchance|buy|sell|store|vspear|vlong|statius|mjavelin|on|off|whip|dds|gmaul|guth|(d|m)bow|(b|e)bolt|onyx|rknives|snow|dh|[bsaz]gs|ice|blood|(e|f)surge|surf|corr|d(claws|mace|hally)|specpot|(start|add|join|dm)clan|leave|share)(\s\S+)?$/S:#:{
   if ($chan == $staffchan) { halt }
   if (# == #idm) && ($me != iDM) { halt }
   $iif(%cmdspam. [ $+ [ $nick ] ],inc %cmdspam. [ $+ [ $nick ] ],inc -u4 %cmdspam. [ $+ [ $nick ] ])
