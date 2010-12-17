@@ -65,19 +65,12 @@ alias supportchan {
   return #iDM.support
 }
 
-alias secondchan {
-  return #idm.staff
-}
-
-alias thirdchan {
-  return +#idm.support
-}
-
 on *:DISCONNECT: {
   mysql_close %db
 }
 
 alias msgsafe {
+  if ($1 == $staffchan) { dblog STAFFCHAN: $me $+ : $2- }
   if ((c isincs $chan($1).mode) || (S isincs $chan($1).mode)) {
     var %text $replace($2-,$s1,)
     msg $1 $strip(%text,c)
@@ -88,7 +81,7 @@ alias msgsafe {
 }
 
 on $*:TEXT:/^[!@.]status/Si:#: {
-  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
+  if ((# == #idm || # == $staffchan) && ($me != iDM)) { halt }
   if ($isbanned($nick)) { halt }
   if ($hget($chan,gwd.npc)) {
     if ($hget($chan,gwd.time)) {

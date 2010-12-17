@@ -159,8 +159,8 @@ alias supportjointitle.fail supportjointitle $1 $2 4NOT IDENTIFIED
 alias supportjointitle.fail0 supportjointitle $1 $2 4NOT REGISTERED
 alias supportjointitle {
   db.hget >userinfo user $1
-  msg $thirdchan $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $3-
-  ignoreinfo $1 $1 msg $thirdchan $logo(Acc-Info)
+  msg + $+ $supportchan $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($islogged($1,$2,0),03 $+ $gmt($hget(>userinfo,login),dd/mm) $+ ,4NO) $3-
+  ignoreinfo $1 $1 msg + $+ $supportchan $logo(Acc-Info)
 }
 
 
@@ -192,7 +192,7 @@ alias showtitle {
 }
 
 
-alias idmstaff { if ($1 == invite) { msgsafe $secondchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
+alias idmstaff { if ($1 == invite) { msgsafe $staffchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
 
 alias entrymsgsafe {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
