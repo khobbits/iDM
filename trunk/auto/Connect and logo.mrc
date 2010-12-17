@@ -18,16 +18,16 @@ alias tag { return $iif($len($me) != 7,Hub,$mid($me,5,2)) }
 
 on *:CONNECT: {
   if ($me == iDM[OFF]) { nick iDM | mnick iDM }
-  join #idm.staff
+  join $staffchan
   if (%botnum != $null) {
-    .timer 1 10 privmsg #idm.staff Autoconnected on load.  Botnum: %botnum
+    .timer 1 10 privmsg $staffchan Autoconnected on load.  Botnum: %botnum
   }
   mode $me +pB
   mysql_close %db
   unsetall
   botrefresh
   echo -s 4Connected.
-  .timer 1 10 privmsg #idm.staff Reconnected to server clearing vars, logins and currentdm list
+  .timer 1 10 privmsg $staffchan Reconnected to server clearing vars, logins and currentdm list
 }
 
 alias botrefresh {
@@ -48,7 +48,7 @@ on *:START:.timerAnti-10053 -o 0 60 scon -at1 raw -q ping Anti-10053
 on ^*:PONG:if ($2 == Anti-10053) haltdef
 
 alias update {
-  if ($chan == #idm.staff) { return $false }
+  if ($chan == $staffchan) { return $false }
   if (%disable == 1) { return $true }
   if (%dbfail > 3) { 
     if (!$timer(dbinit)) timerdbinit 0 2 dbinit

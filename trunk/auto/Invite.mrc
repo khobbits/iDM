@@ -148,7 +148,7 @@ on *:JOIN:#:{
       if ($hget(>staff,rank) >= 2) {
         noop
       }
-      elseif ((# == $supportchan) || (# == #idm.help)) {
+      elseif (# == $supportchan) {
         logcheck $nick $address supportjointitle
       }
     } 
