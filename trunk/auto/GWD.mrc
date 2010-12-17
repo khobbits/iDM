@@ -100,7 +100,6 @@ alias autoidm.acc {
 }
 
 alias autoidm.nick {
-  if (<iDM>#idm.newbies == $1) return iDMnewbie
   if (<iDM>* iswm $1) return iDM
   if (<gwd>* iswm $1) return $hget($right($1,-5),gwd.npc)
   return $1
