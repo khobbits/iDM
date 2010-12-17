@@ -27,6 +27,8 @@ alias startdm {
   if ($hget(%chan)) {
     if ($numtok($hget(%chan,players),44) == 8) { notice %nick $logo(GWD) There are already $s1(8) people on this team. Please wait untill the raid is over. | halt }
     if (($hget(%chan,stake)) && (stake !isin $1)) { notice %nick There is currently a stake, please type !stake to accept the challenge. | halt }
+    if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
+    if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
     if ($hget(%chan,stake)) {
       var %p1 $hget(%chan,players)
       checkhosts %nick %p1
