@@ -27,9 +27,9 @@ alias startdm {
   if ($hget(%chan)) {
     if ($numtok($hget(%chan,players),44) == 8) { notice %nick $logo(GWD) There are already $s1(8) people on this team. Please wait untill the raid is over. | halt }
     if (($hget(%chan,stake)) && (stake !isin $1)) { notice %nick There is currently a stake, please type !stake to accept the challenge. | halt }
-    if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
-    if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
     if ($hget(%chan,stake)) {
+      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
+      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
       var %p1 $hget(%chan,players)
       checkhosts %nick %p1
       var %stake $checkmoney(%nick,$2,$hget(%chan,stake))
@@ -45,6 +45,8 @@ alias startdm {
       if ($timer(%chan).secs < 10) .timer $+ %chan 1 30 gwd.init %chan
     }
     else {
+      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
+      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
       var %p1 $hget(%chan,players)
       checkhosts %nick %p1
       join.dm %chan %nick
@@ -54,6 +56,8 @@ alias startdm {
     }
   }
   else {
+    if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
+    if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
     if (stake isin $1) {
       if ($isdisabled(%chan,staking) === 1) { notice %nick $logo(ERROR) Staking in this channel has been disabled. | halt }
       var %stake $checkmoney(%nick,$2)
