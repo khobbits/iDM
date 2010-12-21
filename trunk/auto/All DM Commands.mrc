@@ -43,19 +43,15 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         notice $nick You're frozen and can't use melee.
         halt
       }
-      if ($ispvp(%attcmd)) {
-        if (!$hget($nick,%attcmd)) {
-          notice $nick You don't have this weapon.
-          halt
-        }
-        db.set equip_pvp %attcmd $nick - 1
-      }
       var %wepitem $isweapon(%attcmd)
       if (%wepitem !== $false) {
         if (!$hget($nick,%wepitem)) {
           notice $nick You have to unlock this weapon before you can use it.
           halt
         }
+      }
+      if ($ispvp(%attcmd)) {
+        db.set equip_pvp %attcmd $nick - 1
       }
       .timercw $+ $chan off
       .timerc $+ $chan off
