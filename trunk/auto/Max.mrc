@@ -1,10 +1,13 @@
+;;  This alias calculates the max hit of an attack, with and without item bonuses
+;;  This alias is used by: !max
 alias max {
   ; $1 = attack
   if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
   var %dbhits = $dmg($1,hits)
   var %dbdmg = $dmg($1, 3h)
   var %dbbonus = $dmg($1, atkbonus)
-  if ($dmg($1,type) == range) {
+  if (%dbbonus == n) { return $dmg.ratio(%dbhits,%dbdmg,0,1) $dmg.ratio(%dbhits,%dbdmg,5,1) }
+  elseif ($dmg($1,type) == range) {
     ;Normal Archer Ring _or_Accumulator Both
     return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
   }
@@ -18,6 +21,8 @@ alias max {
   }
 }
 
+;;  This alias calculates the damage 'pattern', and will return the max damage hit pattern.
+;;  This alias is used by: $max (!max)
 alias dmg.ratio {
   ; $1 = hit pattern - 1-1-1
   ; $2 = max hit
@@ -33,34 +38,7 @@ alias dmg.ratio {
   return %hits
 }
 
-alias hitdmg {
-  ; $1 = attack
-  ; $2 = accuracy
-  ; $3 = hit pattern
-  ; $4 = attack bonus
-  ; $5 = defense bonus
-  if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
-  if ($1 == dh_9) { var %ndmg 3 }
-  elseif ($1 == dh_10) { var %ndmg 1 }
-  elseif ($2 <= $dmg($1,0l)) { var %ndmg 1 }
-  elseif ($2 <= $dmg($1,0h)) { var %ndmg 2 }
-  else { var %ndmg 3 }
-  var %i = 0
-  while (%i < $numtok($3,45)) {
-    inc %i
-    if ($gettok($3,%i,45) == 1) {
-      var %dmg = $rand($dmg($1,%ndmg $+ l),$calc($dmg($1,%ndmg $+ h) + $4)))
-      var %dmg = $ceil($calc(%dmg * $5))
-      var %return = %return %dmg
-    }
-    else {
-      var %sdmg = $ceil($calc(%dmg * (1 / $gettok($3,%i,45))))
-      var %return = %return %sdmg
-    }
-  }
-  if (%debuga == $me) putlog Debug: Hit pattern: $3 Attack Bonus: $4 Defense Bonus: $5 Min Damage: $dmg($1,%ndmg $+ l) Max Damage: $dmg($1,%ndmg $+ h) Actual Damage %return
-  return %return
-}
+;;  These alias's are used as accessors for database values
 
 alias attack { return $iif($dmg($1,name),$true,$false) }
 alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
@@ -73,6 +51,8 @@ alias poisoner { return $dmg($1,poison) $dmg($1,poisonamount) }
 alias freezer { return $dmg($1,freeze) }
 alias healer { return $dmg($1,heal) $dmg($1,healamount) }
 
+;;  This alias (re)loads the weapon database into hashcache.
+;;  This alias is used by $dmg.hget ($dmg)
 alias dmg.hload {
   if ($hget(>weapon)) { hfree >weapon }
   hmake >weapon 50
@@ -113,12 +93,16 @@ alias dmg.hload {
   mysql_free %res
 }
 
+;;  This alias will return the db values related to an attack.  This will load the weapons db into hashcache.
+;;  This alias is used by: $dmg
 alias dmg.hget {
   if (!$hget(>weapon)) { dmg.hload }
   tokenize 32 $1- 0
   return $hget(>weapon,$1 $+ . $+ $2)
 }
 
+;;  This alias is the main accessor for database values.  This method allows access to the database using multiple methods.
+;;  This alias is used by: $accuracy $atkbonus $hit $damage $enablec $disablec !max !hitchance !attack
 alias dmg {
   ; $1 = attack
   ; ?$2? = value
@@ -130,6 +114,8 @@ alias dmg {
 
 }
 
+;;  This alias is used to calculate the accuracy bonus for an attack
+;;  This alias is used by: $hit (!attack)
 alias accuracy {
   ;1 is Attack
   ;2 is Attackee
@@ -153,16 +139,52 @@ alias accuracy {
   return 0
 }
 
+;;  This alias is used to calculate the attack bonus for an attack
+;;  This alias is used by: $hit (!attack) 
 alias atkbonus {
   ;1 is Weapon
   ;2 is hashtable
-  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,godcape),4,0)) + $iif($hget($2,mbook),4,0)  }
+  if ($dmg($1,atkbonus) == 0) { return 0 }
+  if ($dmg($1,atkbonus) == n) { return n }
+  if ($dmg($1,type) == magic) { var %atk $calc($iif($hget($2,godcape),4,0)) + $iif($hget($2,mbook),4,0) }
   elseif ($dmg($1,type) == range) { var %atk $calc($iif($hget($2,archer),4,0) + $iif($hget($2,accumulator),4,0)) }
-  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),4,0) + $iif($hget($2,bgloves),4,0))  }
-  if ($dmg($1,atkbonus) == 0) { var %atk 0 }
+  elseif ($dmg($1,type) == melee) { var %atk $calc($iif($hget($2,firecape),4,0) + $iif($hget($2,bgloves),4,0)) }
   return %atk
 }
 
+;;  This alias returns the damage breakdown that is displayed on each attack, and thus the actual damage.
+;;  This alias is used by: $damage (!attack)
+alias hitdmg {
+  ; $1 = attack
+  ; $2 = accuracy
+  ; $3 = hit pattern
+  ; $4 = attack bonus
+  ; $5 = defense bonus
+  if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
+  if ($1 == dh_9) { var %ndmg 3 }
+  elseif ($1 == dh_10) { var %ndmg 1 }
+  elseif ($2 <= $dmg($1,0l)) { var %ndmg 1 }
+  elseif ($2 <= $dmg($1,0h)) { var %ndmg 2 }
+  else { var %ndmg 3 }
+  var %i = 0
+  while (%i < $numtok($3,45)) {
+    inc %i
+    if ($gettok($3,%i,45) == 1) {
+      var %dmg = $rand($dmg($1,%ndmg $+ l),$calc($dmg($1,%ndmg $+ h) + $4)))
+      var %dmg = $ceil($calc(%dmg * $5))
+      var %return = %return %dmg
+    }
+    else {
+      var %sdmg = $ceil($calc(%dmg * (1 / $gettok($3,%i,45))))
+      var %return = %return %sdmg
+    }
+  }
+  if (%debuga == $me) putlog Debug: Hit pattern: $3 Attack Bonus: $4 Defense Bonus: $5 Min Damage: $dmg($1,%ndmg $+ l) Max Damage: $dmg($1,%ndmg $+ h) Actual Damage %return
+  return %return
+}
+
+;;  This alias prepares the attack statistics for the hitdmg alias.
+;;  This alias is used by: $damage (!attack)
 alias hit {
   ;1 is Weapon
   ;2 is Attacker
@@ -174,6 +196,10 @@ alias hit {
   else { var %acc $r(1,100) }
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
   var %atk $atkbonus($1,$2)
+  if (%atk == n) { 
+    var %atk $hget($2,$1)
+    if (%atk > 4) { var %atk 5 }
+  }
   if ($dmg($1,defbonus) == 0) { var %def 1 }
   if (<iDM>* iswm $2) {
     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
@@ -198,6 +224,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
   if ($dmg($2,atkbonus) == 0) { var %msg %msg (No $dmg($2,type) attack bonuses) }
+  elseif ($dmg($2,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each item up to +5: $dmg.breakdown($2,2) }
   elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
