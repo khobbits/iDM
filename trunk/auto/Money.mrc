@@ -80,7 +80,7 @@ alias equipment {
     }
   }
   if ($hget(>equip_item,clue)) { var %e %e Clue:Scroll }
-  if ($hget(>equip_item,snow)) { var %e %e Snow:Globe }
+  if ($hget(>equip_item,snow)) { var %e %e Snow:Globe  $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   if ($hget(>equip_item,corr)) { var %e %e Cutlass:of:Corruption }
   return $s1(Equipment) ( $+ $price(%wealth) $+ ): $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None) 
 }
