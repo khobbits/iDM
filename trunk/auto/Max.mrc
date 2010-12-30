@@ -3,8 +3,10 @@
 alias max {
   ; $1 = attack
   if ($1 == $null) { putlog Syntax Error: attack (1) - $db.safe($1-) | halt }
-  var %dbhits = $dmg($1,hits)
   var %dbdmg = $dmg($1, 3h)
+  if ($1 == dh) { var %dbdmg = $dmg($1, 1h) }
+  if ($1 == dh9) { tokenize 32 dh | var %dbdmg = $dmg($1, 3h) }
+  var %dbhits = $dmg($1,hits)
   var %dbbonus = $dmg($1, atkbonus)
   if (%dbbonus == n) { return $dmg.ratio(%dbhits,%dbdmg,0,1) $dmg.ratio(%dbhits,%dbdmg,5,1) }
   elseif ($dmg($1,type) == range) {
@@ -216,19 +218,23 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if (!$2) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Please specify the weapon to look up. Syntax: !max whip | halt }
-  if (!$attack($2)) {
-    notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
+  var %wep $2
+  if ($2 == dh9) { var %wep dh }
+  if (!$attack(%wep)) {
+    notice $nick $logo(ERROR) $s1(%wep) is not a recognized attack.
     halt
   }
-  if (!$max($2)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
+  if (!$max(%wep)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
   var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
-  var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),10+ HP/9 or less HP,$chr(41))) $+ : $dmg.breakdown($2,1)
-  if ($dmg($2,atkbonus) == 0) { var %msg %msg (No $dmg($2,type) attack bonuses) }
-  elseif ($dmg($2,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each item up to +5: $dmg.breakdown($2,2) }
-  elseif ($dmg($2,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
-  elseif ($dmg($2,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
-  elseif ($dmg($2,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
-  %msg $iif($dmg($2,effect),$+($chr(40),$v1,$chr(41)))
+  var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),use 'dh9' for <10 hp,$chr(41)))
+  var %msg %msg $+ $iif($2 == dh9,$+($chr(32),$chr(40),use 'dh' for >10 hp,$chr(41)))
+  var %msg %msg $+ : $dmg.breakdown($2,1)
+  if ($dmg(%wep,atkbonus) == 0) { var %msg %msg (No $dmg(%wep,type) attack bonuses) }
+  elseif ($dmg(%wep,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each item up to +5: $dmg.breakdown($2,2) }
+  elseif ($dmg(%wep,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  elseif ($dmg(%wep,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  elseif ($dmg(%wep,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
+  %msg $iif($dmg(%wep,effect),$+($chr(40),$v1,$chr(41)))
 }
 
 alias dmg.breakdown { return $s2($gettok($max($1),$2,32)) $iif($totalhit($1,$2),$+($chr(40),$s2($v1),$chr(41))) }
@@ -243,24 +249,27 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   if ((!$3) || ($3 !isnum 0-999)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) Syntax: !hitchance <weapon> <damage> | halt }
-  if (!$attack($2) && $2 != dh9) { notice $nick $logo(ERROR) $s1($2) is not a recognized attack. | halt }
+  var %wep $2
+  if ($2 == dh9) { var %wep dh }
+  if (!$attack(%wep)) { notice $nick $logo(ERROR) $s1(%wep) is not a recognized attack. | halt }
 
   db.hget >hitchance equip_armour $nick
-  var %atk = $atkbonus($2,>hitchance), %hits = $dmg($2,hits), %targets = 1, %i = 1, %l = 0
+  var %atk = $atkbonus(%wep,>hitchance), %hits = $dmg(%wep,hits), %targets = 1, %i = 1, %l = 0
   while (%i < $numtok(%hits,45)) {
     inc %i
     if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }
     else { inc %targets $calc(1 / $gettok(%hits,%i,45)))) }
   }
-  var %target = $ceil( $calc($3 / %targets) ), %lowtop = $dmg($2, 1h), %midtop = $dmg($2, 2h), %hightop = $dmg($2, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
-  var %lowbchance = $calc(($dmg($2,0l)) /100), %midbchance = $calc(($dmg($2,0h) - $dmg($2,0l)) /100), %highbchance = $calc((100 - $dmg($2,0h)) /100)
+  var %target = $ceil( $calc($3 / %targets) ), %lowtop = $dmg(%wep, 1h), %midtop = $dmg(%wep, 2h), %hightop = $dmg(%wep, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
+  var %lowbchance = $calc(($dmg(%wep,0l)) /100), %midbchance = $calc(($dmg(%wep,0h) - $dmg(%wep,0l)) /100), %highbchance = $calc((100 - $dmg(%wep,0h)) /100)
+  if ($2 == dh9) { var %lowbchance = 0, %midbchance = 0, %highbchance = 1 }
   while (%l < 2) {
-    if (%target <= %lowtop) { var %lowchance = $calc(((%lowtop - %target +1) / (%lowtop - $dmg($2, 1l) +1 )) * %lowbchance) }
-    if (%target <= $dmg($2, 1l)) { var %lowchance = %lowbchance }
-    if (%target <= %midtop) { var %midchance = $calc(((%midtop - %target +1) / (%midtop - $dmg($2, 2l) +1 )) * %midbchance) }
-    if (%target <= $dmg($2, 2l)) { var %midchance = %midbchance }
-    if (%target <= %hightop) { var %highchance = $calc(((%hightop - %target +1) / (%hightop - $dmg($2, 3l) +1 )) * %highbchance) }
-    if (%target <= $dmg($2, 3l)) { var %highchance = %highbchance }
+    if (%target <= %lowtop) { var %lowchance = $calc(((%lowtop - %target +1) / (%lowtop - $dmg(%wep, 1l) +1 )) * %lowbchance) }
+    if (%target <= $dmg(%wep, 1l)) { var %lowchance = %lowbchance }
+    if (%target <= %midtop) { var %midchance = $calc(((%midtop - %target +1) / (%midtop - $dmg(%wep, 2l) +1 )) * %midbchance) }
+    if (%target <= $dmg(%wep, 2l)) { var %midchance = %midbchance }
+    if (%target <= %hightop) { var %highchance = $calc(((%hightop - %target +1) / (%hightop - $dmg(%wep, 3l) +1 )) * %highbchance) }
+    if (%target <= $dmg(%wep, 3l)) { var %highchance = %highbchance }
     if (%l = 0) var %hitchance0 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
     if (%l = 1) var %hitchance1 $floor($calc(( %lowchance + %midchance + %highchance ) * 100))
     inc %lowtop %atk
