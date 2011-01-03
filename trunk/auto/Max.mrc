@@ -231,7 +231,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   var %msg %msg $+ $iif($2 == dh9,$+($chr(32),$chr(40),use 'dh' for >10 hp,$chr(41)))
   var %msg %msg $+ : $dmg.breakdown($2,1)
   if ($dmg(%wep,atkbonus) == 0) { var %msg %msg (No $dmg(%wep,type) attack bonuses) }
-  elseif ($dmg(%wep,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each item up to +5: $dmg.breakdown($2,2) }
+  elseif ($dmg(%wep,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each extra item up to +4: $dmg.breakdown($2,2) }
   elseif ($dmg(%wep,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg(%wep,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg(%wep,type) == melee) { var %msg %msg $chr(124) Barrow gloves or Fire cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
