@@ -8,7 +8,7 @@ alias max {
   if ($1 == dh9) { tokenize 32 dh | var %dbdmg = $dmg($1, 3h) }
   var %dbhits = $dmg($1,hits)
   var %dbbonus = $dmg($1, atkbonus)
-  if (%dbbonus == n) { return $dmg.ratio(%dbhits,%dbdmg,0,1) $dmg.ratio(%dbhits,%dbdmg,5,1) }
+  if (%dbbonus == n) { return $dmg.ratio(%dbhits,%dbdmg,0,1) $dmg.ratio(%dbhits,%dbdmg,4,1) }
   elseif ($dmg($1,type) == range) {
     ;Normal Archer Ring _or_Accumulator Both
     return $dmg.ratio(%dbhits,%dbdmg,0,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,4,%dbbonus) $dmg.ratio(%dbhits,%dbdmg,8,%dbbonus)
