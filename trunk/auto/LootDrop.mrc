@@ -158,8 +158,7 @@ alias rundrops {
     }
     if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
-      if (%item == Vesta's longsword) { db.set equip_pvp vlong $2 + 5 | var %colour 03 }
-      elseif (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
+      if (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
       elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 | var %colour 03 }
       elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 | var %colour 03 }
       elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 | var %colour 03 }

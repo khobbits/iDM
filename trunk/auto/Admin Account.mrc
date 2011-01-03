@@ -175,7 +175,7 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
       var %table = equip_item
       var %item = $3
     }
-    else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/vlong/vspear/statius/mjavelin/cookies + !store items. | halt }
+    else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/snow/clue/vspear/statius/mjavelin/cookies + !store items. | halt }
     if (%sign == =) { db.set %table %item $2 $4 }
     else { db.set %table %item $2 %sign $4 }
     msgsafe $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.get(%table, %item, $2)
