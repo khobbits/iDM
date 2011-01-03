@@ -199,8 +199,9 @@ alias hit {
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
   var %atk $atkbonus($1,$2)
   if (%atk == n) { 
-    var %atk $hget($2,$1)
-    if (%atk > 4) { var %atk 5 }
+    var %atk $calc($hget($2,$1) - 1)
+    if (%atk > 4) { var %atk 4 }
+    if (%atk < 1) { var %atk 0 }
   }
   if ($dmg($1,defbonus) == 0) { var %def 1 }
   if (<iDM>* iswm $2) {
