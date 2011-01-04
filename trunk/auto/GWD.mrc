@@ -74,6 +74,7 @@ alias gwd.att {
   ;4 is chan
   ;5 is user string
   if (!$istok($hget($4,gwd.turn),$1,44)) { notice $1 $logo(GWD) You have already attacked | halt }
+  var %hits $dmg($3,hits) 
   if (($isgwd($3)) && ((%hits == N) || (%hits == 0))) {
     gwddamage $1 $2 $3 $4 $5
   }
