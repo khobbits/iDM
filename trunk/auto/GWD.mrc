@@ -72,12 +72,59 @@ alias gwd.att {
   ;2 is person attacked
   ;3 is weapon
   ;4 is chan
+  ;5 is user string
   if (!$istok($hget($4,gwd.turn),$1,44)) { notice $1 $logo(GWD) You have already attacked | halt }
-  damage $1 $2 $3 $4
+  if (($isgwd($3)) && ((%hits == N) || (%hits == 0))) {
+      gwddamge $1 $2 $3 $4 $5
+    }
+  }
+  else { damage $1 $2 $3 $4 }
   if ($hget($2,hp) < 1) { 
     dead $4 $2 $1
     halt 
   }
+}
+
+alias gwddamage {
+  ;1 is person attacking
+  ;2 is other person
+  ;3 is weapon
+  ;4 is chan
+  ;5 is user string
+  if ($4 == $null) { putlog Syntax Error: gwddamage (4) - $db.safe($1-) | halt }
+  var %hits $dmg($3,hits)
+  if (%hits == N) {
+    var %target $remtok($hget($4,players),$1,1,44)
+    if ($numtok($hget($4,players),44) < 1) { notice $1 $logo(GWD) Invalid target: there are no other players in this GWD. | halt }
+  }
+  elseif (%hits == 0) {
+    var %target $5
+    if (!$findtok($hget($4,players),%target,44)) { notice $1 $logo(GWD) Invalid target: %target is not in this GWD. | halt }
+  }  
+  else { putlog Syntax Error: gwddamage (4) - $db.safe($1-) - Parameter 3 Invalid: Not GWD attack | halt }
+ 
+  var %hit $hit($3,$1,$2,$4)
+  var %x = 1
+  while (%x <= $numtok(%target,44)) {
+    var %px $gettok(%target,%x,44)       
+    var %hp1 $hget(%px,hp)
+    var %mhp1 $hget(%px,mhp)
+    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+    hadd %px hp %hp1 
+    
+    if ($numtok(%target,44) < 5) { var %h %h $s1(%px) $remove($hpbar($hget(%px,hp),$hget(%px,mhp)),HP) }
+    else { var %h %h $s1(%px) $remove($hpbar2($hget(%px,hp),$hget(%px,mhp)),HP) }
+    inc %x
+  }
+   
+  if ($numtok(%target,44) != 1) {
+    msgsafe $chan $logo(GWD) $s1($1) heals %target %hit HP.
+  }
+  else {
+    var %target $1 $+ , $+ %target
+    msgsafe $chan $logo(GWD) $s1($1) heals erveryone %hit HP.
+    notice %target $logo(GWD) HP: %h  
+  } 
 }
 
 alias gwd.turn {

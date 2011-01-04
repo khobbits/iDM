@@ -34,8 +34,10 @@ alias dmg.ratio {
   var %hits
   var %i = 0
   while (%i < $numtok($1,45)) {
+    var %hit $gettok($1,%i,45)
+    if (%hit < 1) { var %hit 1 } 
     inc %i
-    var %hits $iif(%hits,%hits $+ -) $+ $ceil($calc(($2 + ($3 * $4)) / $gettok($1,%i,45)))
+    var %hits $iif(%hits,%hits $+ -) $+ $ceil($calc(($2 + ($3 * $4)) / %hit))
   }
   return %hits
 }
@@ -44,6 +46,7 @@ alias dmg.ratio {
 
 alias attack { return $iif($dmg($1,name),$true,$false) }
 alias ispvp { return $iif($dmg($1,pvp),$true,$false) }
+alias isgwd { return $iif($dmg($1,gwd),$true,$false) }
 alias isweapon {
   var %wep $dmg($1,item)
   return $iif(%wep,%wep,$false)
@@ -76,6 +79,7 @@ alias dmg.hload {
     hadd >weapon $hget(>row, weapon) $+ .3h $gettok($hget(>row, high),2,44)
     hadd >weapon $hget(>row, weapon) $+ .hits $hget(>row, hits)
     hadd >weapon $hget(>row, weapon) $+ .type $hget(>row, type)
+    hadd >weapon $hget(>row, weapon) $+ .gwd $hget(>row, gwd)
     hadd >weapon $hget(>row, weapon) $+ .atkbonus $hget(>row, atkbonus)
     hadd >weapon $hget(>row, weapon) $+ .defbonus $hget(>row, defbonus)
     hadd >weapon $hget(>row, weapon) $+ .spec $hget(>row, spec)
@@ -199,7 +203,7 @@ alias hit {
   var %def $iif($hget($3,elshield),$calc($r(90,98) / 100),1)
   var %atk $atkbonus($1,$2)
   if (%atk == n) { 
-    var %atk $calc($hget($2,$1) - 1)
+    var %atk $calc($hget($2,$dmg($1,item)) - 1)
     if (%atk > 4) { var %atk 4 }
     if (%atk < 1) { var %atk 0 }
   }
@@ -229,8 +233,9 @@ on $*:TEXT:/^[!@.]max/Si:#: {
   var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),use 'dh9' for <10 hp,$chr(41)))
   var %msg %msg $+ $iif($2 == dh9,$+($chr(32),$chr(40),use 'dh' for >10 hp,$chr(41)))
-  var %msg %msg $+ : $dmg.breakdown($2,1)
-  if ($dmg(%wep,atkbonus) == 0) { var %msg %msg (No $dmg(%wep,type) attack bonuses) }
+  var %msg %msg $+ : $dmg.breakdown($2,1) ( $+ $dmg(%wep,type) $+ )
+  if ($dmg(%wep,gwd) == 0) { var %msg %msg $chr(124) GWD only attack }
+  elseif ($dmg(%wep,atkbonus) == 0) { var %msg %msg $chr(124) No item bonuses }
   elseif ($dmg(%wep,atkbonus) == n) { var %msg %msg $chr(124) +1 damage for each extra item up to +4: $dmg.breakdown($2,2) }
   elseif ($dmg(%wep,type) == range) { var %msg %msg $chr(124) Archer Ring or Accumulator $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
   elseif ($dmg(%wep,type) == magic) { var %msg %msg $chr(124) Mage Book or God Cape $dmg.breakdown($2,2) $chr(124) Two bonuses $dmg.breakdown($2,3) }
@@ -256,6 +261,13 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
 
   db.hget >hitchance equip_armour $nick
   var %atk = $atkbonus(%wep,>hitchance), %hits = $dmg(%wep,hits), %targets = 1, %i = 1, %l = 0
+  
+  if (%atk == n) { 
+    var %atk $calc($hget(>hitchance,$dmg(%wep,item)) - 1)
+    if (%atk > 4) { var %atk 4 }
+    if (%atk < 1) { var %atk 0 }
+  }
+  
   while (%i < $numtok(%hits,45)) {
     inc %i
     if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }

@@ -27,6 +27,10 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       }
     }
     elseif ($attack(%attcmd)) {
+       if (!$hget($chan,gwd.time) && $isgwd(%attcmd)) {
+        notice $nick $logo(ERROR) You can't use this attack outside of GWD.
+        halt
+      }
       if ($hget($chan,gwd.npc) == armadyl && $dmg(%attcmd,type) == melee) {
         notice $nick $logo(ERROR) You can't use a melee based attack on Armadyl.
         halt
@@ -57,7 +61,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       .timerc $+ $chan off
       set -u25 %enddm [ $+ [ $chan ] ] 0
       if ($hget($chan,gwd.time)) {
-        gwd.att $nick <gwd> $+ $chan %attcmd $chan
+        gwd.att $nick <gwd> $+ $chan %attcmd $chan $2
       }
       elseif (!$hget($chan,gwd.time)) {
         damage $nick %p2 %attcmd #
