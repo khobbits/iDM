@@ -116,13 +116,14 @@ alias gwddamage {
     var %px $gettok(%y,%x,44)       
     var %hp1 $hget(%px,hp)
     var %mhp1 $hget(%px,mhp)
-    if (%mhp1 > %hp1) { var %healed 1 }
+    if (%mhp1 > %hp1) { 
+      var %healed 1    
+      $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
+      hadd %px hp %hp1 
+      if ($numtok(%target,44) < 5) { var %h %h $s1(%px) $remove($hpbar($hget(%px,hp),$hget(%px,mhp)),HP) }
+      else { var %h %h $s1(%px) $remove($hpbar2($hget(%px,hp),$hget(%px,mhp)),HP) }
+    }
     else { var %target $remtok(%target,%px,1,44) } 
-    $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
-    hadd %px hp %hp1 
-
-    if ($numtok(%target,44) < 5) { var %h %h $s1(%px) $remove($hpbar($hget(%px,hp),$hget(%px,mhp)),HP) }
-    else { var %h %h $s1(%px) $remove($hpbar2($hget(%px,hp),$hget(%px,mhp)),HP) }
     inc %x
   }
   if (!%healed) { notice $1 $logo(GWD) Invalid target: $iif($numtok(%target,44) == 1,Player has,All Players have) full HP. | halt }
