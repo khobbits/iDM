@@ -111,12 +111,13 @@ alias gwddamage {
   if ($hget($4,gwd.healed) == 1) {  notice $1 $logo(GWD) A healing attack has already been used this round. | halt }
   
   var %hit $hit($3,$1,$2,$4)
-  var %x = 1
-  while (%x <= $numtok(%target,44)) {
-    var %px $gettok(%target,%x,44)       
+  var %x = 1, %y = %target
+  while (%x <= $numtok(%y,44)) {
+    var %px $gettok(%y,%x,44)       
     var %hp1 $hget(%px,hp)
     var %mhp1 $hget(%px,mhp)
-    if (%mhp1 > %hp1) { var %healed 1 } 
+    if (%mhp1 > %hp1) { var %healed 1 }
+    else { var %target $remtok(%target,%px,1,44) } 
     $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
     hadd %px hp %hp1 
 
