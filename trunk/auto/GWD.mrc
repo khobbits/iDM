@@ -116,14 +116,13 @@ alias gwddamage {
     inc %x
   }
 
-  if ($numtok(%target,44) != 1) {
-    msgsafe $chan $logo(GWD) $s1($1) heals %target %hit HP.
-  }
-  else {
+  msgsafe $4 $logo(GWD) $s1($autoidm.nick($1)) $replace($dmg($3,what),$eval(%p2%,0),$s1(%target),$eval(%attack%,0),$dmg($3,name))
+  if ($numtok(%target,44) > 1) {
     var %target $1 $+ , $+ %target
-    msgsafe $chan $logo(GWD) $s1($1) heals erveryone %hit HP.
     notice %target $logo(GWD) HP: %h  
   } 
+
+    
 }
 
 alias gwd.turn {
