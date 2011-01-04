@@ -198,7 +198,7 @@ alias entrymsgsafe {
   return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
 }
 alias botnews {
-  return News: LOTS of updates visit http://r.iDM-bot.com/v3
+  return News: GWD Updates: http://r.iDM-bot.com/1757 & Big Attack Updates: http://r.iDM-bot.com/1755 
 }
 
 alias bottag {
