@@ -41,7 +41,7 @@ alias gwd.npcatt {
     var %att $hget($1,gwd.npc)
   }
   ;hits
-  damage <gwd> $+ $1 %p2 $hget($1,gwd.npc) $1
+  damage <gwd> $+ $1 %p2 %att $1
   if ($hget(%p2,hp) < 1) {
     if ($numtok($hget($1,players),44) > 1) {
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
