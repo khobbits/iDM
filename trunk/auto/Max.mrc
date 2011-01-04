@@ -35,7 +35,7 @@ alias dmg.ratio {
   var %i = 0
   while (%i < $numtok($1,45)) {
     var %hitp $gettok($1,%i,45)
-    if (%hitp < 1) { var %hitp 1 } 
+    if ((%hitp < 1) || (%hitp == n)) { var %hitp 1 } 
     inc %i
     var %hits $iif(%hits,%hits $+ -) $+ $ceil($calc(($2 + ($3 * $4)) / %hitp))
   }
@@ -176,7 +176,7 @@ alias hitdmg {
   while (%i < $numtok($3,45)) {
     inc %i
     var %hitp $gettok($3,%i,45)
-    if (%hitp < 1) { var %hitp 1 } 
+    if ((%hitp < 1) || (%hitp == n)) { var %hitp 1 }    
     if (%hitp == 1) {
       var %dmg = $rand($dmg($1,%ndmg $+ l),$calc($dmg($1,%ndmg $+ h) + $4)))
       var %dmg = $ceil($calc(%dmg * $5))
