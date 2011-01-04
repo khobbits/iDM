@@ -99,6 +99,7 @@ alias gwddamage {
   }
   elseif (%hits == 0) {
     var %target $5
+    if (%target == $1) { notice $1 $logo(GWD) Invalid target: You cannot heal yourself. | halt }
     if (!$findtok($hget($4,players),%target,44)) { notice $1 $logo(GWD) Invalid target: %target is not in this GWD. | halt }
   }  
   else { putlog Syntax Error: gwddamage (4) - $db.safe($1-) - Parameter 3 Invalid: Not GWD attack | halt }
