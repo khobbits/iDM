@@ -109,6 +109,7 @@ alias gwddamage {
     var %px $gettok(%target,%x,44)       
     var %hp1 $hget(%px,hp)
     var %mhp1 $hget(%px,mhp)
+    if (%mhp1 > %hp1) { var %healed 1 } 
     $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
     hadd %px hp %hp1 
 
@@ -116,12 +117,16 @@ alias gwddamage {
     else { var %h %h $s1(%px) $remove($hpbar2($hget(%px,hp),$hget(%px,mhp)),HP) }
     inc %x
   }
-
-  msgsafe $4 $logo(GWD) $s1($autoidm.nick($1)) $replace($dmg($3,what),$eval(%p2%,0),$s1(%target),$eval(%attack%,0),$dmg($3,name))
+  if (!%healed) { notice $1 $logo(GWD) Invalid target: $iif($numtok(%target,44) == 1,Player has,All Players have) full HP. | halt }
+  var %msg $logo(GWD) $s1($autoidm.nick($1)) $replace($dmg($3,what),$eval(%p2%,0),$s1(%target),$eval(%attack%,0),$dmg($3,name)) by up to %hit HP
   if ($numtok(%target,44) > 1) {
+    msgsafe $4 %msg
     var %target $1 $+ , $+ %target
     notice %target $logo(GWD) HP: %h  
   } 
+  else {
+    msgsafe $4 %msg - $s1(%target) $hpbar($hget(%target,hp),$hget(%target,mhp))
+  }
 
     
 }
