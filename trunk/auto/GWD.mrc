@@ -24,7 +24,8 @@ alias gwd.init {
   hadd <gwd> $+ $1 hp $gwd.hp($numtok($hget($1,players),44))
   hadd <gwd> $+ $1 mhp $gwd.hp($numtok($hget($1,players),44))
   hadd <gwd> $+ $1 npc 1
-  hadd $1 gwd.time $ctime
+  hadd $1 gwd.time $ctime 
+  hadd $1 gwd.healed 0
   msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,gwd.npc)),.) Everyone make their attacks, $s1($hget($1,gwd.npc)) will hit in $+($s2(30 seconds),.)
   .timer $+ $1 1 30 gwd.npcatt $1
 }
@@ -33,9 +34,11 @@ alias gwd.npcatt {
   ; $1 = chan
   if ($numtok($hget($1,gwd.turn),44) >= 1) {
     var %p2 $gettok($hget($1,gwd.turn),1,44)
+    var %att smite
   }
   else {
-    var %p2 = $gettok($hget($1,players),$r(1,$numtok($hget($1,players),44)),44)
+    var %p2 $gettok($hget($1,players),$r(1,$numtok($hget($1,players),44)),44)
+    var %att $hget($1,gwd.npc)
   }
   ;hits
   damage <gwd> $+ $1 %p2 $hget($1,gwd.npc) $1
@@ -63,6 +66,7 @@ alias gwd.npcatt {
   }
   else {
     hadd $1 gwd.turn $hget($1,players)
+    hadd $1 gwd.healed 0
     .timer $+ $1 1 30 gwd.npcatt $1
   }
 }
@@ -103,7 +107,9 @@ alias gwddamage {
     if (!$findtok($hget($4,players),%target,44)) { notice $1 $logo(GWD) Invalid target: %target is not in this GWD. | halt }
   }  
   else { putlog Syntax Error: gwddamage (4) - $db.safe($1-) - Parameter 3 Invalid: Not GWD attack | halt }
-
+  
+  if ($hget($4,gwd.healed) == 1) {  notice $1 $logo(GWD) A healing attack has already been used this round. | halt }
+  
   var %hit $hit($3,$1,$2,$4)
   var %x = 1
   while (%x <= $numtok(%target,44)) {
@@ -119,6 +125,7 @@ alias gwddamage {
     inc %x
   }
   if (!%healed) { notice $1 $logo(GWD) Invalid target: $iif($numtok(%target,44) == 1,Player has,All Players have) full HP. | halt }
+  hadd $4 gwd.healed 1
   var %msg $logo(GWD) $s1($autoidm.nick($1)) $replace($dmg($3,what),$eval(%p2%,0),$s1(%target),$eval(%attack%,0),$dmg($3,name)) by up to %hit HP
   if ($numtok(%target,44) > 1) {
     msgsafe $4 %msg
