@@ -75,8 +75,7 @@ alias gwd.att {
   ;5 is user string
   if (!$istok($hget($4,gwd.turn),$1,44)) { notice $1 $logo(GWD) You have already attacked | halt }
   if (($isgwd($3)) && ((%hits == N) || (%hits == 0))) {
-      gwddamge $1 $2 $3 $4 $5
-    }
+    gwddamage $1 $2 $3 $4 $5
   }
   else { damage $1 $2 $3 $4 }
   if ($hget($2,hp) < 1) { 
@@ -102,7 +101,7 @@ alias gwddamage {
     if (!$findtok($hget($4,players),%target,44)) { notice $1 $logo(GWD) Invalid target: %target is not in this GWD. | halt }
   }  
   else { putlog Syntax Error: gwddamage (4) - $db.safe($1-) - Parameter 3 Invalid: Not GWD attack | halt }
- 
+
   var %hit $hit($3,$1,$2,$4)
   var %x = 1
   while (%x <= $numtok(%target,44)) {
@@ -111,12 +110,12 @@ alias gwddamage {
     var %mhp1 $hget(%px,mhp)
     $iif($calc($floor(%hp1) + $floor($calc(%hit / $gettok($healer($3),2,32)))) > %mhp1,set %hp1 %mhp1,inc %hp1 $floor($calc(%hit / $gettok($healer($3),2,32))))
     hadd %px hp %hp1 
-    
+
     if ($numtok(%target,44) < 5) { var %h %h $s1(%px) $remove($hpbar($hget(%px,hp),$hget(%px,mhp)),HP) }
     else { var %h %h $s1(%px) $remove($hpbar2($hget(%px,hp),$hget(%px,mhp)),HP) }
     inc %x
   }
-   
+
   if ($numtok(%target,44) != 1) {
     msgsafe $chan $logo(GWD) $s1($1) heals %target %hit HP.
   }
