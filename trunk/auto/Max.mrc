@@ -34,10 +34,11 @@ alias dmg.ratio {
   var %hits
   var %i = 0
   while (%i < $numtok($1,45)) {
-    var %hitp $gettok($1,%i,45)
-    if ((%hitp < 1) || (%hitp == n)) { var %hitp 1 } 
     inc %i
+    var %hitp $gettok($1,%i,45)
+    if ((%hitp < 1) || (%hitp == n)) { var %hitp 1 }    
     var %hits $iif(%hits,%hits $+ -) $+ $ceil($calc(($2 + ($3 * $4)) / %hitp))
+    ;msg #idm.dev debug:     var hits $iif(%hits,%hits $+ -) ceil(  calc(( $2 + ( $3 * $4 )) / %hitp ))
   }
   return %hits
 }
@@ -263,13 +264,13 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
 
   db.hget >hitchance equip_armour $nick
   var %atk = $atkbonus(%wep,>hitchance), %hits = $dmg(%wep,hits), %targets = 1, %i = 1, %l = 0
-  
+
   if (%atk == n) { 
     var %atk $calc($hget(>hitchance,$dmg(%wep,item)) - 1)
     if (%atk > 4) { var %atk 4 }
     if (%atk < 1) { var %atk 0 }
   }
-  
+
   while (%i < $numtok(%hits,45)) {
     inc %i
     if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }
