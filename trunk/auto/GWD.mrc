@@ -245,7 +245,7 @@ alias autoidm.turn {
   hadd %nick frozen 0
   hadd $1 p1 %p2
   hadd $1 p2 %nick
-  .timerc $+ $1 1 60 autoidm.waiting $1
+  .timerc $+ $1 1 90 autoidm.waiting $1
 }
 
 alias autoidm.waiting {
