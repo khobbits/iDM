@@ -25,7 +25,7 @@ alias startdm {
   if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
   else { var %sitems 1 }
   if ($hget(%chan)) {
-    if ($numtok($hget(%chan,players),44) == 8) { notice %nick $logo(GWD) There are already $s1(8) people on this team. Please wait untill the raid is over. | halt }
+    if ($numtok($hget(%chan,players),44) == 6) { notice %nick $logo(GWD) There are already $s1(6) people on this team. Please wait untill the raid is over. | halt }
     if (($hget(%chan,stake)) && (stake !isin $1)) { notice %nick There is currently a stake, please type !stake to accept the challenge. | halt }
     if ($hget(%chan,stake)) {
       if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
@@ -42,7 +42,7 @@ alias startdm {
     elseif ($hget(%chan,gwd.npc)) {
       join.dm %chan %nick
       msgsafe %chan $logo(GWD) $s1(%nick) joined the group to go to $+($s1($hget(%chan,gwd.npc)),!) You've joined as $s2(Player $findtok($hget(%chan,players),%nick,1,44))
-      if ($timer(%chan).secs < 10) .timer $+ %chan 1 30 gwd.init %chan
+      if ($timer(%chan).secs < 10) .timer $+ %chan 1 20 gwd.init %chan
     }
     else {
       if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }

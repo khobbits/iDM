@@ -63,7 +63,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       if ($hget($chan,gwd.time)) {
         gwd.att $nick <gwd> $+ $chan %attcmd $chan $2
       }
-      elseif (!$hget($chan,gwd.time)) {
+      else {
         damage $nick %p2 %attcmd #
       }
     }

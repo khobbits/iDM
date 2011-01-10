@@ -33,6 +33,7 @@ on *:CONNECT: {
 alias botrefresh {
   dbcheck
   if ($hget(>weapon)) { hfree >weapon }
+  if ($hget(>gwd)) { hfree >gwd }
   if ($hget(>store)) { hfree >store }
   echo -s 4Clearing active dms
   db.clear user indm
