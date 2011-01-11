@@ -121,6 +121,7 @@ alias scanbots {
 
 on *:JOIN:#:{
   if ($nick == $me) {
+    who #
     if (%dolist [ $+ [ # ] ]) && ($numtok(%dolist [ $+ [ # ] ],32) == 2) { unset %dolist [ $+ [ # ] ] }
     if (%forcedj. [ $+ [ # ] ]) {
       unset %forcedj. [ $+ [ # ] ]

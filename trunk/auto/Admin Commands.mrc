@@ -13,8 +13,13 @@ on $*:TEXT:/^[!@.]jgwd/Si:#: {
   tokenize 32 $1- $nick
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     if (!$hget($chan,gwd.time)) { notice $nick $logo(ERROR) There is no current GWD in $chan | halt }
+    if ($2 !ison $chan) { notice $nick $logo(ERROR) $2 is not on $chan | halt }
+    if ($findtok($hget($chan,players),$2,44)) { notice $nick $logo(ERROR) $2 is already in this dm | halt }
+    if ($db.get(user,wins,$2) < 1) { notice $nick $logo(ERROR) $2 is not a valid iDM account | halt }
+    if ($islogged($2,$gettok($address($2,0),2,33),0) == 0) { notice $nick $logo(ERROR) $2 is not logged in | halt }  
     join.dm $chan $2
     init.player $2 $chan 1
+    msg $chan $logo(GWD) $s2($2) bursts in and joins the GWD.
   }
 }
 
