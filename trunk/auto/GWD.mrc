@@ -46,12 +46,11 @@ alias gwd.npc {
     }
     inc %i
   }
-  echo -a %gwd - %gwdalt - $numtok(%gwd,32)
   if ($wildtok(%gwd,$1 $+ *,0,32) > 0) {
-      return $wildtok(%gwd,$1 $+ *,1,32)
+    return $wildtok(%gwd,$1 $+ *,1,32)
   }
   elseif ($wildtok(%gwdalt,$1 $+ *,0,32) > 0) {
-      return $gettok(%gwd,$findtok(%gwdalt,$wildtok(%gwdalt,$1 $+ *,1,32),1,32),32)
+    return $gettok(%gwd,$findtok(%gwdalt,$wildtok(%gwdalt,$1 $+ *,1,32),1,32),32)
   } 
   else {
     return $gettok(%gwd,$r(1,$numtok(%gwd,32)),32)
@@ -79,7 +78,6 @@ alias gwd.init {
   ; $1 = chan
   ; $2 = reinit
   hadd $1 gwd.plist $hget($1,players)
-  echo -a running gwd.init and resetting players to  $hget($1,players)
   hadd $1 gwd.turn $hget($1,players)
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %e = $hget($1,players), %x = 1
@@ -94,7 +92,7 @@ alias gwd.init {
       ;hadd %px sp $calc($hget(%px,sp) + 2)
       ;if ($hget(%px,sp) > 4) hadd %px sp 4 
     }
-    
+
     inc %x
   }
   init.player <gwd> $+ $1 $1 0
