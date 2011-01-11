@@ -27,7 +27,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       }
     }
     elseif ($attack(%attcmd)) {
-       if (!$hget($chan,gwd.time) && $isgwd(%attcmd)) {
+      if (!$hget($chan,gwd.time) && $isgwd(%attcmd)) {
         notice $nick $logo(ERROR) You can't use this attack outside of GWD.
         halt
       }
@@ -85,7 +85,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
     }
     if ($specused(%attcmd)) {
       hdec $nick sp $dmg(%attcmd,spec)
-      notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$gettok(25 50 75 100,$hget($nick,sp),32)) $+ $chr(37)
+      notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
     }
     if (!$hget($chan,gwd.time)) {
       hadd $nick frozen 0

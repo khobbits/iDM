@@ -109,7 +109,7 @@ alias status {
     while (%x <= $gettok(%e,0,44)) {
       var %o $gettok(%e,%x,44)
       var %hp %hp $s1(%o) $s2($hget(%o,hp))
-      var %sp %sp $s1(%o)) $s2($iif($hget(%o,sp) < 1,0,$gettok(25 50 75 100,$hget(%o,sp),32)) $+ $chr(37)))
+      var %sp %sp $s1(%o)) $s2($iif($hget(%o,sp) < 1,0,$calc(25 * $hget(%o,sp))) $+ $chr(37)))
       inc %x
     }
     return HP: $s1(%m) $s2($hget(<gwd> $+ $chan,hp)) %hp Special Bar: %sp
@@ -118,7 +118,7 @@ alias status {
     var %p1 = $hget($1,p1), %p2 = $hget($1,p2)
     var %turn Turn: $s1(%p1) $+ 's
     var %hp HP: $s1(%p1) $s2($hget(%p1,hp)) $iif($hget(%p1,poison) >= 1,$+($chr(40),Pois $s2($v1),$chr(41))) $iif($hget(%p1,frozen),$+($chr(40),12Frozen,$chr(41))) $s1(%p2) $s2($hget(%p2,hp)) $iif($hget(%p2,poison) >= 1,$+($chr(40),Pois $s2($v1),$chr(41))) $iif($hget(%p2,frozen),$+($chr(40),12Frozen,$chr(41)))
-    var %specbar Special Bar: $s1(%p1) $s2($iif($hget(%p1,sp) < 1,0,$gettok(25 50 75 100,$hget(%p1,sp),32)) $+ $chr(37)) $s1(%p2) $s2($iif($hget(%p2,sp) < 1,0,$gettok(25 50 75 100,$hget(%p2,sp),32)) $+ $chr(37))
+    var %specbar Special Bar: $s1(%p1) $s2($iif($hget(%p1,sp) < 1,0,$calc(25 * $hget(%p1,sp))) $+ $chr(37)) $s1(%p2) $s2($iif($hget(%p2,sp) < 1,0,$calc(25 * $hget(%p2,sp))) $+ $chr(37))
     return $logo(STATUS) %turn %hp %specbar
   }
 }
