@@ -9,6 +9,15 @@ on $*:TEXT:/^[!@.]autoidm/Si:#: {
   }
 }
 
+on $*:TEXT:/^[!@.]jgwd/Si:#: {
+  tokenize 32 $1- $nick
+  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+    if (!$hget($chan,gwd.time)) { notice $nick $logo(ERROR) There is no current GWD in $chan | halt }
+    join.dm $chan $2
+    init.player $2 $chan 1
+  }
+}
+
 on $*:TEXT:/^[!@.]addsupport .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
