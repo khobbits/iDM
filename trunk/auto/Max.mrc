@@ -270,7 +270,6 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     if (%atk > 4) { var %atk 4 }
     if (%atk < 1) { var %atk 0 }
   }
-
   while (%i < $numtok(%hits,45)) {
     inc %i
     if ($gettok(%hits,%i,45) == 1) { inc %targets 1 }
