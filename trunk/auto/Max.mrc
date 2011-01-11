@@ -279,6 +279,7 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   var %target = $ceil( $calc($3 / %targets) ), %lowtop = $dmg(%wep, 1h), %midtop = $dmg(%wep, 2h), %hightop = $dmg(%wep, 3h), %lowchance = 0, %midchance = 0, %highchance = 0
   var %lowbchance = $calc(($dmg(%wep,0l)) /100), %midbchance = $calc(($dmg(%wep,0h) - $dmg(%wep,0l)) /100), %highbchance = $calc((100 - $dmg(%wep,0h)) /100)
   if ($2 == dh9) { var %lowbchance = 0, %midbchance = 0, %highbchance = 1 }
+  if ($2 == dh) { var %lowbchance = 1, %midbchance = 0, %highbchance = 0 }
   while (%l < 2) {
     if (%target <= %lowtop) { var %lowchance = $calc(((%lowtop - %target +1) / (%lowtop - $dmg(%wep, 1l) +1 )) * %lowbchance) }
     if (%target <= $dmg(%wep, 1l)) { var %lowchance = %lowbchance }
