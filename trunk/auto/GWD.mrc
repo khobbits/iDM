@@ -11,6 +11,9 @@ alias gwd.hload {
     hadd >gwd $hget(>row, user) $+ .name $hget(>row, name)
     hadd >gwd $hget(>row, user) $+ .alt $hget(>row, alt)
     hadd >gwd $hget(>row, user) $+ .weapon $hget(>row, weapon)
+    hadd >gwd $hget(>row, user) $+ .nomelee $hget(>row, nomelee)
+    hadd >gwd $hget(>row, user) $+ .norange $hget(>row, norange)
+    hadd >gwd $hget(>row, user) $+ .nomagic $hget(>row, nomagic)
     hadd >gwd $hget(>row, user) $+ .next $hget(>row, next)
     hadd >gwd $hget(>row, user) $+ .disabled $hget(>row, disabled)
     hadd >gwd $hget(>row, user) $+ .hp $hget(>row, hp)
@@ -80,10 +83,18 @@ alias gwd.init {
   hadd $1 gwd.turn $hget($1,players)
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %e = $hget($1,players), %x = 1
-  while ((%x <= $gettok(%e,0,44)) && (!$2)) {
+  while (%x <= $gettok(%e,0,44)) {
     ;loop through players and init them
-    init.player $gettok(%e,%x,44) $1 1
-    hadd $gettok(%e,%x,44) g $hget($1,gwd.npc)
+    var %px $gettok(%e,%x,44)
+    if (!$2) {
+      init.player %px $1 1
+      hadd %px g $hget($1,gwd.npc)
+    }
+    else {
+      ;hadd %px sp $calc($hget(%px,sp) + 2)
+      ;if ($hget(%px,sp) > 4) hadd %px sp 4 
+    }
+    
     inc %x
   }
   init.player <gwd> $+ $1 $1 0
@@ -92,8 +103,8 @@ alias gwd.init {
   hadd <gwd> $+ $1 npc 1
   hadd $1 gwd.time $ctime 
   hadd $1 gwd.healed 0
-  if ($2) msgsafe $1 $logo(GWD) Appearing over the corpse spawns $+($s1($gwd.hget($hget($1,gwd.npc),name)),.) Everyone make their attacks, $s1($gwd.hget($hget($1,gwd.npc),name)) will hit in $+($s2(30 seconds),.) 
-  else msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,gwd.npc)),.) Everyone make their attacks, $s1($gwd.hget($hget($1,gwd.npc),name)) will hit in $+($s2(30 seconds),.)
+  if ($2) msgsafe $1 $logo(GWD) Appearing over the corpse spawns $+($s1($gwd.hget($hget($1,gwd.npc),name)),.) Everyone make your attacks, $s1($gwd.hget($hget($1,gwd.npc),name)) will hit in $+($s2(30 seconds),.) 
+  else msgsafe $1 $logo(GWD) $lower($1) is ready to raid $+($s1($hget($1,gwd.npc)),.) Everyone make your attacks, $s1($gwd.hget($hget($1,gwd.npc),name)) will hit in $+($s2(30 seconds),.)
   .timer $+ $1 1 30 gwd.npcatt $1
 }
 

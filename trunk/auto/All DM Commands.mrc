@@ -31,8 +31,16 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         notice $nick $logo(ERROR) You can't use this attack outside of GWD.
         halt
       }
-      if ($hget($chan,gwd.npc) == armadyl && $dmg(%attcmd,type) == melee) {
-        notice $nick $logo(ERROR) You can't use a melee based attack on Armadyl.
+      if ($gwd.hget($hget($chan,gwd.npc),nomelee)) && ($dmg(%attcmd,type) == melee) {
+        notice $nick $logo(ERROR) You can't use a melee based attack against $gwd.hget($hget($chan,gwd.npc),name) $+ .
+        halt
+      }
+      if ($gwd.hget($hget($chan,gwd.npc),nomagic)) && ($dmg(%attcmd,type) == magic) {
+        notice $nick $logo(ERROR) You can't use a magic based attack against $gwd.hget($hget($chan,gwd.npc),name) $+ .
+        halt
+      }
+      if ($gwd.hget($hget($chan,gwd.npc),norange)) && ($dmg(%attcmd,type) == range) {
+        notice $nick $logo(ERROR) You can't use a range based attack against $gwd.hget($hget($chan,gwd.npc),name) $+ .
         halt
       }
       if ($dmg(%attcmd,spec) > $hget($nick,sp)) {
