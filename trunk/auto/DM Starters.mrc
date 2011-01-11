@@ -125,6 +125,7 @@ alias init.player {
   var %result = $db.query(%sql)
   if ($db.query_row(%result,$1) === $null) { echo -a Error: Failure to find player. }
   db.query_end %result
+  if (!$hget($1)) { putlog Data Error: init.player - hashtable empty - %sql | cancel $2 | halt }
   hadd $1 account $1
   hadd $1 chan $2
   hadd $1 hp 99

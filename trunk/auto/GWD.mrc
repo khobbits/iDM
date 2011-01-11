@@ -76,6 +76,7 @@ alias gwd.init {
   ; $1 = chan
   ; $2 = reinit
   hadd $1 gwd.plist $hget($1,players)
+  echo -a running gwd.init and resetting players to  $hget($1,players)
   hadd $1 gwd.turn $hget($1,players)
   set -u25 %enddm [ $+ [ $1 ] ] 0
   var %e = $hget($1,players), %x = 1
@@ -151,9 +152,9 @@ alias gwd.att {
   else { damage $1 $2 $3 $4 }
   if ($hget($2,hp) < 1) { 
     if ($gwd.hget($hget($4,gwd.npc),next)) {
-      hadd $4 gwd.npc $v1
-      
-      gwd.init $4 $2   
+      hadd $4 gwd.npc $v1     
+      gwd.init $4 $2
+      halt   
     }
     else {
       dead $4 $2 $1
