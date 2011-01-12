@@ -70,31 +70,32 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       .timercw $+ $chan off
       .timerc $+ $chan off
       set -u25 %enddm [ $+ [ $chan ] ] 0
+      if ($specused(%attcmd)) {
+        hdec $nick sp $dmg(%attcmd,spec)
+      }
       if ($hget($chan,gwd.time)) {
         gwd.att $nick <gwd> $+ $chan %attcmd $chan $2
       }
       else {
         damage $nick %p2 %attcmd #
       }
+      if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
+        if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
+        dead $chan %p2 $nick
+        halt
+      }
+      if ($specused(%attcmd)) {
+        notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
+      }
+      if (!$hget($chan,gwd.time)) {
+        hadd $nick frozen 0
+        hadd $chan p1 %p2
+        hadd $chan p2 $nick
+      }
+      else { gwd.turn $nick $chan }
+      if (<iDM>* iswm %p2) { autoidm.turn $chan }
+      return
     }
-    else { halt }
-    if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
-      if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
-      dead $chan %p2 $nick
-      halt
-    }
-    if ($specused(%attcmd)) {
-      hdec $nick sp $dmg(%attcmd,spec)
-      notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
-    }
-    if (!$hget($chan,gwd.time)) {
-      hadd $nick frozen 0
-      hadd $chan p1 %p2
-      hadd $chan p2 $nick
-    }
-    else { gwd.turn $nick $chan }
-    if (<iDM>* iswm %p2) { autoidm.turn $chan }
-    return
   }
 }
 alias damage {
