@@ -46,13 +46,14 @@ alias gwd.npc {
     }
     inc %i
   }
-  if ($wildtok(%gwd,$1 $+ *,0,32) > 0) {
+  if (($1) && ($wildtok(%gwd,$1 $+ *,0,32) > 0)) {
     return $wildtok(%gwd,$1 $+ *,1,32)
   }
-  elseif ($wildtok(%gwdalt,$1 $+ *,0,32) > 0) {
+  elseif (($1) && ($wildtok(%gwdalt,$1 $+ *,0,32) > 0)) {
     return $gettok(%gwd,$findtok(%gwdalt,$wildtok(%gwdalt,$1 $+ *,1,32),1,32),32)
   } 
   else {
+    echo -a asdasda
     return $gettok(%gwd,$r(1,$numtok(%gwd,32)),32)
   }
 }
