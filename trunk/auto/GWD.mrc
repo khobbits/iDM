@@ -53,7 +53,6 @@ alias gwd.npc {
     return $gettok(%gwd,$findtok(%gwdalt,$wildtok(%gwdalt,$1 $+ *,1,32),1,32),32)
   } 
   else {
-    echo -a asdasda
     return $gettok(%gwd,$r(1,$numtok(%gwd,32)),32)
   }
 }
