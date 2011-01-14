@@ -16,7 +16,7 @@ on $*:TEXT:/^[!@.]part/Si:#: {
 on *:PART:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
-    part # Parting channel. Need 5 or more people to have iDM.
+    part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($nick == $me) { cancel # }
   if ($istok($hget($chan,players),$nick,44))  {
@@ -27,7 +27,7 @@ on *:PART:#: {
 on *:QUIT: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
-    part # Parting channel. Need 5 or more people to have iDM.
+    part # Parting channel. Need 5 or more people to have iDM.
   }
   var %a 1
   while (%a <= $chan(0)) {
@@ -41,7 +41,7 @@ on *:QUIT: {
 on *:KICK:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
-    part # Parting channel. Need 5 or more people to have iDM.
+    part # Parting channel. Need 5 or more people to have iDM.
   }
   if ($knick == $me) {
     if (. !isin $nick) {

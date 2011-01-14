@@ -3,7 +3,7 @@ on $*:TEXT:/^[!@.]money/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $money($2) $clan($2) $s1(Profile) $+ : http://iDM-bot.com/u/ $+ $webstrip($2,1) 
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $money($2) $clan($2) $s1(Profile) $+ : http://idm-bot.com/u/ $+ $webstrip($2,1) 
 }
 
 on $*:TEXT:/^[!@.]equip/Si:#: {

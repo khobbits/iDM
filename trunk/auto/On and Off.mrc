@@ -179,17 +179,17 @@ alias cmdsplit {
 on $*:TEXT:/^[!@.](dm)?site$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's website: $s2(http://iDM-bot.com/)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's website: $s2(http://idm-bot.com/)
 }
 
 on $*:TEXT:/^[!@.](dm)?rules$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.iDM-bot.com/rules)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's rules: $s2(http://r.idm-bot.com/rules)
 }
 
 on $*:TEXT:/^[!@.](dm)?forum$/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.iDM-bot.com)
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(DM-Link) iDM's forums: $s2(http://forum.idm-bot.com)
 }

@@ -102,7 +102,7 @@ raw 470:*: {
 
 alias limit5 {
   if ($no-part($1)) { halt }
-  if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %dolist [ $+ [ $1 ] ] | Halt }
+  if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %dolist [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msgsafe $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %dolist [ $+ [ $1 ] ]
 }
@@ -141,7 +141,7 @@ on *:JOIN:#:{
   else {
     if ($nick(#,0) < 5) && (!$no-part(#)) {
       cancel #
-      part # Parting channel. Need 5 or more people to have iDM.
+      part # Parting channel. Need 5 or more people to have iDM.
       return
     }
     if (# != #idm && # != $staffchan) || ($me == iDM) {
@@ -196,10 +196,10 @@ alias showtitle {
 alias idmstaff { if ($1 == invite) { msgsafe $staffchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
 
 alias entrymsgsafe {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.iDM-bot.com/ Rules: 12http://r.iDM-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
 }
 alias botnews {
-  return News: GWD Updates: http://r.iDM-bot.com/1757 & Big Attack Updates: http://r.iDM-bot.com/1755 
+  return News: GWD Updates: http://r.idm-bot.com/1757 & Big Attack Updates: http://r.idm-bot.com/1755 
 }
 
 alias bottag {
