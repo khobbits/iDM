@@ -26,7 +26,8 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         msgsafe $chan $logo($iif($hget($chan,gwd.time),GWD,DM)) $s1($nick) drinks their specpot and now has 100% special.
       }
     }
-    elseif ($attack(%attcmd)) {
+    elseif (!$attack(%attcmd)) { halt }
+    else {
       if (!$hget($chan,gwd.time) && $isgwd(%attcmd)) {
         notice $nick $logo(ERROR) You can't use this attack outside of GWD.
         halt
@@ -79,23 +80,23 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       else {
         damage $nick %p2 %attcmd #
       }
-      if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
-        if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
-        dead $chan %p2 $nick
-        halt
-      }
-      if ($specused(%attcmd)) {
-        notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
-      }
-      if (!$hget($chan,gwd.time)) {
-        hadd $nick frozen 0
-        hadd $chan p1 %p2
-        hadd $chan p2 $nick
-      }
-      else { gwd.turn $nick $chan }
-      if (<iDM>* iswm %p2) { autoidm.turn $chan }
-      return
     }
+    if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
+      if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
+      dead $chan %p2 $nick
+      halt
+    }
+    if ($specused(%attcmd)) {
+      notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
+    }
+    if (!$hget($chan,gwd.time)) {
+      hadd $nick frozen 0
+      hadd $chan p1 %p2
+      hadd $chan p2 $nick
+    }
+    else { gwd.turn $nick $chan }
+    if (<iDM>* iswm %p2) { autoidm.turn $chan }
+    return
   }
 }
 alias damage {
