@@ -123,6 +123,7 @@ alias gwd.npcatt {
       db.set user losses %p2 + 1
       pcancel $1 %p2
       hadd $1 gwd.turn $hget($1,players)
+      hadd $1 gwd.healed 0
       .timer $+ $1 1 30 gwd.npcatt $1
     }
     else {
