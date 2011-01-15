@@ -127,9 +127,9 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
 
 on $*:TEXT:/^[!@.]admin$/Si:#: {
   var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick)
-  var %admin addsupport-nick join-bot-chan rehash ignoresync amsg (show/rem)dm-nick define/increase/decrease-account-item-amount addsupport-nick cookie-nick-adjust
-  var %support chans active part-chan (r)suspend-nick (r)ignore-nick/host (r)blist-chan viewitems (give/take)item-nick whois-chan
-  var %helper cignore-nick/host csuspend-nick cblist-chan info-nick
+  var %admin autoidm-(on/off) jgwd-(nick) addsupport-nick addhelper-nick addvip-nick join-bot-chan rehash ignoresync amsg hax-(nick/-a) delete-nick cookie-nick-(adjust) define/increase/decrease-account-item-amount
+  var %support part-chan disable enable chans active whois-chan (show/rem)dm-nick (r)suspend-nick (r)ignore-nick/host (r)blist-chan  (give/take)item-nick 
+  var %helper info-nick cblist-chan cignore-nick/host csuspend-nick viewitems
   var %vip title
   if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
     %prefix $cmdformat(Admin,%admin) $cmdformat(Support,%support)

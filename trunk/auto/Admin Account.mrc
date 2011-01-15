@@ -1,6 +1,6 @@
 on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt }  }
+  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,$address($nick,3)) >= 2)) { halt }  }
   if ((#* !iswm $2) || (!$2)) { notice $nick Syntax !(c|r)bl <channel> [reason] | halt }
   if ((?bl* iswm $1) && ($3)) { if ($chan($2).status) { part $2 This channel has been blacklisted } }
   if ($me == iDM) {
@@ -25,7 +25,7 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
 
 on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:%staffchans: {
   if ($me != iDM) { halt }
-  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
+  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,$address($nick,3)) >= 2)) { halt }  }
   putlog perform banman $nick $chan $1 $iif($2-,$2-,$nick)
 }
 alias banman {
@@ -76,7 +76,7 @@ raw 302:*: {
 
 on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:%staffchans: {
   if ($me != iDM) { return }
-  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || $nick isreg $chan || $nick !ison $chan) { halt } }
+  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,$address($nick,3)) >= 2)) { halt }  }
   if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
   if ((?c* iswm $1) || (?r* iswm $1)) {
     db.hget >checkban ilist $2 who time reason
