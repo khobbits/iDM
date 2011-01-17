@@ -131,11 +131,11 @@ on $*:TEXT:/^[!@.]admin$/Si:#: {
   var %support part-chan disable enable chans active whois-chan (show/rem)dm-nick (r)suspend-nick (r)ignore-nick/host (r)blist-chan  (give/take)item-nick 
   var %helper info-nick cblist-chan cignore-nick/host csuspend-nick viewitems
   var %vip title
-  if ($db.get(admins,rank,$address($nick,3)) >= 3 && $me == iDM) {
-    %prefix $cmdformat(Admin,%admin) $cmdformat(Support,%support)
+  if ($db.get(admins,rank,$address($nick,3)) >= 4 && $me == iDM) {
+    %prefix $cmdformat(Admin,%admin) 
   }
   if ($db.get(admins,rank,$address($nick,3)) >= 1 && $me == iDM) {    
-    %prefix $cmdformat(Helper,%helper) $cmdformat(VIP,%vip)
+    %prefix $cmdformat(Support,%support) $cmdformat(Helper,%helper) $cmdformat(VIP,%vip)
   }
 }
 
