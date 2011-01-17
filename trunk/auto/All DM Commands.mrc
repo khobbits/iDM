@@ -33,6 +33,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         halt
       }
       if ($hget($chan,gwd.npc)) {
+        if (!$istok($hget($chan,gwd.turn),$nick,44)) { notice $nick $logo(GWD) You have already attacked | halt }
         if ($gwd.hget($hget($chan,gwd.npc),nomelee)) && ($dmg(%attcmd,type) == melee) {
           notice $nick $logo(ERROR) You can't use a melee based attack against $gwd.hget($hget($chan,gwd.npc),name) $+ .
           halt
