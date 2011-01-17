@@ -102,7 +102,7 @@ raw 470:*: {
 
 alias limit5 {
   if ($no-part($1)) { halt }
-  if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 5 or more is needed to have iDM join. | part $1 | unset %dolist [ $+ [ $1 ] ] | Halt }
+  if ($nick($1,0) < 5) { msgsafe $1 $logo(ERROR) $1 only has $nick($1,0) $iif($nick($1,0) == 1,person.,people.) 4 or more is needed to have iDM join. | part $1 | unset %dolist [ $+ [ $1 ] ] | Halt }
   if (!$1) || (!$2) { halt }
   msgsafe $1 $entrymsg($1,$2) | idmstaff invite $1 $2 | unset %dolist [ $+ [ $1 ] ]
 }
@@ -141,7 +141,7 @@ on *:JOIN:#:{
   else {
     if ($nick(#,0) < 5) && (!$no-part(#)) {
       cancel #
-      part # Parting channel. Need 5 or more people to have iDM.
+      part # Parting channel. Need 4 or more people to have iDM.
       return
     }
     if (# != #idm && # != $staffchan) || ($me == iDM) {

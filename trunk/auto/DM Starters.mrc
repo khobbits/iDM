@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.](dm|stake|gwd)\b/Si:#: {
+on $*:TEXT:/^[!@.](dm|stake|gwd|boss)\b/Si:#: {
   if (# == $supportchan) && ($nick !isop $chan) { halt }
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
@@ -67,7 +67,7 @@ alias startdm {
       msgsafe %chan $logo(DM) $s1(%nick) $winloss(%nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
       .timer $+ %chan 1 30 enddm %chan
     }
-    elseif (gwd isin $1) {
+    elseif ((gwd isin $1) || (boss isin $1)) {
       if ($isdisabled(%chan,gwd) === 1) { notice %nick $logo(ERROR) Godwars raiding in this channel has been disabled. | halt }
       hadd -m %chan gwd.npc $gwd.npc($2)
       join.dm %chan %nick
