@@ -61,13 +61,13 @@ alias gwd.hp {
   ; $1 = gwd
   ; $2 = number of players
   if ($gwd.hget($1,hp) == n) {            
-    return $calc(( 100 * $1 ) + ( 65 * $ceil($calc( $1 ^ 1.75 ) ) ) )
+    return $calc(( 100 * $2 ) + ( 65 * $ceil($calc( $2 ^ 1.75 ) ) ) )
   }
   elseif ($gwd.hget($1,hp) == n/2) {                              
-    return $calc(( 80 * $1 ) + ( 50 * $ceil($calc( $1 ^ 1.75 ) ) ) )      
+    return $calc(( 80 * $2 ) + ( 50 * $ceil($calc( $2 ^ 1.75 ) ) ) )      
   }
   elseif ($gwd.hget($1,hp) == n/3) {
-    return $calc(( 60 * $1 ) + ( 35 * $ceil($calc( $1 ^ 1.75 ) ) ) )   
+    return $calc(( 60 * $2 ) + ( 35 * $ceil($calc( $2 ^ 1.75 ) ) ) )   
   }
   else {
     return $gwd.hget($1,hp) 
