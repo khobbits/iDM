@@ -15,6 +15,7 @@ alias gwd.hload {
     hadd >gwd $hget(>row, user) $+ .norange $hget(>row, norange)
     hadd >gwd $hget(>row, user) $+ .nomagic $hget(>row, nomagic)
     hadd >gwd $hget(>row, user) $+ .next $hget(>row, next)
+    hadd >gwd $hget(>row, user) $+ .norand $hget(>row, norand)
     hadd >gwd $hget(>row, user) $+ .disabled $hget(>row, disabled)
     hadd >gwd $hget(>row, user) $+ .hp $hget(>row, hp)
     hadd >gwd $hget(>row, user) $+ .droprate $hget(>row, droprate)
@@ -41,6 +42,9 @@ alias gwd.npc {
   var %i 1
   while ($gwd.hget(list,%i)) {
     if (($dmg($gwd.hget(list,%i).weapon,item) == gwd) && ($gwd.hget(list,%i).disabled == 0)) {
+      if ($gwd.hget(list,%i).norand == 0) {
+        var %gwdr $addtok(%gwdr,$gwd.hget(list,%i),32)
+      }
       var %gwd $addtok(%gwd,$gwd.hget(list,%i),32)
       var %gwdalt $addtok(%gwdalt,$gwd.hget(list,%i).alt,32)
     }
@@ -53,7 +57,7 @@ alias gwd.npc {
     return $gettok(%gwd,$findtok(%gwdalt,$wildtok(%gwdalt,$1 $+ *,1,32),1,32),32)
   } 
   else {
-    return $gettok(%gwd,$r(1,$numtok(%gwd,32)),32)
+    return $gettok(%gwdr,$r(1,$numtok(%gwdr,32)),32)
   }
 }
 
