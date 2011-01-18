@@ -60,14 +60,14 @@ alias gwd.npc {
 alias gwd.hp {
   ; $1 = gwd
   ; $2 = number of players
-  if ($gwd.hget($1,hp) == n) {
-    return $calc(( 120 * $2 ) + ( 60 * $ceil($calc( $2 ^ 1.7 ) ) ) )
+  if ($gwd.hget($1,hp) == n) {            
+    return $calc(( 100 * $1 ) + ( 65 * $ceil($calc( $1 ^ 1.75 ) ) ) )
   }
-  elseif ($gwd.hget($1,hp) == n/2) {
-    return $calc(( 100 * $2 ) + ( 40 * $ceil($calc( $2 ^ 1.7 ) ) ) )
+  elseif ($gwd.hget($1,hp) == n/2) {                              
+    return $calc(( 80 * $1 ) + ( 50 * $ceil($calc( $1 ^ 1.75 ) ) ) )      
   }
   elseif ($gwd.hget($1,hp) == n/3) {
-    return $calc(( 80 * $2 ) + ( 20 * $ceil($calc( $2 ^ 1.7 ) ) ) )
+    return $calc(( 60 * $1 ) + ( 35 * $ceil($calc( $1 ^ 1.75 ) ) ) )   
   }
   else {
     return $gwd.hget($1,hp) 
