@@ -233,7 +233,7 @@ on $*:TEXT:/^[!@.]max/Si:#: {
     halt
   }
   if (!$max(%wep)) notice $nick $logo(ERROR) $s1($2) is not a recognized attack.
-  var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
+  var %msg $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(MAX) $upper($2) - $dmg(%wep,name) $iif($specused($2),$+($chr(32),$chr(40),$s1($v1 $+ $chr(37)),$chr(41)))
   var %msg %msg $+ $iif($2 == dh,$+($chr(32),$chr(40),use 'dh9' for <10 hp,$chr(41)))
   var %msg %msg $+ $iif($2 == dh9,$+($chr(32),$chr(40),use 'dh' for >10 hp,$chr(41)))
   var %msg %msg $+ : $dmg.breakdown($2,1) ( $+ $dmg(%wep,type) $+ )
@@ -293,5 +293,5 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
     inc %hightop %atk
     inc %l
   }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(HITCHANCE) $2 has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(HITCHANCE) $2 - $dmg(%wep,name) has $s2(%hitchance1 $+ %) chance of hitting $s1($3 $+ +) with your item bonus ( $+ %hitchance0 $+ % without).  Use !max $2 for attack details.
 }
