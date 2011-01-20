@@ -112,8 +112,8 @@ alias damage {
   var %mhp2 $hget($2,mhp)
   var %logo $iif($hget($4,gwd.time),GWD,DM)
   if ($3 == dh) {
-    if (%hp1 < 10) { var %hit $hit(dh_9,$1,$2,$4) }
-    else { var %hit $hit(dh_10,$1,$2,$4) }
+    if (%hp1 < 10) { var %hit $hit(dh=9,$1,$2,$4) }
+    else { var %hit $hit(dh=10,$1,$2,$4) }
   }
   else { var %hit $hit($3,$1,$2,$4) }
   var %i = 1

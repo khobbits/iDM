@@ -114,9 +114,9 @@ alias dmg {
   ; $1 = attack
   ; ?$2? = value
   if ($1 == $null) { putlog Syntax Error: dmg (1) - $db.safe($1-) | halt }
-  if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,95),$2),$prop)
-  if ($2 != $null) return $dmg.hget($gettok($1,1,95),$2)
-  if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,95),name),1,0)
+  if (($prop) && ($2 isnum)) return $dmg.hget($dmg.hget($gettok($1,1,61),$2),$prop)
+  if ($2 != $null) return $dmg.hget($gettok($1,1,61),$2)
+  if (($1 != $null) && ($1 != list)) return $iif($dmg.hget($gettok($1,1,61),name),1,0)
   return $hget(>weapon,list)
 
 }
@@ -168,8 +168,8 @@ alias hitdmg {
   ; $4 = attack bonus
   ; $5 = defense bonus
   if ($5 == $null) { putlog Syntax Error: hitdmg (5) - $db.safe($1-) | halt }
-  if ($1 == dh_9) { var %ndmg 3 }
-  elseif ($1 == dh_10) { var %ndmg 1 }
+  if ($1 == dh=9) { var %ndmg 3 }
+  elseif ($1 == dh=10) { var %ndmg 1 }
   elseif ($2 <= $dmg($1,0l)) { var %ndmg 1 }
   elseif ($2 <= $dmg($1,0h)) { var %ndmg 2 }
   else { var %ndmg 3 }
