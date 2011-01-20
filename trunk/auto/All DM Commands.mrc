@@ -90,8 +90,8 @@ on $*:TEXT:/^[!.]\w/Si:#: {
     if ($specused(%attcmd)) {
       notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
     }
+    hadd $nick frozen 0
     if (!$hget($chan,gwd.time)) {
-      hadd $nick frozen 0
       hadd $chan p1 %p2
       hadd $chan p2 $nick
     }
