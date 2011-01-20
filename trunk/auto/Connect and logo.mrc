@@ -63,7 +63,7 @@ alias staffchan {
 }
 
 alias supportchan {
-  return #iDM.support
+  return #idm.support
 }
 
 on *:DISCONNECT: {
