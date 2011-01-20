@@ -32,9 +32,9 @@ alias gwd.hget {
   ; ?$2? = value
   if ($1 == $null) { putlog Syntax Error: gwd.hget (1) - $db.safe($1-) | halt }
   if (!$hget(>gwd)) { gwd.hload }
-  if (($prop) && ($2 isnum)) return $hget(>gwd,$hget(>gwd,$gettok($1,1,95) $+ . $+ $2) $+ . $+ $prop)
-  if ($2 != $null) return $hget(>gwd,$gettok($1,1,95) $+ . $+ $2)
-  if (($1 != $null) && ($1 != list)) return $iif($hget(>gwd,$gettok($1,1,95) $+ . $+ name),1,0)
+  if (($prop) && ($2 isnum)) return $hget(>gwd,$hget(>gwd,$1 $+ . $+ $2) $+ . $+ $prop)
+  if ($2 != $null) return $hget(>gwd,$1 $+ . $+ $2)
+  if (($1 != $null) && ($1 != list)) return $iif($hget(>gwd,$1 $+ . $+ name),1,0)
   return $hget(>gwd,list)
 }
 
@@ -50,7 +50,7 @@ alias gwd.npc {
     }
     inc %i
   }
-  if (($1) && ($wildtok(%gwd,$1 $+ *,0,32) > 0)) {
+  if (($1) && ($wildtok(%gwd,$1,0,32) > 0)) {
     return $wildtok(%gwd,$1 $+ *,1,32)
   }
   elseif (($1) && ($wildtok(%gwdalt,$1 $+ *,0,32) > 0)) {
