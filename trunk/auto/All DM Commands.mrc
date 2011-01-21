@@ -175,6 +175,7 @@ alias damage {
   elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
   elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
 
+  var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
   if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
     var %extra $iif(%hp2 < 12,$($v1,2),12)
     inc %dmg-dealt %extra
@@ -186,12 +187,11 @@ alias damage {
     inc %hp2 %extraup
     msgsafe $4 $logo(%logo) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2,%mhp2)
   }
-  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
-    inc %hp2 $calc($replace(%hit,$chr(32),$chr(43)))
+  elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%temp.hit < 70) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
+    inc %hp2 %temp.hit
     msgsafe $4 $logo(%logo) KHobbits uses his KHonfound Ring to let $s1($2) avoid the damage. $hpbar(%hp2,%mhp2)
   }
-  elseif ($hget($2,support)) && ($r(1,100) >= 99) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
-    var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
+  elseif ($hget($2,support)) && ($r(1,100) >= 99)  && (%temp.hit < 70) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
     inc %hp2 $floor($calc(%temp.hit / 2))
     msgsafe $4 $logo(%logo) $s1($2) uses THE SUPPORTER to help defend against $s1($autoidm.nick($1)) $+ 's attacks. $hpbar(%hp2,%mhp2)
   }

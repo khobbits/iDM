@@ -23,18 +23,6 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
   }
 }
 
-alias hostcallback {
-  if ($1 != 0) { notice $1 Warning: Could not find hostname cached, attempting hostname lookup for $2 $+ , please wait. }
-  set %userhost. [ $+ [ $2 ] ] $3-
-  userhost $2
-}
-raw 302:*: {
-  if (%userhost. [ $+ [ $gettok($2,1,61) ] ]) {
-    unset %userhost. [ $+ [ $gettok($2,1,61)] ]
-    $replace($v1,~host~,*!*@ $+ $gettok($2,2,64))
-  }
-}
-
 on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:%staffchans: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,$address($nick,3)) >= 2)) { halt }  }
