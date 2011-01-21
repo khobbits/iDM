@@ -195,7 +195,7 @@ alias showtitle {
 alias idmstaff { if ($1 == invite) { msgsafe $staffchan $logo(INVITE) $s1($3) invited me into $s2($2) } }
 
 alias entrymsgsafe {
-  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Forums: 12http://forum.idm-bot.com/ Rules: 12http://r.idm-bot.com/rules $botnews
+  return $logo(INVITE) Thanks for inviting iDM $chr(91) $+ Bot tag - $s1($bottag) $+ $chr(93) into $s2($1) $+ $iif($2,$chr(44) $s1($2) $+ .,.) Help: !dmcommands FAQ: 12http://idm-bot.com/help/ $botnews
 }
 alias botnews {
   return News: GWD Updates: http://r.idm-bot.com/1757 & Big Attack Updates: http://r.idm-bot.com/1755 

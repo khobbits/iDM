@@ -48,7 +48,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         }
       }
       if ($dmg(%attcmd,spec) > $hget($nick,sp)) {
-        notice $nick $logo(ERROR) You need $s1($specused(%attcmd) $+ $chr(37)) spec to use this weapon.
+        notice $nick $logo(ERROR) You need $s1($specused(%attcmd) $+ $chr(37)) spec to use this.  Weapons with * in !dmcommands require spec.
         halt
       }
       if ($isdisabled($chan,%attcmd)) {
@@ -62,7 +62,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       var %wepitem $isweapon(%attcmd)
       if (%wepitem !== $false) {
         if (!$hget($nick,%wepitem)) {
-          notice $nick You have to unlock this weapon before you can use it.
+          notice $nick You have to unlock this weapon before you can use it.  Use !dmcommands for a list of commands.
           halt
         }
       }
