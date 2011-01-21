@@ -23,45 +23,6 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
   }
 }
 
-on $*:TEXT:/^[!.](r|c)?(i(gnore|list)) .*/Si:%staffchans: {
-  if ($me != iDM) { halt }
-  if ($db.get(admins,rank,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,$address($nick,3)) >= 2)) { halt }  }
-  putlog perform banman $nick $chan $1 $iif($2-,$2-,$nick)
-}
-alias banman {
-  var %nick $1 | var %chan $2 | tokenize 32 $remove($3-,$chr(36),$chr(37))
-  if (((((@ isin $2) && (*!*@ !isin $2)) || (!$3)) && (?i* iswm $1)) || ($chr(35) isin $2)) {
-    if ($me == idm) { notice %nick $logo(BANNED) 4Syntax Error: !ignore <nick> <reason> (or !ignore *!*@<host> <reason>) - Use !suspend to disable an account. }
-    halt
-  }
-  elseif (@ !isin $2) {
-    if ($address($2,2)) { tokenize 32 $1 $v1 $iif($3,$2 - $3-) }
-    else {
-      if ($me == idm) { hostcallback %nick $2 putlog perform banman %nick %chan $1 ~host~ $iif($3,$2 - $3-) }
-      halt
-    }
-  }
-  else { tokenize 32 $1 $2 $3- }
-  if ($me == iDM) {
-    if (!$2) { notice %nick $logo(BANNED) 4Syntax Error: !(c|r)ignore <nickname> (or !(c|r)ignore <host>) | halt }
-    if (?c* iswm $1) || (?r* iswm $1) {
-      db.hget >checkban ilist $2 who time reason
-      if ($hget(>checkban,reason)) { notice %nick $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
-      else { notice %nick $logo(BANNED) User $s2($2) is $s2(not) banned. | halt }
-      if (?r* iswm $1) {
-        db.remove ilist $2
-        notice %nick $logo(BANNED) User $2 has been removed from ignore
-      }
-    }
-    else {
-      db.set ilist who $2 %nick
-      db.set ilist reason $2 $3-
-      notice %nick $logo(BANNED) User $2 has been added to ignore
-    }
-  }
-  if (?i* iswm $1) { ignore $2 }
-  elseif (?r* iswm $1) { ignore -r $2 }
-}
 alias hostcallback {
   if ($1 != 0) { notice $1 Warning: Could not find hostname cached, attempting hostname lookup for $2 $+ , please wait. }
   set %userhost. [ $+ [ $2 ] ] $3-

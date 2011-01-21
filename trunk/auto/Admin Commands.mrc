@@ -146,10 +146,10 @@ on $*:TEXT:/^[!@.]rehash$/Si:%staffchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]ignoresync$/Si:%staffchan: {
+on $*:TEXT:/^[!@.]cacheclear$/Si:%staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    ignoresync.run 1
+    cacheclear.run 1
   }
 }
 
@@ -191,43 +191,15 @@ on $*:TEXT:/^[!@.]info .*/Si:%staffchans: {
   if ($me == iDM) {
     if ($db.get(admins,rank,$address($nick,3)) >= 2)  {
       db.hget >userinfo user $$2
-      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(>userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(>userinfo,login),YES,NO) $gmt($hget(>userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(>userinfo,address),3 $+ $v1 $+ ,4NONE)
-      ignoreinfo $iif($2,$2 $2,$nick $nick) $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Acc-Info)
+      $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(>userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(>userinfo,login),YES,NO) $gmt($hget(>userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(>userinfo,address),3 $+ $v1 $+ ,4NONE) - Suspended?: $suspendinfo($2)
     }
   }
 }
-alias ignoreinfo {
-  var %reply, %replytype $3-
-  tokenize 32 $1 $2
-  if (@ !isin $2) {
-    if ($address($2,2)) { tokenize 32 $1 $v1 }
-    else { 
-      hostcallback 0 $1 ignoreinfo $1 ~host~ %replytype 
-      .timer $+ ignoreinfo $+ $1 1 10 ignoreinfo $1 Host!Not@Found %replytype
-      halt 
-    }
-  }
-  .timer $+ ignoreinfo $+ $1 off
-  if ($2 != Host!Not@Found) {
-    db.hget >checkban ilist $2 who time reason
-    if ($hget(>checkban,reason)) { var %reply 1, %reply1 $s1($2) $s2(was banned) by $hget(>checkban,who) for $hget(>checkban,reason) }
-    elseif ($ignore($2)) { var %reply 1, %reply1 $s1($2) $s2(is banned) on the bot but not in the db }
-    else { var %reply1 $s1($2) is not ignored }
-  }
-  else {
-    var %reply1 $s1($1) is not online, host not found.
-  }
+alias suspendinfo {
   db.hget >checkban ilist $1 who time reason
-  if ($hget(>checkban,reason)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) by $hget(>checkban,who) for $hget(>checkban,reason) }
-  elseif ($db.get(user,banned,$1)) { var %reply 1, %reply2 $s1($1) $s2(is suspended) but no reason was given }
-  else { var %reply2 $s1($1) is not suspended }
-  if (%reply) {
-    %replytype %reply1
-    %replytype %reply2
-  }
-  else {
-    %replytype %reply1 - %reply2
-  }
+  if ($hget(>checkban,reason)) { return 4YES By: $hget(>checkban,who) Reason: $hget(>checkban,reason)  }
+  elseif ($db.get(user,banned,$1)) { return 4YES Reason: None given }
+  else { return 3NO }
 }
 
 oN $*:TEXT:/^[!@.]hax/Si:#: {
