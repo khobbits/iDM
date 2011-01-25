@@ -71,12 +71,12 @@ on *:SOCKREAD:pu:{
       putlog $logo(GE UPDATE) %price is not a number @ http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item)
     }
     hinc >geupdate id 1
-    .timerpu2 1 3 pu2 
+    .timerpu2 1 1 pu2 
   }
   elseif (The item you were trying to view could not be found. isin %ge) { 
     sockclose pu
     hinc >geupdate id 1
-    .timerpu2 1 3 pu2 
+    .timerpu2 1 1 pu2 
     msgsafe $staffchan $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
   }
 }
