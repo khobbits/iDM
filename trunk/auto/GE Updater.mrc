@@ -49,14 +49,13 @@ on *:sockopen:pu:{
 }
 on *:SOCKREAD:pu:{
   if ($sockerr) {
-    sockclose pu
     msgsafe $staffchan $logo(GE UPDATE) Error: Socket failed
+    sockclose pu
     halt
   }
   var %ge
   sockread %ge
   if (<b>Market price:</b> * iswm %ge) {
-    sockclose pu
     var %price $remove(%ge,<b>Market price:</b> )
     var %price = $xcalc(%price)
     if (%price isnum) {
@@ -71,13 +70,14 @@ on *:SOCKREAD:pu:{
       putlog $logo(GE UPDATE) %price is not a number @ http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item)
     }
     hinc >geupdate id 1
+    sockclose pu
     .timerpu2 1 1 pu2 
   }
   elseif (The item you were trying to view could not be found. isin %ge) { 
-    sockclose pu
     hinc >geupdate id 1
-    .timerpu2 1 1 pu2 
     msgsafe $staffchan $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
+    sockclose pu
+    .timerpu2 1 1 pu2 
   }
 }
 on *:sockclose:pu: {
@@ -85,9 +85,14 @@ on *:sockclose:pu: {
 }
 alias -l pu2 {
   if ($sock(pu)) { sockclose pu }
-  .timerpucheck 1 30 pu2
+  .timerpucheck 1 30 pu3
   sockopen pu itemdb-rs.runescape.com 80
 }
+alias -l pu3 {
+  putlog $logo(GE UPDATE) Error: Socket timeout... Restarting.
+  pu2
+}
+
 alias -l xcalc {
   if (($isid) && ($0 == 1)) {
     var %calc $remove($1,$chr(44))
