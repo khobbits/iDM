@@ -49,7 +49,7 @@ on *:sockopen:pu:{
 }
 on *:SOCKREAD:pu:{
   if ($sockerr) {
-    msgsafe $staffchan $logo(GE UPDATE) Error: Socket failed
+    msgsafe $staffchan $logo(GE UPDATE) Error: Socket failed - $sock(pu).wserr 
     sockclose pu
     halt
   }
@@ -79,17 +79,22 @@ on *:SOCKREAD:pu:{
     sockclose pu
     .timerpu2 1 1 pu2 
   }
+  elseif (</html> isin %ge) { 
+    putlog $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) did not return a valid match.
+    sockclose pu
+    .timerpu2 1 1 pu2 
+  }
 }
 on *:sockclose:pu: {
   pu2
 }
 alias -l pu2 {
   if ($sock(pu)) { sockclose pu }
-  .timerpucheck 1 30 pu3
+  .timerpucheck 1 15 pu3
   sockopen pu itemdb-rs.runescape.com 80
 }
 alias -l pu3 {
-  putlog $logo(GE UPDATE) Error: Socket timeout... Restarting.
+  putlog $logo(GE UPDATE) Error: Socket timeout.  Status: $iif($sock(pu),$sock(pu).pause,Closed) Restarting.
   pu2
 }
 
