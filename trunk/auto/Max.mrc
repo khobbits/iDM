@@ -62,38 +62,42 @@ alias healer { return $dmg($1,heal) $dmg($1,healamount) }
 alias dmg.hload {
   if ($hget(>weapon)) { hfree >weapon }
   hmake >weapon 50
-  var %sql SELECT * FROM weapon
+  var %sql SELECT * FROM `weapons` ORDER BY `weapon` ASC
   var %res $db.query(%sql)
   var %i 0
+  var %last -1
   while ($db.query_row(%res, >row)) {
     inc %i
-    hadd >weapon $hget(>row, weapon) $+ .name $hget(>row, name)
-    hadd >weapon $hget(>row, weapon) $+ .item $hget(>row, item)
-    hadd >weapon $hget(>row, weapon) $+ .pvp $hget(>row, pvp)
-    hadd >weapon $hget(>row, weapon) $+ .0l $gettok($hget(>row, range),1,44)
-    hadd >weapon $hget(>row, weapon) $+ .0h $gettok($hget(>row, range),2,44)
-    hadd >weapon $hget(>row, weapon) $+ .1l $gettok($hget(>row, low),1,44)
-    hadd >weapon $hget(>row, weapon) $+ .1h $gettok($hget(>row, low),2,44)
-    hadd >weapon $hget(>row, weapon) $+ .2l $gettok($hget(>row, mid),1,44)
-    hadd >weapon $hget(>row, weapon) $+ .2h $gettok($hget(>row, mid),2,44)
-    hadd >weapon $hget(>row, weapon) $+ .3l $gettok($hget(>row, high),1,44)
-    hadd >weapon $hget(>row, weapon) $+ .3h $gettok($hget(>row, high),2,44)
-    hadd >weapon $hget(>row, weapon) $+ .hits $hget(>row, hits)
-    hadd >weapon $hget(>row, weapon) $+ .type $hget(>row, type)
-    hadd >weapon $hget(>row, weapon) $+ .gwd $hget(>row, gwd)
-    hadd >weapon $hget(>row, weapon) $+ .atkbonus $hget(>row, atkbonus)
-    hadd >weapon $hget(>row, weapon) $+ .defbonus $hget(>row, defbonus)
-    hadd >weapon $hget(>row, weapon) $+ .spec $hget(>row, spec)
-    hadd >weapon $hget(>row, weapon) $+ .poison $hget(>row, poisonchance)
-    hadd >weapon $hget(>row, weapon) $+ .poisonamount $hget(>row, poisonamount)
-    hadd >weapon $hget(>row, weapon) $+ .freeze $hget(>row, freeze)
-    hadd >weapon $hget(>row, weapon) $+ .heal $hget(>row, healchance)
-    hadd >weapon $hget(>row, weapon) $+ .healamount $hget(>row, healamount)
-    hadd >weapon $hget(>row, weapon) $+ .splash $hget(>row, splash)
-    hadd >weapon $hget(>row, weapon) $+ .what $hget(>row, what)
-    hadd >weapon $hget(>row, weapon) $+ .effect $hget(>row, effect)
-    hadd >weapon list. $+ %i $hget(>row, weapon)
-    var %list $iif(%list,%list $+ $chr(44)) $+ $hget(>row, weapon)
+    hadd >weapon $hget(>row, trigger) $+ .name $hget(>row, name)
+    hadd >weapon $hget(>row, trigger) $+ .item $hget(>row, item)
+    hadd >weapon $hget(>row, trigger) $+ .pvp $hget(>row, pvp)
+    hadd >weapon $hget(>row, trigger) $+ .0l $gettok($hget(>row, range),1,44)
+    hadd >weapon $hget(>row, trigger) $+ .0h $gettok($hget(>row, range),2,44)
+    hadd >weapon $hget(>row, trigger) $+ .1l $gettok($hget(>row, low),1,44)
+    hadd >weapon $hget(>row, trigger) $+ .1h $gettok($hget(>row, low),2,44)
+    hadd >weapon $hget(>row, trigger) $+ .2l $gettok($hget(>row, mid),1,44)
+    hadd >weapon $hget(>row, trigger) $+ .2h $gettok($hget(>row, mid),2,44)
+    hadd >weapon $hget(>row, trigger) $+ .3l $gettok($hget(>row, high),1,44)
+    hadd >weapon $hget(>row, trigger) $+ .3h $gettok($hget(>row, high),2,44)
+    hadd >weapon $hget(>row, trigger) $+ .hits $hget(>row, hits)
+    hadd >weapon $hget(>row, trigger) $+ .type $hget(>row, type)
+    hadd >weapon $hget(>row, trigger) $+ .gwd $hget(>row, gwd)
+    hadd >weapon $hget(>row, trigger) $+ .atkbonus $hget(>row, atkbonus)
+    hadd >weapon $hget(>row, trigger) $+ .defbonus $hget(>row, defbonus)
+    hadd >weapon $hget(>row, trigger) $+ .spec $hget(>row, spec)
+    hadd >weapon $hget(>row, trigger) $+ .poison $hget(>row, poisonchance)
+    hadd >weapon $hget(>row, trigger) $+ .poisonamount $hget(>row, poisonamount)
+    hadd >weapon $hget(>row, trigger) $+ .freeze $hget(>row, freeze)
+    hadd >weapon $hget(>row, trigger) $+ .heal $hget(>row, healchance)
+    hadd >weapon $hget(>row, trigger) $+ .healamount $hget(>row, healamount)
+    hadd >weapon $hget(>row, trigger) $+ .splash $hget(>row, splash)
+    hadd >weapon $hget(>row, trigger) $+ .what $hget(>row, what)
+    hadd >weapon $hget(>row, trigger) $+ .effect $hget(>row, effect)
+    if (%last != $hget(>row, weapon)) {
+      hadd >weapon list. $+ %i $hget(>row, trigger)
+      var %list $iif(%list,%list $+ $chr(44)) $+ $hget(>row, trigger)
+    }
+    var %last = $hget(>row, weapon)
   }
   hadd >weapon list %list
   hadd >weapon list.0 %i
