@@ -44,7 +44,7 @@ on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:%staffchans: {
   }
   else {
     if (!$3) { notice $nick You need to supply a reason when suspending.  Syntax: !(r)suspend <nick> [reason]. | halt }
-    db.exec UPDATE `user` SET banned = '1' WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($2))
+    db.exec UPDATE `user` SET banned = '1' WHERE userid = ( select `userid` from `user_alt` where `user` = $db.safe($2) )
     if ($mysql_affected_rows(%db) !== -1) {
       db.user.set ilist who $2 $nick
       db.user.set ilist reason $2 $3-
@@ -68,17 +68,21 @@ alias deletenick {
   if ($len($1) < 1) { return }
   if ($2) { var %target = notice $2 $logo(DELETE) }
   else { var %target = echo -s DELETE $1 - }
-  db.exec DELETE FROM `user` WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  db.exec DELETE FROM `user` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
   if ($mysql_affected_rows(%db) === -1) { return 0 }
   var %target = %target Deleted Rows: $mysql_affected_rows(%db) user;
-  db.exec DELETE FROM `equip_item` WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  db.exec DELETE FROM `equip_item` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
   var %target = %target $mysql_affected_rows(%db) equip_item;
-  db.exec DELETE FROM `equip_pvp` WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  db.exec DELETE FROM `equip_pvp` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
   var %target = %target $mysql_affected_rows(%db) equip_pvp;
-  db.exec DELETE FROM `equip_armour` WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  db.exec DELETE FROM `equip_armour` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
   var %target = %target $mysql_affected_rows(%db) equip_armour;
-  db.exec DELETE FROM `equip_staff` WHERE user = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  db.exec DELETE FROM `equip_staff` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
   var %target = %target $mysql_affected_rows(%db) equip_staff.
+  db.exec DELETE FROM `achievements` WHERE userid = (select `userid` from `user_alt` where `user` = $db.safe($1))
+  var %target = %target $mysql_affected_rows(%db) achievements.
+  db.exec DELETE FROM `user_alt` WHERE userid = $db.user.id($1)
+  var %target = %target $mysql_affected_rows(%db) user_alt.
   if ($isclanowner($1)) {
     deleteclan $getclanname($1)
     var %target = %target Also deleted one clan.
