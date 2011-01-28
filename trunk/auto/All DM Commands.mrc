@@ -67,7 +67,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         }
       }
       if ($ispvp(%attcmd)) {
-        db.set equip_pvp %attcmd $nick - 1
+        db.set equip_pvp $dmg(%attcmd,item) $nick - 1
       }
       .timercw $+ $chan off
       .timerc $+ $chan off

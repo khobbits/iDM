@@ -80,8 +80,8 @@ alias equipment {
     }
   }
   if ($hget(>equip_item,clue)) { var %e %e Clue:Scroll }
-  if ($hget(>equip_item,snow)) { var %e %e Snow:Globe  $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
-  if ($hget(>equip_item,corr)) { var %e %e Cutlass:of:Corruption }
+  if ($hget(>equip_item,snow)) { var %e %e Snow:Globe $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
+  if ($hget(>equip_item,corr)) { var %e %e Cutlass:of:Corruption $+ $iif($v1 > 1,$+($chr(40),$v1,$chr(41))) }
   return $s1(Equipment) ( $+ $price(%wealth) $+ ): $iif(%e,$replace(%e,$chr(32),$chr(44) $+ $chr(32),$chr(58),$chr(32)),None) 
 }
 
@@ -96,7 +96,7 @@ alias sitems {
   if ($hget(>equips,belong)) { var %e %e Bêlong:Blade }
   if ($hget(>equips,allegra)) { var %e %e Allergy:Pills }
   if ($hget(>equips,beau)) { var %e %e Bêaumerang }
-  if ($hget(>equips,snake)) { var %e %e $replace(One:Éyed:Trouser:Snake,e,$chr(233),E,É) }
+  if ($hget(>equips,snake)) { var %e %e $replace(One:Eyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($hget(>equips,kh)) { var %e %e KHonfound:Ring }
   if ($hget(>equips,satan)) { var %e %e Satanic:Thingy }
   if ($hget(>equips,support)) { var %e %e The:Supporter }

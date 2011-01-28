@@ -146,7 +146,7 @@ on $*:TEXT:/^[!@.]rehash$/Si:%staffchan: {
   }
 }
 
-on $*:TEXT:/^[!@.]cacheclear$/Si:%staffchan: {
+on $*:TEXT:/^[!@.](db|cache)(sync|clear)$/Si:%staffchan: {
   if ($me != iDM) { return }
   if ($db.get(admins,rank,$address($nick,3)) == 4) {
     cacheclear.run 1
