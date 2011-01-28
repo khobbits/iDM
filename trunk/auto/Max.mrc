@@ -266,7 +266,7 @@ on $*:TEXT:/^[!@.]hitchance/Si:#: {
   if ($2 == dh9) { var %wep dh }
   if (!$attack(%wep)) { notice $nick $logo(ERROR) $s1(%wep) is not a recognized attack. | halt }
 
-  db.hget >hitchance equip_armour $nick
+  db.user.hash >hitchance equip_armour $nick
   var %atk = $atkbonus(%wep,>hitchance), %hits = $dmg(%wep,hits), %targets = 1, %i = 1, %l = 0
 
   if (%atk == n) { 

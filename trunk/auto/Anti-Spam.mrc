@@ -28,7 +28,7 @@ alias cacheclear {
 
   var %sql = SELECT * FROM `admins` WHERE `rank` > '4'
   var %result = $db.query(%sql)
-  while ($db.query_row_data(%result,user)) {
+  while ($db.query_row_data(%result,address)) {
     var %user = $v1
     if (@ isin %user) { ignore -x %user }
   }

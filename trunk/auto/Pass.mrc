@@ -22,8 +22,8 @@ alias notice1 { notice $1 $3- }
 
 alias auth_success {
   if (!$1) { putlog Syntax Error: auth_success <nickname> [address] - $1- | halt }
-  db.set user login $1 $ctime
-  if ($2) db.set user address $1 $2
+  db.user.set user login $1 $ctime
+  if ($2) db.user.set user address $1 $2
 }
 
 ;## This does the catching of the notice
@@ -67,7 +67,7 @@ alias islogged {
   ; 3 = Script returns either 1 or 0, script triggers a login attempt, user is notified, halts further script execution if user is not logged in.
   if (!$2) { putlog Syntax Error: islogged <nickname> <address> [option] - $1- | halt }
 
-  db.hget >islogged user $1 login address
+  db.user.hash >islogged user $1 login address
   var %login $hget(>islogged,login)
   var %address $hget(>islogged,address)
 
@@ -142,34 +142,7 @@ alias accountlink { notice $1 $3- $accounturl($1) }
 
 alias accounturl {
   var %code $md5($ticks $+ $1)
-  db.set urlmap account %code $1
-  db.set urlmap hostmask %code $address($1,3)
+  db.set urlmap account code %code $1
+  db.set urlmap hostmask code %code $address($1,3)
   return http://idm-bot.com/account/ $+ %code
-}
-
-on $*:TEXT:/^[!@.]dmlog/Si:#: {
-  if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
-  if ($update) { notice $nick $logo(ERROR) IDM is currently disabled, please try again shortly | halt }
-  if ($isbanned($nick)) { halt }
-  tokenize 32 $1 $iif($2,$2-,$nick)
-  var %sql SELECT * FROM user_log WHERE user = $db.safe($2) UNION SELECT * FROM user_log_archive WHERE user = $db.safe($2) ORDER BY date DESC LIMIT 8
-  var %res $db.query(%sql)
-  while ($db.query_row(%res, >dmlog)) {
-    var %dmlog %dmlog  $logtype($hget(>dmlog,type),$hget(>dmlog,data)) @ $time($hget(>dmlog,date),hh:nn)) $s2(|)
-  }
-  db.query_end %res
-  if (!%dmlog) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Recent Activity) User $s2($1) has no recent activity }
-  else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $left(%dmlog,-2) }
-}
-
-alias logtype {
-  if ($1 == 1) return KO'd $2
-  elseif ($1 == 2) return Got KO'd by $2
-  elseif ($1 == 3) return Took money from $2
-  elseif ($1 == 4) return Got robbed by $2
-  elseif ($1 == 5) return Collected $2
-  elseif ($1 == 6) return Bought a $2
-  elseif ($1 == 7) return Sold a $2
-  elseif ($1 == 8) return $2 penalty
-  else return Found $2
 }

@@ -14,7 +14,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       if (!$hget($nick,specpot)) { notice $nick You don't have any specpots. | halt }
       if ($hget($nick,sp) == 4) { notice $nick You already have a full special bar. | halt }
       hadd $nick sp 4
-      db.set equip_item specpot $nick - 1
+      db.user.set equip_item specpot $nick - 1
       hadd $nick laststyle pot
       if ($hget(%p2,poison) >= 1) && ($hget(%p2,hp) >= 1) {
         var %extra = $iif($hget(%p2,hp) < $hget(%p2,poison),$v1,$v2)
@@ -67,7 +67,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
         }
       }
       if ($ispvp(%attcmd)) {
-        db.set equip_pvp $dmg(%attcmd,item) $nick - 1
+        db.user.set equip_pvp $dmg(%attcmd,item) $nick - 1
       }
       .timercw $+ $chan off
       .timerc $+ $chan off
@@ -83,7 +83,7 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       }
     }
     if ($hget(%p2,hp) < 1) && (!$hget($chan,gwd.npc)) {
-      if (<iDM>* iswm %p2) { db.set user aikills $nick + 1 }
+      if (<iDM>* iswm %p2) { db.user.set user aikills $nick + 1 }
       dead $chan %p2 $nick
       halt
     }
@@ -213,7 +213,7 @@ alias damage {
     }
     notice $hget($4,players) $logo(GWD) HP: %h
   }
-  if (%dmg-dealt >= 99) { db.set achievements 1hit $1 1 }
+  if (%dmg-dealt >= 99) { db.user.set achievements 1hit $1 1 }
 }
 
 alias hpbar {

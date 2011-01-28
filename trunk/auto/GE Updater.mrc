@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!@.]geupdate/Si:%staffchans: {
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
     if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
     if ($hget(>geupdate)) { 

@@ -124,7 +124,7 @@ alias gwd.npcatt {
   if ($hget(%p2,hp) < 1) {
     if ($numtok($hget($1,players),44) > 1) {
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
-      db.set user losses %p2 + 1
+      db.user.set user losses %p2 + 1
       pcancel $1 %p2
       hadd $1 gwd.turn $hget($1,players)
       hadd $1 gwd.healed 0
@@ -134,8 +134,8 @@ alias gwd.npcatt {
       msgsafe $1 $logo(KO) $s1($autoidm.nick(<gwd> $+ $1)) has killed the last player on the team $+($s1(%p2),.) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,gwd.time)))),$s1(]))
       userlog loss %p2 $autoidm.acc(<gwd> $+ $1)
       userlog win $autoidm.acc(<gwd> $+ $1) $1
-      db.set user losses %p2 + 1
-      db.set user wins $autoidm.acc(<gwd> $+ $1) + 1
+      db.user.set user losses %p2 + 1
+      db.user.set user wins $autoidm.acc(<gwd> $+ $1) + 1
 
       var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ 0 $+ ' , ' $+ $tag $+ ' , CURDATE(), '1' ) ON DUPLICATE KEY UPDATE count = count+1
       db.exec %sql

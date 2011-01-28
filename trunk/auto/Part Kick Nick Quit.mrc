@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!@.]part/Si:#: {
   if (# == #idm) || (# == $staffchan) { return }
   if ($2 != $me) { return }
-  if ($db.get(admins,rank,$address($nick,3)) >= 2) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
     if (%part.spam [ $+ [ # ] ]) { return }
     part # Part requested by $nick $+ .
     set -u60 %part.spam [ $+ [ # ] ] on
@@ -71,9 +71,9 @@ on *:NICK: {
         hsave $nick renamenick.hash
         hmake $newnick $hget($nick).size
         hfree $nick
-        db.set user indm $nick 0
+        db.user.set user indm $nick 0
         hload $newnick renamenick.hash
-        db.set user indm $newnick 1
+        db.user.set user indm $newnick 1
       }
       if ($enddmcheck($chan(%a),$newnick,nick,$nick,$1-)) { return }
     }
@@ -138,7 +138,7 @@ alias enddmcheck {
       if ($numtok($hget($1,players),44) > 1) {
         msgsafe $1 $logo(GWD) $s1($2) their GWD raid has come to an end because they left.
         userlog loss $hget($2,account) %user
-        db.set user losses $hget($2,account) + 1
+        db.user.set user losses $hget($2,account) + 1
         pcancel $1 $2
         ; Match continues without the player
         return 1
@@ -150,7 +150,7 @@ alias enddmcheck {
       if ($hget($1,p2)) var %user $hget($iif($nick == $hget($1,p1),$hget($1,p2),$hget($1,p1)),account)
       ; Is it a stake?
       if ($hget($1,stake) && (%user)) {
-        db.set user money $hget($2,account) - $ceil($calc($hget($1,stake) / 2) )
+        db.user.set user money $hget($2,account) - $ceil($calc($hget($1,stake) / 2) )
         msgsafe $1 $logo(DM) The stake has been canceled, because one of the players parted. $s1($hget($2,account)) has lost $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
         notice $2 You left the channel during a stake, you loose $s2($price($ceil($calc($hget($1,stake) / 2) ))) $+ .
       }
@@ -161,7 +161,7 @@ alias enddmcheck {
           var %newmoney = $ceil($calc(%oldmoney * 0.02))
           notice $2 You left the channel during a dm, you lose $s2($price(%newmoney)) cash
           userlog penalty $hget($2,account) %newmoney
-          db.set user money $hget($2,account) - %newmoney
+          db.user.set user money $hget($2,account) - %newmoney
         }
       }
       ; Actions for all 1v1 dm.
@@ -170,8 +170,8 @@ alias enddmcheck {
     if (%user) {
       userlog loss $hget($2,account) %user
       userlog win %user $hget($2,account)
-      db.set user wins %user + 1
-      db.set user losses $hget($2,account) + 1
+      db.user.set user wins %user + 1
+      db.user.set user losses $hget($2,account) + 1
     }
     cancel $1
     .timer $+ $1 off

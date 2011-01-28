@@ -53,21 +53,21 @@ alias enablec {
     if ($1 == -h) {
       var %i 1
       while (%i <= $dmg(list,0)) {
-        if ($dmg(list,%i).heal) db.remove settings $3 setting $dmg(list,%i)
+        if ($dmg(list,%i).heal) db.rem settings user $3 setting $dmg(list,%i)
         inc %i
       }
       var %notice %notice Healing attacks are now on in $3 $+ .
     }
     elseif (($1 == all) || ($1 == -a)) {
-      db.remove settings $3
+      db.rem settings user $3
       var %notice %notice All attacks have been turned on in $3 $+ .
     }
     elseif ($attack($1)) {
-      db.remove settings $3 setting $1
+      db.rem settings user $3 setting $1
       var %notice %notice Enabled $1 in $3
     }
     elseif ($1 == staking) || ($1 == gwd) {
-      db.remove settings $3 setting $1
+      db.rem settings user $3 setting $1
       var %notice %notice Enabled $1 in $3  
     }
     else {
@@ -84,17 +84,17 @@ alias disablec {
     if ($1 == -h) {
       var %i 1
       while (%i <= $dmg(list,0)) {
-        if ($dmg(list,%i).heal) db.set settings setting $3 $dmg(list,%i)
+        if ($dmg(list,%i).heal) db.set settings setting user $3 $dmg(list,%i)
         inc %i
       }
       var %notice %notice Healing attacks are now off.
     }
     elseif ($attack($1)) {
-      db.set settings setting $3 $1
+      db.set settings setting user $3 $1
       var %notice %notice Disabled $1 in $3
     }
     elseif ($1 == staking) || ($1 == gwd) {
-      db.set settings setting $3 $1
+      db.set settings setting user $3 $1
       var %notice %notice Disabled $1 in $3
     }
     else {
@@ -109,7 +109,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   if ($isbanned($nick)) { halt }
   tokenize 32 $1 $2- $nick
   if (!$hget($2)) {
-    var %sql SELECT * FROM `user` LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user) WHERE user = $db.safe($2)
+    var %sql SELECT * FROM `user_alt` LEFT JOIN `user` USING (`userid`) LEFT JOIN `equip_item` USING (`userid`) LEFT JOIN `equip_pvp` USING (`userid`) WHERE `user_alt`.`user` = $db.safe($2)   
     var %result = $db.query(%sql)
     if ($db.query_row(%result,$2) === $null) { echo -a Query fail }
     db.query_end %result
@@ -131,10 +131,10 @@ on $*:TEXT:/^[!@.]admin$/Si:#: {
   var %support part-chan disable enable chans active whois-chan (show/rem)dm-nick (r)suspend-nick (r)blist-chan  (give/take)item-nick 
   var %helper info-nick cblist-chan csuspend-nick viewitems
   var %vip title
-  if ($db.get(admins,rank,$address($nick,3)) >= 4 && $me == iDM) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 4 && $me == iDM) {
     %prefix $cmdformat(Admin,%admin) 
   }
-  if ($db.get(admins,rank,$address($nick,3)) >= 1 && $me == iDM) {    
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 1 && $me == iDM) {    
     %prefix $cmdformat(Support,%support) $cmdformat(Helper,%helper) $cmdformat(VIP,%vip)
   }
 }

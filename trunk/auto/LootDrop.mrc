@@ -3,14 +3,14 @@ alias dead {
   ; $2 = looser
   ; $3 = winner
   if ($3 == $null) { putlog Syntax Error: dead (3) - $db.safe($1-) | halt }
-  db.set user losses $autoidm.acc($2) + 1
+  db.user.set user losses $autoidm.acc($2) + 1
   userlog loss $autoidm.acc($2) $autoidm.acc($3)
 
   if ($hget($1,stake)) {
-    db.set user money $3 + $hget($1,stake)
-    db.set user money $2 - $hget($1,stake)
+    db.user.set user money $3 + $hget($1,stake)
+    db.user.set user money $2 - $hget($1,stake)
     .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ .
-    db.set user wins $3 + 1
+    db.user.set user wins $3 + 1
     var %stake $hget($1,stake)
     userlog winstake $3 %stake
     userlog losestake $2 %stake
@@ -25,8 +25,8 @@ alias dead {
     var %sharedrop $floor(%combined)
     var %a = $hget($1,players), %b = 1
     while (%b <= $gettok(%a,0,44)) {
-      db.set user money $gettok(%a,%b,44) + %sharedrop
-      db.set user wins $gettok(%a,%b,44) + 1
+      db.user.set user money $gettok(%a,%b,44) + %sharedrop
+      db.user.set user wins $gettok(%a,%b,44) + 1
       userlog win $gettok(%a,%b,44) $2
       userlog drop $gettok(%a,%b,44) %sharedrop gp
       inc %b 
@@ -40,14 +40,14 @@ alias dead {
     var %items $gettok(%drops,2-,32)
     var %winnerclan = $hget($autoidm.acc($3),clan)
     var %looserclan = $hget($autoidm.acc($2),clan)
-    db.set user wins $autoidm.acc($3) + 1
+    db.user.set user wins $autoidm.acc($3) + 1
     if ((%winnerclan != %looserclan) && (%looserclan)) { trackclan LOSE %looserclan }
     if ((%winnerclan != %looserclan) && (%winnerclan)) {
       var %nummember = $clannumbers(%winnerclan)
       var %sharedrop = $floor($calc(%combined / %nummember))
       userlog drop $autoidm.acc($3) %sharedrop gp
       trackclan WIN %winnerclan %combined
-      if ($db.get(clantracker,share,%winnerclan)) {
+      if ($db.get(clantracker,share,clan,%winnerclan)) {
         var %sql.winnerclan = $db.safe(%winnerclan)
         var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
         db.exec %sql
@@ -56,13 +56,13 @@ alias dead {
       }
       else {
         userlog drop $autoidm.acc($3) %combined gp
-        db.set user money $autoidm.acc($3) + %combined
+        db.user.set user money $autoidm.acc($3) + %combined
         msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
       }
     }
     else {
       userlog drop $autoidm.acc($3) %combined gp
-      db.set user money $autoidm.acc($3) + %combined
+      db.user.set user money $autoidm.acc($3) + %combined
       msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
     }
   }
@@ -81,42 +81,42 @@ alias price {
 alias trackclan {
   if (!$2) { halt }
   if ($1 == win) {
-    db.set clantracker wins $2 + 1
-    db.set clantracker money $2 + $3
+    db.set clantracker wins clan $2 + 1
+    db.set clantracker money clan $2 + $3
   }
-  if ($1 == lose) { db.set clantracker losses $2 + 1 }
+  if ($1 == lose) { db.set clantracker losses clan $2 + 1 }
 }
 
 on $*:TEXT:/^[!@.]dmclue/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  var %clueid $db.get(equip_item,clue,$nick)
+  var %clueid $db.user.get(equip_item,clue,$nick)
   if ((%clueid == 0) || (!%clueid)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLUE) You do not have a Clue Scroll. | halt }
-  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLUE) $qt($db.get(clues,question,%clueid)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
+  $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(CLUE) $qt($db.get(clues,question,qid,%clueid)) To solve the clue, simply type !solve answer. Check http://r.idm-bot.com/guide for help.
 }
 
 ON $*:TEXT:/^[!@.]solve/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  var %clueid $db.get(equip_item,clue,$nick)
+  var %clueid $db.user.get(equip_item,clue,$nick)
   if ((%clueid == 0) || (!%clueid)) { notice $nick $logo(CLUE) You do not have a Clue Scroll. | halt }
   if ($hget($nick)) { notice $nick $logo(ERROR) Please wait till you are out of the DM before you solve your clue. | halt }
-  if ((!$2) || ($istok($db.get(clues,answers,%clueid),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
+  if ((!$2) || ($istok($db.get(clues,answers,qid,%clueid),$2,33) != $true)) { notice $nick $logo(CLUE) Sorry, that answer is incorrect. Check http://r.idm-bot.com/guide for help | halt }
   var %combined 0, %chance $r(100,1000)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND type != 'd' AND disabled = '0' ORDER BY rand() LIMIT 3
   var %res $db.query(%sql)
   while ($db.query_row(%res, >clue)) {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
-    if ($hget(>clue, item) == Cutlass of Corruption) { db.set equip_item corr $nick + 1 | db.set achievements corr $nick 1 }
+    if ($hget(>clue, item) == Cutlass of Corruption) { db.user.set equip_item corr $nick + 1 | db.user.set achievements corr $nick 1 }
     elseif (%price == 0 || %price == 1) { 
       putlog DROP ERROR: Drop not found matching: %item
     }
   }
   db.query_end %res
   notice $nick $logo(CLUE) Congratulations, that is correct! Reward: $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93)) in loot. $s1($chr(91)) $+ $left(%items,-1) $+ $s1($chr(93))
-  db.set user money $nick + %combined
-  db.set equip_item clue $nick 0
+  db.user.set user money $nick + %combined
+  db.user.set equip_item clue $nick 0
   userlog clue $nick %combined
 }
 
@@ -127,8 +127,8 @@ alias gendrops {
   ; $4 GWD?
   if ($3 == $null) { putlog Syntax Error: gendrops (3) - $db.safe($1-) | halt }
   var %start $ticks, %price 0, %drops :, %windiff 0, %chance $rand(10,910)
-  if ($db.get(equip_item,wealth,$2) != 0) var %chance $calc(%chance * 1.1)
-  var %winner $db.get(user,wins,$2), %looser $db.get(user,wins,$3), %limit $iif($rand(1,10) == 1,4,3)
+  if ($db.user.get(equip_item,wealth,$2) != 0) var %chance $calc(%chance * 1.1)
+  var %winner $db.user.get(user,wins,$2), %looser $db.user.get(user,wins,$3), %limit $iif($rand(1,10) == 1,4,3)
   if ($3) var %windiff $calc(1 + (%looser - %winner) / ((%looser + %winner + 100) * 6)))
   if ($4) var %windiff $gwd.hget($hget($1,gwd.npc),droprate), %limit $calc(%limit + 1)
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
@@ -159,19 +159,19 @@ alias rundrops {
     }
     if ((%price == 0 || %price == 1) && %item != Nothing) {
       var %colour 07
-      if (%item == Vesta's spear) { db.set equip_pvp vspear $2 + 5 | var %colour 03 }
-      elseif (%item == Statius's Warhammer) { db.set equip_pvp statius $2 + 5 | var %colour 03 }
-      elseif (%item == Morrigan's Javelin) { db.set equip_pvp mjavelin $2 + 5 | var %colour 03 }
-      elseif (specpot isin %item) { db.set equip_item specpot $2 + 1 | var %colour 03 }
-      elseif (godsword isin %item) { db.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 | db.set achievements $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 1 }
-      elseif (claws isin %item) { db.set equip_item dclaws $2 + 1 | db.set achievements dclaws $2 1 }
-      elseif (mudkip isin %item) { db.set equip_item mudkip $2 + 1 | db.set achievements mudkip $2 1 }
+      if (%item == Vesta's spear) { db.user.set equip_pvp vspear $2 + 5 | var %colour 03 }
+      elseif (%item == Statius's Warhammer) { db.user.set equip_pvp statius $2 + 5 | var %colour 03 }
+      elseif (%item == Morrigan's Javelin) { db.user.set equip_pvp mjavelin $2 + 5 | var %colour 03 }
+      elseif (specpot isin %item) { db.user.set equip_item specpot $2 + 1 | var %colour 03 }
+      elseif (godsword isin %item) { db.user.set equip_item $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 + 1 | db.user.set achievements $replace($gettok(%item,1,32),saradomin,sgs,zamorak,zgs,bandos,bgs,armadyl,ags) $2 1 }
+      elseif (claws isin %item) { db.user.set equip_item dclaws $2 + 1 | db.user.set achievements dclaws $2 1 }
+      elseif (mudkip isin %item) { db.user.set equip_item mudkip $2 + 1 | db.user.set achievements mudkip $2 1 }
       elseif (idmnewbie == $2) { noop }
-      elseif (mage's isin %item) { db.set equip_armour mbook $2 + 1 | db.set achievements mbook $2 1  }
-      elseif (accumulator isin %item) { db.set equip_armour accumulator $2 + 1 | db.set achievements accumulator $2 1 }
-      elseif (Clue isin %item) { db.set equip_item clue $2 $r(2,$db.get(clues,answers,1)) }
-      elseif (Elysian isin %item) { db.set equip_armour elshield $2 + 1 | db.set achievements elshield $2 1 }
-      elseif (Snow isin %item) { db.set equip_item snow $2 + 1 | db.set achievements sdrop $2 1 }
+      elseif (mage's isin %item) { db.user.set equip_armour mbook $2 + 1 | db.user.set achievements mbook $2 1  }
+      elseif (accumulator isin %item) { db.user.set equip_armour accumulator $2 + 1 | db.user.set achievements accumulator $2 1 }
+      elseif (Clue isin %item) { db.user.set equip_item clue $2 $r(2,$db.get(clues,answers,qid,1)) }
+      elseif (Elysian isin %item) { db.user.set equip_armour elshield $2 + 1 | db.user.set achievements elshield $2 1 }
+      elseif (Snow isin %item) { db.user.set equip_item snow $2 + 1 | db.user.set achievements sdrop $2 1 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }

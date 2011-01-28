@@ -19,7 +19,7 @@ alias startdm {
   tokenize 32 $4-
   if ($hget(%chan)) && ($istok($hget(%chan,players),%nick,44)) { halt }
   if ($hget(%nick)) { notice %nick You're already in a DM... | inc -u6 %dm.spam [ $+ [ %nick ] ] | halt }
-  if ($db.get(user,indm,%nick)) { notice %nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ %nick ] ] | halt }
+  if ($db.user.get(user,indm,%nick)) { notice %nick You're already in a DM.. | inc -u6 %dm.spam [ $+ [ %nick ] ] | halt }
   if ($hget(%chan)) && ($hget(%chan,p2)) { notice %nick $logo(DM) People are already DMing in this channel. | inc -u8 %dm.spam [ $+ [ %nick ] ] | halt }
   if ($hget(%chan,gwd.time)) { notice %nick $logo(DM) People are already GWDing in this channel. | inc -u8 %dm.spam [ $+ [ %nick ] ] | halt }
   if ((item isin $2) || (no isin $2) || (admin isin $2)) { var %sitems 0 }
@@ -29,8 +29,8 @@ alias startdm {
     if (($hget(%chan,stake)) && (stake !isin $1)) { notice %nick There is currently a stake, please type !stake to accept the challenge. | halt }
     if (($hget(%chan,gwd.npc)) && (gwd !isin $1) && (boss !isin $1)) { notice %nick There is currently a GWD, please type !gwd to join the group. | halt }
     if ($hget(%chan,stake)) {
-      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
-      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
+      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) > 1000)) { halt }
+      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) < 1000)) { halt }
       var %p1 $hget(%chan,players)
       checkhosts %nick %p1
       var %stake $checkmoney(%nick,$2,$hget(%chan,stake))
@@ -46,8 +46,8 @@ alias startdm {
       if ($timer(%chan).secs < 10) .timer $+ %chan 1 20 gwd.init %chan
     }
     else {
-      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
-      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
+      if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) > 1000)) { halt }
+      if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) < 1000)) { halt }
       var %p1 $hget(%chan,players)
       checkhosts %nick %p1
       join.dm %chan %nick
@@ -57,12 +57,12 @@ alias startdm {
     }
   }
   else {
-    if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.get(user,wins,%nick) > 1000)) { halt }
-    if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.get(user,wins,%nick) < 1000)) { halt }
+    if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) > 1000)) { halt }
+    if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) < 1000)) { halt }
     if (stake isin $1) {
       if ($isdisabled(%chan,staking) === 1) { notice %nick $logo(ERROR) Staking in this channel has been disabled. | halt }
       var %stake $checkmoney(%nick,$2)
-      if (!%stake) { notice %nick $logo(ERROR) Please enter an amount between $s1($price(10000)) and $s1($price($maxstake($db.get(user,money,%nick)))) $+ . (!stake 150M) | halt }
+      if (!%stake) { notice %nick $logo(ERROR) Please enter an amount between $s1($price(10000)) and $s1($price($maxstake($db.user.get(user,money,%nick)))) $+ . (!stake 150M) | halt }
       join.dm %chan %nick
       hadd %chan stake %stake
       msgsafe %chan $logo(DM) $s1(%nick) $winloss(%nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
@@ -87,7 +87,7 @@ alias startdm {
 alias join.dm {
   hadd -m $1 players $addtok($hget($1,players),$2,44)
   hadd -m $2 account $2
-  db.set user indm $2 1
+  db.user.set user indm $2 1
 }
 
 alias init.chan {
@@ -119,10 +119,10 @@ alias init.player {
   dbcheck
   if ($3 == $null) { putlog Syntax Error: init.player (3) - $db.safe($1-) | halt }
   var %nick $autoidm.acc($1)
-  db.set user indm %nick 1
-  var %sql SELECT * FROM `user` LEFT JOIN `equip_armour` USING (user) LEFT JOIN `equip_item` USING (user) LEFT JOIN `equip_pvp` USING (user)
-  if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (user) }
-  var %sql %sql WHERE user = $db.safe(%nick)
+  db.user.set user indm %nick 1
+  var %sql SELECT * FROM `user_alt` LEFT JOIN `user` USING (`userid`) LEFT JOIN `equip_armour` USING (`userid`) LEFT JOIN `equip_item` USING (`userid`) LEFT JOIN `equip_pvp` USING (`userid`)
+  if ($3 == 1) { var %sql %sql LEFT JOIN `equip_staff` USING (`userid`) }
+  var %sql %sql WHERE `user_alt`.`user` = $db.safe(%nick)
   var %result = $db.query(%sql)
   if ($db.query_row(%result,$1) === $null) { echo -a Error: Failure to find player. }
   db.query_end %result
@@ -139,7 +139,7 @@ alias init.player {
 }
 
 alias checkmoney {
-  var %money = $db.get(user,money,$1)
+  var %money = $db.user.get(user,money,$1)
   if ($2 == max) { var %stake $maxstake(%money) }
   else { var %stake $floor($iif($right($2,1) isin kmbt,$calc($replace($remove($2-,$chr(44)),k,*1000,m,*1000000,b,*1000000000,t,*1000000000000)),$remove($2-,$chr(44)))) }
   if (%money < 60000) { notice $nick You can't stake until you have $s1($price(60000)) $+ . | halt }
@@ -173,7 +173,7 @@ alias winloss {
     return $+(%p1,-,%p2)
   }
   elseif ($1) {
-    db.hget >winloss user $1 wins losses
+    db.user.hash >winloss user $1 wins losses
     var %p1win $hget(>winloss,wins)
     var %p1loss $hget(>winloss,losses)
     var %p1 $s2($chr(91)) $+ Wins $s1($iif(%p1win,$bytes($v1,bd),0)) Losses $s1($iif(%p1loss,$bytes($v1,bd),0)) $+ $s2($chr(93))
@@ -183,7 +183,7 @@ alias winloss {
 
 alias pcancel {
   if ($2 == $null) { putlog Syntax Error: pcancel (2) - $db.safe($1-) | halt }
-  db.set user indm $autoidm.acc($2) 0
+  db.user.set user indm $autoidm.acc($2) 0
   if ($hget($2)) hfree $2
   if ($hget($1)) {
     hadd $1 players $remtok($hget($1,players),$2,44)
@@ -212,7 +212,7 @@ alias enddm {
 on $*:TEXT:/^[!@.]enddm/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($hget($chan,gwd.npc)) {
-    if ($db.get(admins,rank,$address($nick,3)) >= 2) {
+    if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
       cancel $chan
       msgsafe $chan $logo(GWD) The Gwd Team has been canceled by staff.
     }
@@ -226,7 +226,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
   }
   elseif ($hget($chan,stake)) {
-    if ($db.get(admins,rank,$address($nick,3)) >= 2) {
+    if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
       cancel $chan
       msgsafe $chan $logo(DM) The DM has been canceled by staff.
     }
@@ -236,7 +236,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
     }
     else { notice $nick This is a stake, you cannot end stakes! }
   }
-  elseif ($db.get(admins,rank,$address($nick,3)) >= 2) {
+  elseif ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
     if (!$hget($chan)) { notice $nick There is no DM. }
     else {
       msgsafe $chan $logo(DM) The DM has been canceled by staff.
@@ -249,7 +249,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       notice $nick Please wait at least 30 seconds after the last move before ending a dm.
     }
     else {
-      notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
+      notice $nick $+ , $+ %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.user.get(user,money,%othernick) * 0.005)))
       set %enddm [ $+ [ $chan ] ] %othernick
       .timercw $+ $chan 1 20 delaycancelw $chan %othernick
       .timerc $+ $chan 1 40 delaycancel $chan %othernick
@@ -271,7 +271,7 @@ alias delaycancel {
     var %newmoney = $ceil($calc(%oldmoney * 0.005))
     notice $2 You got kicked out of a dm, you lose $s2($price(%newmoney)) cash.
     userlog penalty $2 %newmoney
-    db.set user money $2 - %newmoney
+    db.user.set user money $2 - %newmoney
   }
   cancel $1
   msgsafe $1 $logo(DM) The DM has ended due to timeout.

@@ -1,7 +1,7 @@
 on $*:TEXT:/^[!@.]autoidm/Si:#: {
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
-    if ($2 == on) { db.set settings setting $chan timeout | notice $nick $logo(AutoiDM) Disabled Timeout }
-    elseif ($2 == off) { db.remove settings $chan setting timeout | notice $nick $logo(AutoiDM) Enabled Timeout }
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
+    if ($2 == on) { db.set settings setting user $chan timeout | notice $nick $logo(AutoiDM) Disabled Timeout }
+    elseif ($2 == off) { db.rem settings user $chan setting timeout | notice $nick $logo(AutoiDM) Enabled Timeout }
     else {  
       .timer $+ $chan off
       autoidm.start $chan
@@ -11,11 +11,11 @@ on $*:TEXT:/^[!@.]autoidm/Si:#: {
 
 on $*:TEXT:/^[!@.]jgwd/Si:#: {
   tokenize 32 $1- $nick
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if (!$hget($chan,gwd.time)) { notice $nick $logo(ERROR) There is no current GWD in $chan | halt }
     if ($2 !ison $chan) { notice $nick $logo(ERROR) $2 is not on $chan | halt }
     if ($findtok($hget($chan,players),$2,44)) { notice $nick $logo(ERROR) $2 is already in this dm | halt }
-    if ($db.get(user,wins,$2) < 1) { notice $nick $logo(ERROR) $2 is not a valid iDM account | halt }
+    if ($db.user.get(user,wins,$2) < 1) { notice $nick $logo(ERROR) $2 is not a valid iDM account | halt }
     if ($islogged($2,$gettok($address($2,0),2,33),0) == 0) { notice $nick $logo(ERROR) $2 is not logged in | halt }  
     join.dm $chan $2
     init.player $2 $chan 1
@@ -25,38 +25,38 @@ on $*:TEXT:/^[!@.]jgwd/Si:#: {
 
 on $*:TEXT:/^[!@.]addsupport .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
     who $chan
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addsupport <nick> | halt }
     msgsafe $chan $s2($2) has been added to the support staff list with $address($2,3)
-    db.set admins name $address($2,3) support
-    db.set admins title $address($2,3) Bot Support
-    db.set admins rank $address($2,3) 3
-    db.set admins item $address($2,3) Supporter
+    db.set admins name address $address($2,3) support
+    db.set admins title address $address($2,3) Bot Support
+    db.set admins rank address $address($2,3) 3
+    db.set admins item address $address($2,3) Supporter
   }
 }
 
 on $*:TEXT:/^[!@.]addhelper .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addhelper <nick> | halt }
     msgsafe $chan $s2($2) has been added to the helper staff list with $address($2,3)
-    db.set admins title $address($2,3) Bot Helper
-    db.set admins rank $address($2,3) 2
+    db.set admins title address $address($2,3) Bot Helper
+    db.set admins rank address $address($2,3) 2
   }
 }
 
 on $*:TEXT:/^[!@.]addvip .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
-  if ($db.get(admins,rank,$address($nick,3)) == 4 && $me == iDM) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addvip <nick> | halt }
     msgsafe $chan $s2($2) has been added to the vip list with $address($2,3)
-    db.set admins rank $address($2,3) 1
+    db.set admins rank address $address($2,3) 1
   }
 }
 
 on $*:TEXT:/^[!@.]part .*/Si:#: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     if ($left($2,1) == $chr(35)) && ($me ison $2) {
       part $2 Part requested by Bot Staff - $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93)))
       $iif($left($1,1) == @,msgsafe $chan,notice $nick) I have parted $2
@@ -65,14 +65,14 @@ on $*:TEXT:/^[!@.]part .*/Si:#: {
 }
 
 on $*:TEXT:/^[!@.]disable$/Si:%staffchan: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     set %disable 1
     msgsafe $chan -=DISABLE=- iDM disabled
   }
 }
 
 on $*:TEXT:/^[!@.]enable$/Si:%staffchan: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     unset %disable
     msgsafe $chan -=DISABLE=- iDM renabled
   }
@@ -80,7 +80,7 @@ on $*:TEXT:/^[!@.]enable$/Si:%staffchan: {
 
 
 on $*:TEXT:/^[!@.]chans$/Si:%staffchan: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     $iif($left($1,1) == @,msgsafe $chan,notice $nick) I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
 }
@@ -97,7 +97,7 @@ alias chans {
 }
 
 on $*:TEXT:/^[!.@]active$/Si:%staffchan: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     if ($scon(1) != $cid ) halt
     var %x 1
     var %b
@@ -128,7 +128,7 @@ alias listdmchan {
 }
 
 on $*:TEXT:/^[!@.]join .*/Si:%staffchans: {
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if ($left($3,1) != $chr(35)) { halt }
     if (!$3) { notice $nick To use the join command, type !join botname channel. | halt }
     if ($2 == $me) {
@@ -141,20 +141,20 @@ on $*:TEXT:/^[!@.]join .*/Si:%staffchans: {
 
 on $*:TEXT:/^[!@.]rehash$/Si:%staffchan: {
   if ($me != iDM) { return }
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     rehash.run 1
   }
 }
 
 on $*:TEXT:/^[!@.](db|cache)(sync|clear)$/Si:%staffchan: {
   if ($me != iDM) { return }
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     cacheclear.run 1
   }
 }
 
 on *:TEXT:!amsg*:%staffchans: {
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if (!$2) { notice $nick Syntax: !amsg 03message | halt }
     if ($+(*,$nick,*) iswm $2-) { notice $nick $logo(ERROR) Please dont add your name in the amsg since it adds your name to the amsg automatically. | halt }
     if ($me == iDM) { amsg $logo(AMSG) $2- 07[03 $+ $nick $+ 07] | halt }
@@ -169,7 +169,7 @@ on *:TEXT:!amsg*:%staffchans: {
 }
 
 on *:TEXT:!whois*:%staffchans: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
     if (!$2) { if ($me == idm ) { notice $nick Please specify a channel } | halt }
     if ($me ison $2) {
       if ($hget($2,p1)) && ($hget($2,p2)) { notice $nick $logo(STATUS) DM'ers: Player1: $s1($address($hget($2,p1),0)) and Player2: $s1($address($hget($2,p2),0)) $+ . }
@@ -179,9 +179,9 @@ on *:TEXT:!whois*:%staffchans: {
 }
 
 on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:%staffchans: {
-  if ($db.get(admins,rank,$address($nick,3)) >= 3) {
-    if (!$db.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
-    db.set user indm $2 0
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
+    if (!$db.user.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
+    db.user.set user indm $2 0
     if ($hget($2)) hfree $2
     $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(REM-DM) $s1($2) is no longer DMing.
   }
@@ -189,21 +189,21 @@ on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:%staffchans: {
 
 on $*:TEXT:/^[!@.]info .*/Si:%staffchans: {
   if ($me == iDM) {
-    if ($db.get(admins,rank,$address($nick,3)) >= 2)  {
-      db.hget >userinfo user $$2
+    if ($db.get(admins,rank,address,$address($nick,3)) >= 2)  {
+      db.user.hash >userinfo user $$2
       $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Acc-Info) User: $s2($2) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) InDM?: $iif($hget(>userinfo,indm),3YES,4NO) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Logged-In?: $iif($hget(>userinfo,login) > $calc($ctime - (60*240)),03,04) $+ $iif($hget(>userinfo,login),YES,NO) $gmt($hget(>userinfo,login),dd/mm HH:nn:ss) Last Address?: $iif($hget(>userinfo,address),3 $+ $v1 $+ ,4NONE) - Suspended?: $suspendinfo($2)
     }
   }
 }
 alias suspendinfo {
-  db.hget >checkban ilist $1 who time reason
+  db.user.hash >checkban ilist $1 who time reason
   if ($hget(>checkban,reason)) { return 4YES By: $hget(>checkban,who) Reason: $hget(>checkban,reason)  }
-  elseif ($db.get(user,banned,$1)) { return 4YES Reason: None given }
+  elseif ($db.user.get(user,banned,$1)) { return 4YES Reason: None given }
   else { return 3NO }
 }
 
 oN $*:TEXT:/^[!@.]hax/Si:#: {
-  if ($db.get(admins,rank,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if (# == #idm) || (# == $staffchan) && ($me != iDM) { halt }
     if (($hget($chan) && ($hget($chan,players)))) {
       var %user $iif($2, $2, $nick)

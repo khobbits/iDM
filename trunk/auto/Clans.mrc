@@ -13,7 +13,7 @@ on $*:TEXT:/^[!@.]delmem(ber)?.*/Si:*: {
   if (!%clanname) { notice $nick You need to make a clan before you can kick any members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !delmem member. | halt }
   if ($2 == $nick) { notice $nick $logo(ERROR) You can't kick yourself silly! Type: !leave to part your clan / cancel it. | halt }
-  if ($db.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.user.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
   if (%clanname != $getclanname($2)) { notice $nick $logo(ERROR) $s1($2) isn't in your clan. | halt }
   notice $nick $logo(CLANS) $s1($2) has been kicked from your clan.
@@ -33,10 +33,10 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   var %clanname = $getclanname($nick)
   if (!%clanname) { notice $nick You need to make a clan before you can start adding members. !startclan name of clan. | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !addclan new member. | halt }
-  if ($db.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
+  if ($db.user.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $getclanname($2) $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
-  if ($db.get(clantracker,invite,%clanname) == 0) { notice $nick $logo(ERROR) You have set your clan to auto-accept new members, if this isn't right type !dminvite off. | halt }
+  if ($db.get(clantracker,invite,clan,%clanname) == 0) { notice $nick $logo(ERROR) You have set your clan to auto-accept new members, if this isn't right type !dminvite off. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
@@ -53,7 +53,7 @@ on $*:TEXT:/^[!@.]joinclan.*/Si:*: {
   }
   if ($getclanname($nick)) { notice $nick You're already in a clan ( $+ $v1 $+ ). | halt }
   if (!$2) { notice $nick $logo(ERROR) Type !joinclan clan to join. | halt }
-  if (%invite [ $+ [ $nick ] ] != $2 && $db.get(clantracker,invite,$2) == 1) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
+  if (%invite [ $+ [ $nick ] ] != $2 && $db.get(clantracker,invite,clan,$2) == 1) { notice $nick $logo(ERROR) You don't have an invite to join this clan. | halt }
   addclanmember $2 $nick
   notice $nick $logo(CLAN) You've joined $s2($2) $+ .
   unset %invite [ $+ [ $nick ] ]
@@ -104,10 +104,10 @@ on $*:TEXT:/^[!@.](loot|clan|coin|drop)?share (on|off)/Si:*: {
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
   if ($2 == on) { notice $nick $logo(CLAN) The drop share option for $s2(%clanname) has been enabled.
-    db.set clantracker share %clanname 1
+    db.set clantracker share clan %clanname 1
   }
   if ($2 == off) { notice $nick $logo(CLAN) The drop share option for $s2(%clanname) has been disabled.
-    db.set clantracker share %clanname 0
+    db.set clantracker share clan %clanname 0
   }
 }
 
@@ -124,10 +124,10 @@ on $*:TEXT:/^[!@.]dminvite (on|off)/Si:*: {
   if (!%clanname) {  notice $nick You're not in a clan. !startclan name of clan. | halt }
   if ($isclanowner($nick) == 0) { notice $nick You're not the owner of $s2(%clanname) $+ . | halt }
   if ($2 == on) { notice $nick $logo(CLAN) The invite only option for $s2(%clanname) has been enabled.
-    db.set clantracker invite %clanname 1
+    db.set clantracker invite clan %clanname 1
   }
   if ($2 == off) { notice $nick $logo(CLAN) The invite only option for $s2(%clanname) has been disabled. Anyone may join your clan now.
-    db.set clantracker invite %clanname 0
+    db.set clantracker invite clan %clanname 0
   }
 }
 
@@ -147,24 +147,24 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 }
 
 alias claninfo {
-  var %cowner $db.get(clantracker,owner,$1)
+  var %cowner $db.get(clantracker,owner,clan,$1)
   var %ci $remtok($clanmembers($1),%cowner,1,32)
   var %tc $numtok(%ci,32) + 1
-  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,$1),$s1(on),$s2(off)) $+ ) (Invite: $iif($db.get(clantracker,invite,$1),$s1(on),$s2(off)) $+ )
+  return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,clan,$1),$s1(on),$s2(off)) $+ ) (Invite: $iif($db.get(clantracker,invite,clan,$1),$s1(on),$s2(off)) $+ )
 }
 
 alias clanstats {
-  var %wins $db.get(clantracker,wins,$1)
-  var %losses $db.get(clantracker,losses,$1)
+  var %wins $db.get(clantracker,wins,clan,$1)
+  var %losses $db.get(clantracker,losses,clan,$1)
   var %ratio $s1(W/L Ratio) $+ :  $s2($round($calc(%wins / %losses),2)) ( $+ $s2($+($round($calc(%wins / $calc(%wins + %losses) *100),1),$chr(37)))) $+ )
-  return $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,db)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,db)),$s2(0)) %ratio $s1(Money) $+ : $iif($db.get(clantracker,money,$1),$s2($price($v1)),$s2($price(0)))
+  return $s1(Wins) $+ : $iif(%wins,$s2($bytes($v1,db)),$s2(0)) $s1(Losses) $+ : $iif(%losses,$s2($bytes($v1,db)),$s2(0)) %ratio $s1(Money) $+ : $iif($db.get(clantracker,money,clan,$1),$s2($price($v1)),$s2($price(0)))
 }
 
 alias createclan {
   ; $1 = Clanname
   ; $2 = Ownername
   if ($2) {
-    db.set clantracker owner $webstrip($1) $2
+    db.set clantracker owner clan $webstrip($1) $2
     addclanmember $webstrip($1) $2
   }
 }
@@ -172,7 +172,7 @@ alias createclan {
 alias deleteclan {
   ; $1 = Clanname
   if ($1) {
-    db.remove clantracker $1
+    db.rem clantracker clan $1
     db.clear user clan $1
   }
 }
@@ -180,24 +180,24 @@ alias deleteclan {
 alias addclanmember {
   ; $1 = Clanname
   ; $2 = Membername
-  if ($2) db.set user clan $2 $1
+  if ($2) db.user.set user clan $2 $1
 }
 
 alias delclanmember {
   ; $1 = Membername
-  if ($1) db.set user clan $1 0
+  if ($1) db.user.set user clan $1 0
 }
 
 alias getclanname {
   ; $1 = Membername
-  if ($1) return $db.get(user,clan,$1)
+  if ($1) return $db.user.get(user,clan,$1)
 }
 
 alias clanmembers {
   ; $1 = Clanname
   if ($1) {
     var %members
-    var %sql = SELECT * FROM `user` WHERE clan = $db.safe($1)
+    var %sql = SELECT * FROM `user`,`user_alt` WHERE `user`.userid = `user_alt`.userid AND `clan` = $db.safe($1)
     var %result = $db.query(%sql)
     while ($db.query_row_data(%result,user)) {
       var %members = %members $v1
@@ -222,12 +222,12 @@ alias isclanowner {
   ; $1 = Membername
   ; $2 = [optional] Clanname
   if ($2) {
-    if ($db.get(clantracker,owner,$2) == $1) return 1
+    if ($db.get(clantracker,owner,clan,$2) == $1) return 1
     return 0
   }
   elseif ($1) {
-    if ($db.get(user,clan,$1)) {
-      if ($db.get(clantracker,owner,$v1) == $1) return 1
+    if ($db.user.get(user,clan,$1)) {
+      if ($db.get(clantracker,owner,clan,$v1) == $1) return 1
     }
     return 0
   }

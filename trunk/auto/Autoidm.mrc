@@ -96,7 +96,7 @@ alias autoidm.turn {
 alias autoidm.waiting {
   var %othernick = $hget($1,p1)
   if (%enddm [ $+ [ $1 ] ] != 0) {
-    notice %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.get(user,money,%othernick) * 0.005)))
+    notice %othernick The DM will end in 40 seconds if %othernick does not make a move or !enddm. If the dm times out %othernick will lose $price($ceil($calc($db.user.get(user,money,%othernick) * 0.005)))
     set %enddm [ $+ [ $1 ] ] %othernick
     .timercw $+ $1 1 20 delaycancelw $1 %othernick
     .timerc $+ $1 1 40 delaycancel $1 %othernick
