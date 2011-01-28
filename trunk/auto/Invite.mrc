@@ -155,7 +155,7 @@ on $*:TEXT:/^[!@.]title$/Si:#: {
 
 alias showtitle {   
   var %dmrank $ranks(money,$1)
-  db.hash >staff admins $lower($address($1,3)) user
+  db.hash >staff admins $lower($address($1,3)) address
   if ($hget(>staff,rank) == 4) {
     msgsafe $2 $logo(ADMIN) $iif($hget(>staff,title),$v1) $1 has joined the channel.
   }

@@ -36,7 +36,7 @@ on $*:TEXT:/^[!@.]addmem(ber)?.*/Si:*: {
   if ($db.user.get(user,user,$2) == 0) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) doesn't seem to have ever used iDM. | halt }
   if ($getclanname($2)) { notice $nick $logo(ERROR) $remove($2,$chr(36),$chr(37)) is already part of a clan ( $+ $getclanname($2) $+ ). | halt }
   if ($isclanowner($nick) == 0) { notice $nick You have to be the clan owner to do this. | halt }
-  if ($db.get(clantracker,invite,clan,%clanname) == 0) { notice $nick $logo(ERROR) You have set your clan to auto-accept new members, if this isn't right type !dminvite off. | halt }
+  if ($db.get(clantracker,invite,clan,%clanname) == 0) { notice $nick $logo(ERROR) You have set your clan to auto-accept new members, if this isn't right type !dminvite on. | halt }
   set %invite [ $+ [ $2 ] ] %clanname
   notice $nick $logo(CLAN) $2 has been sent a request to join $s2(%clanname) $+ .
   $iif($address($2,2),notice $2,ms send $2) You've been asked to join $s1(%clanname) $+ $chr(44) requested by $nick $+ . Type !joinclan %clanname to accept.
@@ -147,7 +147,7 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 }
 
 alias claninfo {
-  var %cowner $db.get(clantracker,owner,clan,$1)
+  var %cowner $db.get(clantracker,userid,clan,$1)
   var %ci $remtok($clanmembers($1),%cowner,1,32)
   var %tc $numtok(%ci,32) + 1
   return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,clan,$1),$s1(on),$s2(off)) $+ ) (Invite: $iif($db.get(clantracker,invite,clan,$1),$s1(on),$s2(off)) $+ )
@@ -164,7 +164,7 @@ alias createclan {
   ; $1 = Clanname
   ; $2 = Ownername
   if ($2) {
-    db.set clantracker owner clan $webstrip($1) $2
+    db.set clantracker userid clan $webstrip($1) $db.user.id($2)
     addclanmember $webstrip($1) $2
   }
 }
@@ -222,12 +222,12 @@ alias isclanowner {
   ; $1 = Membername
   ; $2 = [optional] Clanname
   if ($2) {
-    if ($db.get(clantracker,owner,clan,$2) == $1) return 1
+    if ($db.get(clantracker,userid,clan,$2) == $db.user.id($1)) return 1
     return 0
   }
   elseif ($1) {
     if ($db.user.get(user,clan,$1)) {
-      if ($db.get(clantracker,owner,clan,$v1) == $1) return 1
+      if ($db.get(clantracker,userid,clan,$v1) == $db.user.id($1)) return 1
     }
     return 0
   }

@@ -124,12 +124,12 @@ alias ranks {
     }
   }
   else {
-    var %sql = SELECT user, userid FROM user,user_alt WHERE user.userid = user_alt.userid AND user = $db.safe($2) LIMIT 0,1
+    var %sql = SELECT user, user.userid as userid FROM user,user_alt WHERE user.userid = user_alt.userid AND user = $db.safe($2) LIMIT 0,1
     if ($db.select(%sql,userid) == $null) { return Sorry user could not be found }
 
     var %sql = SELECT COUNT(*)+1 AS rank FROM user AS r1 $&
       INNER JOIN (SELECT $db.tquote($1) FROM user WHERE banned = '0' AND exclude = '0') AS r2 ON (r1. $+ $1 ) < (r2. $+ $1 ) $&
-      WHERE r1.user = $v1
+      WHERE r1.userid = $v1
 
     var %query = $db.query(%sql)
     if ($db.query_row(%query,>rrow) == 1) {
@@ -168,7 +168,7 @@ alias userlog {
 alias userlog.commit {
   if ($len(%userlog) > 4) {
     dbcheck
-    var %sql = INSERT INTO user_log (user, nickname, date, type, data) VALUES %userlog
+    var %sql = INSERT INTO user_log (userid, nickname, date, type, data) VALUES %userlog
     if ($db.exec(%sql) == 1) { unset %userlog }
     else { putlog ERROR: userlog commit failed, userlog may need manual cleanup. }
   }

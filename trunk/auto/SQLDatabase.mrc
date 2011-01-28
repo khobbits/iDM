@@ -19,22 +19,30 @@ alias db.get {
   if (!$4) { putlog Syntax Error: db.get <table> <column> <match col> <match data> - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   dbcheck
-    
+
   var %sql = SELECT $db.tquote($2) FROM $db.tquote($1) WHERE $db.tquote($3) = $db.safe($4)
   return $iif($db.select(%sql,$2) === $null,0,$v1)
 }
 
 ; This is a convience function to return a single cell from a table
 alias db.user.get {
-  if (!$3) { putlog Syntax Error: db.get <table> <column> <user> - $db.safe($1-) | halt }
+  if (!$3) { putlog Syntax Error: db.get.user <table> <column> <user> - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($1 == user) || (equip_ isin $1)) {
     if (($hget($3)) && ($hget($3,money))) { return $hget($3,$2) }
   }
   dbcheck
-    
+
   var %sql = SELECT `user`, `userid`, $db.tquote($2) FROM `user_alt` LEFT JOIN $db.tquote($1) USING (`userid`) WHERE `user` = $db.safe($3)
   return $iif($db.select(%sql,$2) === $null,0,$v1)
+}
+
+alias db.user.id {
+  if (!$1) { putlog Syntax Error: db.user.id <user> - $db.safe($1-) | halt }
+  tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32)) 
+  dbcheck
+  var %sql = SELECT `user`, `userid`FROM `user_alt` WHERE `user` = $db.safe($1)
+  return $iif($db.select(%sql,userid) === $null,0,$v1)
 }
 
 ; This function retrieves a single cell from a database and returns the value
@@ -144,12 +152,12 @@ alias db.user.set {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($5 isnum) && (($4 == +) || ($4 == -))) {
-    var %sql = INSERT INTO $db.tquote($1) ( user , $db.tquote($2) ) VALUES ( ( SELECT `userid` FROM `user_alt` where `user` =  $db.safe($3) ), $db.safe($5-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.tquote($2) $4 $db.safe($5-)
+    var %sql = INSERT INTO $db.tquote($1) ( userid , $db.tquote($2) ) VALUES ( ( SELECT `userid` FROM `user_alt` where `user` =  $db.safe($3) ), $db.safe($5-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.tquote($2) $4 $db.safe($5-)
     if ((($1 == user) || (equip_ isin $1)) && ($hget($3))) { hadd $3 $2 $calc($hget($3,$2) $4 $5- ) }
     return $db.exec(%sql)
   }
   elseif ($4 !== $null) {
-    var %sql = INSERT INTO $db.tquote($1) ( user , $db.tquote($2) ) VALUES ( ( SELECT `userid` FROM `user_alt` where `user` =  $db.safe($3) ), $db.safe($4-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($4-)
+    var %sql = INSERT INTO $db.tquote($1) ( userid , $db.tquote($2) ) VALUES ( ( SELECT `userid` FROM `user_alt` where `user` =  $db.safe($3) ), $db.safe($4-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($4-)
     if ((($1 == user) || (equip_ isin $1)) && ($hget($3))) { hadd $3 $2 $4- }
     return $db.exec(%sql)
   }
@@ -163,11 +171,11 @@ alias db.set {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if (($6 isnum) && (($5 == +) || ($5 == -))) {
-    var %sql = INSERT INTO $db.tquote($1) ( $db.tquote($3) , $db.tquote($2) ) VALUES ( $db.safe($4) , $db.safe($5-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.tquote($2) $5 $db.safe($6-)
+    var %sql = INSERT INTO $db.tquote($1) ( $db.tquote($3) , $db.tquote($2) ) VALUES ( $db.safe($4) , $db.safe($6-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.tquote($2) $5 $db.safe($6-)
     return $db.exec(%sql)
   }
   elseif ($5 !== $null) {
-    var %sql = INSERT INTO $db.tquote($1) ( $db.safe($3) , $db.tquote($2) ) VALUES ( $db.safe($4) , $db.safe($4-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($5-)
+    var %sql = INSERT INTO $db.tquote($1) ( $db.tquote($3) , $db.tquote($2) ) VALUES ( $db.safe($4) , $db.safe($5-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($5-)
     return $db.exec(%sql)
   }
   else {
@@ -180,12 +188,12 @@ alias db.user.rem {
   dbcheck
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
   if ($4 !== $null) {
-  
-    var %sql = DELETE FROM $db.tquote($1) WHERE user = (SELECT `userid` from `user_alt` WHERE `user` =  $db.safe($2)) AND $db.tquote($3) = $db.safe($4)
+
+    var %sql = DELETE FROM $db.tquote($1) WHERE userid = (SELECT `userid` from `user_alt` WHERE `user` =  $db.safe($2)) AND $db.tquote($3) = $db.safe($4)
     return $db.exec(%sql)
   }
   elseif ($2 !== $null) {
-    var %sql = DELETE FROM $db.tquote($1) WHERE user = (SELECT `userid` from `user_alt` WHERE `user` =  $db.safe($2))
+    var %sql = DELETE FROM $db.tquote($1) WHERE userid = (SELECT `userid` from `user_alt` WHERE `user` =  $db.safe($2))
     return $db.exec(%sql)
   }
   else {
