@@ -26,7 +26,7 @@ alias toplist {
   ; $2 = number to show
   ; $3 = toggle on using K/M/B
   var %output, %i = 0
-  var %sql = SELECT user, $db.tquote($1) FROM user,user_alt WHERE user.userid = user_alt.userid AND banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT 0, $+ $2
+  var %sql = SELECT * FROM user u JOIN ( SELECT * FROM user_alt ) ua USING (userid) WHERE banned = '0' AND exclude = '0' GROUP BY userid ORDER BY $db.tquote($1) +0 DESC LIMIT $2
   var %result = $db.query(%sql)
 
   while ($db.query_row(%result,>row)) {
@@ -116,7 +116,7 @@ alias ranks {
   ; $1 = table
   ; $2 = position or username
   if ($2 isnum 1-100000) {
-    var %sql = SELECT user, $db.tquote($1) FROM user,user_alt WHERE user.userid = user_alt.userid AND banned = '0' AND exclude = '0' ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
+    var %sql = SELECT * FROM user u JOIN ( SELECT * FROM user_alt ) ua USING (userid) WHERE banned = '0' AND exclude = '0' GROUP BY userid ORDER BY $db.tquote($1) +0 DESC LIMIT $calc($2 - 1) $+ ,1
     var %query = $db.query(%sql)
     if ($db.query_row(%query,>rrow) == 1) {
       db.query_end %query

@@ -47,7 +47,7 @@ alias isdisabled {
 }
 
 alias enablec {
-  if ($2 isop $3) || ($db.get(admins,rank,$address($2,3)) > 2) { 
+  if ($2 isop $3) || ($db.get(admins,rank,address,$address($2,3)) > 2) { 
     tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
     var %notice
     if ($1 == -h) {
@@ -78,7 +78,7 @@ alias enablec {
 }
 
 alias disablec {
-  if ($2 isop $3) || ($db.get(admins,rank,$address($2,3)) > 2) { 
+  if ($2 isop $3) || ($db.get(admins,rank,address,$address($2,3)) > 2) { 
     tokenize 32 $replace($1,$chr(44),$chr(58)) $2-
     var %notice
     if ($1 == -h) {

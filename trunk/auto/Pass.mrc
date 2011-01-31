@@ -71,6 +71,11 @@ alias islogged {
   var %login $hget(>islogged,login)
   var %address $hget(>islogged,address)
 
+  if ((%login !isnum) || (%login < 1)) {
+    db.exec insert into user (login) values ('1') on duplicate key update login = '1'
+    if (!$db.user.id($1)) { db.exec insert into user_alt (userid, user) values ( $mysql_insert_id(%db) , $db.safe($1) ) } 
+  }
+
   var %threshold $calc($ctime - (60*240))
   if ((%address == $2) && (%login > %threshold)) {
     auth_success $1

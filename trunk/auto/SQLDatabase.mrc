@@ -86,14 +86,15 @@ alias db.user.hash {
 
 alias db.hash {
   if (!$3) { putlog Syntax Error: /db.hash <hashtable> <table> <matchtext> <first column> [columns 2+] - $db.safe($1-) | halt }
-  tokenize 32 $replace($lower($1-3),$chr(32) $+ $chr(32),$chr(32)) $4 $replace($lower($4-),$chr(32), ` $+ $chr(44) $+ `)
+  tokenize 32 $replace($lower($1-3),$chr(32) $+ $chr(32),$chr(32)) $4 $iif($5,$replace($lower($4-),$chr(32), ` $+ $chr(44) $+ `),*)
   var %htable = $1
   var %table = $2
   var %match = $3
-  var %columns = $iif($5,` $+ $5 $+ `,*)
+  var %matchcol = $4
+  var %columns = $5
 
   dbcheck
-  var %sql SELECT %columns FROM $db.tquote(%table) WHERE $db.tquote($4) = $db.safe(%match)
+  var %sql SELECT %columns FROM $db.tquote(%table) WHERE $db.tquote(%matchcol) = $db.safe(%match)
   var %result = $db.query(%sql)
   if ($db.query_row(%result,%htable) === $null) { return $null }
   db.query_end %result
