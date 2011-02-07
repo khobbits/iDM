@@ -1,4 +1,4 @@
-on $*:TEXT:/^[!@.](dm|stake|gwd|boss)\b/Si:#: {
+on $*:TEXT:/^[!@.](dm|stake|gwd|boss|pvm)\b/Si:#: {
   if (# == $supportchan) && ($nick !isop $chan) { halt }
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
@@ -27,7 +27,7 @@ alias startdm {
   if ($hget(%chan)) {
     if ($numtok($hget(%chan,players),44) == 6) { notice %nick $logo(GWD) There are already $s1(6) people on this team. Please wait untill the raid is over. | halt }
     if (($hget(%chan,stake)) && (stake !isin $1)) { notice %nick There is currently a stake, please type !stake to accept the challenge. | halt }
-    if (($hget(%chan,gwd.npc)) && (gwd !isin $1) && (boss !isin $1)) { notice %nick There is currently a GWD, please type !gwd to join the group. | halt }
+    if (($hget(%chan,gwd.npc)) && (gwd !isin $1) && (boss !isin $1) && (pvm !isin $1)) { notice %nick There is currently a GWD, please type !gwd to join the group. | halt }
     if ($hget(%chan,stake)) {
       if ((%chan == #idm.newbies) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) > 1000)) { halt }
       if ((%chan == #idm.elites) && (%nick isreg %chan) && ($db.user.get(user,wins,%nick) < 1000)) { halt }
@@ -68,7 +68,7 @@ alias startdm {
       msgsafe %chan $logo(DM) $s1(%nick) $winloss(%nick) has requested a stake of $s2($price(%stake)) $+ ! You have $s2(30 seconds) to accept.
       .timer $+ %chan 1 30 enddm %chan
     }
-    elseif ((gwd isin $1) || (boss isin $1)) {
+    elseif ((gwd isin $1) || (boss isin $1) || (pvm isin $1)) {
       if ($isdisabled(%chan,gwd) === 1) { notice %nick $logo(ERROR) Godwars raiding in this channel has been disabled. | halt }
       hadd -m %chan gwd.npc $gwd.npc($2)
       join.dm %chan %nick
