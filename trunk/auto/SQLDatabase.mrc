@@ -92,9 +92,10 @@ alias db.hash {
   var %match = $3
   var %matchcol = $4
   var %columns = $5
+  if (%columns != *) { var %columns $db.tquote(%columns) }
 
   dbcheck
-  var %sql SELECT $db.tquote(%columns) FROM $db.tquote(%table) WHERE $db.tquote(%matchcol) = $db.safe(%match)
+  var %sql SELECT %columns FROM $db.tquote(%table) WHERE $db.tquote(%matchcol) = $db.safe(%match)
   var %result = $db.query(%sql)
   if ($db.query_row(%result,%htable) === $null) { return $null }
   db.query_end %result
