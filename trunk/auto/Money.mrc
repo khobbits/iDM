@@ -156,7 +156,7 @@ On $*:TEXT:/^[!@.]TakeItem .*/Si:%staffchan: {
 }
 
 alias whichitem {
-  if ($db.get(admins,name,$address($nick,3))) return $v1
+  if ($db.get(admins,name,address,$address($nick,3))) return $v1
   else return 0
 }
 
