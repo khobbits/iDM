@@ -115,7 +115,7 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
     db.query_end %result
   }
   var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(COMMANDS)
-  var %account money equip account--s top/wtop/ltop-N dmrank-name/N
+  var %account money equip account-[s] top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
   var %items dmclue solve-answer
   var %misc on/off-att !max-att hitchance-att-dmg
