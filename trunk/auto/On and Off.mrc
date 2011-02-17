@@ -122,7 +122,6 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
   %prefix $cmdfetch(Magic,$2) $cmdfetch(Range,$2) $cmdfetch(Melee,$2) $cmdfetch(PVP,$2)
-  hlist $2
   if ((%sql) && ($hget($2))) { .hfree $2 }
 }
 
@@ -155,11 +154,12 @@ alias cmdfetch {
 }
 
 alias showattack {
-  if (($dmg($1,item) == admin) && (!$hget($2))) { return $false }
-  if (($dmg($1,item) == gwd) && (!$hget($2))) { return $false }  
+  if (($dmg($1,item) == admin) && (!$hget($2))) { echo -s f1 | return $false }
+  if (($dmg($1,item) == gwd) && (!$hget($2))) { echo -s f2 | return $false }  
   if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
   if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
   if ($hget($2,$isweapon($1))) { return $true }
+  echo -s f3
   return $false
 }
 
