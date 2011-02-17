@@ -230,7 +230,7 @@ on $*:TEXT:/^[!@.]enddm/Si:#: {
       cancel $chan
       msgsafe $chan $logo(DM) The DM has been canceled by staff.
     }
-    elseif (!$hget($chan,p2)) {
+    elseif ($nick == $hget($chan,players)) {
       cancel $chan
       msgsafe $chan $logo(DM) The stake has been canceled.
     }
