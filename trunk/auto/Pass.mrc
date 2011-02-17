@@ -139,7 +139,7 @@ alias logcheck {
 on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
-  if (($2 == -s) || ($2 == -m) || ($2 == -n) || ($2 == -short)) { var %flag 1 }
+  if ((s isin $2) || (m isin $2) || (n isin $2)) { var %flag 1 }
   else { var %flag 0 }
   if (account isin $1) { logcheck $nick $address accountlink %flag $logo(Account) }
   else { logcheck $nick $address accountlink %flag $logo(Store) You can buy and sell items in the !account panel: }
