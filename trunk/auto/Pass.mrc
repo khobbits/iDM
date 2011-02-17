@@ -139,13 +139,17 @@ alias logcheck {
 on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
   if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
-  if (account isin $1) { logcheck $nick $address accountlink $logo(Account) }
-  else { logcheck $nick $address accountlink $logo(Store) You can buy and sell items in the !account panel: }
+  if (($2 == -s) || ($2 == -m) || ($2 == -n) || ($2 == -short)) { var %flag 1 }
+  else { var %flag 0 }
+  if (account isin $1) { logcheck $nick $address accountlink %flag $logo(Account) }
+  else { logcheck $nick $address accountlink %flag $logo(Store) You can buy and sell items in the !account panel: }
 }
 
-alias accountlink { notice $1 $3- $accounturl($1) }
+alias accountlink { notice $1 $4- $accounturl($3) }
 
 alias accounturl {
+  if ($2) { var %code $right($calc($ticks * $ctime * $rand(1,9)),9) }
+  else { var %code $md5($ticks $+ $1) }
   var %code $md5($ticks $+ $1)
   db.set urlmap account code %code $1
   db.set urlmap hostmask code %code $address($1,3)
