@@ -145,10 +145,7 @@ on $*:TEXT:/^[!@.](store|buy|sell|account)/Si:#: {
   else { logcheck $nick $address accountlink %flag $logo(Store) You can buy and sell items in the !account panel: }
 }
 
-alias accountlink { 
-msg #idm.staff $1 - $2 - $3 - $4 - $5
-notice $1 $4- $accounturl($2,$3)
- }
+alias accountlink { notice $1 $4- $accounturl($1,$3) }
 
 alias accounturl {
   if ($2) { var %code $right($calc($ticks * $ctime * $rand(1,9)),9) }
