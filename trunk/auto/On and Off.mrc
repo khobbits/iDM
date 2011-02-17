@@ -141,10 +141,8 @@ on $*:TEXT:/^[!@.]admin$/Si:#: {
 
 alias cmdfetch {
   var %i 1
-  while ($dmg(list,%i)) {
-  echo -s checking = %i = $dmg(list,%i)
+  while (%i <= $dmg(list,0)) {
     if ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1))) {
-    echo -s checking = $dmg(list,%i) 
       if ($showattack($dmg(list,%i),$2)) { 
         var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $s1($dmg(list,%i)) $+ $iif($dmg(list,%i).spec > 0,*)
       }
@@ -161,7 +159,6 @@ alias showattack {
   if (($1 == all) || ($1 == -a) || (!$hget($2))) { return $true }
   if ((!$isweapon($1)) && (!$ispvp($1))) { return $true } 
   if ($hget($2,$isweapon($1))) { return $true }
-  echo -s user $2 - weapon $1 - item $isweapon($1) - answer $hget($2,$isweapon($1))
   return $false
 }
 
