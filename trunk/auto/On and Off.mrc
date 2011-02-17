@@ -115,13 +115,14 @@ on $*:TEXT:/^[!@.](dm)?command(s)?( .*)?$/Si:#: {
     db.query_end %result
   }
   var %prefix $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(COMMANDS)
-  var %account money equip account top/wtop/ltop-N dmrank-name/N
+  var %account money equip account--s top/wtop/ltop-N dmrank-name/N
   var %clan startclan-name addmem/delmem-nick joinclan-name dmclan-nick leaveclan share-on/off
   var %items dmclue solve-answer
   var %misc on/off-att !max-att hitchance-att-dmg
   var %control dm-[noadmin] stake-[amount] gwd enddm status
   %prefix $cmdformat(Account,%account) $cmdformat(Clan,%clan) $cmdformat(Item,%items) $cmdformat(Misc,%misc) $cmdformat(Control,%control)
   %prefix $cmdfetch(Magic,$2) $cmdfetch(Range,$2) $cmdfetch(Melee,$2) $cmdfetch(PVP,$2)
+  hlist $2
   if ((%sql) && ($hget($2))) { .hfree $2 }
 }
 
