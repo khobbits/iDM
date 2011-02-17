@@ -143,6 +143,7 @@ alias cmdfetch {
   var %i 1
   while ($dmg(list,%i)) {
     if ((($dmg(list,%i).type == $1) && ($dmg(list,%i).pvp == 0)) || (($1 == pvp) && ($dmg(list,%i).pvp == 1))) {
+    echo -s checking = $dmg(list,%i) 
       if ($showattack($dmg(list,%i),$2)) { 
         var %output $iif(%output,%output $+ $chr(44) $+ $chr(32)) $+ $s1($dmg(list,%i)) $+ $iif($dmg(list,%i).spec > 0,*)
       }
