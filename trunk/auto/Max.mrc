@@ -62,7 +62,7 @@ alias healer { return $dmg($1,heal) $dmg($1,healamount) }
 alias dmg.hload {
   if ($hget(>weapon)) { hfree >weapon }
   hmake >weapon 200
-  var %sql SELECT * FROM `weapons` ORDER BY `weapon` ASC
+  var %sql SELECT * FROM `weapons` ORDER BY `weapon` ASC, `main` ASC 
   var %res $db.query(%sql)
   var %i 0
   var %last -1
