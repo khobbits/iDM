@@ -29,7 +29,7 @@ alias geupdate {
   hadd >geupdate t $ctime
   hadd >geupdate max $getmax
   if ($sock(pu)) { sockclose pu }
-  sockopen pu itemdb-rs.runescape.com 80
+  sockopen pu services.runescape.com 80
 }
 on *:sockopen:pu:{ 
   if ($hget(>geupdate,id) <= $hget(>geupdate,max)) {
@@ -37,8 +37,8 @@ on *:sockopen:pu:{
     hadd >geupdate price $getprice($hget(>geupdate,id))
     hadd >geupdate name $getname($hget(>geupdate,id))
     if ($hget(>geupdate,item) == 0) { hinc >geupdate id 1 | pu2 | return }
-    sockwrite -nt $sockname GET /viewitem.ws?obj= $+ $hget(>geupdate,item) HTTP/1.1
-    sockwrite -nt $sockname Host: itemdb-rs.runescape.com
+    sockwrite -nt $sockname GET /m=itemdb_rs/viewitem.ws?obj= $+ $hget(>geupdate,item) HTTP/1.1
+    sockwrite -nt $sockname Host: services.runescape.com
     sockwrite -nt $sockname $crlf
   }
   else { 
@@ -93,7 +93,7 @@ alias -l pu2 {
   if ($hget(>geupdate)) {
     if ($sock(pu)) { sockclose pu }
     .timerpucheck 1 15 pu3
-    sockopen pu itemdb-rs.runescape.com 80
+    sockopen pu services.runescape.com 80
   }
 }
 alias -l pu3 {
