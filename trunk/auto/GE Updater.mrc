@@ -100,10 +100,10 @@ alias -l pu2 {
 }
 alias -l pu3 {
   if ($sock(pu)) {
-    putlog $logo(GE UPDATE) Error: Socket timeout.  Read: $sock(pu).rcvd Queue: $sock(pu).rq / $sock(pu).sq Idle: $sock(pu).lr ERR: $sock(pu).wsmsg $hget(>geupdate,url)
+    ;putlog $logo(GE UPDATE) Error: Socket timeout.  Read: $sock(pu).rcvd Queue: $sock(pu).rq / $sock(pu).sq Idle: $sock(pu).lr ERR: $sock(pu).wsmsg $hget(>geupdate,url)
   }
   else {
-    putlog $logo(GE UPDATE) Error: Socket timeout.  Status: Closed $hget(>geupdate,url)
+    ;putlog $logo(GE UPDATE) Error: Socket timeout.  Status: Closed $hget(>geupdate,url)
   }
   pu2
 }
