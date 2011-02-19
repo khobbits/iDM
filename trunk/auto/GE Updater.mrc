@@ -7,7 +7,8 @@ on $*:TEXT:/^[!@.]geupdate/Si:%staffchans: {
         msgsafe $staffchan $logo(GE UPDATE) Update stopped. - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
         hfree >geupdate
         sockclose pu
-        .timerpu2 off
+        .timerpu off
+        .timerpucheck off
       }
       else {
         msgsafe $staffchan $logo(GE UPDATE) Update is in progress. Status: $hget(>geupdate,id) $+ / $+ $hget(>geupdate,max) - Duration: $duration($calc($ctime - $hget(>geupdate,t)))
@@ -89,9 +90,11 @@ on *:sockclose:pu: {
   pu2
 }
 alias -l pu2 {
-  if ($sock(pu)) { sockclose pu }
-  .timerpucheck 1 15 pu3
-  sockopen pu itemdb-rs.runescape.com 80
+  if ($hget(>geupdate)) {
+    if ($sock(pu)) { sockclose pu }
+    .timerpucheck 1 15 pu3
+    sockopen pu itemdb-rs.runescape.com 80
+  }
 }
 alias -l pu3 {
   if ($sock(pu)) {
@@ -114,16 +117,19 @@ alias -l xcalc {
   }
 }
 alias -l getitem {
+  if ($1 == $null) { putlog Syntax Error: getitem (1) - $db.safe($1-) | halt }
   dbcheck
   var %sql = SELECT `id` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,id) === $null,0,$v1)
 }
 alias -l getprice {
+  if ($1 == $null) { putlog Syntax Error: getprice (1) - $db.safe($1-) | halt }
   dbcheck
   var %sql = SELECT `price` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,price) === $null,0,$v1)
 }
 alias -l getname {
+  if ($1 == $null) { putlog Syntax Error: getname (1) - $db.safe($1-) | halt }
   dbcheck
   var %sql = SELECT `item` FROM `drops` WHERE `id` != 0 ORDER BY `id` DESC LIMIT $1 $+ ,1
   return $iif($db.select(%sql,item) === $null,0,$v1)
@@ -134,6 +140,7 @@ alias -l getmax {
   return $iif($db.select(%sql,count) === $null,0,$v1)
 }
 alias -l setitem {
+  if ($2 == $null) { putlog Syntax Error: setitem (2) - $db.safe($1-) | halt }
   dbcheck
   var %sql = UPDATE `drops` SET `price` = $2 WHERE `id` = $1
   return $db.exec(%sql)
