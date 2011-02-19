@@ -40,6 +40,8 @@ on *:sockopen:pu:{
     sockwrite -nt $sockname GET /m=itemdb_rs/viewitem.ws?obj= $+ $hget(>geupdate,item) HTTP/1.1
     sockwrite -nt $sockname Host: services.runescape.com
     sockwrite -nt $sockname $crlf
+    hadd >geupdate url http://services.runescape.com/m=itemdb_rs/viewitem.ws?obj= $+ $hget(>geupdate,item)
+
   }
   else { 
     sockclose pu
@@ -56,8 +58,8 @@ on *:SOCKREAD:pu:{
   }
   var %ge
   sockread %ge
-  if (<b>Market price:</b> * iswm %ge) {
-    var %price $remove(%ge,<b>Market price:</b> )
+  if (<b>Current guide price:</b> * iswm %ge) {
+    var %price $remove(%ge,<b>Current guide price:</b> )
     var %price = $xcalc(%price)
     if (%price isnum) {
       if ($hget(>geupdate,price) != %price) {
@@ -68,7 +70,7 @@ on *:SOCKREAD:pu:{
       }
     }
     else {
-      putlog $logo(GE UPDATE) %price is not a number @ http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item)
+      putlog $logo(GE UPDATE) %price is not a number @ $hget(>geupdate,url)
     }
     hinc >geupdate id 1
     sockclose pu
@@ -76,12 +78,12 @@ on *:SOCKREAD:pu:{
   }
   elseif (The item you were trying to view could not be found. isin %ge) { 
     hinc >geupdate id 1
-    msgsafe $staffchan $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) does not exist.
+    msgsafe $staffchan $logo(GE UPDATE) Error: $hget(>geupdate,url) does not exist.
     sockclose pu
     .timerpu2 1 1 pu2 
   }
-  elseif (</html> isin %ge) { 
-    putlog $logo(GE UPDATE) Error: http://itemdb-rs.runescape.com/viewitem.ws?obj= $+ $hget(>geupdate,item) did not return a valid match.
+  elseif ((</html> isin %ge) || (</body> isin %ge)) { 
+    putlog $logo(GE UPDATE) Error: $hget(>geupdate,url) did not return a valid match.
     sockclose pu
     .timerpu2 1 1 pu2 
   }
@@ -98,10 +100,10 @@ alias -l pu2 {
 }
 alias -l pu3 {
   if ($sock(pu)) {
-    putlog $logo(GE UPDATE) Error: Socket timeout.  Status: $iif($sock(pu).pause,Paused,Unpaused) Read: $sock(pu).rcvd Queue: $sock(pu).rq / $sock(pu).sq Idle: $sock(pu).lr ERR: $sock(pu).wsmsg  Restarting.
+    putlog $logo(GE UPDATE) Error: Socket timeout.  Read: $sock(pu).rcvd Queue: $sock(pu).rq / $sock(pu).sq Idle: $sock(pu).lr ERR: $sock(pu).wsmsg $hget(>geupdate,url)
   }
   else {
-    putlog $logo(GE UPDATE) Error: Socket timeout.  Status: Closed Restarting.
+    putlog $logo(GE UPDATE) Error: Socket timeout.  Status: Closed $hget(>geupdate,url)
   }
   pu2
 }
