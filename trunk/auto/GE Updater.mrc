@@ -94,7 +94,7 @@ alias -l pu2 {
   sockopen pu itemdb-rs.runescape.com 80
 }
 alias -l pu3 {
-  if ($sock(pu) {
+  if ($sock(pu)) {
     putlog $logo(GE UPDATE) Error: Socket timeout.  Status: $iif($sock(pu).pause,Paused,Unpaused) Read: $sock(pu).rcvd Queue: $sock(pu).rq / $sock(pu).sq Idle: $sock(pu).lr ERR: $sock(pu).wsmsg  Restarting.
   }
   else {
