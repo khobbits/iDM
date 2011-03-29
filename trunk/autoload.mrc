@@ -40,6 +40,7 @@ alias rehash.run {
 }
 
 alias putlog {
+  if (!$1) return
   if ($1 == perform) {
     sbnc tcl putmainlog $chr(123) $+ $1- $+ $chr(125)
   }
@@ -52,6 +53,7 @@ alias putlog {
 }
 
 alias dblog {
+  if (!$1) return
   if (insert into log !isin $1-) {
     var %sql = INSERT INTO log (`time`,`text`) VALUES ( $ctime , $db.safe( $1- ) )
     db.exec %sql

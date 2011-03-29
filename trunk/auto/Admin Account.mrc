@@ -124,6 +124,10 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
       var %table = equip_staff
       var %item = $3
     }
+    elseif ($3 == bslap) {
+      var %table = equip_item
+      var %item = admin
+    }
     elseif (($3 == snow) || ($3 == clue)) {
       var %table = equip_item
       var %item = $3

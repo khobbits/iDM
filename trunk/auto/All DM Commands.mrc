@@ -172,8 +172,8 @@ alias damage {
   msgsafe $4 %msg
 
   if ($dmg($3,type) == melee) { hadd $1 laststyle melee }
-  elseif ($dmg($3,type) == mage) { hadd $1 laststyle mage }
-  elseif ($dmg($3,type) == range) { hadd $1 laststyle range }
+  if ($dmg($3,type) == magic) { hadd $1 laststyle mage }
+  if ($dmg($3,type) == range) { hadd $1 laststyle range }
 
   var %temp.hit $calc($replace(%hit,$chr(32),$chr(43)))
   if ($hget($1,belong)) && ($r(1,100) >= 99) && (%hp2 >= 1) {
@@ -214,6 +214,7 @@ alias damage {
     notice $hget($4,players) $logo(GWD) HP: %h
   }
   if (%dmg-dealt >= 99) { db.user.set achievements 1hit $1 1 }
+
 }
 
 alias hpbar {

@@ -45,6 +45,7 @@ alias autoidm.turn {
   var %spec $hget(%nick,sp)
   var %hp $hget(%nick,hp)
   var %hp2 $hget(%p2,hp)
+
   if (%hp2 <= 15) var %attcmd surf
   elseif ((%hp <= 9) && (%hp2 <= 50)) var %attcmd dh
   elseif ($hget(%p2,laststyle) == melee) {

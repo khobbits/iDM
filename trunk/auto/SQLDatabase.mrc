@@ -6,7 +6,11 @@ alias dbcheck {
 
 ; Secures the db from exploits through injection.
 alias db.safe {
-  return $mysql_qt($mysql_real_escape_string(%db,$strip($lower($1-))))
+  var %psafe $strip($lower($1-))
+  if (%psafe === $null) putlog NULL Input - $1
+  var %safe $mysql_qt($mysql_real_escape_string(%db,%psafe))
+  if (!%safe) putlog NULL DB.SAFE - $1
+  return %safe
 }
 
 ; Adds the quotes around a table or column define
@@ -16,8 +20,8 @@ alias db.tquote {
 
 ; This is a convience function to return a single cell from a table
 alias db.get {
-  if (!$4) { putlog Syntax Error: db.get <table> <column> <match col> <match data> - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
+  if (!$4) { putlog Syntax Error: db.get <table> <column> <match col> <match data> - $db.safe($1-) | halt }
   dbcheck
 
   var %sql = SELECT $db.tquote($2) FROM $db.tquote($1) WHERE $db.tquote($3) = $db.safe($4)
@@ -26,8 +30,8 @@ alias db.get {
 
 ; This is a convience function to return a single cell from a table
 alias db.user.get {
-  if (!$3) { putlog Syntax Error: db.get.user <table> <column> <user> - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32))
+  if (!$3) { putlog Syntax Error: db.get.user <table> <column> <user> - $db.safe($1-) | halt }
   if (($1 == user) || (equip_ isin $1)) {
     if (($hget($3)) && ($hget($3,money))) { return $hget($3,$2) }
   }
@@ -41,7 +45,7 @@ alias db.user.id {
   if (!$1) { putlog Syntax Error: db.user.id <user> - $db.safe($1-) | halt }
   tokenize 32 $replace($lower($1-),$chr(32) $+ $chr(32),$chr(32)) 
   dbcheck
-  var %sql = SELECT `user`, `userid`FROM `user_alt` WHERE `user` = $db.safe($1)
+  var %sql = SELECT `user`, `userid` FROM `user_alt` WHERE `user` = $db.safe($1)
   return $iif($db.select(%sql,userid) === $null,0,$v1)
 }
 
@@ -158,7 +162,7 @@ alias db.user.set {
     if ((($1 == user) || (equip_ isin $1)) && ($hget($3))) { hadd $3 $2 $calc($hget($3,$2) $4 $5- ) }
     return $db.exec(%sql)
   }
-  elseif ($4 !== $null) {
+  elseif (($3) && ($4 !== $null)) {
     var %sql = INSERT INTO $db.tquote($1) ( userid , $db.tquote($2) ) VALUES ( ( SELECT `userid` FROM `user_alt` where `user` =  $db.safe($3) ), $db.safe($4-) ) ON DUPLICATE KEY UPDATE $db.tquote($2) = $db.safe($4-)
     if ((($1 == user) || (equip_ isin $1)) && ($hget($3))) { hadd $3 $2 $4- }
     return $db.exec(%sql)

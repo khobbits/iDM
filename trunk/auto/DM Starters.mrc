@@ -4,6 +4,7 @@ on $*:TEXT:/^[!@.](dm|stake|gwd|boss|pvm)\b/Si:#: {
   if ((%dm.spam [ $+ [ $nick ] ]) || (%wait. [ $+ [ $chan ] ])) { halt }
   if ($isbanned($nick)) { putlog $logo(Banned) $nick tried to dm on $chan | halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
+  if (*m* iswmcs $chan(#).mode && $nick(#,$me,r)) { notice $nick $logo(ERROR) You currently have +m enabled and I do not have correct access to talk, please voice me | halt }
   if ($nick == idmgod) { halt }
   if ($islogged($nick,$address,0)) { 
     startdm $nick $address $chan $1-
