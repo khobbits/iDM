@@ -6,8 +6,8 @@ on $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
   if ($me == iDM) {
     if (!$2) { notice $nick Syntax !(c|r)bl <channel> | halt }
     if (?c* iswm $1) || (?r* iswm $1) {
-      db.hash >checkban blist $2 user who time reason
-      if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
+      db.hash >checkban blist $2 user who time reason expires
+      if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) banned $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) $iif($hget(>checkban,expires) != 0000-00-00 00:00:00, expires $s2($hget(>checkban,expires))) }
       else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Channel $s2($2) is $s2(not) banned. | halt }
       if (?r* iswm $1) {
         db.rem blist user $2
@@ -28,8 +28,8 @@ on $*:TEXT:/^[!@.](r|c)?suspend.*/Si:%staffchans: {
   if ($db.get(admins,rank,address,$address($nick,3)) < 3) { if (?c* !iswm $1 || ($db.get(admins,rank,address,$address($nick,3)) >= 2)) { halt }  }
   if (!$2) { notice $nick Syntax: !(un)suspend <nick> [reason]. | halt }
   if ((?c* iswm $1) || (?r* iswm $1)) {
-    db.user.hash >checkban ilist $2 who time reason
-    if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) }
+    db.user.hash >checkban ilist $2 who time reason expires
+    if ($hget(>checkban,reason)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) Admin $s2($hget(>checkban,who)) suspended $s2($2) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason)) $iif($hget(>checkban,expires) != 0000-00-00 00:00:00, expires $s2($hget(>checkban,expires))) }
     elseif ($db.user.get(user,banned,$2)) { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) User $s2($2) is suspended but with no infomation. | halt }
     else { $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(BANNED) User $s2($2) is $s2(not) suspended. | halt }
 
