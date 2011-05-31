@@ -116,6 +116,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             $channel->ops[$newnick] = $channel->ops[$ircdata->nick];
                             unset($channel->ops[$ircdata->nick]);
                         }
+                        if (isset($channel->halfops[$ircdata->nick])) {
+                            $channel->halfops[$newnick] = $channel->halfops[$ircdata->nick];
+                            unset($channel->halfops[$ircdata->nick]);
+                        }
                         if (isset($channel->voices[$ircdata->nick])) {
                             $channel->voices[$newnick] = $channel->voices[$ircdata->nick];
                             unset($channel->voices[$ircdata->nick]);
@@ -167,6 +171,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
                             unset($channel->ops[$nick]);
                             $channel->users[$lowerednick]->op = false;
+                        }
+                    break;
+                    case 'h':
+                        $nick = array_shift($parameters);
+                        $lowerednick = strtolower($nick);
+                        if ($add) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding halfop: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->halfops[$nick] = true;
+                            $channel->users[$lowerednick]->halfop = true;
+                        }
+                        if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing halfop: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            unset($channel->halfops[$nick]);
+                            $channel->users[$lowerednick]->halfop = false;
                         }
                     break;
                     case 'v':
@@ -319,6 +337,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 
                 $user->op = false;
                 $user->voice = false;
+                $user->halfop = false;
                 $user->ircop = false;
                 
                 $usermode = $ircdata->rawmessageex[8];
@@ -333,6 +352,9 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         break;
                         case '@':
                             $user->op = true;
+                        break;
+                        case '%':
+                            $user->halfop = true;
                         break;
                         case '+':
                             $user->voice = true;
@@ -365,6 +387,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 switch ($usermode) {
                     case '@':
                         $user->op = true;
+                        $user->nick = substr($userarray[$i], 1);
+                    break;
+                    case '%':
+                        $user->halfop = true;
                         $user->nick = substr($userarray[$i], 1);
                     break;
                     case '+':
@@ -404,4 +430,6 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         $this->_nicknameinuse();
     }
 }
+
+print "Loaded Message Handlers\n";
 ?>

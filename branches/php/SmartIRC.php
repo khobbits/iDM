@@ -337,7 +337,7 @@ class Net_SmartIRC_base
      * @access public
      * @return void
      */
-    function Net_SmartIRC()
+    function __construct()
     {
         // precheck
         $this->_checkPHPVersion();
@@ -351,7 +351,7 @@ class Net_SmartIRC_base
         $this->_messagebuffer[SMARTIRC_LOW] = array();
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
-        
+                
         // hack till PHP allows (PHP5) $object->method($param)->$object
         $this->channel = &$this->_channels;
         // another hack
@@ -1088,6 +1088,36 @@ class Net_SmartIRC_base
         
         if ($this->isJoined($channel, $nickname)) {
             if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->voice) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+        /**
+     * Checks if we or the given user is halfop on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
+     *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
+     * @return boolean
+     * @access public
+     */
+    function isHalfop($channel, $nickname = null)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isHalfop() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->halfop) {
                 return true;
             }
         }
@@ -1937,7 +1967,7 @@ class Net_SmartIRC_base
     function _handlemessage($messagecode, &$ircdata)
     {
         $found = false;
-        
+               
         if (is_numeric($messagecode)) {
             if (!array_key_exists($messagecode, $this->nreplycodes)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: ignoring unreconzied messagecode! "'.$messagecode.'"', __FILE__, __LINE__);
@@ -2001,7 +2031,10 @@ class Net_SmartIRC_base
                 $methodobject = &$handlerobject->object;
                 $method = $handlerobject->method;
                 
-                if (@method_exists($methodobject, $method)) {
+                if (is_callable($method)){
+                  $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: calling annon method "'.get_class($methodobject).'->annon"', __FILE__, __LINE__);
+                  $method($this, $ircdata);
+                } elseif (@method_exists($methodobject, $method)) {
                     $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: calling method "'.get_class($methodobject).'->'.$method.'"', __FILE__, __LINE__);
                     $methodobject->$method($this, $ircdata);
                 } else {
@@ -2056,6 +2089,9 @@ class Net_SmartIRC_base
             if ($newuser->op !== null) {
                 $currentuser->op = $newuser->op;
             }
+            if ($newuser->halfop !== null) {
+                $currentuser->halfop = $newuser->halfop;
+            }
             if ($newuser->voice !== null) {
                 $currentuser->voice = $newuser->voice;
             }
@@ -2086,6 +2122,10 @@ class Net_SmartIRC_base
         if ($user->voice) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding voice: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
             $channel->voices[$user->nick] = true;
+        }
+        if ($user->halfop) {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding halfop: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+            $channel->halfops[$user->nick] = true;
         }
     }
     
@@ -2139,6 +2179,11 @@ class Net_SmartIRC_base
                                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from voice list', __FILE__, __LINE__);
                                 unset($channel->voices[$nick]);
                             }
+                            if (isset($channel->halfops[$nick])) {
+                                // die!!
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from halfop list', __FILE__, __LINE__);
+                                unset($channel->halfops[$nick]);
+                            }
                             
                             // ups this was not DukeNukem 3D
                         }
@@ -2157,6 +2202,10 @@ class Net_SmartIRC_base
                 if (isset($channel->voices[$nick])) {
                     $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from voice list', __FILE__, __LINE__);
                     unset($channel->voices[$nick]);
+                }
+                if (isset($channel->halfops[$nick])) {
+                    $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from halfops list', __FILE__, __LINE__);
+                    unset($channel->halfops[$nick]);
                 }
             }
         }
@@ -2368,6 +2417,12 @@ class Net_SmartIRC_channel
      * @access public
      */
     var $ops = array();
+
+    /**
+     * @var array
+     * @access public
+     */
+    var $halfops = array();
     
     /**
      * @var array
@@ -2464,6 +2519,12 @@ class Net_SmartIRC_channeluser extends Net_SmartIRC_user
      * @access public
      */
     var $voice;
+    
+    /**
+     * @var boolean
+     * @access public
+     */
+    var $halfop;
 }
 
 /**
