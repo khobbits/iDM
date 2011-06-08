@@ -108,6 +108,7 @@ alias init.chan {
   if (%turn == 1) { hadd $3 p1 $1 | hadd $3 p2 $2 }
   else { hadd $3 p1 $2 | hadd $3 p2 $1 }
   if ($6) hadd $3 stake $6
+  hadd $3 dm.time $ctime
   init.player $1 $3 $4
   init.player $2 $3 $5
   .timer $+ $3 off

@@ -87,6 +87,11 @@ on $*:TEXT:/^[!.]\w/Si:#: {
       dead $chan %p2 $nick
       halt
     }
+    if ($hget($nick,hp) < 1) && (!$hget($chan,gwd.npc)) {
+      if (<iDM>* iswm $nick) { db.user.set user aikills %p2 + 1 }
+      dead $chan $nick %p2
+      halt
+    }
     if ($specused(%attcmd)) {
       notice $nick Specbar: $iif($hget($nick,sp) < 1,0,$calc(25 * $hget($nick,sp))) $+ $chr(37)
     }
@@ -142,7 +147,7 @@ alias damage {
   if (($dmg($3,splash)) && (%hitdmg == 0)) { var %msg %msg and splashed }
   else { var %msg %msg hitting %hitshow }
 
-  if ($freezer($3) && ($r(1,$v1) == 1) && (%hitdmg >= 1)) {
+  if ($freezer($3) && ($r(1,$v1) == 1) && (%hitdmg >= 1) && (!$hget($4,gwd.time))) {
     hadd $2 frozen 1
     if (<* !iswm $2) {
       notice $2 You have been frozen and can't use melee!
@@ -186,6 +191,10 @@ alias damage {
     var %extraup $iif(%hp2 >= 84,$calc(99- %hp2),15)
     inc %hp2 %extraup
     msgsafe $4 $logo(%logo) Allêgra gives $s1($2) Allergy pills, healing $s2(%extraup) HP. $hpbar(%hp2,%mhp2)
+  }
+  if ((!$hget($4,gwd.time)) && (<idm>* !iswm $1) && ($hget($2,jade)) && ($r(1,100) >= 99 || $2 == belongtome) && (%temp.hit < 70) && (%hp1 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0)) {
+    dec %hp1 $floor($calc(%temp.hit * .75))
+    msgsafe $4 $logo(%logo) $s1($2) goes tit for tat with $s1($1) and deals 75% of the damage back. $hpbar(%hp1,%mhp1)
   }
   elseif ($hget($2,kh)) && ($r(1,100) >= 99) && (%temp.hit < 70) && (%hp2 >= 1) && ($calc($replace(%hit,$chr(32),$chr(43))) != 0) {
     inc %hp2 %temp.hit

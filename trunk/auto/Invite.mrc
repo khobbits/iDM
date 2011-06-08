@@ -134,6 +134,8 @@ on *:JOIN:#:{
       elseif (# == $supportchan) {
         logcheck $nick $address supportjointitle
       }
+      if ($hget(#)) && ($hget(#,p2)) { notice $nick $status(#) }
+      if ($hget(#,gwd.time)) { notice $nick $logo(GWD-STATUS) $status($chan) }
     } 
   }
 }
@@ -163,7 +165,7 @@ alias showtitle {
     msgsafe $2 $logo(SUPPORT) $iif($hget(>staff,title),$v1) $1 has joined the channel.
   }
   elseif ($hget(>staff,rank) == 2) {
-    msgsafe $2 $logo(HELPER) $iif($hget(>staff,title),$v1) $1 has joined the channel.
+    msgsafe 2 $logo(RETIRED) $1 has joined the channel.
   }
   elseif ($hget(>staff,rank) == 1) {
     msgsafe $2 $logo(VIP) $iif($hget(>staff,title),$v1) $1 has joined the channel.

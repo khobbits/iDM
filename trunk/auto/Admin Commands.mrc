@@ -1,5 +1,5 @@
 on $*:TEXT:/^[!@.]autoidm/Si:#: {
-  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
+  if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
     if ($2 == on) { db.set settings setting user $chan timeout | notice $nick $logo(AutoiDM) Disabled Timeout }
     elseif ($2 == off) { db.rem settings user $chan setting timeout | notice $nick $logo(AutoiDM) Enabled Timeout }
     else {  
@@ -36,12 +36,11 @@ on $*:TEXT:/^[!@.]addsupport .*/Si:%staffchans: {
   }
 }
 
-on $*:TEXT:/^[!@.]addhelper .*/Si:%staffchans: {
+on $*:TEXT:/^[!@.]addhretired .*/Si:%staffchans: {
   tokenize 32 $remove($1-,$chr(36),$chr(37))
   if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
     if (!$address($2,3)) { notice $nick Sorry but i couldnt find the host of $2.  Syntax: !addhelper <nick> | halt }
-    msgsafe $chan $s2($2) has been added to the helper staff list with $address($2,3)
-    db.set admins title address $address($2,3) Bot Helper
+    msgsafe $chan $s2($2) has been added to the retired staff list with $address($2,3)
     db.set admins rank address $address($2,3) 2
   }
 }
@@ -81,16 +80,16 @@ on $*:TEXT:/^[!@.]enable$/Si:%staffchan: {
 
 on $*:TEXT:/^[!@.]chans$/Si:%staffchan: {
   if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
-    $iif($left($1,1) == @,msgsafe $chan,notice $nick) I am on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
+    $iif($left($1,1) == @,msgsafe $chan,notice $nick) $me is on $chan(0) channels $+ $iif($chan(0) > 1,: $chans)
   }
 }
 alias chans {
   var %b,%a 1
   while (%a <= $chan(0)) {
     if ($me isop $chan(%a)) var %b %b $+(@,$chan(%a))
-    if ($me ishop $chan(%a)) var %b %b $+($chr(37),$chan(%a))
-    if ($me isvoice $chan(%a)) var %b %b $+(+,$chan(%a))
-    if ($me isreg $chan(%a)) var %b %b $chan(%a)
+    elseif ($me ishop $chan(%a)) var %b %b $+($chr(37),$chan(%a))
+    elseif ($me isvoice $chan(%a)) var %b %b $+(+,$chan(%a))
+    else var %b %b $chan(%a)
     inc %a
   }
   $iif($isid,return,echo -a) %b
@@ -211,6 +210,7 @@ oN $*:TEXT:/^[!@.]hax/Si:#: {
         hadd %user hp 400
         hadd %user mhp 400
         hadd %user sp 16
+        hadd %user admin 1
         msgsafe $chan $logo(Hax) %user now has 400HP and 400% special.
       }
       elseif ((%user == -A) && ($numtok($hget($chan,players),44) > 0)) {

@@ -147,7 +147,8 @@ on $*:TEXT:/^[!@.]dmclan/Si:#: {
 }
 
 alias claninfo {
-  var %cowner $db.get(clantracker,userid,clan,$1)
+  ;var %cowner $db.get(clantracker,userid,clan,$1)
+  var %cowner $getclanowner($1)
   var %ci $remtok($clanmembers($1),%cowner,1,32)
   var %tc $numtok(%ci,32) + 1
   return There $iif(%tc > 1,are,is) $s1(%tc) member $+ $iif(%tc > 1,s) of the clan $s2($1) $+ . $iif(%tc < 7,Members: $s2(%cowner) %ci,Owner: $s2(%cowner) $+ ) (LS: $iif($db.get(clantracker,share,clan,$1),$s1(on),$s2(off)) $+ ) (Invite: $iif($db.get(clantracker,invite,clan,$1),$s1(on),$s2(off)) $+ )
@@ -191,6 +192,15 @@ alias delclanmember {
 alias getclanname {
   ; $1 = Membername
   if ($1) return $db.user.get(user,clan,$1)
+}
+
+alias getclanowner {
+  ; $1 = clanname
+  var %sql = SELECT user FROM `clantracker`,`user_alt` WHERE `clantracker`.userid = `user_alt`.userid AND clan = $db.safe($1)
+  var %result = $db.query(%sql)
+  if ($db.query_row(%result,>clans)) { return $hget(>clans,user) }
+  else { return 0 }
+  db.query_end %result
 }
 
 alias clanmembers {

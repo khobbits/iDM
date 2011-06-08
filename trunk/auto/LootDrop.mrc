@@ -9,7 +9,7 @@ alias dead {
   if ($hget($1,stake)) {
     db.user.set user money $3 + $hget($1,stake)
     db.user.set user money $2 - $hget($1,stake)
-    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ .
+    .timer 1 1 msgsafe $1 $logo(KO) $s1($3) has defeated $s1($2) and receives $s2($price($hget($1,stake))) $+ . $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,dm.time)))),$s1(]))
     db.user.set user wins $3 + 1
     var %stake $hget($1,stake)
     userlog winstake $3 %stake
@@ -51,19 +51,19 @@ alias dead {
         var %sql.winnerclan = $db.safe(%winnerclan)
         var %sql = UPDATE user SET money = money + %sharedrop WHERE clan = %sql.winnerclan
         db.exec %sql
-        msgsafe $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+        msgsafe $1 $logo(KO) $iif(%nummember == 1,The clan,The %nummember clan members in) $qt($s1(%winnerclan)) $iif(%nummember != 1,each) received $s2($price(%sharedrop)) in gp. $s1($chr(91)) $+ %items $+ $s1($chr(93)) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,dm.time)))),$s1(]))
         unset %sharedrop
       }
       else {
         userlog drop $autoidm.acc($3) %combined gp
         db.user.set user money $autoidm.acc($3) + %combined
-        msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+        msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93)) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,dm.time)))),$s1(]))
       }
     }
     else {
       userlog drop $autoidm.acc($3) %combined gp
       db.user.set user money $autoidm.acc($3) + %combined
-      msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93))
+      msgsafe $1 $logo(KO) $s1($autoidm.nick($3)) has received $s1($chr(91)) $+ $s2($price(%combined)) $+ $s1($chr(93))in loot. $s1($chr(91)) $+ %items $+ $s1($chr(93)) $+($s1([),Time: $s2($duration($calc($ctime - $hget($1,dm.time)))),$s1(]))
     }
   }
   cancel $1
@@ -109,6 +109,7 @@ ON $*:TEXT:/^[!@.]solve/Si:#: {
     var %items $hget(>clue, item) $+ $chr(44) $+ %items
     inc %combined $hget(>clue, price)
     if ($hget(>clue, item) == Cutlass of Corruption) { db.user.set equip_item corr $nick + 1 | db.user.set achievements corr $nick 1 }
+    if (cookies isin $hget(>clue, item)) { db.user.set equip_staff cookies $nick + 25 }
     elseif (%price == 0 || %price == 1) { 
       putlog DROP ERROR: Drop not found matching: %item
     }
@@ -133,6 +134,7 @@ alias gendrops {
   if ($4) var %windiff $gwd.hget($hget($1,gwd.npc),droprate), %limit $calc(%limit + 1)
   if (%windiff > 1) var %chance $calc(%chance * %windiff)
   var %sql SELECT * FROM drops WHERE chance <= $db.safe(%chance) AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT %limit
+  ;if ($2 == saphira3883) var %sql SELECT * FROM drops WHERE chance >= '600' AND price > '10' AND disabled = '0' AND type != 'c' ORDER BY rand() LIMIT 4
   var %res $db.query(%sql)
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :

@@ -94,12 +94,12 @@ alias sitems {
   if ($1 == $null) { putlog Syntax Error: sitems (1) - $db.safe($1-) | halt }
   db.user.hash >equips equip_staff $1
 
+  if ($hget(>equips,jade)) { var %e %e Tit:For:Tat }
   if ($hget(>equips,belong)) { var %e %e Bêlong:Blade }
   if ($hget(>equips,allegra)) { var %e %e Allergy:Pills }
   if ($hget(>equips,beau)) { var %e %e Bêaumerang }
   if ($hget(>equips,snake)) { var %e %e $replace(One:Eyed:Trouser:Snake,e,$chr(233),E,É) }
   if ($hget(>equips,kh)) { var %e %e KHonfound:Ring }
-  if ($hget(>equips,satan)) { var %e %e Satanic:Thingy }
   if ($hget(>equips,support)) { var %e %e The:Supporter }
   if ($hget(>equips,cookies)) { var %e %e Cookies( $+ $v1 $+ ) }
 
