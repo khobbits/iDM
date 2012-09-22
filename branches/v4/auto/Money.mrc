@@ -12,7 +12,7 @@ on $*:TEXT:/^[!@.]equip/Si:#: {
   if ($isbanned($nick)) { halt }
   if ($update) { notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly | halt }
   $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $equipment($2) $s1(Spec Pots) $+ : $iif($db.user.get(equip_item,specpot,$2),$v1,0)
-  if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $isbanned($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
+  if ($sitems($2)) || ($pvp($2)) $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo($2) $+ $acc-stat($2) $iif($sitems($2),$s1(Special Items) $+ : $sitems($2)) $iif($pvp($2),$s1(PvP Items) $+ : $pvp($2))
 }
 
 alias money {
@@ -174,11 +174,4 @@ alias webstrip {
 
 alias wchr {
   return $chr(37) $+ $1
-}
-
-
-ON *:JOIN:#iDM: {
-  if ($me == iDM) {
-    if ($db.user.id($nick) == 0) notice $nick $logo(Welcome) Welcome to #iDM - It appears this is your first time joining if you wish to play against new players join #iDM.Newbies
-  }
 }

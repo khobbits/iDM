@@ -1,22 +1,10 @@
-on $*:TEXT:/^[!@.]part/Si:#: {
-  if (# == #idm) || (# == $staffchan) { return }
-  if ($2 != $me) { return }
-  if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
-    if (%part.spam [ $+ [ # ] ]) { return }
-    part # Part requested by $nick $+ .
-    set -u60 %part.spam [ $+ [ # ] ] on
-    msgsafe $staffchan $logo(PART) I have parted: $chan $+ . Requested by $iif($nick,$v1,N/A) $+ .
-    cancel #
-  }
-  else {
-    notice $nick $logo(PART) If you don't want me, just kick me!
-  }
-}
-
-on *:PART:#: {
-  if ($nick(#,0) < 5) && (!$no-part(#)) {
-    cancel #
-    part # Parting channel. Need 5 or more people to have iDM.
+ON *:PART:#: {
+  if ($nick($chan,0) < 5) && (!$no-part($chan)) {
+    if ($nick != $me) {
+      part $chan Parting channel. Need 5 or more people to have iDM.
+      msgsafe $staffchan $logo(PART) I have parted $s1($chan) $+ . Channel no longer has 5+ users. (Someone Parted)
+    }
+    cancel $chan
   }
   if ($nick == $me) { cancel # }
   if ($istok($hget($chan,players),$nick,44))  {
@@ -27,7 +15,10 @@ on *:PART:#: {
 on *:QUIT: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
-    part # Parting channel. Need 5 or more people to have iDM.
+    if ($nick != $me) {
+      part # Parting channel. Need 5 or more people to have iDM.
+      msgsafe $staffchan $logo(PART) I have parted $s1($chan) $+ . Channel no longer has 5+ users. (Someone Quit)
+    }
   }
   var %a 1
   while (%a <= $chan(0)) {
@@ -42,16 +33,18 @@ on *:KICK:#: {
   if ($nick(#,0) < 5) && (!$no-part(#)) {
     cancel #
     part # Parting channel. Need 5 or more people to have iDM.
+    msgsafe $staffchan $logo(PART) I have parted $s1($chan) $+ . Channel no longer has 5+ users. (Someone got kicked)
   }
   if ($knick == $me) {
     if (. !isin $nick) {
+      if ($hget($chan,players)) msgsafe $staffchan $logo(KICK) I have been kicked while players were in a DM from: $s1($chan) by $s1($nick) $+ . Reason: $s1($1-)
+      else msgsafe $staffchan $logo(KICK) I have been kicked from: $s1($chan) by $s1($nick) $+ . Reason: $s1($1-)
       cancel #
-      msgsafe $staffchan $logo(KICK) I have been kicked from: $chan by $nick $+ . Reason: $1- 
     }
     elseif (shroudbnc !isin $nick) { 
       .timer 1 10 waskicked #
       join # 
-      msgsafe $staffchan $logo(REJOINING) I was kicked from $chan by $nick - $1-
+      msgsafe $staffchan $logo(REJOINING) I was kicked from $s1($chan) by $s1($nick) - $s1($1-)
     }
     else {
       .timer 1 60 waskicked #
@@ -114,7 +107,7 @@ alias enddmcatch {
     reseterror
     goto fail
     :pass
-    msgsafe $staffchan $logo(ENDDM) $2 %action *
+    msgsafe $staffchan $logo(ENDDM) $2 %action 04*
     return 1
     :fail
     msgsafe $staffchan $logo(ENDDM) $2 %action

@@ -13,7 +13,7 @@ alias msgauth {
   else {
     logcheck $1 $2 notice1 Nickserv authentication accepted, you are now logged in.
   }
-  if ($isbanned($1)) { notice $nick This account has been suspended, for help appealing visit $supportchan }
+  if ($isbanned($1) == 1) { notice $nick This account has been suspended, for help appealing visit $supportchan }
 }
 
 ;## This method deals with actually logging in

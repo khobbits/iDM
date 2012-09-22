@@ -2,24 +2,45 @@ ON *:INVITE:#: {
   if ($me == iDM && !$isbanned($nick)) {
     db.hash >blist blist $lower($chan) user
     if ($update) notice $nick $logo(ERROR) iDM is currently disabled, please try again shortly.
+    elseif ($hget(>invite,$nick)) {
+      if ($v1 == 3) {
+        notice $nick $logo(ERROR) I have recieved too many invites from you. You will be unable to invite me for 30 mins.
+        msgsafe $staffchan $logo(ERROR) INVITE FAILED. $s1($nick) has lost the ability to invite me for next 30 mins.
+        hadd -mu1800 >invite $nick 4
+      }
+      elseif ($v1 < 3) {
+        notice $nick $logo(ERROR) I have been invited to your channel less then 60 seconds ago.
+        msgsafe $staffchan $logo(ERROR) INVITE FAILED. $s1($nick) has tried to invite me to $s1($chan) too quickly.
+        hinc -m >invite $nick 1
+      }
+    }
+    elseif ($hget(>invite,$chan)) {
+      if ($v1 == 3) {
+        notice $nick $logo(ERROR) I have recieved too many invites to this channel. You will be unable to invite me to your channel for 30 mins.
+        msgsafe $staffchan $logo(ERROR) INVITE FAILED. $s1($chan) has lost the ability to invite me for the next 30 mins.
+        hadd -mu1800 $chan >invite $chan 4
+      }
+      elseif ($v1 < 3) {
+        notice $nick $logo(ERROR) I have been invited to your channel less then 60 seconds ago.
+        msgsafe $staffchan $logo(ERROR) INVITE FAILED. $s1($nick) has tried to invite me to $s1($chan) too quickly.
+        hinc -m >invite $chan 1
+      }
+    }
     elseif ($regex($chan,/^#[a-zA-Z0-9_\-\.]*$/) == 0 || $len($chan) <= 1) {
       notice $nick $logo(ERROR) Sorry but we do not support your channel at this time.
-      msgsafe $staffchan $logo(ERROR) Invite FAILED. The channel $s1($3) has an invalid character in their channel name.
+      msgsafe $staffchan $logo(ERROR) Invite FAILED. I was invited by $s1($nick) to $s1($chan) which has an invalid character in their channel name.
     }
-    elseif ($hget(>blist,reason)) notice $2 $logo(BANNED) Channel has been blacklisted. Reason: $hget(>blist,reason) By: $hget(>blist,who)
-    else invitebot $chan $nick
+    elseif ($hget(>blist,reason)) {
+      notice $nick $logo(BANNED) Channel has been blacklisted. Reason: $s1($hget(>blist,reason)) By: $s1($hget(>blist,who)) $+ .
+      msgsafe $staffchan $logo(ERROR) INVITE FAILED. I was invited to a blacklisted channel by $s1($nick) $+ . $s1($chan) is blacklisted for $s1($hget(>blist,reason)) $+ .
+    }
+    else {
+      sbnc joinbot $chan $nick
+      hadd -mu60 >invite $nick 1
+      hadd -mu60 >invite $chan 1
+    }
   }
 }  
-
-alias invitebot {
-  if ($hget(>invite,$2)) notice $2 $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$2).unset seconds.
-  elseif ($hget(>invite,$1)) notice $2 $logo(ERROR) You have invited iDM less then 60 seconds ago please wait another $hget(>invite,$1).unset seconds.
-  else {
-    sbnc joinbot $1 $2
-    hadd -mu60 >invite $1 1
-    hadd -mu60 >invite $2 1
-  }
-}
 
 CTCP *:*join*:?: {
   if ($nick == iDM) {
@@ -41,7 +62,7 @@ raw 470:*: {
     notice $inv($3,nick) $logo(ERROR) Your channel currently links to $s1(17) $+. If you wish to have me in your channel please remove the link and re-invite me.
     msgsafe $staffchan $logo(ERROR) Invite FAILED. The channel $s1($3) has linked up with $s(17). Parting...
     if ($me ison $17) part $17 I was linked into here from $3 $+ . If this wasn't a mistake please reinvite me to this channel.
-    db.set blist who user $3 AUTO
+    db.set blist who user $3 iDM
     db.set blist reason user $3 Channel $3 linked to $17
     hfree $+(>,$3)
   }
@@ -94,21 +115,26 @@ ON *:JOIN:#: {
       if ($nick($chan,0) < 5 && !$no-part($chan)) {
         cancel $chan
         part $chan The minimum amount of users for me to stay in this channel is 5. Current count: $nick($chan,0)
+        msgsafe $staffchan $logo(PART) I have parted $s1($chan) $+ . Channel no longer has 5+ users. (Someone Joined)
       }
       else {
         if ($chan == $supportchan) {
-          db.user.hash >userinfo user $nick
-          msg $supportchan $logo(Acc-Info) User: $s2($nick) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) Excluded?: $iif($hget(>userinfo,exclude),3YES,4NO) Suspended?: $iif($hget(>userinfo,banned),4YES,3NO)
-          if ($hget(>userinfo,banned)) {
-            db.user.hash >checkban ilist $nick
-            msg $supportchan $logo(BANNED) $s2($hget(>checkban,who)) suspended $s2($nick) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason))
-          }
+          support-join $nick
         }
         showtitle $nick $chan
-        if ($hget(#)) && ($hget(#,p2)) { notice $nick $status(#) }
-        if ($hget(#,gwd.time)) { notice $nick $logo(GWD-STATUS) $status($chan) }
+        if ($hget($chan)) && ($hget($chan,p2)) notice $nick $status($chan)
+        if ($hget($chan,gwd.time)) notice $nick $logo(GWD-STATUS) $status($chan)
       } 
     }
+  }
+}
+
+alias support-join {
+  db.user.hash >userinfo user $1
+  msg $supportchan $logo(Acc-Info) User: $s2($1) Money: $s2($iif($hget(>userinfo,money),$price($v1),0)) W/L: $s2($iif($hget(>userinfo,wins),$bytes($v1,db),0)) $+ / $+ $s2($iif($hget(>userinfo,losses),$bytes($v1,db),0)) Excluded?: $s2($iif($hget(>userinfo,exclude),YES,NO)) Suspended?: $s2($iif($hget(>userinfo,banned),YES,NO))
+  if ($hget(>userinfo,banned)) {
+    db.user.hash >checkban ilist $nick
+    msg $supportchan $logo(BANNED) $s2($hget(>checkban,who)) suspended $s2($1) at $s2($hget(>checkban,time)) for $s2($hget(>checkban,reason))
   }
 }
 

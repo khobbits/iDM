@@ -17,7 +17,7 @@ on $*:TEXT:/^[!.](on|off).*/Si:#: {
   }
 }
 
-on *:JOIN:#: {
+OFF *:JOIN:#: {
   if ($nick != $me) {
     if (# == #idm || # == $staffchan) && ($me != iDM) { halt }
     var %output = $displayoff($chan,1)

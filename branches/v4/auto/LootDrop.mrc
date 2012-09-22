@@ -141,8 +141,8 @@ alias gendrops {
   while ($db.query_row(%res, >row)) {
     var %drops %drops $+ $hget(>row, item) $+ . $+ $hget(>row, price) $+ :
   }
-  if (!$4 && $r(1,50) == 42 && $1 == #idm && 1 == 2) {
-    var %drops %drops $+ Cookies (10) $+ . $+ 0 $+ :
+  if (!$4 && $r(1,1) == 42) {
+    var %drops %drops $+ Cookies (5) $+ . $+ 0 $+ :
   }
   db.query_end %res
   return %chance %drops
@@ -179,7 +179,7 @@ alias rundrops {
       elseif (Clue isin %item) { db.user.set equip_item clue $2 $r(2,$db.get(clues,answers,qid,1)) }
       elseif (Elysian isin %item) { db.user.set equip_armour elshield $2 + 1 | db.user.set achievements elshield $2 1 }
       elseif (Snow isin %item) { db.user.set equip_item snow $2 + 1 | db.user.set achievements sdrop $2 1 }
-      elseif (cookies isin %item) { db.user.set equip_staff cookies $2 + 10 | var %color 10 }
+      elseif (cookies isin %item) { db.user.set equip_staff cookies $2 + 5 | var %color 10 }
       else {
         putlog DROP ERROR: Drop not found matching: %item
       }
@@ -193,7 +193,7 @@ alias rundrops {
   }
 
   ; adding money to jackpot
-  var %jprice = $calc(%disprice * 0.4)
+  var %jprice = $calc(%disprice * $jackpot(drop-percent))
   if ($jackpot(disabled) == 0) db.exec UPDATE drops SET price = price + ' $+ %jprice $+ ' WHERE item = 'jackpot'
 
   var %sql = INSERT INTO loot_player (`chan`, `cash`, `bot`, `date`, `count`) VALUES ( $db.safe($1) , ' $+ %disprice $+ ' , ' $+ $tag $+ ' , CURDATE(), '1' ) ON DUPLICATE KEY UPDATE cash = cash + %disprice , count = count+1

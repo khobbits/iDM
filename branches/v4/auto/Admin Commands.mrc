@@ -1,11 +1,37 @@
 on $*:TEXT:/^[!@.]autoidm/Si:#: {
-  if ($db.get(admins,rank,address,$address($nick,3)) >= 2) {
-    if ($2 == on) { db.set settings setting user $chan timeout | notice $nick $logo(AutoiDM) Disabled Timeout }
-    elseif ($2 == off) { db.rem settings user $chan setting timeout | notice $nick $logo(AutoiDM) Enabled Timeout }
-    else {
-      .timer $+ $chan off
-      autoidm.start $chan
+  var %admrank $db.get(admins,rank,address,$address($nick,3))
+  if ($me != iDM && $chan == #iDM) { halt }
+  if (%admrank >= 2) {
+    if ($2 == on && %admrank == 4) { 
+      db.set settings setting user $chan timeout
+      notice $nick $logo(AutoiDM) Disabled Timeout 
     }
+    elseif ($2 == off && %admrank == 4) { 
+      db.rem settings user $chan setting timeout
+      notice $nick $logo(AutoiDM) Enabled Timeout 
+    }   
+    else {
+      if ($hget($chan,gwd.npc)) notice $nick $logo(ERROR) You can't use autoidm command with GWD.
+      elseif ($numtok($hget($chan,players),32) != 1) notice $nick $logo(ERROR) This command only works when player 1 is set.
+      else {
+        .timer $+ $chan off
+        autoidm.start $chan
+      }
+    }
+  }
+}
+
+ON $*:TEXT:/^[!.@]warn/Si:#iDM.Staff: {
+  if ($nick == Belongtome) {
+    if ($0 == 3) {
+      if ($me ison $2) {
+        if ($3 == spam) msgsafe $2 $logo(Warning) Your channel has been issued a warning for spamming. Please stop spamming commands or your channel will be blacklisted. Visit #iDM.Support if you think this is a mistake.
+        elseif ($3 == kick) msgsafe $2 $logo(Warning) Your channel has been issued a warning for kicking people from DMs. Please stop kicking a player while they are in a DM or your channel will be blacklisted. Visit #iDM.Support if you think this was a mistake.
+        elseif ($3 == part) msgsafe $2 $logo(Warning) Your channel has been issued a warning for parting while in DMs. Please stop while you are in a DM or your channel will be blacklisted. Visit #iDM.Support if you think this was a mistake.
+        else notice $nick $logo(ERROR) Warning type not found. Acceptable types are spam, kicking, and parting.
+      }
+    }
+    elseif ($me == iDM) notice $nick $logo(ERROR) You must enter a channel and a type of warning: spam, kicking, and parting. Syntax: !warn #channel type
   }
 }
 
@@ -59,6 +85,27 @@ on $*:TEXT:/^[!@.]part .*/Si:#: {
     if ($left($2,1) == $chr(35)) && ($me ison $2) {
       part $2 Part requested by $nick $+ . $iif($3,$+($chr(91),$3-,$chr(93)))
       $iif($left($1,1) == @,msgsafe $chan,notice $nick) I have parted $2
+    }
+  }
+}
+
+OFF $*:TEXT:/^[!@.]chancheck$/Si:%staffchan: {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
+    if ($me != iDM) {
+      var %a 1
+      while (%a <= $chan(0)) {
+        if ($chan(%a) != #iDM && $chan(%a) != #iDM.Staff) {
+          if ($nick($chan(%a),$me).idle >= 2700) {
+            part $chan(%a) I have been idle over 45 mins, parting channel.
+            msgsafe $staffchan $logo(Idle) I have parted $s1($chan(%a))
+          }
+          elseif ($nick($chan(%a),0) < 5) {
+            part $chan(%a) This channel does not have 5+ users.
+            msgsafe $staffchan $logo(Part) I have parted $s1($chan(%a))
+          }
+          inc %a
+        }
+      }
     }
   }
 }
@@ -140,18 +187,10 @@ on $*:TEXT:/^[!@.](db|cache)(sync|clear)$/Si:%staffchan: {
   }
 }
 
-ON *:TEXT:!amsg*:%staffchans: {
-  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
+ON *:TEXT:!amsg *:%staffchans: {
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
     if ($2) { 
-      var %ac 1, %tc $chan(0)
-      if ($me != iDM) {
-        while (%ac <= %tc) {
-          if (!$istok(#idm #idm.staff #idm.support #stats,$chan(%ac),32)) var %c %c $chan(%ac)
-          inc %ac
-        }
-        if ($len(%c) >= 2) msg $replace(%c,$chr(32),$chr(44)) $logo(AMSG) $2- 
-      }
-      else amsg $logo(AMSG) $2- 
+      putlog perform jp-amsg $logo(AMSG) $2-
     }
     else notice $nick $logo(ERROR) Syntax: !amsg message
   }
@@ -167,10 +206,10 @@ on *:TEXT:!whois*:%staffchans: {
   }
 }
 
-on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:%staffchans: {
+on $*:TEXT:/^[!@.`](rem|rmv|no)dm/Si:%staffchan: {
   if ($db.get(admins,rank,address,$address($nick,3)) >= 3) {
-    if (!$db.user.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
-    db.user.set user indm $2 0
+    ;if (!$db.user.get(user,indm,$2)) { notice $nick $logo(ERROR) $s1($2) is not DMing at the moment. | halt }
+    if ($me == iDM) db.user.set user indm $2 0
     if ($hget($2)) hfree $2
     $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(REM-DM) $s1($2) is no longer DMing.
   }

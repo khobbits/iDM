@@ -50,7 +50,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %money = $ranks(money,$2)
     var %wins = $ranks(wins,$2)
     var %losses = $ranks(losses,$2)
-    var %output = $logo(RANK) $+ $isbanned($2) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
+    var %output = $logo(RANK) $+ $acc-stat($2) $s1(Money) $+ : $s2($gettok(%money,1,58)) (with $price($gettok(%money,2,58)) $+ ) $s1(Wins) $+ : $s2($gettok(%wins,1,58)) (with $gettok(%wins,2,58) $+ ) $s1(Losses) $+ : $s2($gettok(%losses,1,58)) (with $gettok(%losses,2,58) $+ )
   }
   else {
     var %money = $ranks(money,$2)
@@ -60,7 +60,7 @@ on $*:TEXT:/^[!@.]dmrank/Si:#: {
     var %losses = $ranks(losses,$2)
     var %nextlosses = $calc($gettok($ranks(losses,$calc(%losses -1)),2,58) - $db.user.get(user,losses,$2))
 
-    var %output = $logo($2) $+ $isbanned($2) $s1(Money) $+ : $s2($ord(%money)) $iif(%money == 1,(\o/),( $+ %nextmoney for rank up)) $s1(Wins) $+ : $s2($ord(%wins)) $iif(%wins == 1,(\o/),( $+ %nextwins for rank up)) $s1(Losses) $+ : $s2($ord(%losses)) $iif(%losses == 1,(\o/),( $+ %nextlosses for rank up))
+    var %output = $logo($2) $+ $acc-stat($2) $s1(Money) $+ : $s2($ord(%money)) $iif(%money == 1,(\o/),( $+ %nextmoney for rank up)) $s1(Wins) $+ : $s2($ord(%wins)) $iif(%wins == 1,(\o/),( $+ %nextwins for rank up)) $s1(Losses) $+ : $s2($ord(%losses)) $iif(%losses == 1,(\o/),( $+ %nextlosses for rank up))
   }
   if (%output == $null) {
     notice $nick Syntax: !rank <name>/<1 - 10000>
@@ -75,6 +75,9 @@ alias isbanned {
   if ($checkisbanned($1) == 1) {
     hadd -mu120 >banned $1 1
     return 4 [Account Banned]
+  }
+  if ($checkisbanned($1) == 2) {
+    return $true
   }
   return
 }

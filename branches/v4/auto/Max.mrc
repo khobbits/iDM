@@ -218,6 +218,9 @@ alias hit {
   if (<iDM>* iswm $2) {
     inc %atk $ceil($calc( ($hget($3,wins) / 1000 ) + ( $hget($3,aikills) / 50 ) ))
   }
+  elseif ($1 == bslap) {
+    inc %atk 99999
+  }
   elseif (<gwd>* iswm $2) {
     inc %atk $ceil($calc(( $numtok($hget($4,players),44) - 1) * 5 ))
   }

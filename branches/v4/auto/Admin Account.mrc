@@ -18,7 +18,7 @@ ON $*:TEXT:/^[!@.](r|c)?(bl(ist)?) .*/Si:%staffchans: {
             if (!$db.get(blist,reason,user,$2)) {
               db.set blist who user $2 $nick
               db.set blist reason user $2 $3-
-              putlog perform part $2 This channel has been blacklisted
+              putlog perform part $2 This channel has been blacklisted.
               $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Blacklist) Channel $s1($2) has been added to blist.
             }
             else notice $nick $logo(ERROR) Channel is already banned.
@@ -46,9 +46,9 @@ ON $*:TEXT:/^[!@.](r|c)?suspend .*/Si:%staffchans: {
           db.exec UPDATE `user`,`user_alt` SET banned = '0' WHERE `user`.userid = `user_alt`.userid AND user = $db.safe($2)
           if ($mysql_affected_rows(%db) !== -1) {
             db.user.rem ilist $2
-            $iif($left($1,1) == @,msgsafe $chan,notice $nick) Restored account $2 to its original status.
+            $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Suspend) Restored $s1($2) to it's original status.
           }
-          else $iif($left($1,1) == @,msgsafe $chan,notice $nick) Couldn't find account $s1($2)
+          else $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Suspend) Couldn't find account $s1($2)
         }
         elseif (?suspend iswm $1) {
           if ($0 >= 3) {
@@ -56,7 +56,7 @@ ON $*:TEXT:/^[!@.](r|c)?suspend .*/Si:%staffchans: {
             if ($mysql_affected_rows(%db) !== -1) {
               db.user.set ilist who $2 $nick
               db.user.set ilist reason $2 $3-
-              $iif($left($1,1) == @,msgsafe $chan,notice $nick) Removed account $2 from the top scores - $3- .
+              $iif($left($1,1) == @,msgsafe $chan,notice $nick) $logo(Suspend) Removed account $s1($2) for $s1($3-) $+ .
             }
             else notice $nick $logo(ERROR) Couldn't find account $s1($nick)
           }
@@ -79,8 +79,9 @@ On $*:TEXT:/^[!@.]cookie .*/Si:#: {
   }
 }
 
-On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
-  if ($db.get(admins,rank,address,$address($nick,3)) == 4 && $me == iDM) {
+On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:#idm.staff,#idm.support,#idm,#saphira3883: {
+  if ($me != iDM && ($chan == #iDM.support || $chan == #idm.staff || $chan == #idm)) { halt }
+  if ($db.get(admins,rank,address,$address($nick,3)) == 4) {
     if ($4 !isnum) { goto error }
     if (?increase iswm $1) { var %sign + }
     elseif (?decrease iswm $1) { var %sign - }
@@ -110,8 +111,17 @@ On $*:TEXT:/^[!@.]((de|in)crease|define).*/Si:%staffchans: {
       var %table = equip_item
       var %item = $3
     }
-    else { notice $nick Couldnt find item matching $3 $+ . Valid: money/wins/losses/snow/clue/vspear/statius/mjavelin/cookies + !store items. | halt }
-    if (%sign == =) { db.user.set %table %item $2 $4 }
+    elseif ($3 == ticket) {
+      var %table = equip_item
+      var %item = ticket
+    }
+    else { notice $nick $logo(ERROR) Couldnt find item matching $3 $+ . Valid: money/wins/losses/snow/clue/vspear/statius/mjavelin/cookies + !store items. | halt }
+    if (%item == ticket && %table == equip_item) {
+      db.user.set equip_item ticket $2 1
+      db.user.set equip_item tixname $2 $2
+      db.exec UPDATE drops SET price = price + $db.safe($jackpot(tixprice)) WHERE item = 'jackpot'
+    }
+    elseif (%sign == =) { db.user.set %table %item $2 $4 }
     else { db.user.set %table %item $2 %sign $4 }
     msgsafe $chan $logo(ACCOUNT) User $2 has been updated. %item = $db.user.get(%table, %item, $2)
     return

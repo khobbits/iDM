@@ -1,7 +1,7 @@
-on $*:TEXT:/^[!.]\w/Si:#: {
+on $*:TEXT:/^[!.]([A-Z]{1,})/Si:#: {
   if ($chan == #iDM || $chan == $staffchan) && ($me != iDM) { halt }
   if ($isbanned($nick)) { halt }
-  var %attcmd $right($1,-1)
+  var %attcmd $regml(1)
   if ($hget($chan,gwd.time) && $findtok($hget($chan,players),$nick,44)) || ($nick == $hget($chan,p1) && $hget($chan,p2)) && ($hget($chan) && $hget($nick,chan) == $chan) {
     if ($hget($chan,p1) && $nick == $hget($chan,p1) && $hget($chan,p2)) { 
       var %p2 $hget($chan,p2)
